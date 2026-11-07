@@ -1,0 +1,22 @@
+# Lokale Zugangsdaten und Umgebungsdateien
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Betriebssystem und lokale Arbeitsumgebung
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Python-Zwischendateien, falls später verwendet
+__pycache__/
+*.py[cod]
+.venv/
+
+# JavaScript-Abhängigkeiten, falls später verwendet
+node_modules/
+
+# Keine Stackentscheidung durch diese Vorsorgeeinträge.
