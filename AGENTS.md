@@ -2,7 +2,7 @@
 
 Lies zuerst `docs/produktbrief.md`, `docs/entscheidungen.md` und `README.md`. Der Produktbrief ist die einzige maßgebliche Produktspezifikation. Sein Status ist aktuell Arbeitsentwurf; keine technische Umsetzung ohne konkreten Nutzerfall und Prüfziel daraus ableiten.
 
-Es gibt noch keinen festgelegten Stack, keine Startbefehle und keine Tests. Keine Befehle, Testergebnisse, Kundenbelege oder technischen Fähigkeiten erfinden. Vor neuen Abhängigkeiten vorhandene Dateien und Muster prüfen. Eine klar abgegrenzte Aufgabe je Branch bearbeiten und Änderungen mit tatsächlich ausgeführten Prüfungen und verbleibenden Grenzen zurückgeben.
+Der Prototyp verwendet statisches HTML, CSS und JavaScript. Der Regeltest steht in `prototype/test/rules.test.mjs`. Verwende die dokumentierten Befehle im README. Keine Befehle, Testergebnisse, Kundenbelege oder technischen Fähigkeiten erfinden. Vor neuen Abhängigkeiten vorhandene Dateien und Muster prüfen. Eine klar abgegrenzte Aufgabe je Branch bearbeiten und Änderungen mit tatsächlich ausgeführten Prüfungen und verbleibenden Grenzen zurückgeben.
 
 Keine Zugangsdaten oder privaten Tokens ablegen. Keine kostenpflichtigen Schritte, Veröffentlichungen oder externen Zusagen ohne entsprechenden Auftrag. Fachfreigaben bleiben bei qualifizierten Personen.
 

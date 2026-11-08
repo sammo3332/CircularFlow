@@ -1,6 +1,6 @@
 # CircularFlow
 
-Stand: 07.11.2026 · Status: privates GitHub-Repository angelegt; Grunddokumentation. Noch keine Software implementiert.
+Stand: 08.11.2026 · Status: Der Entwicklungsbranch enthält eine ausführbare Simulation. Der Hauptzweig bleibt die Projektgrundlage.
 
 Repository: [https://github.com/sammo3332/CircularFlow](https://github.com/sammo3332/CircularFlow) · Eigentümer: `sammo3332` · Sichtbarkeit: privat, am 07.11.2026 geprüft.
 
@@ -15,6 +15,6 @@ CircularFlow untersucht, wie Angebot und Bedarf für Wiederverwendung frühzeiti
 
 ## Einrichtung, Betrieb und Prüfung
 
-Ein Technikstack wurde noch nicht gewählt. Es gibt keine Installation, Startbefehle, automatisierten Tests oder lauffähige Demo. Diese Angaben erst ergänzen, sobald eine konkrete Implementierung existiert und die Befehle tatsächlich geprüft wurden.
+Der [Prototyp](prototype/README.md) ist eine statische Browseranwendung. Für die Regelprüfung im Repository-Verzeichnis `node --test prototype/test/rules.test.mjs` ausführen. `prototype/dist/` enthält die Website mit fiktiven Testdaten.
 
 Vor der ersten Prototypaufgabe festlegen: operative Zielrolle, konkreter Problemfall, erwartetes Bildschirmverhalten und überprüfbare Akzeptanzkriterien. Eine Aufgabe auf einem eigenen Branch bearbeiten; Änderungen und tatsächlich ausgeführte Prüfungen nachvollziehbar zurückgeben. Ausgaben, Veröffentlichung und externe Zusagen benötigen einen entsprechenden Auftrag.
