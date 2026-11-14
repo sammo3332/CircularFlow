@@ -189,3 +189,35 @@ footer span { padding: 0 3px; }
   .project-grid { grid-template-columns: minmax(0,1fr); }
   .local-label { white-space: normal; text-align: right; max-width: 80px; }
 }
+
+/* Türkarte (CF-UMBAU-01), nur additive Klassen */
+.door-entry { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 14px 18px; margin: 15px 0 0; }
+.door-entry p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+.door-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; align-items: start; margin-bottom: 15px; }
+.door-panel { padding: 16px; min-width: 0; overflow-wrap: anywhere; }
+.door-panel h2 { margin-bottom: 8px; }
+.door-panel h3 { margin: 12px 0 4px; }
+.door-panel p { font-size: 13px; line-height: 1.5; margin: 6px 0; }
+.door-step { font-size: 22px; }
+.door-role { color: var(--muted); font-size: 12px; font-weight: 700; }
+.door-deadlines { margin: 0; }
+.door-deadlines > div { padding: 7px 0; border-bottom: 1px solid var(--line); }
+.door-deadlines dt { color: #486359; font-size: 11px; font-weight: 750; }
+.door-deadlines dd { margin: 3px 0 0; font-size: 13px; font-weight: 700; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.door-compare-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0 0 8px; }
+.door-compare-list dt { color: var(--muted); font-size: 11px; }
+.door-compare-list dd { margin: 3px 0 0; font-size: 18px; font-weight: 800; }
+.door-finding { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-weight: 700; }
+.door-warning { border-left: 3px solid #a78646; padding: 4px 8px; background: #faf0d8; color: #634c24; font-weight: 700; }
+.door-times { margin: 12px 0 0; }
+.door-radio { display: block; font-size: 13px; padding: 4px 0; }
+.door-fields { display: grid; gap: 10px; }
+.door-error { color: #79413a; font-size: 12px; font-weight: 700; margin: 4px 0 0; }
+.door-notice { min-height: 1.2em; color: #315c40; font-size: 13px; font-weight: 700; margin: 0 0 10px; }
+@media (max-width: 760px) {
+  .door-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 480px) {
+  .door-step { font-size: 18px; }
+  .door-entry .button { white-space: normal; }
+}

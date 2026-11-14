@@ -1,11 +1,12 @@
 import { evaluateCase, formatDate, OUTCOMES } from './rules.mjs';
 import { DEMO_CASES, emptyCase, EVIDENCE, WORK_STATES } from './scenarios.mjs';
+import { afterDoorRender, bindDoor, doorPageHtml } from './door-view.mjs';
 
 const KEY = 'circularflow-testfaelle-v1';
 const page = document.querySelector('#page');
 const warning = document.querySelector('#storage-warning');
 const toast = document.querySelector('#toast');
-const navNames = { overview: 'Übersicht', projects: 'Projekte', case: 'Vorprüfung' };
+const navNames = { overview: 'Übersicht', projects: 'Projekte', case: 'Vorprüfung', door: 'Tür im selben Umbau' };
 const factFields = {
   knownEvidence: ['knownAt'], receivedEvidence: ['receivedAt'], deadlineEvidence: ['deadline'],
   pickupEvidence: ['pickupStart', 'pickupEnd'], leadEvidence: ['leadDays'],
@@ -76,6 +77,7 @@ function overview() {
       <div class="hero-content"><span class="hero-tag"><span></span> VORPRÜFUNG</span><h2 id="hero-title">Reicht die Zeit für den nächsten Schritt?</h2><p>Spiel einen fiktiven Fall durch. CircularFlow prüft Informationszeitpunkt, Vorlauf und Übergabe und zeigt, was die zuständige Person als Nächstes klären kann.</p>${button('Beispielfall öffnen <span aria-hidden="true">→</span>', 'open', 'data-id="CF-DEMO-01"', 'hero-button')}</div>
       <div class="hero-graphic" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div><span class="node node-a">ANGEBOT</span><span class="node node-b">FRIST</span><span class="node node-c">BEDARF</span></div>
     </section>
+    <section class="panel door-entry" aria-labelledby="door-entry-title"><div><h2 id="door-entry-title">Tür im selben Umbau</h2><p>Prüfe, was vor der Ersatzentscheidung noch fehlt.</p></div><span class="badge demo-badge">Simulation mit Beispieldaten</span><button class="button secondary" type="button" data-nav="door">Tür im selben Umbau öffnen <span aria-hidden="true">→</span></button></section>
     <div class="metric-grid" aria-label="Fallzahlen">${metrics.map(([key, label, count]) => `<div class="metric"><div class="metric-icon metric-${key}" aria-hidden="true">${icons[OUTCOMES[key]?.icon ?? 'all']}</div><strong>${count}</strong><span>${label}</span></div>`).join('')}</div>
     <section class="panel" aria-labelledby="case-list-title"><div class="panel-head"><div><h2 id="case-list-title">Testfälle</h2><p>Vorbereitete Situationen und deine lokal gespeicherten Varianten.</p></div><span class="local-label">Nur in diesem Browser</span></div>
       <div class="filters" aria-label="Ergebnis filtern">${metrics.map(([key, label]) => `<button type="button" data-filter="${key}" aria-pressed="${filter === key}">${key === 'all' ? 'Alle' : label}</button>`).join('')}</div>
@@ -169,6 +171,11 @@ function render() {
   for (const item of document.querySelectorAll('[data-nav]')) {
     if (item.dataset.nav === view) item.setAttribute('aria-current', 'page');
     else item.removeAttribute('aria-current');
+  }
+  if (view === 'door') {
+    page.innerHTML = doorPageHtml();
+    afterDoorRender(page);
+    return;
   }
   page.innerHTML = view === 'overview' ? overview() : view === 'projects' ? projectCards() : caseEditor();
 }
@@ -305,4 +312,5 @@ page.addEventListener('submit', event => {
   persist(event.target);
 });
 
+bindDoor(page);
 render();

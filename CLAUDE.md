@@ -4,7 +4,7 @@ Lies `AGENTS.md`, `README.md`, `docs/produktbrief.md` und `docs/entscheidungen.m
 
 Vor Beginn muss die Aufgabe Nutzerproblem, gewünschtes Verhalten, ausgeschlossenen Umfang und überprüfbare Akzeptanzkriterien benennen. Dokumentversion, Branch und Ausgangscommit in der Übergabe festhalten, bei jeder technischen Aufgabe. Keine unkoordinierten Änderungen an gemeinsam bearbeiteten Dateien.
 
-Der Prototyp ist statisch. Der Regeltest wird mit `node --test prototype/test/rules.test.mjs` ausgeführt. Rückgabe mit Änderung beziehungsweise Commit, beobachtetem Verhalten, ausgeführten Prüfungen und offenen Punkten. Eine erfolgreiche Prüfung niemals ohne Ausführung behaupten.
+Der Prototyp ist statisch. Die Regeltests (`rules.test.mjs` und `door.test.mjs`) werden mit `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs` ausgeführt. Rückgabe mit Änderung beziehungsweise Commit, beobachtetem Verhalten, ausgeführten Prüfungen und offenen Punkten. Eine erfolgreiche Prüfung niemals ohne Ausführung behaupten.
 
 ## Vier Agenten und Vorbereitung vor Entwicklung · 14.11.2026
 
