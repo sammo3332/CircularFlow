@@ -136,7 +136,12 @@ function applyErrors(page, result) {
 // Aktualisiert nur den Ergebnisbereich. Formularfelder und Radiogruppe bleiben unberührt (Fokus).
 function updateResults(page) {
   const parts = doorParts();
-  page.querySelector('#door-decision').innerHTML = parts.decision;
+  // Live-Bereich nur bei tatsächlicher Änderung neu schreiben, damit nicht bei jedem Tastendruck vorgelesen wird.
+  const decision = page.querySelector('#door-decision');
+  if (decision.dataset.html !== parts.decision) {
+    decision.innerHTML = parts.decision;
+    decision.dataset.html = parts.decision;
+  }
   page.querySelector('#door-deadlines').innerHTML = parts.deadlines;
   page.querySelector('#door-compare-body').innerHTML = parts.compare;
   applyErrors(page, parts.result);

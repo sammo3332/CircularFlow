@@ -99,7 +99,8 @@ function parseValue(raw) {
   const text = String(raw ?? '').trim();
   if (!text) return { error: 'Wert fehlt.' };
   if (/^\d+([.,]\d+)?$/.test(text)) {
-    const mm = Number(text.replace(',', '.'));
+    // Auf 0,001 mm runden: Vergleich und Anzeige verwenden dieselbe Zahl.
+    const mm = Math.round(Number(text.replace(',', '.')) * 1000) / 1000;
     return Number.isFinite(mm) && mm > 0 ? { mm } : { error: 'Wert ist keine positive Zahl.' };
   }
   if (/^\d+([.,]\d+)?\s*\p{L}+\.?$/u.test(text)) return { error: 'Bitte nur die Zahl in mm eingeben.' };
@@ -214,6 +215,8 @@ export function evaluateDoor({ requirement, measurement, deadlines, at }) {
   if (unclear) {
     add(2, 'Termine klären', 'Planung', 'Fristen oder Eingang sind widersprüchlich oder ungültig. Das muss vor allen weiteren Schritten geklärt werden.');
   }
+  // Freigegebene Lesart: Rang 3 verlangt nach Rev. 2 §5 nur offenen Ersatztermin und verfehlte Breite;
+  // „widerspruchsfrei“ gilt nur für Rang 6. Bei Fristwiderspruch steht Rang 3 daher unter „Weiterhin offen“.
   if (replaceOpen && width.kind === 'missed') {
     add(3, 'Anpassung fachlich klären oder Ersatzweg vorbereiten', 'Planung', 'Das Breitenkriterium ist verfehlt, die Ersatzentscheidung steht noch aus.');
   }

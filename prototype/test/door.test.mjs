@@ -15,6 +15,10 @@ const standard = (changes = {}) => ({ ...SAMPLE_MEASUREMENT, ...changes });
 const run = (measurement, at, deadlines = DEADLINES) =>
   evaluateDoor({ requirement: REQUIREMENT, measurement, deadlines, at });
 const none = () => emptyMeasurement();
+const main = (r, text, role) => {
+  assert.equal(r.mainStep.text, text);
+  assert.equal(r.mainStep.role, role);
+};
 const steps = r => [r.mainStep?.text, ...r.stillOpen.map(a => a.text)];
 const MEASURE = 'Rohbauöffnung B-02 an der Messstelle laut P-02 messen oder ein verwertbares Aufmaß nachreichen';
 const FACH = 'Variante zur fachlichen Prüfung vorlegen';
@@ -84,6 +88,9 @@ test('05: 19.11. 09:00 ohne Aufmaß, Prüfvorlauf, Messauftrag bleibt offen', ()
   assert.equal(r.measureStatus.label, 'Aufmaß überfällig');
   assert.equal(r.replaceStatus.label, 'Entscheidungsfrist offen');
   assert.deepEqual(steps(r), ['Prüfvorlauf klären', MEASURE]);
+  main(r, 'Prüfvorlauf klären', 'Planung');
+  assert.equal(r.stillOpen[0].role, 'Montagebetrieb');
+  assert.ok(r.mainStep.reason.includes('überfällig oder verspätet'));
 });
 
 test('06: verspätet eingegangenes, verwertbares Aufmaß', () => {
@@ -92,6 +99,7 @@ test('06: verspätet eingegangenes, verwertbares Aufmaß', () => {
   assert.equal(r.measureStatus.label, 'verspätet eingegangen');
   assert.equal(r.replaceStatus.label, 'Entscheidungsfrist offen');
   assert.deepEqual(steps(r), ['Prüfvorlauf klären']);
+  main(r, 'Prüfvorlauf klären', 'Planung');
 });
 
 test('07: rechtzeitiger Eingang bleibt rechtzeitig, Entscheidungsfrist verstrichen', () => {
@@ -110,7 +118,18 @@ test('08: Fristwiderspruch, Termine klären vor Messauftrag, keine Fachprüfung'
   assert.equal(r.replaceStatus.label, 'Entscheidungsfrist offen');
   assert.deepEqual(r.warnings, ['Aufmaß ist erst nach der Ersatzentscheidung fällig']);
   assert.deepEqual(steps(r), ['Termine klären', MEASURE]);
+  main(r, 'Termine klären', 'Planung');
+  assert.ok(r.mainStep.reason.includes('widersprüchlich'));
   assert.ok(!steps(r).includes(FACH));
+});
+
+test('08c: Fristwiderspruch mit verfehlter Breite, Rang 3 bleibt unter „Weiterhin offen“', () => {
+  const r = run(standard({ valueText: '870' }), T.mid, conflict);
+  assert.equal(r.width.kind, 'missed');
+  main(r, 'Termine klären', 'Planung');
+  assert.deepEqual(steps(r), ['Termine klären', 'Anpassung fachlich klären oder Ersatzweg vorbereiten']);
+  assert.ok(!steps(r).includes(FACH));
+  assert.deepEqual(r.warnings, ['Aufmaß ist erst nach der Ersatzentscheidung fällig']);
 });
 
 test('08b: Fristwiderspruch verhindert die Fachprüfung auch bei gutem Aufmaß', () => {
@@ -129,13 +148,15 @@ test('09a: 885 und 895 mm erfüllen die Breite', () => {
 test('09b: Eingang genau zur Aufmaßfrist ist rechtzeitig', () => {
   const r = run(standard({ receivedAt: '2026-11-18T16:00' }), T.d19);
   assert.equal(r.measureStatus.label, 'rechtzeitig eingegangen');
-  assert.equal(r.mainStep.text, FACH);
+  main(r, FACH, 'Planung');
+  assert.equal(r.mainStep.note, 'Weitere technische Anforderungen bleiben offen.');
 });
 
 test('09c: genau zur Ersatzfrist ist die Entscheidungsfrist noch offen', () => {
   const r = run(standard({ receivedAt: '2026-11-18T16:00' }), T.d19noon);
   assert.equal(r.replaceStatus.label, 'Entscheidungsfrist offen');
-  assert.equal(r.mainStep.text, FACH);
+  main(r, FACH, 'Planung');
+  assert.equal(r.mainStep.note, 'Weitere technische Anforderungen bleiben offen.');
 });
 
 test('10: Türblattmaß, 19.11. 09:00, Aufmaß überfällig, Messauftrag bleibt', () => {
@@ -144,6 +165,8 @@ test('10: Türblattmaß, 19.11. 09:00, Aufmaß überfällig, Messauftrag bleibt'
   assert.equal(r.measureStatus.label, 'Aufmaß überfällig');
   assert.notEqual(r.measureStatus.label, 'rechtzeitig eingegangen');
   assert.deepEqual(steps(r), ['Prüfvorlauf klären', MEASURE]);
+  main(r, 'Prüfvorlauf klären', 'Planung');
+  assert.equal(r.stillOpen[0].role, 'Montagebetrieb');
 });
 
 test('11: Eingang vor Messdatum ist widersprüchlich', () => {
@@ -153,6 +176,8 @@ test('11: Eingang vor Messdatum ist widersprüchlich', () => {
   assert.equal(r.receipt.state, 'contradictory');
   assert.equal(r.usable, false);
   assert.deepEqual(steps(r), ['Termine klären', 'Prüfvorlauf klären', MEASURE]);
+  main(r, 'Termine klären', 'Planung');
+  assert.deepEqual(r.stillOpen.map(a => a.role), ['Planung', 'Montagebetrieb']);
 });
 
 test('12: Eingang nach der Betrachtungszeit gilt als noch nicht eingegangen, ohne Widerspruch', () => {
@@ -169,8 +194,26 @@ test('13: Fristwiderspruch nach Ablauf der Ersatzfrist', () => {
   const r = run(none(), T.d20, conflict);
   assert.equal(r.measureStatus.label, 'Aufmaß überfällig');
   assert.deepEqual(steps(r), ['Bestellstatus klären', 'Termine klären', MEASURE]);
+  main(r, 'Bestellstatus klären', 'Planung');
   assert.ok(!steps(r).includes('Prüfvorlauf klären'));
   assert.equal(r.warnings.length, 1);
+});
+
+test('12b: „noch nicht eingegangen“ hat Vorrang vor „Eingang vor Messdatum“', () => {
+  const r = run(standard({ measuredOn: '2026-11-19' }), T.start);
+  assert.equal(r.receipt.state, 'notYet');
+  assert.ok(!r.width.text.includes('widersprüchlich'));
+  assert.deepEqual(r.warnings, []);
+  main(r, MEASURE, 'Montagebetrieb');
+  assert.ok(!steps(r).includes('Termine klären'));
+});
+
+test('Rundung: Regel und Anzeige verwenden dieselbe auf 0,001 mm gerundete Zahl', () => {
+  assert.equal(run(standard({ valueText: '884,9999' }), T.mid).width.label, 'Breitenkriterium erfüllt');
+  assert.equal(run(standard({ valueText: '884,9999' }), T.mid).istText, '885 mm');
+  assert.equal(run(standard({ valueText: '895,0001' }), T.mid).width.label, 'Breitenkriterium erfüllt');
+  assert.equal(run(standard({ valueText: '884,999' }), T.mid).width.label, 'Breitenkriterium verfehlt – 0,001 mm unter der Untergrenze');
+  assert.equal(run(standard({ valueText: '0,0001' }), T.mid).width.kind, 'open');
 });
 
 test('Z1: ungültiges Kalenderdatum im Eingang erfordert Termine klären, fehlendes Messdatum lässt Breite offen', () => {
@@ -213,13 +256,13 @@ test('Z8: genau zur Aufmaßfrist ist das fehlende Aufmaß noch ausstehend', () =
 test('Z9: Eingang 16:01 ist verspätet, Prüfvorlauf klären', () => {
   const r = run(standard({ receivedAt: '2026-11-18T16:01' }), T.d19);
   assert.equal(r.measureStatus.label, 'verspätet eingegangen');
-  assert.equal(r.mainStep.text, 'Prüfvorlauf klären');
+  main(r, 'Prüfvorlauf klären', 'Planung');
 });
 
 test('Z10: 12:01 am 19.11. ist die Entscheidungsfrist verstrichen', () => {
   const r = run(standard(), '2026-11-19T12:01');
   assert.equal(r.replaceStatus.label, 'Entscheidungsfrist verstrichen');
-  assert.equal(r.mainStep.text, 'Bestellstatus klären');
+  main(r, 'Bestellstatus klären', 'Planung');
 });
 
 test('Z11: Einheitenzusatz und falsche Einheit lassen die Breite offen', () => {
