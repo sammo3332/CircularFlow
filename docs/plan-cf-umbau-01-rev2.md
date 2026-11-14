@@ -1,6 +1,6 @@
 # Plan CF-UMBAU-01 Revision 2 · Türsimulation
 
-**Planfassung 0.2 · 14.11.2026 · nach Planprüfung durch cf-review · wartet auf Freigabe durch Houssam und Feyrouz**
+**Planfassung 0.2 · 14.11.2026 · nach Planprüfung durch cf-review · am 14.11.2026 von Houssam und Feyrouz freigegeben (Abschnitt 9.2)**
 
 Planung: cf-planung, nur lesend. Planprüfung: cf-review, nur lesend, auf Planfassung 0.1 (Commit `5ac22a5`). Korrekturen: Hauptsitzung. Branch `codex/claude-agenten-vorbereitung`, Ausgangscommit der Planung `e250a1a`. Dieser Plan ist **keine Freigabe**. Er ändert den Umfang nicht. Es wurde kein App-Code geschrieben und kein Test und kein Browser ausgeführt.
 
@@ -380,15 +380,19 @@ Status aller Zeilen: **nicht ausgeführt**. Regeltest, Browserprüfung und Praxi
 
 Fassung 0.2 wurde **nicht erneut** von cf-review geprüft.
 
-### 9.2 Freigabe (vom Team auszufüllen)
+### 9.2 Freigabe
+
+Übermittelt durch die Hauptsitzung am 14.11.2026, Wortlaut der Freigabe sinngemäß übernommen.
 
 | Feld | Eintrag |
 |---|---|
-| Datum | |
+| Datum | 14.11.2026 |
 | Freigebende | Houssam, Feyrouz |
-| Freigegebene Fassungen | CF-UMBAU-01 Rev. 2 (14.11.2026), Softwareplanung v0.1, dieser Plan Fassung 0.2 |
-| Produktbrief-Bezug | v0.3 §7: ☐ eingesehen ☐ nicht eingesehen, Konsolidierung 1.2 gilt |
-| Antworten F1–F11 | |
-| Freigegebener Umfang | |
-| Branch und Basiscommit | |
-| Offene Punkte | |
+| Freigegebene Fassungen | CF-UMBAU-01 Revision 2 (14.11.2026) und dieser Plan Fassung 0.2 (Commit `917f4f7`) für die Umsetzung der Innentür-Simulation |
+| Maßgeblichkeit | **Revision 2 ist maßgeblich für Fachregeln und Abnahme.** Plan 0.2 konkretisiert die Umsetzung. Bei Abweichungen gilt Revision 2. |
+| Produktbrief-Bezug | v0.3 §7 dient als Hintergrund. Er liegt nicht im Repository und wurde für Planung und Umsetzung nicht eingesehen. |
+| F1 | erledigt durch diese Freigabe (Revision 2 plus Plan 0.2) |
+| F2–F11 | Vorgeschlagene Entscheidungen übernommen: F2 vier feste Betrachtungszeitpunkte · F3 feste Fristen, kein Demo-Schalter · F4 abgeleitete Werte bestätigt · F5 Beispielaufmaß ändert die Betrachtungszeit nicht, Hinweistext · F6 Navigationseintrag · F7 Zustand bleibt erhalten, Reset ohne Rückfrage · F8 `codex/cf-umbau-01-innentuer` ab `917f4f7` · F9 README und `CLAUDE.md` nennen beide Testdateien, Serverbefehl nur nach Ausführung · F10 Wertfeld nur als Zahl · F11 vorhandene Klassen, immer mit Text und Satz zur Breitenbewertung |
+| Freigegebener Umfang | Abschnitt 0 und Dateiplan Abschnitt 5: eine lokale Karte, Regeltests, kurze Startanleitung. Ausschlüsse wie Abschnitt 0. Kein Push, Merge oder Deployment. |
+| Branch und Basiscommit | `codex/cf-umbau-01-innentuer` ab `917f4f7`. Geprüft am 14.11.2026: `git diff f640e2b 917f4f7 -- prototype/` ist leer. |
+| Offene Punkte | Browserprüfung (Fall 14, Z3–Z6) abhängig von der Verfügbarkeit eines Browsers; Ergebnis in der Übergabe nach UM-18 |
