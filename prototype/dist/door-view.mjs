@@ -148,7 +148,11 @@ function updateResults(page) {
 }
 
 export function afterDoorRender(page) {
-  applyErrors(page, evaluateState());
+  // Vergleichswert für updateResults setzen, damit der erste Tastendruck den Live-Bereich nicht unnötig neu schreibt.
+  const parts = doorParts();
+  const decision = page.querySelector('#door-decision');
+  if (decision) decision.dataset.html = parts.decision;
+  applyErrors(page, parts.result);
 }
 
 function setNotice(page, text) {
