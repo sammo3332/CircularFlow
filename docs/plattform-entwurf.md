@@ -46,7 +46,7 @@ Was in den abgerufenen Quellen fehlt, kann im Produkt trotzdem vorhanden sein.
 | Angaben je Element | Material oder Produkt, Klassifikation, Bauphase, Wiederverwendungsanteil, Demontierbarkeit (Verbindungsart, Zugänglichkeit, Durchdringungen, Produktkanten) (Q1 §2.23) | je Bauprodukt „Produkt- und Verortungsdaten, Mengen, Bemaßung, Zustand und Rückbaufähigkeit“ sowie „eine Bewertung nach Verwertungsstrom“ (Q3) |
 | Umbau | Bauprozess mit Phasen Current, Demolition, Casco, New, Final (Q1 §2.13) | Pre-Redevelopment Audit: „Erhalten, umbauen oder rückbauen?“ (Q4) |
 | Detail und Dokument | Materialpass als PDF- und Excel-Datei aus den aktiven Quelldateien (Q1 §3) | „Gebäuderessourcenpass und Materialpass mit Restwertberechnung“, „PDA-Produktpässe“ (Q2) |
-| Entscheidung | In den ausgewerteten Kapiteln 1 bis 3 nicht als eigene Ansicht beschrieben | Als Leistung: Anschlussnutzungskonzept nach DIN SPEC 91525, „technisch, ökologisch, wirtschaftlich geprüft“ (Q4); Pre-Redevelopment Audit (Q4). In der Software: „Verkaufsfreigaben mit Person und Zeitstempel“ und Match-Making (Q2). Wie Entscheidungen dort dargestellt werden, ist öffentlich nicht beschrieben. |
+| Entscheidung | In den ausgewerteten Kapiteln 1 bis 3 nicht als eigene Ansicht beschrieben | Anschlussnutzungskonzept nach DIN SPEC 91525, „technisch, ökologisch, wirtschaftlich geprüft“, und Pre-Redevelopment Audit als Leistungen (Q4). Das Anschlussnutzungskonzept steht auch im Zusammenhang mit Match-Making („Gesuche und Bauteile automatisch abgeglichen“), dazu „Verkaufsfreigaben mit Person und Zeitstempel“ (Q2). Wie Entscheidungen in der Software dargestellt werden, ist öffentlich nicht beschrieben. |
 | Auswertung | Dashboards Overview, Mass, Circularity, Embodied Carbon, Benchmarking (Q1 §2.4.1) | CircularLCA-Dashboard mit Emissionen und Nachweisen für DGNB und QNG (Q2) |
 
 ### 2.3 Ableitung für CircularFlow
@@ -58,7 +58,7 @@ Was in den abgerufenen Quellen fehlt, kann im Produkt trotzdem vorhanden sein.
 - Freigaben und Änderungen mit Person und Zeitpunkt im Verlauf.
 
 **Bewusst anders**
-- Mittelpunkt ist die **Entscheidung im laufenden Umbau**: Zielort, Anforderungen mit Herkunft, Zuständigkeit, Fristen und genau ein nächster fachlicher Schritt. Eine Ansicht, die diese Punkte je Bauteil zusammenführt, ist in den abgerufenen Quellen beider Referenzen nicht beschrieben. Concular bietet Entscheidungen als Beratungsleistung an (Q4). Ob die Software eine solche Ansicht hat, bleibt offen.
+- Mittelpunkt ist die **Entscheidung im laufenden Umbau**: Zielort, Anforderungen mit Herkunft, Zuständigkeit, Fristen und genau ein nächster fachlicher Schritt. Eine Ansicht, die diese Punkte je Bauteil zusammenführt, ist in den abgerufenen Quellen beider Referenzen nicht beschrieben. Concular beschreibt Entscheidungsgrundlagen als Leistung und im Zusammenhang mit Match-Making (Q2, Q4). Ob die Software eine solche Ansicht hat, bleibt offen.
 - Jede Maßangabe trägt Bezug, Messstatus und Quelle (aus CF-UMBAU-01). Ein Türblattmaß ersetzt kein Aufmaß der Zielöffnung.
 - Die Plattform sagt nie „geeignet“. Sie zeigt Befunde je Kriterium und übergibt an die Fachprüfung.
 
@@ -91,7 +91,7 @@ Kopfzeile: Suche über den Bestand · Projektzeit (Simulation) für alle Ansicht
 | Projekt | ID, Name, Phase, Geschosse, Rückbaubeginn | Projektanlage |
 | Person | Rolle (Planung, Bauleitung, Montagebetrieb, Fachprüfung), Name, Stelle | Projektteam |
 | Bauteil | ID, Gruppe, Name, Typ (Einzelbauteil oder Sammelposition), Menge mit Einheit, Geschoss, Raum, Material, Hersteller, Baujahr, Zustand A bis D mit Text, Status, Erfassung (Zeit, Person) | Begehung |
-| Maß | Name, Wert, Bezug, Messstatus (gemessen, aus Bestandsplan, geschätzt, fehlt), Quelle, Hinweis | Begehung, Plan, Aufmaß |
+| Maß | Name, Wert, Bezug, Messstatus (gemessen, aus Bestandsplan, geschätzt, aus Herstellerangabe, fehlt), Quelle, Hinweis | Begehung, Plan, Aufmaß, Nachweis |
 | Nachweis | Titel, Art, Eingang (Zeit), von wem, Stand | Dokumente |
 | Offene Angabe | Text, zuständige Rolle, Frist | abgeleitet aus Bauteil und Entscheidung |
 | Entscheidung | ID, Bauteil, Herkunft, Zielort, Anforderungen (Kriterium, Soll, Quelle, Prüfweg Regel, Nachweis oder Fachprüfung), Fristen (Nachweis- bzw. Aufmaßfrist, Ersatzentscheidung), Zuständigkeit, Regel (geprüft oder Entwurf) | Planung |
@@ -105,7 +105,8 @@ Kopfzeile: Suche über den Bestand · Projektzeit (Simulation) für alle Ansicht
 
 **Regeln**
 - **E-01 Tür T-07 → B-02:** `prototype/dist/door-rules.mjs` unverändert (CF-UMBAU-01 Rev. 2, 45 Regeltests).
-- **E-02 Doppelboden DB-01 → 3.OG:** Entwurfsregel in `entwurf/plattform/app.js` mit derselben Rangfolge (1 Bestellstatus, 2 Termine, 3 Anpassung oder Ersatzweg, 4 Prüfvorlauf, 5 Nachweise oder Angaben beschaffen, 6 Fachprüfung). Kriterien: Rastermaß (Soll gegen gemessenes Ist), Menge mit 10 % Reserve (Grenze eingeschlossen, gerechnet in Hundertstel m²), Aufbauhöhe 150 mm gegen den Verstellbereich aus der Herstellerangabe, Tragfähigkeit nur per Fachprüfung. Eine leere oder ungültige Angabe zur beschädigten Fläche gilt als offen, nicht als null. **Nicht geprüft.** Rang 1 ist mit den vier Projektzeiten nicht erreichbar, weil die Ersatzfrist von E-02 am 20.11. um 12:00 liegt.
+- **E-02 Doppelboden DB-01 → 3.OG:** Entwurfsregel in `entwurf/plattform/app.js` mit derselben Rangfolge (1 Bestellstatus, 2 Termine, 3 Anpassung oder Ersatzweg, 4 Prüfvorlauf, 5 Nachweise oder Angaben beschaffen, 6 Fachprüfung). Kriterien: Rastermaß (Soll gegen gemessenes Ist), Menge mit 10 % Reserve (Grenze eingeschlossen, gerechnet in Hundertstel m²), Aufbauhöhe 150 mm gegen den Verstellbereich aus der Herstellerangabe, Tragfähigkeit nur per Fachprüfung. Eine leere oder ungültige Angabe zur beschädigten Fläche gilt als offen, nicht als null, höchstens zwei Nachkommastellen. **Nicht geprüft.** Mit den Beispieldaten nicht erreichbar und daher nicht durchgespielt: Rang 1 (die Ersatzfrist von E-02 liegt am 20.11. um 12:00, nach dem letzten Zeitpunkt), „Aufbauhöhe außerhalb des Verstellbereichs“ und „Rastermaß verfehlt“.
+- **Vorlage:** Eine Vorlage zur Fachprüfung hängt an ihrem Zeitpunkt, nicht an den vorgelegten Werten. Ändern sich Werte danach und bleibt Rang 6, wartet die Entscheidung weiter. Im Produkt muss eine Vorlage die Werte festhalten (offener Punkt O6).
 - **Ziellage:** Lage von B-02 im 2.OG und der Raum 3.04 bis 3.06 sind Ausschmückung des Entwurfs. Revision 2 kennt nur „Raum A → B-02“.
 
 ## 5. Klickablauf
@@ -130,12 +131,14 @@ Kopfzeile: Suche über den Bestand · Projektzeit (Simulation) für alle Ansicht
 | Recherche behauptete mehr als die Quellen | Aussagen auf die abgerufenen Quellen begrenzt. Handbuchfassung, Umfang und Abschnitte genannt. |
 | Hinweise: DB-02 widersprüchlich, Verlauf bei unverwertbarem Aufmaß, Fokus nach Knöpfen, toter Tastaturcode, Sortierung, Status ohne Prüfspur, Ziellage, Zustandsskala, Doppelvermerke | Alle umgesetzt oder in diesem Dokument ausgewiesen. |
 
+Nachprüfung durch cf-review auf `8b8a794`: Befunde 1 bis 5 korrekt behoben, keine neuen Fehler im Regelverhalten. Die drei verbliebenen Hinweise (DB-02 ohne offene Angabe, mehr als zwei Nachkommastellen, Formulierung zu Concular) sind danach behoben, ebenso Gestaltung des Skip-Knopfs und doppelte Ansagen. Diese letzte Änderung hat cf-review nicht mehr gelesen; sie ist durch die Ablaufprüfung abgedeckt.
+
 ### 6.2 Ausgeführte Prüfungen nach den Korrekturen (15.11.2026)
 
 - `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs`: 45 von 45 bestanden. Bestehender Prototyp und Türregel unverändert.
-- Klickablauf mit Playwright und Chromium gegen die Repository-Fassung und gegen die veröffentlichte Fassung: je 54 von 54 Prüfungen bestanden, keine JavaScript-Fehler. Abgedeckt sind die Abläufe A bis D, die Vorlage mit anschließendem Fristablauf, das Zurückstellen der Projektzeit, Grenzwerte der Menge, leere und ungültige Eingaben, DB-02, Filter, Suche, Leerzustand, unbekannte IDs und Ansichten, Fokus nach Knöpfen, Skip-Link und Handybreite 390 px ohne seitliches Scrollen.
+- Klickablauf mit Playwright und Chromium gegen die Repository-Fassung und gegen die veröffentlichte Fassung: je 56 von 56 Prüfungen bestanden, keine JavaScript-Fehler. Abgedeckt sind die Abläufe A bis D, die Vorlage mit anschließendem Fristablauf, das Zurückstellen der Projektzeit, Grenzwerte der Menge, leere und ungültige Eingaben, DB-02, Filter, Suche, Leerzustand, unbekannte IDs und Ansichten, Fokus nach Knöpfen, Skip-Link und Handybreite 390 px ohne seitliches Scrollen.
 - Sichtprüfung per Screenshot: Desktop 1360 px, Handy 390 px, Dunkelmodus.
-- Nicht geprüft: Bedienung mit Screenreader, andere Browser als Chromium, echte Nutzer. Die korrigierte Fassung hat cf-review nicht erneut geprüft.
+- Nicht geprüft: Bedienung mit Screenreader (auch die Wirkung der Live-Regionen), andere Browser als Chromium, echte Nutzer.
 
 ## 7. Empfehlung: zuerst produktionsnah umsetzen
 
@@ -163,3 +166,4 @@ Danach: Sammelpositionen mit Mengenabgleich (Ablauf D), sobald ein echter Fall d
 | O3 | Speicherung und Mehrbenutzerbetrieb | Erst nach O1 und einem echten Fall entscheiden. |
 | O4 | Entwurfsregel Doppelboden fachlich bestätigen | Kriterien und Reserve mit Fachplanung abstimmen, dann Regeltests wie bei der Tür. |
 | O5 | Gestaltung (Schrift, Farben, Dichte) | Entwurf als Richtung bestätigen oder Rückmeldung geben. |
+| O6 | Was hält eine Vorlage zur Fachprüfung fest? | Im Produkt die vorgelegten Werte und Nachweise einfrieren. Spätere Änderungen erzeugen eine neue Vorlage. |

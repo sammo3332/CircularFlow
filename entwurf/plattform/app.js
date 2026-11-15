@@ -86,10 +86,10 @@ function bewerteBoden() {
   const e = entscheidung('E-02');
   const hundertstel = (v) => Math.round(v * 100);
   const roh = String(state.boden.beschaedigtM2 ?? '').trim();
-  const zahlOk = /^\d+([.,]\d+)?$/.test(roh);
+  const zahlOk = /^\d+([.,]\d{1,2})?$/.test(roh);
   const beschaedigt = zahlOk ? hundertstel(Number(roh.replace(',', '.'))) / 100 : null;
   const beschaedigtGueltig = beschaedigt !== null && beschaedigt <= e.ist.flaecheM2;
-  const beschaedigtFehler = beschaedigtGueltig ? '' : roh === '' ? `Angabe fehlt. Bitte eine Zahl zwischen 0 und ${e.ist.flaecheM2} eingeben.` : `Bitte eine Zahl zwischen 0 und ${e.ist.flaecheM2} eingeben.`;
+  const beschaedigtFehler = beschaedigtGueltig ? '' : roh === '' ? `Angabe fehlt. Bitte eine Zahl zwischen 0 und ${e.ist.flaecheM2} eingeben.` : `Bitte eine Zahl zwischen 0 und ${e.ist.flaecheM2} mit höchstens zwei Nachkommastellen eingeben.`;
   const verwendbar = beschaedigtGueltig ? (hundertstel(e.ist.flaecheM2) - hundertstel(beschaedigt)) / 100 : null;
   const bedarf = Math.round(e.soll.bedarfM2 * (100 + e.soll.reserveProzent)) / 100;
   const hoehe = bis(state.boden.hoeheAm) ? state.boden.hoeheAm : null;
@@ -197,6 +197,8 @@ function offeneAngaben(b) {
     if (!r.last) liste.push({ text: 'Tragfähigkeit nachweisen (Herstellerangabe)', rolle: 'montage', frist: e.fristen.nachweis });
     liste.push({ text: 'Kleber der Stützen auf Schadstoffe prüfen', rolle: 'fach' });
   }
+  // DB-02 zeigt die fehlende Angabe mit Verweis. In der Übersicht zählt sie nur einmal (bei DB-01).
+  if (b.id === 'DB-02' && !bewerteBoden().hoehe) liste.push({ text: 'Verstellbereich fehlt, Nachweis über E-02 (siehe DB-01)', rolle: 'montage', frist: entscheidung('E-02').fristen.nachweis, verweis: true });
   return liste;
 }
 
@@ -299,7 +301,7 @@ function uebersicht() {
   const lagen = sortiert(ENTSCHEIDUNGEN.map((e) => ({ e, l: lage(e) })));
   const fristen = lagen.flatMap(({ e, l }) => l.fristen.map((f) => ({ ...f, e }))).sort((a, b) => minuten(a.at) - minuten(b.at));
   const naechste = fristen.find((f) => minuten(f.at) >= minuten(state.at));
-  const offen = BAUTEILE.flatMap((b) => offeneAngaben(b).map((o) => ({ ...o, b })));
+  const offen = BAUTEILE.flatMap((b) => offeneAngaben(b).filter((o) => !o.verweis).map((o) => ({ ...o, b })));
   const nachRolle = Object.keys(PERSONEN).map((k) => ({ k, items: offen.filter((o) => o.rolle === k) })).filter((g) => g.items.length);
   const aktivitaet = [
     ...BAUTEILE.flatMap((b) => verlaufVon(b).map((v) => ({ ...v, b }))),
@@ -772,11 +774,16 @@ function render(fokus) {
       if (el.id === aktiv && pos != null && el.setSelectionRange) { try { el.setSelectionRange(pos, pos); } catch { /* Datumsfelder */ } }
     }
   }
+  const fokusAufSchritt = state.fokus === 'h-schritt';
   state.fokus = null;
   // Änderung des nächsten Schritts ansagen, ohne die gesamte Ansicht vorlesen zu lassen.
+  // Liegt der Fokus nach einer Aktion ohnehin auf dem Schritt, entfällt die zusätzliche Ansage.
   if (r.view === 'entscheidung' && entscheidung(r.id)) {
     const text = lage(entscheidung(r.id)).haupt.text;
-    if (letzteAnsage.id === r.id && letzteAnsage.text !== text) ansage.textContent = `Nächster Schritt: ${text}`;
+    if (letzteAnsage.id === r.id && letzteAnsage.text !== text && !fokusAufSchritt) {
+      ansage.textContent = '';
+      setTimeout(() => { ansage.textContent = `Nächster Schritt: ${text}`; }, 60);
+    }
     letzteAnsage = { id: r.id, text };
   } else letzteAnsage = { id: '', text: '' };
 }
