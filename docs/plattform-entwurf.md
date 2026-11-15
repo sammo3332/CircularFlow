@@ -7,7 +7,8 @@ technische Vorarbeit. Ziel ist eine Arbeitsplattform für Bauteilmanagement und 
 und Umbauprojekten. Dieser Stand liefert Recherche, Planung und einen klickbaren Entwurf. Er ist keine
 Freigabe einer Umsetzung und ersetzt den Produktbrief nicht (siehe Abschnitt 8).
 
-Klickbarer Entwurf: `entwurf/plattform/` (lokal öffnen siehe dortige README).
+Klickbarer Entwurf: `entwurf/plattform/` auf Branch `codex/plattform-entwurf` (lokal öffnen siehe dortige README).
+Auf Branch `codex/plattform-v1` ist der Entwurf nach `plattform/` übernommen und weiterentwickelt, siehe `docs/plattform-v1.md`.
 Alle Projekt-, Personen-, Maß- und Nachweisdaten im Entwurf sind **fiktiv**.
 
 ## 1. Aufgabe

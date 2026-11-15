@@ -305,3 +305,13 @@ test('Regel: ungültige Betrachtungszeit oder Fristen werden abgelehnt', () => {
   assert.throws(() => run(none(), '2026-11-31T10:00'), TypeError);
   assert.throws(() => run(none(), T.mid, { ...DEADLINES, measureDeadline: 'morgen' }), TypeError);
 });
+
+test('Regel: Zielöffnung und Planungsblatt aus der Anforderung (Plattform), Standard bleibt B-02/P-02', () => {
+  const b04 = { ...REQUIREMENT, target: 'B-04', sheet: 'P-04', reference: 'Rohbauöffnungsbreite B-04, Messstelle laut P-04', minMm: 880, maxMm: 890 };
+  const r = evaluateDoor({ requirement: b04, measurement: none(), deadlines: DEADLINES, at: T.start });
+  assert.equal(r.mainStep.text, 'Rohbauöffnung B-04 an der Messstelle laut P-04 messen oder ein verwertbares Aufmaß nachreichen');
+  const ohne = { ...REQUIREMENT }; delete ohne.target; delete ohne.sheet;
+  assert.equal(evaluateDoor({ requirement: ohne, measurement: none(), deadlines: DEADLINES, at: T.start }).mainStep.text, MEASURE);
+  const gemessen = evaluateDoor({ requirement: b04, measurement: standard({ valueText: '885', reference: b04.reference }), deadlines: DEADLINES, at: T.mid });
+  assert.equal(gemessen.width.kind, 'met');
+});

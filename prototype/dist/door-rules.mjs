@@ -14,6 +14,8 @@ export const DOOR = {
 };
 
 export const REQUIREMENT = {
+  target: 'B-02',
+  sheet: 'P-02',
   reference: 'Rohbauöffnungsbreite B-02, Messstelle laut P-02',
   measuringPoint: 'horizontal zwischen den seitlichen Rohbaukanten von B-02, 1,00 m über Oberkante Rohfußboden',
   origin: 'fiktives Planungsblatt P-02 · Simulationsannahme',
@@ -224,7 +226,8 @@ export function evaluateDoor({ requirement, measurement, deadlines, at }) {
     add(4, 'Prüfvorlauf klären', 'Planung', 'Das Aufmaß ist überfällig oder verspätet, die Ersatzentscheidung steht noch aus.');
   }
   if (!usable) {
-    add(5, 'Rohbauöffnung B-02 an der Messstelle laut P-02 messen oder ein verwertbares Aufmaß nachreichen', 'Montagebetrieb', 'Ohne verwertbares Aufmaß bleibt die Breite offen.');
+    // Zielöffnung und Planungsblatt kommen aus der Anforderung; ohne Angabe gilt der Fall aus Rev. 2 (B-02, P-02).
+    add(5, `Rohbauöffnung ${requirement.target ?? 'B-02'} an der Messstelle laut ${requirement.sheet ?? 'P-02'} messen oder ein verwertbares Aufmaß nachreichen`, 'Montagebetrieb', 'Ohne verwertbares Aufmaß bleibt die Breite offen.');
   }
   if (width.kind === 'met' && measureStatus.key === 'onTime' && replaceOpen && !unclear) {
     add(6, 'Variante zur fachlichen Prüfung vorlegen', 'Planung', 'Die Breite ist belegt, das Aufmaß kam rechtzeitig und die Zeiten sind widerspruchsfrei.', TEXT.technical);
