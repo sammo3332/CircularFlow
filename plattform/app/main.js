@@ -44,7 +44,7 @@ function uebernehmen(aenderung) {
   const r = speichere(speicher, p);
   if (!speicher) ui.speicherHinweis = 'Dieser Browser erlaubt keinen lokalen Speicher. Änderungen gehen beim Neuladen verloren.';
   else if (!r.ok) ui.speicherHinweis = 'Speichern im Browser ist fehlgeschlagen. Änderungen gehen beim Neuladen verloren.';
-  else if (r.fotosNichtGespeichert) ui.speicherHinweis = `Der Browserspeicher ist voll. ${r.fotosNichtGespeichert === 1 ? 'Ein Foto bleibt' : `${r.fotosNichtGespeichert} Fotos bleiben`} nur bis zum Neuladen erhalten, ältere Fotos sind gespeichert.`;
+  else if (r.fotosNichtGespeichert) ui.speicherHinweis = `Der Browserspeicher ist voll. ${r.fotosNichtGespeichert === 1 ? 'Ein Foto bleibt' : `${r.fotosNichtGespeichert} Fotos bleiben`} nur bis zum Neuladen erhalten. Diese Bauteile zeigen „Foto nicht gespeichert“ unter den offenen Nachweisen.`;
   else ui.speicherHinweis = '';
 }
 

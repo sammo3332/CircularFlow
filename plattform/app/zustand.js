@@ -1,6 +1,6 @@
 // Datenstand der Plattform: Beispieldaten aus dem Code plus eigene Änderungen aus dem Browser.
 // Eigene Änderungen liegen nur in diesem Browser (localStorage) und lassen sich zurücksetzen.
-import { PROJEKTE, BAUTEILE, ZIELOEFFNUNGEN, BEDARFE, ENTSCHEIDUNGEN } from './daten.js';
+import { PROJEKTE, BAUTEILE, ZIELOEFFNUNGEN, BEDARFE, ENTSCHEIDUNGEN, GRUPPEN } from './daten.js';
 import { QUELLEN, HINWEISE } from './radar-daten.js';
 
 export const SPEICHERSCHLUESSEL = 'circularflow-plattform-v1';
@@ -17,6 +17,13 @@ export function ladePersistenz(speicher) {
     const leer = leerePersistenz();
     const passt = (k) => (Array.isArray(leer[k]) ? Array.isArray(d[k]) : d[k] && typeof d[k] === 'object' && !Array.isArray(d[k]));
     for (const k of Object.keys(leer)) if (k !== 'version' && passt(k)) leer[k] = d[k];
+    // Einträge ohne Pflichtfelder (z. B. aus einem beschädigten Stand) werden ausgelassen.
+    const objekt = (x) => x && typeof x === 'object';
+    leer.erfassungen = leer.erfassungen.filter((e) => objekt(e) && e.projekt && e.id && GRUPPEN[e.gruppe]);
+    leer.zuordnungen = leer.zuordnungen.filter((e) => objekt(e) && e.projekt && e.id && e.bauteil && objekt(e.ziel));
+    leer.ereignisse = leer.ereignisse.filter(objekt);
+    leer.meldungen = leer.meldungen.filter((m) => objekt(m) && m.id && m.status);
+    leer.projekteAusRadar = leer.projekteAusRadar.filter((x) => objekt(x) && x.kurz && Array.isArray(x.lage));
     return leer;
   } catch { return leerePersistenz(); }
 }

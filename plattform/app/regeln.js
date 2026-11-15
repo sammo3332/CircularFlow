@@ -200,6 +200,7 @@ export function offeneNachweise(ctx, b) {
     else if (w.status === 'vorgeschlagen') liste.push({ text: `${f.label}: Vorschlag prüfen${f.art === 'mass' ? ' oder messen' : ''}`, rolle: f.art === 'mass' ? 'montage' : 'bauleitung', art: 'wert' });
   }
   if (b.erfassung?.art === 'Mobile Erfassung' && !b.foto) liste.push({ text: 'Foto fehlt', rolle: 'bauleitung', art: 'nachweis' });
+  else if (b.foto?.nichtGespeichert && !b.foto.daten) liste.push({ text: 'Foto nicht gespeichert (Browserspeicher voll), neu aufnehmen', rolle: 'bauleitung', art: 'nachweis' });
   for (const o of b.offen || []) liste.push({ ...o, art: 'nachweis' });
   const e = entscheidungFuer(ctx, b);
   if (e && b.status !== 'vorgemerkt') {

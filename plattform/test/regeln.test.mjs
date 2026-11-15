@@ -289,13 +289,16 @@ test('Speichern: bei vollem Speicher fällt nur das neueste Foto weg, ältere bl
 });
 
 test('Speichern: Felder mit falscher Form werden einzeln verworfen', () => {
-  const speicher = { getItem: () => JSON.stringify({ version: 1, erfassungen: null, radar: [], werte: { 'LH:T-03': {} }, meldungen: [{ id: 'M-01' }] }) };
+  const speicher = { getItem: () => JSON.stringify({ version: 1, erfassungen: null, radar: [], werte: { 'LH:T-03': {} }, meldungen: [{ id: 'M-01', status: 'gemeldet' }] }) };
   const p = ladePersistenz(speicher);
   assert.deepEqual(p.erfassungen, []);
   assert.deepEqual(p.radar, {});
-  assert.deepEqual(p.meldungen, [{ id: 'M-01' }]);
+  assert.deepEqual(p.meldungen, [{ id: 'M-01', status: 'gemeldet' }]);
   assert.ok(p.werte['LH:T-03']);
   assert.doesNotThrow(() => baueDaten(p));
+  const kaputt = ladePersistenz({ getItem: () => JSON.stringify({ version: 1, erfassungen: [null, { projekt: 'LH' }, { projekt: 'LH', id: 'T-13', gruppe: 'tuer', werte: {} }] }) });
+  assert.deepEqual(kaputt.erfassungen.map((e) => e.id), ['T-13'], 'Einträge ohne Pflichtfelder fallen weg');
+  assert.doesNotThrow(() => baueDaten(kaputt));
 });
 
 test('Datenstand: eigene Werte, Radarstatus und Meldungen überlagern die Beispieldaten', () => {

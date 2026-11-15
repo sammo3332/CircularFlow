@@ -65,6 +65,7 @@ function zeile(ctx, p, b) {
 export function pass(ctx, p, b) {
   const g = GRUPPEN[b.gruppe]; const s = bauteilStatus(ctx, b); const n = naechsteHandlung(ctx, b);
   const offen = offeneNachweise(ctx, b); const e = entscheidungFuer(ctx, b); const r = raumVon(p, b.raum);
+  const ziele = e ? null : moeglicheZiele(ctx, b); const hatZiel = Boolean(ziele && (ziele.oeffnungen.length || ziele.bedarfe.length));
   const verlauf = [...(b.verlauf || []), ...ctx.ereignisse.filter((x) => x.bauteil === `${b.projekt}:${b.id}`)]
     .filter((v) => v.at <= ctx.at).sort((x, y) => (x.at < y.at ? 1 : -1));
   const a = n.frist ? abstand(n.frist, ctx.at) : null;
@@ -84,7 +85,7 @@ export function pass(ctx, p, b) {
         <h2 id="h-handlung" tabindex="-1">${esc(n.text)}</h2>
         <p class="ergebnis-rolle">${n.rolle ? `${esc(person(n.rolle).rolle)} · ${esc(person(n.rolle).name)}` : ''}${n.frist ? ` · ${esc(n.fristName || 'Frist')} ${zeit(n.frist)} <span class="${a.vorbei ? 'vorbei' : ''}">(${a.text})</span>` : ''}</p>
         ${n.grund ? `<p class="ergebnis-grund">${esc(n.grund)}</p>` : ''}
-        <div class="ergebnis-aktionen">${e ? `<a class="knopf" href="${routeEntscheidung(e)}">Entscheidung ${esc(e.id)} öffnen</a>` : n.aktion === 'zuordnen' ? '<button type="button" class="knopf" data-action="zum-ziel">Ziel zuordnen</button>' : ''}</div>
+        <div class="ergebnis-aktionen">${e ? `<a class="knopf" href="${routeEntscheidung(e)}">Entscheidung ${esc(e.id)} öffnen</a>` : n.aktion === 'zuordnen' && hatZiel ? '<button type="button" class="knopf" data-action="zum-ziel">Ziel zuordnen</button>' : n.aktion === 'zuordnen' ? '<p class="leise">Noch kein freies Ziel dieser Bauteilgruppe. Ein passender Bedarf oder eine Zielöffnung muss zuerst angelegt werden.</p>' : ''}</div>
       </section>
       <section class="flaeche steckbrief" aria-labelledby="h-steck">
         <h2 id="h-steck" class="sr">Steckbrief</h2>

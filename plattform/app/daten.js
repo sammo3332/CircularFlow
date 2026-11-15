@@ -40,7 +40,7 @@ export const STATUS = {
   nicht: { label: 'Nicht wiederverwendbar', ton: 'crit' },
 };
 
-// Status je Angabe. Regeln werten Maße nur als „gemessen“.
+// Status je Angabe. Die Türregel wertet Maße nur als „gemessen“, die Bodenregel (Entwurf) auch „bestätigt“; Vorschläge zählen nie.
 export const WERTSTATUS = {
   vorgeschlagen: { label: 'vorgeschlagen', ton: 'sim', text: 'Schätzung oder simulierte Erkennung, nicht geprüft' },
   gemessen: { label: 'gemessen', ton: 'ok', text: 'vor Ort gemessen' },

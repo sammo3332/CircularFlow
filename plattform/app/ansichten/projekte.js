@@ -48,6 +48,7 @@ export function startseite(ctx) {
     <div id="karte" class="karte" role="region" aria-label="Karte: Projekte in Dortmund. Marker öffnen eine Kurzinfo, die Liste darunter enthält dieselben Projekte."></div>
     <p class="karte-meldung" id="karte-meldung" role="status"></p>
   </div>
+  ${f.osm ? '<p class="leise">Straßenkarte aktiv: Die Kacheln kommen von openstreetmap.org. Dabei werden Ihre IP-Adresse und diese Seite als Herkunft übertragen.</p>' : ''}
   <section class="block" aria-labelledby="h-liste">
     <div class="block-kopf"><h2 id="h-liste">Aktuelle und neue Projekte</h2><span class="leise">${liste.length} von ${alle} · gleiche Daten wie die Karte</span></div>
     ${liste.length ? `<ul class="projektliste">${liste.map((p) => projektZeile(ctx, p)).join('')}</ul>`
