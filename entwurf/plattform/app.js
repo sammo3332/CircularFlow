@@ -1,6 +1,6 @@
 // CircularFlow Plattform-Entwurf: Projektübersicht, Bauteilbestand, Bauteilpass, Wiederverwendungsentscheidung.
 // Ein gemeinsamer Zustand im Arbeitsspeicher. Alle Daten sind fiktiv. Nichts wird gespeichert oder versendet.
-import { PROJEKT, PERSONEN, PROJEKTZEITEN, GRUPPEN, STATUS, MASSSTATUS, BAUTEILE, ENTSCHEIDUNGEN } from './daten.js';
+import { PROJEKT, PERSONEN, PROJEKTZEITEN, GRUPPEN, STATUS, MASSSTATUS, ZUSTAND, BAUTEILE, ENTSCHEIDUNGEN } from './daten.js';
 
 // Geprüfte Türregel (CF-UMBAU-01 Rev. 2) unverändert wiederverwenden.
 // Im veröffentlichten Entwurf liegt sie neben der Seite, im Repository unter prototype/dist/.
@@ -16,10 +16,18 @@ const state = {
   at: PROJEKTZEITEN[0].at,
   tuerAufmass: null,
   boden: { beschaedigtM2: String(ENTSCHEIDUNGEN[1].ist.beschaedigtM2), hoeheAm: null, lastAm: null },
-  ereignisse: [], // { at, von, text, bauteil, entscheidung, status }
+  ereignisse: [], // { at, von, text, bauteil, entscheidung, art: 'vorlage' | 'aufgabe', sim }
   filter: { q: '', gruppe: '', status: '', geschoss: '', offen: false },
-  hinweis: '',
+  fokus: null, // Ersatzziel für den Fokus, wenn das bediente Element nach dem Neuzeichnen fehlt
 };
+
+// Dauerhafte Live-Regionen außerhalb des neu gezeichneten Bereichs, damit Ansagen zuverlässig ankommen.
+const toast = document.createElement('div');
+toast.className = 'toast'; toast.setAttribute('role', 'status'); toast.setAttribute('aria-live', 'polite');
+const ansage = document.createElement('div');
+ansage.className = 'sr'; ansage.setAttribute('aria-live', 'polite');
+document.body.append(toast, ansage);
+let letzteAnsage = { id: '', text: '' };
 
 // ---------- Zeit (Berliner Wanduhrzeit, ohne Gerätezeitzone) ----------
 const WT = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
@@ -47,15 +55,24 @@ const person = (key) => PERSONEN[key];
 const bauteil = (id) => BAUTEILE.find((b) => b.id === id);
 const entscheidung = (id) => ENTSCHEIDUNGEN.find((e) => e.id === id);
 const slug = (id) => id.toLowerCase();
-const zahl = (n) => n.toLocaleString('de-DE', { maximumFractionDigits: 1 });
+// Zwei Nachkommastellen, damit Anzeige und Vergleich (Hundertstel) übereinstimmen.
+const zahl = (n) => n.toLocaleString('de-DE', { maximumFractionDigits: 2 });
 
 function sichtbareEreignisse(filterFn = () => true) {
   return state.ereignisse.filter((e) => bis(e.at) && filterFn(e));
 }
 
+// Letzte sichtbare Vorlage einer Entscheidung zur Fachprüfung.
+function vorlage(e) {
+  return sichtbareEreignisse((x) => x.entscheidung === e.id && x.art === 'vorlage').sort((x, y) => minuten(x.at) - minuten(y.at)).pop() || null;
+}
+
+// Status folgt der aktuellen Regellage: „Fachprüfung angefragt“ nur, solange die Regel Rang 6 ergibt
+// (offener, widerspruchsfreier Fall, Rev. 2 §5). Sonst gilt der hinterlegte Status.
 function bauteilStatus(b) {
-  const letzte = sichtbareEreignisse((e) => e.bauteil === b.id && e.status).sort((x, y) => minuten(x.at) - minuten(y.at)).pop();
-  return letzte ? letzte.status : b.status;
+  const e = ENTSCHEIDUNGEN.find((x) => x.bauteil === b.id);
+  if (e && vorlage(e) && lageRegel(e).haupt.rank === 6) return 'fachpruefung';
+  return b.status;
 }
 
 // ---------- Auswertung der Entscheidungen ----------
@@ -64,28 +81,39 @@ function bewerteTuer() {
 }
 
 // Entwurfsregel Doppelboden: gleiche Rangfolge wie die Türregel, eigene Kriterien. Nicht geprüft.
+// Grenzen eingeschlossen. Mengen in Hundertstel m² als ganze Zahlen verglichen, damit keine Rundungsfehler kippen.
 function bewerteBoden() {
   const e = entscheidung('E-02');
-  const beschaedigt = Number(String(state.boden.beschaedigtM2).replace(',', '.'));
-  const beschaedigtGueltig = Number.isFinite(beschaedigt) && beschaedigt >= 0 && beschaedigt <= e.ist.flaecheM2;
-  const verwendbar = beschaedigtGueltig ? e.ist.flaecheM2 - beschaedigt : null;
-  const bedarf = e.soll.bedarfM2 * (1 + e.soll.reserveProzent / 100);
+  const hundertstel = (v) => Math.round(v * 100);
+  const roh = String(state.boden.beschaedigtM2 ?? '').trim();
+  const zahlOk = /^\d+([.,]\d+)?$/.test(roh);
+  const beschaedigt = zahlOk ? hundertstel(Number(roh.replace(',', '.'))) / 100 : null;
+  const beschaedigtGueltig = beschaedigt !== null && beschaedigt <= e.ist.flaecheM2;
+  const beschaedigtFehler = beschaedigtGueltig ? '' : roh === '' ? `Angabe fehlt. Bitte eine Zahl zwischen 0 und ${e.ist.flaecheM2} eingeben.` : `Bitte eine Zahl zwischen 0 und ${e.ist.flaecheM2} eingeben.`;
+  const verwendbar = beschaedigtGueltig ? (hundertstel(e.ist.flaecheM2) - hundertstel(beschaedigt)) / 100 : null;
+  const bedarf = Math.round(e.soll.bedarfM2 * (100 + e.soll.reserveProzent)) / 100;
   const hoehe = bis(state.boden.hoeheAm) ? state.boden.hoeheAm : null;
   const last = bis(state.boden.lastAm) ? state.boden.lastAm : null;
+  const w = e.nachweisWerte;
+  const sollMenge = `${zahl(bedarf)} m² (${e.soll.bedarfM2} m² + ${e.soll.reserveProzent} % Reserve)`;
 
   const kriterien = [
-    { name: 'Rastermaß', soll: e.soll.raster, ist: `${e.ist.raster} (gemessen)`, befund: 'erfüllt', ton: 'ok', weg: 'Regel (Entwurf)' },
+    e.soll.raster === e.ist.raster
+      ? { key: 'raster', name: 'Rastermaß', soll: e.soll.raster, ist: `${e.ist.raster} (gemessen)`, befund: 'erfüllt', ton: 'ok', weg: 'Regel (Entwurf)' }
+      : { key: 'raster', name: 'Rastermaß', soll: e.soll.raster, ist: `${e.ist.raster} (gemessen)`, befund: 'verfehlt', ton: 'crit', weg: 'Regel (Entwurf)' },
     verwendbar === null
-      ? { name: 'Menge', soll: `${zahl(bedarf)} m² (${e.soll.bedarfM2} m² + ${e.soll.reserveProzent} % Reserve)`, ist: 'beschädigte Fläche ungültig', befund: 'offen: Angabe prüfen', ton: 'warn', weg: 'Regel (Entwurf)' }
-      : verwendbar >= bedarf
-        ? { name: 'Menge', soll: `${zahl(bedarf)} m² (${e.soll.bedarfM2} m² + ${e.soll.reserveProzent} % Reserve)`, ist: `${zahl(verwendbar)} m² verwendbar`, befund: `erfüllt, ${zahl(verwendbar - bedarf)} m² Überschuss`, ton: 'ok', weg: 'Regel (Entwurf)' }
-        : { name: 'Menge', soll: `${zahl(bedarf)} m² (${e.soll.bedarfM2} m² + ${e.soll.reserveProzent} % Reserve)`, ist: `${zahl(verwendbar)} m² verwendbar`, befund: `verfehlt, ${zahl(bedarf - verwendbar)} m² fehlen`, ton: 'crit', weg: 'Regel (Entwurf)' },
-    hoehe
-      ? { name: 'Aufbauhöhe', soll: `${e.soll.aufbauhoeheMm} mm`, ist: 'Verstellbereich 110 bis 180 mm (Herstellerangabe, fiktiv)', befund: 'erfüllt', ton: 'ok', weg: 'Nachweis' }
-      : { name: 'Aufbauhöhe', soll: `${e.soll.aufbauhoeheMm} mm`, ist: 'Verstellbereich der Stützen unbekannt', befund: 'offen: Nachweis fehlt', ton: 'warn', weg: 'Nachweis' },
+      ? { key: 'menge', name: 'Menge', soll: sollMenge, ist: 'beschädigte Fläche fehlt oder ist ungültig', befund: 'offen: Angabe prüfen', ton: 'warn', weg: 'Regel (Entwurf)' }
+      : hundertstel(verwendbar) >= hundertstel(bedarf)
+        ? { key: 'menge', name: 'Menge', soll: sollMenge, ist: `${zahl(verwendbar)} m² verwendbar`, befund: `erfüllt, ${zahl((hundertstel(verwendbar) - hundertstel(bedarf)) / 100)} m² Überschuss`, ton: 'ok', weg: 'Regel (Entwurf)' }
+        : { key: 'menge', name: 'Menge', soll: sollMenge, ist: `${zahl(verwendbar)} m² verwendbar`, befund: `verfehlt, ${zahl((hundertstel(bedarf) - hundertstel(verwendbar)) / 100)} m² fehlen`, ton: 'crit', weg: 'Regel (Entwurf)' },
+    !hoehe
+      ? { key: 'hoehe', name: 'Aufbauhöhe', soll: `${e.soll.aufbauhoeheMm} mm`, ist: 'Verstellbereich der Stützen unbekannt', befund: 'offen: Nachweis fehlt', ton: 'warn', weg: 'Nachweis' }
+      : e.soll.aufbauhoeheMm >= w.verstellVonMm && e.soll.aufbauhoeheMm <= w.verstellBisMm
+        ? { key: 'hoehe', name: 'Aufbauhöhe', soll: `${e.soll.aufbauhoeheMm} mm`, ist: `Verstellbereich ${w.verstellVonMm} bis ${w.verstellBisMm} mm (${w.quelle})`, befund: 'im Verstellbereich', ton: 'ok', weg: 'Nachweis' }
+        : { key: 'hoehe', name: 'Aufbauhöhe', soll: `${e.soll.aufbauhoeheMm} mm`, ist: `Verstellbereich ${w.verstellVonMm} bis ${w.verstellBisMm} mm (${w.quelle})`, befund: 'außerhalb des Verstellbereichs', ton: 'crit', weg: 'Nachweis' },
     last
-      ? { name: 'Tragfähigkeit', soll: `Punktlast ${e.soll.punktlastKn} kN`, ist: 'Herstellernachweis liegt vor (fiktiv)', befund: 'Bewertung durch Fachprüfung', ton: 'info', weg: 'Fachprüfung' }
-      : { name: 'Tragfähigkeit', soll: `Punktlast ${e.soll.punktlastKn} kN`, ist: 'kein Nachweis, kein Typenschild', befund: 'offen: Nachweis fehlt', ton: 'warn', weg: 'Fachprüfung' },
+      ? { key: 'last', name: 'Tragfähigkeit', soll: `Punktlast ${e.soll.punktlastKn} kN`, ist: 'Herstellernachweis liegt vor (fiktiv)', befund: 'Bewertung durch Fachprüfung', ton: 'info', weg: 'Fachprüfung' }
+      : { key: 'last', name: 'Tragfähigkeit', soll: `Punktlast ${e.soll.punktlastKn} kN`, ist: 'kein Nachweis, kein Typenschild', befund: 'offen: Nachweis fehlt', ton: 'warn', weg: 'Fachprüfung' },
   ];
 
   const nachweiseDa = Boolean(hoehe && last);
@@ -96,24 +124,24 @@ function bewerteBoden() {
   const ersatzOffen = minuten(state.at) <= minuten(e.fristen.ersatz);
   const ersatz = ersatzOffen ? { key: 'open', label: 'Entscheidungsfrist offen', ton: 'ok' } : { key: 'expired', label: 'Entscheidungsfrist verstrichen', ton: 'crit' };
   const widerspruch = minuten(e.fristen.nachweis) > minuten(e.fristen.ersatz);
-  const mengeVerfehlt = kriterien[1].ton === 'crit';
-  const mengeOk = kriterien[1].ton === 'ok';
+  const verfehlt = kriterien.filter((k) => k.ton === 'crit');
+  const pruefbarErfuellt = ['raster', 'menge', 'hoehe'].every((k) => kriterien.find((x) => x.key === k).ton === 'ok');
 
   const aufgaben = [];
   const add = (rank, text, rolle, grund) => aufgaben.push({ rank, text, rolle, grund });
   if (!ersatzOffen) add(1, 'Bestellstatus klären', 'planung', 'Erst feststellen, ob ein neuer Doppelboden bereits bestellt wurde und welche Optionen noch offenstehen.');
   if (widerspruch) add(2, 'Termine klären', 'planung', 'Die Nachweisfrist liegt nach der Ersatzentscheidung.');
-  if (ersatzOffen && mengeVerfehlt) add(3, 'Anpassung fachlich klären oder Ersatzweg vorbereiten', 'planung', 'Die verwendbare Menge reicht nicht für Bedarf und Reserve.');
+  if (ersatzOffen && verfehlt.length) add(3, 'Anpassung fachlich klären oder Ersatzweg vorbereiten', 'planung', `Verfehlt: ${verfehlt.map((k) => k.name).join(', ')}. Die Ersatzentscheidung steht noch aus.`);
   if (ersatzOffen && (nachweis.key === 'overdue' || nachweis.key === 'late')) add(4, 'Prüfvorlauf klären', 'planung', 'Die Nachweise sind überfällig oder verspätet eingegangen, die Ersatzentscheidung steht noch aus.');
   if (!nachweiseDa) add(5, 'Herstellerangaben zu Stützenhöhe und Tragfähigkeit beschaffen oder Probeausbau veranlassen', 'montage', 'Ohne Nachweise bleiben Aufbauhöhe und Tragfähigkeit offen.');
   if (verwendbar === null) add(5, 'Beschädigte Fläche aus der Stichprobe prüfen und gültig angeben', 'bauleitung', 'Ohne gültige Angabe bleibt die verwendbare Menge offen.');
-  if (nachweiseDa && nachweis.key === 'onTime' && ersatzOffen && mengeOk && !widerspruch) add(6, 'Variante zur fachlichen Prüfung vorlegen', 'planung', 'Menge und Rastermaß passen, die Nachweise liegen rechtzeitig vor. Weitere technische Anforderungen bleiben offen.');
+  if (nachweiseDa && nachweis.key === 'onTime' && ersatzOffen && pruefbarErfuellt && !widerspruch) add(6, 'Variante zur fachlichen Prüfung vorlegen', 'planung', 'Rastermaß, Menge und Aufbauhöhe passen, die Nachweise liegen rechtzeitig vor. Weitere technische Anforderungen bleiben offen.');
   aufgaben.sort((a, b) => a.rank - b.rank);
-  return { kriterien, nachweis, ersatz, verwendbar, bedarf, beschaedigtGueltig, haupt: aufgaben[0], weiter: aufgaben.slice(1), widerspruch, hoehe, last };
+  return { kriterien, nachweis, ersatz, verwendbar, bedarf, beschaedigtGueltig, beschaedigtFehler, haupt: aufgaben[0], weiter: aufgaben.slice(1), widerspruch, hoehe, last };
 }
 
-// Einheitliche Sicht auf beide Entscheidungen für Übersicht und Listen.
-function lage(e) {
+// Einheitliche Sicht auf beide Entscheidungen, direkt aus der jeweiligen Regel.
+function lageRegel(e) {
   if (e.regel === 'tuer') {
     const r = bewerteTuer();
     return {
@@ -134,6 +162,23 @@ function lage(e) {
     ],
   };
 }
+// Lage für die Anzeige: Ist die Variante bereits vorgelegt und ergibt die Regel weiter Rang 6,
+// wartet die Entscheidung auf die Fachprüfung. Jeder andere Rang hat Vorrang vor der Vorlage.
+function lage(e) {
+  const l = lageRegel(e); const v = vorlage(e);
+  if (v && l.haupt.rank === 6) {
+    return { ...l, vorlage: v, haupt: { rank: 6, wartet: true, text: 'Rückmeldung der Fachprüfung abwarten', rolle: 'fach', grund: `Die Variante liegt seit ${zeit(v.at)} der Fachprüfung vor. Weitere technische Anforderungen bleiben offen.` } };
+  }
+  return { ...l, vorlage: v };
+}
+function naechsteFrist(l) { return l.fristen.filter((f) => minuten(f.at) >= minuten(state.at)).sort((x, y) => minuten(x.at) - minuten(y.at))[0] || null; }
+// Reihenfolge nach Handlungsdruck: Rang, dann nächste Frist. Wartende Entscheidungen zuletzt.
+function sortiert(liste) {
+  const gewicht = (x) => (x.l.haupt.wartet ? 7 : x.l.haupt.rank);
+  const frist = (x) => { const f = naechsteFrist(x.l); return f ? minuten(f.at) : Number.MAX_SAFE_INTEGER; };
+  return liste.sort((a, b) => gewicht(a) - gewicht(b) || frist(a) - frist(b));
+}
+const tonVon = (haupt) => (haupt.wartet ? 'info' : haupt.rank <= 2 ? 'crit' : haupt.rank <= 4 ? 'warn' : haupt.rank === 5 ? 'info' : 'ok');
 function rolleKey(role) { return Object.keys(PERSONEN).find((k) => PERSONEN[k].rolle === role) || 'planung'; }
 function tonTuerAufmass(key) { return { pending: 'warn', overdue: 'crit', onTime: 'ok', late: 'crit' }[key] || 'neutral'; }
 
@@ -165,7 +210,8 @@ function nachweiseVon(b) {
   }
   if (b.id === 'DB-01') {
     const r = bewerteBoden();
-    liste.push(r.hoehe ? { titel: 'Herstellerangabe Stützen', art: 'Nachweis', datum: r.hoehe, von: 'montage', stand: 'eingegangen', ton: 'ok' } : { titel: 'Herstellerangabe Stützen', art: 'Nachweis', datum: null, von: 'montage', stand: 'fehlt', ton: 'crit' });
+    const w = entscheidung('E-02').nachweisWerte;
+    liste.push(r.hoehe ? { titel: 'Herstellerangabe Stützen', art: 'Nachweis', datum: r.hoehe, von: 'montage', stand: `eingegangen, ${w.verstellVonMm} bis ${w.verstellBisMm} mm`, ton: 'ok' } : { titel: 'Herstellerangabe Stützen', art: 'Nachweis', datum: null, von: 'montage', stand: 'fehlt', ton: 'crit' });
     liste.push(r.last ? { titel: 'Nachweis Tragfähigkeit', art: 'Nachweis', datum: r.last, von: 'montage', stand: 'eingegangen, Bewertung offen', ton: 'info' } : { titel: 'Nachweis Tragfähigkeit', art: 'Nachweis', datum: null, von: 'montage', stand: 'fehlt', ton: 'crit' });
   }
   return liste;
@@ -175,7 +221,13 @@ function verlaufVon(b) {
   const basis = b.verlauf.filter((v) => bis(v.at)).map((v) => ({ ...v }));
   if (b.id === 'T-07') {
     const m = state.tuerAufmass; const r = bewerteTuer();
-    if (m.receivedAt && R.isWallDateTime(m.receivedAt) && bis(m.receivedAt) && r.receipt.state !== 'invalid') basis.push({ at: m.receivedAt, von: 'montage', text: `Aufmaß B-02 eingegangen: ${m.valueText || 'ohne Wert'} mm, ${m.reference}.` });
+    if (m.receivedAt && R.isWallDateTime(m.receivedAt) && bis(m.receivedAt) && r.receipt.state !== 'invalid') {
+      basis.push({ at: m.receivedAt, von: 'montage', text: r.usable ? `Aufmaß B-02 eingegangen: ${m.valueText} mm, ${m.reference}.` : `Eintrag zum Aufmaß B-02 eingegangen, nicht verwertbar: ${r.width.reasons[0] || r.receipt.label}.` });
+    }
+  }
+  if (b.id === 'DB-01') {
+    const h = bewerteBoden().hoehe;
+    if (h) basis.push({ at: h, von: 'montage', text: 'Herstellerangabe zu den Stützen eingegangen (Verstellbereich).' });
   }
   sichtbareEreignisse((e) => e.bauteil === b.id).forEach((e) => basis.push(e));
   return basis.sort((x, y) => minuten(y.at) - minuten(x.at));
@@ -187,7 +239,16 @@ function route() {
   if (h.startsWith('pass-')) return { view: 'pass', id: h.slice(5).toUpperCase() };
   if (h.startsWith('entscheidung-')) return { view: 'entscheidung', id: h.slice(13).toUpperCase() };
   if (['uebersicht', 'bestand', 'entscheidungen'].includes(h)) return { view: h };
-  return { view: 'uebersicht' };
+  return h ? { view: 'unbekannt', id: h } : { view: 'uebersicht' };
+}
+
+// Maße je Bauteil. Der Verstellbereich von DB-02 kommt aus dem Nachweis zu E-02, sobald er eingegangen ist.
+function masseVon(b) {
+  if (b.id === 'DB-02' && bewerteBoden().hoehe) {
+    const w = entscheidung('E-02').nachweisWerte;
+    return [{ name: 'Verstellbereich', wert: `${w.verstellVonMm} bis ${w.verstellBisMm} mm`, bezug: 'Stützenhöhe', status: 'nachweis', quelle: `${w.quelle}, über E-02` }];
+  }
+  return b.masse;
 }
 function gehe(hash) { if (location.hash === hash) render(); else location.hash = hash; }
 
@@ -200,7 +261,7 @@ function rahmen(r, inhalt) {
   ];
   const aktiv = r.view === 'pass' ? 'bestand' : r.view === 'entscheidung' ? 'entscheidungen' : r.view;
   return `
-  <a class="skip" href="#inhalt">Zum Inhalt</a>
+  <button type="button" class="skip" data-action="skip">Zum Inhalt springen</button>
   <div class="shell">
     <aside class="rail" aria-label="Projektnavigation">
       <div class="marke"><span class="marke-zeichen" aria-hidden="true">${icon('loop')}</span><span><b>CircularFlow</b><small>Bauteile im Umbau</small></span></div>
@@ -230,13 +291,12 @@ function rahmen(r, inhalt) {
       </header>
       <main id="inhalt" tabindex="-1">${inhalt}</main>
     </div>
-  </div>
-  <div class="toast" role="status" aria-live="polite">${esc(state.hinweis)}</div>`;
+  </div>`;
 }
 
 // ---------- Ansicht 1: Projektübersicht ----------
 function uebersicht() {
-  const lagen = ENTSCHEIDUNGEN.map((e) => ({ e, l: lage(e) }));
+  const lagen = sortiert(ENTSCHEIDUNGEN.map((e) => ({ e, l: lage(e) })));
   const fristen = lagen.flatMap(({ e, l }) => l.fristen.map((f) => ({ ...f, e }))).sort((a, b) => minuten(a.at) - minuten(b.at));
   const naechste = fristen.find((f) => minuten(f.at) >= minuten(state.at));
   const offen = BAUTEILE.flatMap((b) => offeneAngaben(b).map((o) => ({ ...o, b })));
@@ -302,7 +362,7 @@ function entscheidungZeile(e, l) {
   const b = bauteil(e.bauteil);
   const naechste = l.fristen.filter((f) => minuten(f.at) >= minuten(state.at)).sort((x, y) => minuten(x.at) - minuten(y.at))[0] || l.fristen[l.fristen.length - 1];
   const a = abstand(naechste.at, state.at);
-  const tonHaupt = l.haupt.rank <= 2 ? 'crit' : l.haupt.rank <= 4 ? 'warn' : l.haupt.rank === 5 ? 'info' : 'ok';
+  const tonHaupt = tonVon(l.haupt);
   return `
   <a class="entscheidung-zeile" href="#entscheidung-${slug(e.id)}">
     <span class="ez-id"><span class="mono">${esc(e.id)}</span>${chip(e.regel === 'tuer' ? 'Regel geprüft' : 'Regel im Entwurf', e.regel === 'tuer' ? 'ok' : 'neutral')}</span>
@@ -358,7 +418,7 @@ function bestand() {
     ${sel('f-geschoss', 'Geschoss', PROJEKT.geschosse.map((g) => [g, g]), f.geschoss)}
     <label class="schalter"><input type="checkbox" id="f-offen" ${f.offen ? 'checked' : ''}><span>nur mit offenen Angaben</span></label>
     <span class="treffer" aria-live="polite">${liste.length} von ${BAUTEILE.length}</span>
-    ${aktiv ? '<button type="button" class="knopf-leise" data-action="filter-reset">Filter zurücksetzen</button>' : ''}
+    ${aktiv ? '<button type="button" class="knopf-leise" id="btn-filter-reset" data-action="filter-reset">Filter zurücksetzen</button>' : ''}
   </div>
   ${liste.length ? `
   <div class="tabelle-rahmen">
@@ -366,11 +426,12 @@ function bestand() {
       <thead><tr><th scope="col">ID</th><th scope="col">Bauteil</th><th scope="col">Standort</th><th scope="col" class="r">Menge</th><th scope="col">Maße</th><th scope="col">Zustand</th><th scope="col">Status</th><th scope="col" class="r">Offen</th></tr></thead>
       <tbody>${liste.map((b) => bestandZeile(b)).join('')}</tbody>
     </table>
-  </div>` : `<div class="leer"><b>Keine Bauteile gefunden.</b><p>Kein Bauteil passt zu Suche und Filtern. Filter zurücksetzen oder anders suchen.</p><button type="button" class="knopf" data-action="filter-reset">Filter zurücksetzen</button></div>`}`;
+  </div>
+  <p class="hinweis-zeile">Zustand nach Sichtprüfung: ${Object.entries(ZUSTAND).map(([k, t]) => `<b>${k}</b> ${esc(t)}`).join(' · ')}. Skala des Entwurfs, keine Norm.</p>` : `<div class="leer"><b>Keine Bauteile gefunden.</b><p>Kein Bauteil passt zu Suche und Filtern. Filter zurücksetzen oder anders suchen.</p><button type="button" class="knopf" id="btn-filter-reset-leer" data-action="filter-reset">Filter zurücksetzen</button></div>`}`;
 }
 
 function massLage(b) {
-  const st = b.masse.map((m) => m.status);
+  const st = masseVon(b).map((m) => m.status);
   if (b.id === 'T-07') return bewerteTuer().usable ? ['gemessen', 'ok'] : ['Zielöffnung fehlt', 'warn'];
   if (st.includes('fehlt')) return ['unvollständig', 'warn'];
   if (st.every((s) => s === 'gemessen')) return ['gemessen', 'ok'];
@@ -421,9 +482,10 @@ function pass(id) {
           <div><dt>Material</dt><dd>${esc(b.material)}</dd></div>
           <div><dt>Hersteller</dt><dd>${esc(b.hersteller)}</dd></div>
           <div><dt>Baujahr</dt><dd>${esc(b.baujahr)}</dd></div>
-          <div><dt>Zustand</dt><dd><span class="zustand z-${b.zustand}">${esc(b.zustand)}</span> ${esc(b.zustandText)}</dd></div>
+          <div><dt>Zustand</dt><dd><span class="zustand z-${b.zustand}">${esc(b.zustand)}</span> ${esc(ZUSTAND[b.zustand])}: ${esc(b.zustandText)}</dd></div>
           ${b.grund ? `<div><dt>Grund</dt><dd>${esc(b.grund)}</dd></div>` : ''}
           ${b.ziel ? `<div><dt>Zielort</dt><dd>${esc(b.ziel)}</dd></div>` : ''}
+          ${!e && (b.status === 'vorgemerkt' || b.status === 'nicht') ? '<div><dt>Festlegung</dt><dd>Per Planungsnotiz, ohne Entscheidungsverfahren. Im Entwurf nur als Beispieldaten hinterlegt.</dd></div>' : ''}
         </dl>
       </section>
 
@@ -431,7 +493,7 @@ function pass(id) {
         <div class="block-kopf"><h2 id="h-masse">Maße</h2><span class="leise">Jedes Maß mit Bezug, Status und Quelle</span></div>
         <div class="tabelle-rahmen"><table class="einfach">
           <thead><tr><th scope="col">Maß</th><th scope="col" class="r">Wert</th><th scope="col">Bezug</th><th scope="col">Status</th><th scope="col">Quelle</th></tr></thead>
-          <tbody>${b.masse.map((m) => `<tr><td>${esc(m.name)}${m.hinweis ? `<small>${esc(m.hinweis)}</small>` : ''}</td><td class="r mono">${esc(m.wert)}</td><td>${esc(m.bezug)}</td><td>${chip(MASSSTATUS[m.status], m.status === 'gemessen' ? 'ok' : m.status === 'fehlt' ? 'crit' : 'neutral')}</td><td>${esc(m.quelle)}</td></tr>`).join('')}</tbody>
+          <tbody>${masseVon(b).map((m) => `<tr><td>${esc(m.name)}${m.hinweis ? `<small>${esc(m.hinweis)}</small>` : ''}</td><td class="r mono">${esc(m.wert)}</td><td>${esc(m.bezug)}</td><td>${chip(MASSSTATUS[m.status], m.status === 'gemessen' ? 'ok' : m.status === 'fehlt' ? 'crit' : 'neutral')}</td><td>${esc(m.quelle)}</td></tr>`).join('')}</tbody>
         </table></div>
       </section>
 
@@ -449,6 +511,7 @@ function pass(id) {
     <aside class="pass-seite">
       ${e ? `<section class="flaeche verknuepft" aria-labelledby="h-ent">
         <h2 id="h-ent">Entscheidung <span class="mono">${esc(e.id)}</span></h2>
+        ${e.bauteil !== b.id ? `<p>Gehört zu ${esc(e.bauteil)}. Der Verstellbereich wird über diese Entscheidung nachgewiesen.</p>` : ''}
         <p>${esc(e.herkunft)} → <b>${esc(e.zielText)}</b></p>
         <div class="mini-schritt"><small>Nächster Schritt · ${esc(person(l.haupt.rolle).rolle)}</small><b>${esc(l.haupt.text)}</b></div>
         <a class="knopf" href="#entscheidung-${slug(e.id)}">Entscheidung öffnen</a>
@@ -514,9 +577,11 @@ function entscheidungsSeite(id) {
   const e = entscheidung(id);
   if (!e) return nichtGefunden('Entscheidung', id);
   const b = bauteil(e.bauteil); const l = lage(e);
-  const tonHaupt = l.haupt.rank <= 2 ? 'crit' : l.haupt.rank <= 4 ? 'warn' : l.haupt.rank === 5 ? 'info' : 'ok';
-  const aktion = l.haupt.rank === 6 ? 'Zur Fachprüfung vorlegen' : l.haupt.rank === 5 ? (e.regel === 'tuer' ? 'Messauftrag vermerken' : 'Nachweisanforderung vermerken') : 'Klärung vermerken';
-  const vorgelegt = bauteilStatus(b) === 'fachpruefung';
+  const tonHaupt = tonVon(l.haupt);
+  const aktion = l.haupt.wartet ? null
+    : l.haupt.rank === 6 ? 'Zur Fachprüfung vorlegen'
+      : l.haupt.rank === 5 ? (e.regel === 'tuer' ? 'Messauftrag vermerken' : l.haupt.rolle === 'montage' ? 'Nachweisanforderung vermerken' : 'Aufgabe vermerken')
+        : 'Klärung vermerken';
   const verlauf = verlaufVon(b);
   return `
   <nav class="pfad" aria-label="Pfad"><a href="#entscheidungen">Entscheidungen</a><span>/</span><span aria-current="page">${esc(e.id)}</span></nav>
@@ -528,14 +593,15 @@ function entscheidungsSeite(id) {
     </div>
   </section>
 
-  <section class="ergebnis t-rand-${tonHaupt}" aria-labelledby="h-schritt" aria-live="polite">
+  <section class="ergebnis t-rand-${tonHaupt}" aria-labelledby="h-schritt">
     <div class="ergebnis-haupt">
       <p class="label">Nächster fachlicher Schritt</p>
-      <h2 id="h-schritt">${esc(l.haupt.text)}</h2>
+      <h2 id="h-schritt" tabindex="-1">${esc(l.haupt.text)}</h2>
       <p class="ergebnis-rolle">${esc(person(l.haupt.rolle).rolle)} · ${esc(person(l.haupt.rolle).name)}, ${esc(person(l.haupt.rolle).stelle)}</p>
       <p class="ergebnis-grund">${esc(l.haupt.grund)}</p>
+      ${l.vorlage && !l.haupt.wartet ? `<p class="ergebnis-grund"><b>Am ${zeit(l.vorlage.at)} zur Fachprüfung vorgelegt.</b> Die aktuelle Lage verlangt zuerst diesen Schritt.</p>` : ''}
       <div class="ergebnis-aktionen">
-        ${vorgelegt ? `<span class="chip chip-info">Fachprüfung angefragt</span>` : `<button type="button" class="knopf" data-action="schritt" data-id="${esc(e.id)}">${aktion}</button>`}
+        ${aktion ? `<button type="button" class="knopf" id="aktion-schritt" data-action="schritt" data-id="${esc(e.id)}">${aktion}</button>` : '<span class="chip chip-info">Liegt der Fachprüfung vor</span>'}
         <span class="leise">Vermerkt im Verlauf zur Projektzeit. Simulation, nichts wird versendet.</span>
       </div>
     </div>
@@ -552,7 +618,7 @@ function entscheidungsSeite(id) {
     <aside class="entscheid-seite">
       <section class="flaeche" aria-labelledby="h-wege">
         <h2 id="h-wege">Herkunft und Ziel</h2>
-        ${schnitt(b.geschoss, e.regel === 'tuer' ? '2.OG' : '3.OG', b.raum, e.ziel)}
+        ${schnitt(b.geschoss, e.zielGeschoss, b.raum, e.ziel)}
         <p class="klein">${esc(e.herkunft)} → ${esc(e.zielText)}</p>
       </section>
       <section class="flaeche" aria-labelledby="h-fr">
@@ -604,8 +670,8 @@ function anforderungenTuer(e, r) {
       ${feld('t-eingang', 'Eingang bei der Planung', `<input id="t-eingang" type="datetime-local" data-feld="receivedAt" value="${esc(m.receivedAt)}">`, 'receivedAt')}
     </div>
     <div class="formular-aktionen">
-      <button type="button" class="knopf-zweit" data-action="tuer-beispiel">Beispielaufmaß einsetzen</button>
-      <button type="button" class="knopf-leise" data-action="tuer-leeren">Aufmaß leeren</button>
+      <button type="button" class="knopf-zweit" id="btn-tuer-beispiel" data-action="tuer-beispiel">Beispielaufmaß einsetzen</button>
+      <button type="button" class="knopf-leise" id="btn-tuer-leeren" data-action="tuer-leeren">Aufmaß leeren</button>
       <span class="leise">Beispiel: 890 mm, gemessen 18.11., eingegangen 18.11. 15:00. Wirkt erst ab dieser Projektzeit.</span>
     </div>
   </section>`;
@@ -629,8 +695,8 @@ function anforderungenBoden(e, r) {
   const quote = Math.max(0, Math.min(1, (r.verwendbar ?? 0) / e.ist.flaecheM2));
   const bedarfAnteil = Math.min(1, r.bedarf / e.ist.flaecheM2);
   const knopfNachweis = (key, titel, am) => am
-    ? `<div class="nachweis-zeile"><span><b>${titel}</b><small>eingegangen ${zeit(am)}</small></span><button type="button" class="knopf-leise" data-action="boden-nachweis" data-key="${key}">Eingang zurücknehmen</button></div>`
-    : `<div class="nachweis-zeile"><span><b>${titel}</b><small>fehlt</small></span><button type="button" class="knopf-zweit" data-action="boden-nachweis" data-key="${key}">Eingang zur Projektzeit vermerken</button></div>`;
+    ? `<div class="nachweis-zeile"><span><b>${titel}</b><small>eingegangen ${zeit(am)}</small></span><button type="button" class="knopf-leise" id="btn-${key}" data-action="boden-nachweis" data-key="${key}">Eingang zurücknehmen</button></div>`
+    : `<div class="nachweis-zeile"><span><b>${titel}</b><small>fehlt</small></span><button type="button" class="knopf-zweit" id="btn-${key}" data-action="boden-nachweis" data-key="${key}">Eingang zur Projektzeit vermerken</button></div>`;
   return `
   <section class="flaeche" aria-labelledby="h-anf">
     <div class="block-kopf"><h2 id="h-anf">Anforderungen am Zielort</h2><span class="leise">Quelle: fiktives Raumbuch 3.OG · Simulationsannahme</span></div>
@@ -646,7 +712,7 @@ function anforderungenBoden(e, r) {
       </div>
       <p class="skala-legende"><span><i class="mb-i-v"></i>verwendbar ${r.verwendbar === null ? '–' : `<b class="mono">${zahl(r.verwendbar)} m²</b>`} von <span class="mono">${zahl(e.ist.flaecheM2)} m²</span> erfasst</span><span><i class="mb-i-b"></i>Bedarf mit Reserve <b class="mono">${zahl(r.bedarf)} m²</b></span></p>
     </div>
-    <p class="klein">Der Befund bewertet Menge, Raster und Nachweislage. Über die Eignung entscheiden die zuständigen Fachleute.</p>
+    <p class="klein">Der Befund bewertet Rastermaß, Menge (Grenze eingeschlossen) und die Aufbauhöhe laut Nachweis. Über die Eignung entscheiden die zuständigen Fachleute.</p>
   </section>
 
   <section class="flaeche" aria-labelledby="h-boden-in">
@@ -654,7 +720,7 @@ function anforderungenBoden(e, r) {
     <div class="formular">
       <div class="feld ${r.beschaedigtGueltig ? '' : 'feld-fehler'}"><label for="b-schaden">Beschädigte Fläche in m² (aus Stichprobe hochgerechnet)</label>
         <input id="b-schaden" inputmode="decimal" value="${esc(state.boden.beschaedigtM2)}" ${r.beschaedigtGueltig ? '' : 'aria-invalid="true" aria-describedby="b-schaden-f"'}>
-        ${r.beschaedigtGueltig ? '' : `<p class="feld-meldung" id="b-schaden-f">Bitte eine Zahl zwischen 0 und ${e.ist.flaecheM2} eingeben.</p>`}</div>
+        ${r.beschaedigtGueltig ? '' : `<p class="feld-meldung" id="b-schaden-f">${esc(r.beschaedigtFehler)}</p>`}</div>
     </div>
     ${knopfNachweis('hoeheAm', 'Herstellerangabe Stützen (Verstellbereich)', r.hoehe)}
     ${knopfNachweis('lastAm', 'Nachweis Tragfähigkeit', r.last)}
@@ -667,8 +733,8 @@ function entscheidungen() {
   return `
   <section class="seitenkopf"><div><p class="eyebrow">${esc(PROJEKT.name)}</p><h1>Entscheidungen</h1>
   <p class="unter">Je Bauteil und Zielort eine Entscheidung mit Anforderungen, Fristen und Zuständigkeit.</p></div></section>
-  <div class="entscheidungsliste">${ENTSCHEIDUNGEN.map((e) => entscheidungZeile(e, lage(e))).join('')}</div>
-  <p class="hinweis-zeile">Neue Entscheidungen entstehen aus dem Bauteilpass. Im Entwurf sind nur E-01 und E-02 angelegt.</p>`;
+  <div class="entscheidungsliste">${sortiert(ENTSCHEIDUNGEN.map((e) => ({ e, l: lage(e) }))).map(({ e, l }) => entscheidungZeile(e, l)).join('')}</div>
+  <p class="hinweis-zeile">Sortiert nach Handlungsdruck: Rang des nächsten Schritts, dann nächste Frist. Neue Entscheidungen entstehen aus dem Bauteilpass. Im Entwurf sind nur E-01 und E-02 angelegt.</p>`;
 }
 
 function nichtGefunden(art, id) {
@@ -691,19 +757,33 @@ function icon(n) {
 let letzteRoute = '';
 function render(fokus) {
   const r = route();
-  const inhalt = r.view === 'bestand' ? bestand() : r.view === 'pass' ? pass(r.id) : r.view === 'entscheidung' ? entscheidungsSeite(r.id) : r.view === 'entscheidungen' ? entscheidungen() : uebersicht();
+  const inhalt = r.view === 'bestand' ? bestand() : r.view === 'pass' ? pass(r.id) : r.view === 'entscheidung' ? entscheidungsSeite(r.id)
+    : r.view === 'entscheidungen' ? entscheidungen() : r.view === 'unbekannt' ? nichtGefunden('Ansicht', r.id) : uebersicht();
   const aktiv = document.activeElement && document.activeElement.id;
   const pos = aktiv && document.activeElement.selectionStart;
   app.innerHTML = rahmen(r, inhalt);
-  document.title = `${{ uebersicht: 'Projektübersicht', bestand: 'Bauteilbestand', pass: `Bauteilpass ${r.id}`, entscheidung: `Entscheidung ${r.id}`, entscheidungen: 'Entscheidungen' }[r.view]} · CircularFlow Entwurf`;
+  document.title = `${{ uebersicht: 'Projektübersicht', bestand: 'Bauteilbestand', pass: `Bauteilpass ${r.id}`, entscheidung: `Entscheidung ${r.id}`, entscheidungen: 'Entscheidungen', unbekannt: 'Nicht gefunden' }[r.view]} · CircularFlow Entwurf`;
   const neu = location.hash !== letzteRoute; letzteRoute = location.hash;
   if (neu && fokus !== false) { document.getElementById('inhalt').focus({ preventScroll: true }); window.scrollTo(0, 0); }
-  else if (aktiv) { const el = document.getElementById(aktiv); if (el) { el.focus({ preventScroll: true }); if (pos != null && el.setSelectionRange) { try { el.setSelectionRange(pos, pos); } catch { /* Datumsfelder */ } } } }
+  else {
+    const el = (aktiv && document.getElementById(aktiv)) || (state.fokus && document.getElementById(state.fokus));
+    if (el) {
+      el.focus({ preventScroll: true });
+      if (el.id === aktiv && pos != null && el.setSelectionRange) { try { el.setSelectionRange(pos, pos); } catch { /* Datumsfelder */ } }
+    }
+  }
+  state.fokus = null;
+  // Änderung des nächsten Schritts ansagen, ohne die gesamte Ansicht vorlesen zu lassen.
+  if (r.view === 'entscheidung' && entscheidung(r.id)) {
+    const text = lage(entscheidung(r.id)).haupt.text;
+    if (letzteAnsage.id === r.id && letzteAnsage.text !== text) ansage.textContent = `Nächster Schritt: ${text}`;
+    letzteAnsage = { id: r.id, text };
+  } else letzteAnsage = { id: '', text: '' };
 }
 
-function vermerke(text, sekunden = 3000) {
-  state.hinweis = text; render(false);
-  clearTimeout(vermerke.t); vermerke.t = setTimeout(() => { state.hinweis = ''; const t = document.querySelector('.toast'); if (t) t.textContent = ''; }, sekunden);
+function vermerke(text, sekunden = 3200) {
+  render(false); toast.textContent = text;
+  clearTimeout(vermerke.t); vermerke.t = setTimeout(() => { toast.textContent = ''; }, sekunden);
 }
 
 app.addEventListener('click', (ev) => {
@@ -715,15 +795,19 @@ app.addEventListener('click', (ev) => {
   const a = ev.target.closest('[data-action]');
   if (!a) return;
   const act = a.dataset.action;
-  if (act === 'filter-reset') { state.filter = { q: '', gruppe: '', status: '', geschoss: '', offen: false }; render(false); }
+  if (act === 'skip') { document.getElementById('inhalt').focus(); return; }
+  if (act === 'filter-reset') { state.filter = { q: '', gruppe: '', status: '', geschoss: '', offen: false }; state.fokus = 'f-gruppe'; render(false); }
   if (act === 'tuer-beispiel') { state.tuerAufmass = { ...R.SAMPLE_MEASUREMENT }; vermerke(bis(R.SAMPLE_MEASUREMENT.receivedAt) ? 'Beispielaufmaß eingesetzt.' : 'Beispielaufmaß eingesetzt. Es wirkt ab Projektzeit Mi 18.11., 15:00.'); }
   if (act === 'tuer-leeren') { state.tuerAufmass = R.emptyMeasurement(); vermerke('Aufmaß geleert.'); }
   if (act === 'boden-nachweis') { const k = a.dataset.key; state.boden[k] = state.boden[k] && bis(state.boden[k]) ? null : state.at; vermerke(state.boden[k] ? 'Eingang vermerkt.' : 'Eingang zurückgenommen.'); }
   if (act === 'schritt') {
     const e = entscheidung(a.dataset.id); const l = lage(e); const b = bauteil(e.bauteil);
+    if (l.haupt.wartet) return;
     const fach = l.haupt.rank === 6;
-    state.ereignisse.push({ at: state.at, von: 'planung', bauteil: b.id, entscheidung: e.id, sim: true, status: fach ? 'fachpruefung' : null,
-      text: fach ? `Variante ${e.id} zur Fachprüfung vorgelegt (an ${person('fach').name}).` : `${l.haupt.text}: als Aufgabe für ${person(l.haupt.rolle).rolle} vermerkt.` });
+    const text = fach ? `Variante ${e.id} zur Fachprüfung vorgelegt (an ${person('fach').name}).` : `${l.haupt.text}: als Aufgabe für ${person(l.haupt.rolle).rolle} vermerkt.`;
+    if (state.ereignisse.some((x) => x.entscheidung === e.id && x.at === state.at && x.text === text)) { vermerke('Zu dieser Projektzeit bereits vermerkt.'); return; }
+    state.ereignisse.push({ at: state.at, von: 'planung', bauteil: b.id, entscheidung: e.id, sim: true, art: fach ? 'vorlage' : 'aufgabe', text });
+    state.fokus = 'h-schritt';
     vermerke(fach ? 'Zur Fachprüfung vorgelegt. Status des Bauteils aktualisiert.' : 'Im Verlauf vermerkt.');
   }
 });
@@ -746,11 +830,6 @@ app.addEventListener('change', (ev) => {
 
 app.addEventListener('submit', (ev) => {
   if (ev.target.id === 'suche') { ev.preventDefault(); gehe('#bestand'); }
-});
-
-app.addEventListener('keydown', (ev) => {
-  const zeile = ev.target.closest && ev.target.closest('tr[data-href]');
-  if (zeile && ev.key === 'Enter' && ev.target === zeile) gehe(zeile.dataset.href);
 });
 
 window.addEventListener('hashchange', () => render());

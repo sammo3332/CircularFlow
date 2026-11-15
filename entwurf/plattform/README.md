@@ -1,6 +1,6 @@
 # CircularFlow Plattform · klickbarer Entwurf
 
-Entwurf 0.1 vom 15.11.2026. Vier verbundene Ansichten mit einem gemeinsamen, **fiktiven** Beispielprojekt:
+Entwurf 0.2 vom 15.11.2026. Vier verbundene Ansichten mit einem gemeinsamen, **fiktiven** Beispielprojekt:
 Projektübersicht, Bauteilbestand, Bauteilpass und Wiederverwendungsentscheidung. Planung, Quellen und
 Empfehlung stehen in [`docs/plattform-entwurf.md`](../../docs/plattform-entwurf.md).
 

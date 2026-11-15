@@ -50,7 +50,16 @@ export const MASSSTATUS = {
   gemessen: 'gemessen',
   plan: 'aus Bestandsplan',
   geschaetzt: 'geschätzt',
+  nachweis: 'aus Herstellerangabe',
   fehlt: 'fehlt',
+};
+
+// Zustandsskala des Entwurfs nach Sichtprüfung. Keine Norm.
+export const ZUSTAND = {
+  A: 'kaum Gebrauchsspuren',
+  B: 'Gebrauchsspuren',
+  C: 'Mängel, Instandsetzung nötig',
+  D: 'beschädigt',
 };
 
 export const BAUTEILE = [
@@ -169,11 +178,11 @@ export const BAUTEILE = [
     menge: 290, einheit: 'Stk', geschoss: '2.OG', raum: '2.10–2.14', ort: '2.OG · unter DB-01',
     material: 'Stahl verzinkt', hersteller: 'unbekannt', baujahr: 'ca. 2009 (geschätzt)',
     zustand: 'B', zustandText: 'drei Stützen geprüft, ohne Korrosion (Sichtprüfung)',
-    status: 'bewertung', erfasst: { am: '2026-11-12T13:25', von: 'bauleitung' },
-    masse: [{ name: 'Verstellbereich', wert: 'unbekannt', bezug: 'Stützenhöhe', status: 'fehlt', quelle: '–' }],
+    status: 'bewertung', entscheidung: 'E-02', erfasst: { am: '2026-11-12T13:25', von: 'bauleitung' },
+    masse: [{ name: 'Verstellbereich', wert: 'unbekannt', bezug: 'Stützenhöhe', status: 'fehlt', quelle: 'Nachweis über Entscheidung E-02' }],
     rueckbau: [['Verbindung', 'mit Rohdecke verklebt (Annahme)'], ['Schadstoffverdacht', 'Kleber nicht untersucht']],
     nachweise: [{ titel: 'Fotodokumentation Stichprobe', art: 'Foto', datum: '2026-11-12T13:25', von: 'bauleitung', stand: 'liegt vor', ton: 'ok' }],
-    offen: [{ text: 'Verstellbereich der Stützen feststellen (gehört zu E-02)', rolle: 'montage' }],
+    offen: [],
     verlauf: [{ at: '2026-11-12T13:25', von: 'bauleitung', text: 'Bei der Begehung erfasst, Menge aus Raster hochgerechnet.' }],
   },
   {
@@ -223,20 +232,22 @@ export const ENTSCHEIDUNGEN = [
   {
     id: 'E-01', bauteil: 'T-07', regel: 'tuer',
     titel: 'Tür T-07 in Öffnung B-02 wiederverwenden',
-    herkunft: '1.OG · Raum A', ziel: 'Öffnung B-02', zielText: '2.OG · neuer Besprechungsraum, Öffnung B-02',
+    herkunft: '1.OG · Raum A', ziel: 'Öffnung B-02', zielGeschoss: '2.OG', zielText: 'Öffnung B-02 (Lage im 2.OG fiktiv)',
     zustaendig: { entscheidung: 'planung', aufmass: 'montage', pruefung: 'fach' },
     schutz: 'Keine Brand-, Rauch- oder Schallschutzanforderung an B-02 laut fiktivem Raumbuch.',
   },
   {
     id: 'E-02', bauteil: 'DB-01', regel: 'boden',
     titel: 'Doppelboden DB-01 im 3.OG wiederverwenden',
-    herkunft: '2.OG · Räume 2.10 bis 2.14', ziel: 'Fläche 3.04 bis 3.06', zielText: '3.OG · Fläche 3.04 bis 3.06, neue Technikzone',
+    herkunft: '2.OG · Räume 2.10 bis 2.14', ziel: 'Fläche 3.04 bis 3.06', zielGeschoss: '3.OG', zielText: '3.OG · Fläche 3.04 bis 3.06, neue Technikzone',
     zustaendig: { entscheidung: 'planung', aufmass: 'montage', pruefung: 'fach' },
     schutz: 'Brandschutz am Zielort laut fiktivem Raumbuch ohne besondere Anforderung. Fachprüfung bestätigt.',
     soll: {
       raster: '600 × 600 mm', bedarfM2: 72, reserveProzent: 10, aufbauhoeheMm: 150, punktlastKn: 3,
     },
     ist: { flaecheM2: 104, beschaedigtM2: 9, raster: '600 × 600 mm' },
+    // Inhalt der fiktiven Herstellerangabe, sobald ihr Eingang vermerkt ist.
+    nachweisWerte: { verstellVonMm: 110, verstellBisMm: 180, quelle: 'Herstellerangabe (fiktiv)' },
     fristen: { nachweis: '2026-11-19T10:00', ersatz: '2026-11-20T12:00' },
   },
 ];
