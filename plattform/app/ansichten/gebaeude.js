@@ -1,7 +1,7 @@
 // Gebäudeansicht: schematischer 2D-Grundriss je Etage mit anklickbaren Räumen und Bauteilen.
 // Das Modell ist ein Beispielmodell. IFC- und Raumscan-Import sind getrennt als Prüfung bzw. Simulation dargestellt.
 import { GRUPPEN, STATUS } from '../daten.js';
-import { esc, chip, icon, leer, slug, routePass, routeRaum, routeEntscheidung, person } from '../ui.js';
+import { esc, chip, icon, leer, slug, routePass, routeRaum, routeEntscheidung } from '../ui.js';
 import { naechsteHandlung, bauteilStatus } from '../regeln.js';
 import { projektKopf, raumVon, bauteileImRaum } from './projekte.js';
 
@@ -100,4 +100,3 @@ function importBereich(ctx) {
   </section>`;
 }
 
-export { person };

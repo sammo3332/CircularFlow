@@ -1,8 +1,8 @@
 // Wiederverwendungsentscheidung (Bauteil → Zielöffnung oder Bedarf) und Liste je Projekt.
 import { GRUPPEN, PROJEKTE } from '../daten.js';
-import { esc, chip, icon, leer, slug, routePass, routeEntscheidung, routeRaum, person, bauteilRef, pchip } from '../ui.js';
+import { esc, chip, leer, slug, routePass, routeEntscheidung, routeRaum, person, bauteilRef, pchip } from '../ui.js';
 import { lage, tonVon, naechsteFrist, schluessel, wertText } from '../regeln.js';
-import { zeit, abstand, minuten } from '../zeit.js';
+import { zeit, abstand } from '../zeit.js';
 import { projektKopf, raumVon } from './projekte.js';
 
 export function entscheidungsListe(ctx, p) {
@@ -159,4 +159,3 @@ function einfachTeil(ctx, e, l) {
     <p class="klein">Für diesen Abgleich gibt es noch keine geprüfte Regel. Die Plattform zeigt fehlende Angaben und den nächsten Schritt, bewertet aber keine Eignung.</p></section>`;
 }
 
-export { icon, minuten };

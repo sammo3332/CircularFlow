@@ -49,7 +49,7 @@ function schritt2(ctx, ent) {
   return `<h2 id="h-erf">Foto aufnehmen</h2>
     <p class="leise">Auf dem Handy öffnet sich die Kamera, am Rechner die Dateiauswahl. Das Foto bleibt in diesem Browser.</p>
     <label class="fotofeld ${ent.foto ? 'hat-foto' : ''}" for="erf-foto">
-      ${ent.foto ? `<img src="${esc(ent.foto.daten)}" alt="Gewähltes Foto">` : `<span class="fotofeld-leer">${icon('kamera')}<b>Foto aufnehmen oder wählen</b><small>JPEG, PNG oder HEIC bis 20 MB</small></span>`}
+      ${ent.foto ? `<img src="${esc(ent.foto.daten)}" alt="Gewähltes Foto">` : `<span class="fotofeld-leer">${icon('kamera')}<b>Foto aufnehmen oder wählen</b><small>JPEG oder PNG bis 20 MB</small></span>`}
       <input type="file" id="erf-foto" accept="image/*" capture="environment">
     </label>
     ${ent.fotoLaedt ? '<p class="leise" role="status">Foto wird verkleinert …</p>' : ''}
@@ -64,7 +64,7 @@ function schritt3(ctx, ent) {
   const er = ent.erkennung;
   const g = GRUPPEN[ent.gruppe];
   return `<h2 id="h-erf">Welches Bauteil?</h2>
-    <fieldset class="gruppenwahl" ${ent.fehler.gruppe ? 'aria-describedby="fehler-gruppe"' : ''}><legend>Bauteilgruppe</legend>
+    <fieldset class="gruppenwahl" id="erf-gruppe-feld" tabindex="-1" ${ent.fehler.gruppe ? 'aria-describedby="fehler-gruppe"' : ''}><legend>Bauteilgruppe</legend>
       ${Object.entries(GRUPPEN).filter(([, x]) => x.erfassbar).map(([k, x]) => `<label class="gruppenkarte"><input type="radio" name="erf-gruppe" value="${k}" ${ent.gruppe === k ? 'checked' : ''}><span><b>${esc(x.einzahl)}</b><small>${esc(x.typ)} · Menge in ${esc(x.einheit)}</small>${er?.gruppe === k ? chip('vorgeschlagen (Simulation)', 'sim') : ''}</span></label>`).join('')}
     </fieldset>${fehlerText(ent, 'gruppe')}
     <div class="formular formular-eng">
@@ -109,7 +109,7 @@ function schritt5(ctx, ent, projekte, p, ort) {
   const fehler = pruefeErfassung(ent);
   const n = Object.keys(fehler).length;
   return `<h2 id="h-erf">Prüfen und speichern</h2>
-    ${n ? `<div class="ergebnisbox fehlerbox" role="alert"><p><b>${n} Angabe${n === 1 ? '' : 'n'} verhindern das Speichern.</b></p><ul>${Object.values(fehler).map((t) => `<li>${esc(t)}</li>`).join('')}</ul></div>` : ''}
+    ${n ? `<div class="ergebnisbox fehlerbox" id="erf-fehler" tabindex="-1" role="alert"><p><b>${n} Angabe${n === 1 ? '' : 'n'} verhindern das Speichern.</b></p><ul>${Object.entries(fehler).map(([k, t]) => { const s = k === 'ort' ? 1 : k.startsWith('wert-') ? 4 : 3; return `<li>${esc(t)} <button type="button" class="knopf-leise knopf-klein" data-action="erf-gehe" data-schritt="${s}">Zu Schritt ${s}: ${SCHRITTE[s - 1]}</button></li>`; }).join('')}</ul></div>` : ''}
     <div class="pruefraster">
       <div class="pr-foto">${ent.foto ? `<img src="${esc(ent.foto.daten)}" alt="Foto zur Erfassung">` : '<div class="skizze-leer"><small>Kein Foto</small></div>'}</div>
       <dl class="werte">
@@ -143,10 +143,14 @@ function gespeichert(ctx, gs) {
 
 function meineErfassungen(ctx) {
   const eigene = ctx.daten.bauteile.filter((b) => b.erfassung?.art === 'Mobile Erfassung');
-  if (!eigene.length) return '';
+  // Zurücksetzen gibt es, sobald irgendetwas Eigenes gespeichert ist, nicht nur bei Erfassungen.
+  if (!eigene.length && !ctx.eigeneAenderungen) return '';
+  const reset = ctx.ui.resetFrage
+    ? '<span class="reset-frage">Alle eigenen Erfassungen und Änderungen löschen? <button type="button" class="knopf-leise knopf-klein" data-action="reset-ja">Ja, löschen</button> <button type="button" class="knopf-leise knopf-klein" data-action="reset-nein">Abbrechen</button></span>'
+    : '<button type="button" class="knopf-leise knopf-klein" data-action="reset-frage">Zurücksetzen</button>';
   return `<section class="block meine" aria-labelledby="h-meine">
-    <div class="block-kopf"><h2 id="h-meine">In diesem Browser erfasst</h2>
-      ${ctx.ui.resetFrage ? '<span class="reset-frage">Alle eigenen Erfassungen und Änderungen löschen? <button type="button" class="knopf-leise knopf-klein" data-action="reset-ja">Ja, löschen</button> <button type="button" class="knopf-leise knopf-klein" data-action="reset-nein">Abbrechen</button></span>' : '<button type="button" class="knopf-leise knopf-klein" data-action="reset-frage">Zurücksetzen</button>'}</div>
-    <ul class="flaeche kompaktliste">${eigene.map((b) => `<li><a href="${routePass(b)}"><span class="mono">${esc(b.projekt)} · ${esc(b.id)}</span><span><b>${esc(b.name)}</b><small>Raum ${esc(b.raum)} · ${b.foto ? 'mit Foto' : 'ohne Foto'}</small></span></a></li>`).join('')}</ul>
+    <div class="block-kopf"><h2 id="h-meine">In diesem Browser gespeichert</h2>${reset}</div>
+    ${eigene.length ? `<ul class="flaeche kompaktliste">${eigene.map((b) => `<li><a href="${routePass(b)}"><span class="mono">${esc(b.projekt)} · ${esc(b.id)}</span><span><b>${esc(b.name)}</b><small>Raum ${esc(b.raum)} · ${b.foto ? 'mit Foto' : 'ohne Foto'}</small></span></a></li>`).join('')}</ul>` : ''}
+    <p class="leise">${ctx.eigeneAenderungen} eigene ${ctx.eigeneAenderungen === 1 ? 'Änderung' : 'Änderungen'} (Erfassungen, Zuordnungen, Aufmaße, Radar-Prüfungen, Meldungen). Sie liegen nur in diesem Browser.</p>
   </section>`;
 }

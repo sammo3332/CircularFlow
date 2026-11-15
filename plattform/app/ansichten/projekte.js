@@ -1,8 +1,8 @@
 // Startseite (Karte und Projektliste), Projektübersicht und gemeinsamer Projektkopf.
 import { REGIONEN, ARTEN, GRUPPEN } from '../daten.js';
-import { esc, chip, pchip, artText, icon, leer, slug, routePass, routeRaum, routeEntscheidung, person, statusChip } from '../ui.js';
-import { naechsteHandlung, bauteilStatus, lage, naechsteFrist, tonVon, offeneNachweise } from '../regeln.js';
-import { zeit, datum, abstand } from '../zeit.js';
+import { esc, chip, pchip, artText, icon, leer, slug, routePass, routeRaum, routeEntscheidung } from '../ui.js';
+import { naechsteHandlung, lage, naechsteFrist, tonVon } from '../regeln.js';
+import { zeit, datum } from '../zeit.js';
 
 const HERKUNFT = { beispiel: ['Beispiel', 'sim'], radar: ['aus Radar bestätigt', 'info'], meldung: ['Projektmeldung', 'info'] };
 export const herkunftChip = (p) => chip(...(HERKUNFT[p.herkunft] || ['Beispiel', 'sim']));
@@ -42,7 +42,7 @@ export function startseite(ctx) {
   <div class="filterleiste" role="group" aria-label="Projekte filtern">
     ${knopf('', 'Alle')}${Object.entries(ARTEN).map(([k, t]) => knopf(k, t)).join('')}
     <label class="schalter"><input type="checkbox" id="nur-angebote" ${f.nurAngebote ? 'checked' : ''}><span>nur mit angebotenen Bauteilen</span></label>
-    <label class="schalter"><input type="checkbox" id="osm" ${f.osm ? 'checked' : ''}><span>Straßenkarte (online, OpenStreetMap)</span></label>
+    <label class="schalter" title="Lädt Kartenkacheln von openstreetmap.org. Dabei werden Ihre IP-Adresse und diese Seite als Herkunft übertragen."><input type="checkbox" id="osm" ${f.osm ? 'checked' : ''}><span>Straßenkarte (online, OpenStreetMap)</span></label>
   </div>
   <div class="karte-rahmen">
     <div id="karte" class="karte" role="region" aria-label="Karte: Projekte in Dortmund. Marker öffnen eine Kurzinfo, die Liste darunter enthält dieselben Projekte."></div>
@@ -130,4 +130,3 @@ function bedarfBelegt(ctx, d) {
   return e ? `<a class="kl-schritt" href="${routeEntscheidung(e)}">${chip(`zugeordnet: ${e.projekt} · ${e.bauteil}`, 'info')}</a>` : `<span class="kl-schritt">${chip('offen', 'neutral')}</span>`;
 }
 
-export { statusChip, person, bauteilStatus, offeneNachweise, abstand };

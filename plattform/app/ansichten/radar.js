@@ -5,7 +5,7 @@ import { ARTEN, PERSONEN } from '../daten.js';
 import { RADAR_STAND } from '../radar-daten.js';
 import { esc, chip, leer, slug, artText } from '../ui.js';
 import { PRUEFSTATUS } from '../regeln.js';
-import { datum, zeit } from '../zeit.js';
+import { datum, zeit, jetztBerlin } from '../zeit.js';
 
 export const leereMeldung = () => ({ titel: '', art: '', bezirk: '', melder: '', text: '', einwilligung: false });
 export const BEZIRKE = ['Aplerbeck', 'Brackel', 'Eving', 'Hombruch', 'Hörde', 'Huckarde', 'Innenstadt-Nord', 'Innenstadt-Ost', 'Innenstadt-West', 'Lütgendortmund', 'Mengede', 'Scharnhorst'];
@@ -54,7 +54,7 @@ function hinweis(ctx, h, aktiv) {
   const id = slug(h.id);
   const fehler = ctx.ui.radar.fehler[h.id] || {};
   const projekt = h.status === 'bestaetigt' ? ctx.daten.projekte.find((p) => p.hinweis === h.id) : null;
-  const heute = ctx.at.slice(0, 10);
+  const heute = jetztBerlin().slice(0, 10); // echte Fristen am echten Datum messen, nicht an der Projektzeit
   const fe = (k) => (fehler[k] ? `<p class="feld-meldung" id="fehler-${k}-${id}">${esc(fehler[k])}</p>` : '');
   const inv = (k) => (fehler[k] ? `aria-invalid="true" aria-describedby="fehler-${k}-${id}"` : '');
   const notizFeld = (label) => `<div class="feld"><label for="notiz-${id}">${label}</label><textarea id="notiz-${id}" data-radar-notiz="${esc(h.id)}" rows="2" ${inv('notiz')}>${esc(ctx.ui.radar.notiz[h.id] || '')}</textarea>${fe('notiz')}</div>`;

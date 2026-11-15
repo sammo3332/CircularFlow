@@ -246,12 +246,12 @@ export const HINWEISE = [
   {
     id: 'B-01', titel: 'Beispiel: Entkernung Verwaltungsbau Am Hafenbecken',
     quelle: 'vmp-ruhr', quelleName: 'Vergabemarktplatz Metropole Ruhr (Beispiel)', quelleUrl: '',
-    typ: 'Beispiel', datum: '2026-11-10', abgerufen: '2026-11-16',
+    typ: 'Beispiel', datum: '2026-11-10', abgerufen: '2026-11-13',
     art: 'rueckbau', ort: 'fiktiver Standort', bezirk: 'Innenstadt-Nord',
     relevanz: 'hoch', relevanzText: 'Entkernung mit Ausbau von Innentüren, Systemtrennwänden und Doppelboden.',
     text: 'Erfundener Hinweis. Er zeigt einen Hinweis in Prüfung.',
     status: 'pruefung', beispiel: true,
-    verlauf: [{ at: '2026-11-16T09:30', von: 'radar', aktion: 'pruefen', notiz: 'Erfüllungsort und Auftraggeber werden abgeglichen.' }],
+    verlauf: [{ at: '2026-11-13T09:30', von: 'radar', aktion: 'pruefen', notiz: 'Erfüllungsort und Auftraggeber werden abgeglichen.' }],
   },
   {
     id: 'B-02', titel: 'Beispiel: Umbau Gemeindezentrum Am Rosenhang',

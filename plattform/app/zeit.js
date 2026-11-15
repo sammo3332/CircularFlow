@@ -27,3 +27,11 @@ export function abstand(ziel, jetzt) {
   return diff > 0 ? { text: `noch ${text}`, vorbei: false } : { text: `seit ${text} vorbei`, vorbei: true };
 }
 export const bis = (s, at) => Boolean(s) && minuten(s) <= minuten(at);
+
+// Echte Uhrzeit in Berlin als Wanduhrzeit „YYYY-MM-DDTHH:mm“, unabhängig von der Zeitzone des Geräts.
+// Für den Projektradar: Quellen, Meldungen und Prüfschritte sind echte Vorgänge, keine Projektzeit-Simulation.
+export function jetztBerlin(datum = new Date()) {
+  const t = Object.fromEntries(new Intl.DateTimeFormat('de-DE', { timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+    .formatToParts(datum).filter((x) => x.type !== 'literal').map((x) => [x.type, x.value]));
+  return `${t.year}-${t.month}-${t.day}T${t.hour}:${t.minute}`;
+}

@@ -25,6 +25,8 @@ export const PERSONEN = {
   montage: { rolle: 'Montagebetrieb', name: 'K. Arslan', stelle: 'Tischlerei und Innenausbau (fiktiv)' },
   fach: { rolle: 'Fachprüfung', name: 'L. Brandt', stelle: 'Sachverständige Bauteile (fiktiv)' },
   radar: { rolle: 'Projektradar', name: 'M. Yilmaz', stelle: 'CircularFlow-Team (fiktiv)' },
+  // Eigene Eingaben in diesem Browser werden niemandem aus den Beispieldaten zugeschrieben.
+  browser: { rolle: 'Eigene Eingabe', name: 'Sie', stelle: 'in diesem Browser' },
 };
 
 export const ARTEN = { umbau: 'Umbau', sanierung: 'Sanierung', rueckbau: 'Rückbau', neubau: 'Neubau' };

@@ -27,7 +27,8 @@ starten und am Handy `http://<IP-Adresse des Rechners>:8000/plattform/#erfassung
 Fotoaufnahme nutzt das normale Dateifeld mit Kamera-Option und braucht dafür kein HTTPS.
 
 **Ohne Internet** funktionieren alle Ansichten, auch die Karte mit den Stadtbezirken. Nur die
-zuschaltbare Straßenkarte (OpenStreetMap) braucht eine Verbindung.
+zuschaltbare Straßenkarte (OpenStreetMap) braucht eine Verbindung; beim Zuschalten gehen IP-Adresse
+und Herkunftsseite an openstreetmap.org.
 
 ## Was echt ist und was simuliert
 
@@ -43,7 +44,8 @@ zuschaltbare Straßenkarte (OpenStreetMap) braucht eine Verbindung.
 | Projektradar | Quellenbewertung echt (Recherche 15.11.2026), kein automatischer Abruf, keine Kontaktaufnahme |
 | IFC-Vorprüfung | echt: zählt Geschosse, Räume, Türen im Browser. Import **simuliert** |
 | Raumscan | **simuliert** |
-| Speichern | nur `localStorage` dieses Browsers. Zurücksetzen unter Erfassung → „In diesem Browser erfasst“ |
+| Speichern | nur `localStorage` dieses Browsers. Zurücksetzen unter Erfassung → „In diesem Browser gespeichert“ |
+| Zeit | Fristen der Beispielprojekte folgen der Projektzeit (Simulation, oben links). Radar-Fristen, Meldungen und Prüfschritte nutzen das echte Datum |
 
 ## Prüfen
 

@@ -46,13 +46,14 @@ Nicht übernommen: die feste Projektzeit-Simulation als Hauptbedienelement. Sie 
 1. **Region als Konfiguration.** Dortmund ist aktiv, weitere Regionen sind sichtbar als „in Vorbereitung“. Eine Region bringt Mittelpunkt, Zoom und Grenzdaten mit.
 2. **Karte ohne Kachelserver als Grundlage.** Die Bezirksgrenzen liegen im Repository, die Karte funktioniert offline. Eine Straßenkarte (OpenStreetMap, nur online, mit Namensnennung, ohne Vorladen) lässt sich zuschalten; ist sie nicht erreichbar, meldet die Karte das und die Bezirkskarte bleibt. Für den Produktivbetrieb empfohlen: basemap.de (siehe 8.1).
 3. **Projektkennung überall gleich.** Jedes Projekt hat ein Kürzel und eine Farbe (Marker, Liste, Kopf, Bauteil-IDs wie „LH · T-07“).
-4. **Wertstatus je Angabe:** vorgeschlagen (Schätzung oder simulierte Erkennung, ungeprüft), gemessen (vor Ort gemessen), bestätigt (aus Unterlage übernommen oder von einer Person geprüft, nicht gemessen), fehlt. Regeln werten Maße nur als „gemessen“.
+4. **Wertstatus je Angabe:** vorgeschlagen (Schätzung oder simulierte Erkennung, ungeprüft), gemessen (vor Ort gemessen oder getippt), bestätigt (aus Unterlage übernommen oder von einer Person geprüft, nicht gemessen), fehlt. Die Türregel wertet Maße nur als „gemessen“. Die Bodenregel (Entwurf) nimmt „gemessen“ oder „bestätigt“. Vorschläge zählen in keiner Regel.
 5. **Erkennung nur simuliert und sichtbar gekennzeichnet.** Der Vorschlag leitet sich aus dem Seitenverhältnis des Fotos ab, keine Bildanalyse.
 6. **Foto über Datei-Eingabe mit Kamerahinweis** (`capture`). Das funktioniert auf Handys auch ohne HTTPS; ein Live-Kamerabild bräuchte einen sicheren Kontext.
 7. **Zuordnung:** Eine Tür geht an eine Zielöffnung (Türregel), ein Doppelboden an einen Bedarf (Entwurfsregel). Ohne Zuordnung heißt die nächste Handlung „Zielöffnung oder Bedarf zuordnen“.
 8. **Radar ohne Automatik:** Ein Hinweis wird erst durch eine dokumentierte Prüfung (Notiz, Stadtbezirk) zum bestätigten Projekt und erscheint dann auf der Karte. Eine Projektmeldung landet als „gemeldet, Prüfung offen“ und wird mit einer Prüfnotiz übernommen, weil Meldungen auch von Dritten kommen können. Kein automatischer Abruf, kein Kontakt aus der Plattform.
 9. **Gebäudeansicht in 2D.** Ein Grundriss je Etage reicht für Raum und Bauteil und läuft auf jedem Handy. 3D und IFC bleiben Ausblick; die IFC-Datei kann nur vorgeprüft werden.
-10. **Speicherung:** Beispieldaten im Code, eigene Erfassungen und Prüfschritte im Browser (localStorage), jederzeit zurücksetzbar. Kein Server.
+10. **Speicherung:** Beispieldaten im Code, eigene Erfassungen und Prüfschritte im Browser (localStorage), jederzeit zurücksetzbar unter Erfassung → „In diesem Browser gespeichert“. Kein Server. Eigene Einträge stehen im Verlauf als „Sie“, nicht unter einer Beispielperson.
+11. **Zwei Zeitebenen:** Fristen der Beispielprojekte folgen der Projektzeit-Simulation. Radar-Hinweise, Meldungen und Prüfschritte sind echte Vorgänge und tragen die echte Berliner Uhrzeit.
 
 ## 3. Navigation und Abläufe
 

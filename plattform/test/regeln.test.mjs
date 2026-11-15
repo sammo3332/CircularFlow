@@ -12,7 +12,7 @@ import { GRUPPEN, PROJEKTZEITEN, BEDARFE, ZIELOEFFNUNGEN } from '../app/daten.js
 import { QUELLEN, HINWEISE } from '../app/radar-daten.js';
 import { baueDaten, leerePersistenz, ladePersistenz, speichere, SPEICHERSCHLUESSEL } from '../app/zustand.js';
 import { sortiereHinweise } from '../app/ansichten/radar.js';
-import { istDatum } from '../app/zeit.js';
+import { istDatum, jetztBerlin } from '../app/zeit.js';
 
 const START = PROJEKTZEITEN[0].at; // 2026-11-18T14:00
 const kontext = (p = leerePersistenz(), at = START) => ({ R, at, daten: baueDaten(p), ereignisse: p.ereignisse, ezustand: p.ezustand });
@@ -103,6 +103,25 @@ test('Boden: Nachweise rechtzeitig und alles passend führt zur Vorlage, Nachwei
   assert.equal(zukunft.haupt.rank, 5);
 });
 
+test('Boden: ein nur vorgeschlagenes Rastermaß zählt nicht, auch wenn sonst alles passt', () => {
+  const r = boden({ rasterIst: '', rasterVorschlag: '600 × 600 mm', beschaedigtRoh: '6', hoeheAm: '2026-11-18T10:00', lastAm: '2026-11-18T11:00' });
+  const raster = r.kriterien.find((k) => k.key === 'raster');
+  assert.equal(raster.ton, 'warn'); assert.equal(raster.befund, 'offen: Vorschlag prüfen');
+  assert.equal(r.haupt.rank, 5);
+  assert.equal(r.haupt.text, 'Rastermaß vor Ort prüfen und bestätigen');
+});
+
+test('Boden: Entscheidung E-02 nimmt Werte nur mit Status gemessen oder bestätigt', () => {
+  const p = leerePersistenz();
+  const ctx = kontext(p);
+  const e = entscheidung(ctx, 'LH', 'E-02');
+  assert.equal(lage(ctx, e).r.kriterien.find((k) => k.key === 'raster').ton, 'ok', 'Beispiel: Rastermaß bestätigt');
+  p.werte['LH:DB-01'] = { raster: { wert: '600 × 600 mm', status: 'vorgeschlagen', quelle: 'Erkennung (Simulation)' }, beschaedigt: { wert: 6, status: 'vorgeschlagen', quelle: 'Schätzung' } };
+  const l = lage(kontext(p), e);
+  assert.equal(l.r.kriterien.find((k) => k.key === 'raster').befund, 'offen: Vorschlag prüfen');
+  assert.equal(l.r.verwendbar, null, 'vorgeschlagene beschädigte Fläche zählt nicht');
+});
+
 test('Boden: verspätete Nachweise führen zu Rang 4, verstrichene Ersatzfrist zu Rang 1', () => {
   const spaet = boden({ beschaedigtRoh: '6', hoeheAm: '2026-11-19T11:00', lastAm: '2026-11-19T09:00', at: '2026-11-19T12:00' });
   assert.equal(spaet.nachweis.key, 'late');
@@ -178,6 +197,9 @@ test('Erfassung: neues Bauteil behält den Status jedes Werts, bekommt die näch
   assert.equal(b.werte.hoehe.status, 'gemessen');
   assert.equal(b.werte.anschlag.status, 'fehlt');
   assert.equal(b.erfassung.erkennung, 'Simulation');
+  assert.equal(b.erfassung.von, 'browser', 'eigene Erfassung, keiner Beispielperson zugeschrieben');
+  const ohneSim = bauteilAusErfassung({ ...entwurf, werte: { breite: { eingabe: '862', status: 'gemessen', quelle: 'Messung vor Ort' } } }, { id: 'T-14', at: START, etage: '1.OG' });
+  assert.equal(ohneSim.erfassung.erkennung, null, 'kein Simulationshinweis, wenn kein Wert mehr aus der Simulation stammt');
   const p = leerePersistenz(); p.erfassungen.push(b);
   const ctx2 = kontext(p);
   const neu = bauteil(ctx2, 'LH', 'T-13');
@@ -248,8 +270,32 @@ test('Speichern: kaputter oder fremder Stand wird verworfen, bei vollem Speicher
   const voll = { setItem: (k, v) => { if (v.includes('data:image')) throw new Error('QuotaExceededError'); voll.wert = v; } };
   const p = leerePersistenz(); p.erfassungen.push({ projekt: 'LH', id: 'T-13', foto: { daten: 'data:image/jpeg;base64,AAAA', breite: 3, hoehe: 4 } });
   const r = speichere(voll, p);
-  assert.equal(r.ok, true); assert.equal(r.fotosNichtGespeichert, true);
+  assert.equal(r.ok, true); assert.equal(r.fotosNichtGespeichert, 1);
   assert.equal(JSON.parse(voll.wert).erfassungen[0].foto.nichtGespeichert, true);
+});
+
+test('Speichern: bei vollem Speicher fällt nur das neueste Foto weg, ältere bleiben', () => {
+  // Platz für genau ein Foto: das ältere bleibt gespeichert, das neue nicht.
+  const knapp = { setItem: (k, v) => { if ((v.match(/data:image/g) || []).length > 1) throw new Error('QuotaExceededError'); knapp.wert = v; } };
+  const p = leerePersistenz();
+  p.erfassungen.push({ projekt: 'LH', id: 'T-13', foto: { daten: 'data:image/jpeg;base64,ALT' } }, { projekt: 'LH', id: 'T-14', foto: { daten: 'data:image/jpeg;base64,NEU' } });
+  const r = speichere(knapp, p);
+  assert.equal(r.fotosNichtGespeichert, 1);
+  const gespeichert = JSON.parse(knapp.wert).erfassungen;
+  assert.equal(gespeichert[0].foto.daten, 'data:image/jpeg;base64,ALT');
+  assert.equal(gespeichert[1].foto.daten, null);
+  const d = baueDaten({ ...leerePersistenz(), erfassungen: [{ projekt: 'LH', id: 'T-14', gruppe: 'tuer', werte: {}, foto: { daten: null, nichtGespeichert: true }, nachweise: [{ titel: 'Foto der mobilen Erfassung', art: 'Foto', stand: 'liegt vor', ton: 'ok' }] }] });
+  assert.match(d.bauteile.find((b) => b.id === 'T-14').nachweise[0].stand, /nicht gespeichert/);
+});
+
+test('Speichern: Felder mit falscher Form werden einzeln verworfen', () => {
+  const speicher = { getItem: () => JSON.stringify({ version: 1, erfassungen: null, radar: [], werte: { 'LH:T-03': {} }, meldungen: [{ id: 'M-01' }] }) };
+  const p = ladePersistenz(speicher);
+  assert.deepEqual(p.erfassungen, []);
+  assert.deepEqual(p.radar, {});
+  assert.deepEqual(p.meldungen, [{ id: 'M-01' }]);
+  assert.ok(p.werte['LH:T-03']);
+  assert.doesNotThrow(() => baueDaten(p));
 });
 
 test('Datenstand: eigene Werte, Radarstatus und Meldungen überlagern die Beispieldaten', () => {
@@ -271,4 +317,12 @@ test('IFC-Vorprüfung: zählt Einträge genau, ohne Typen mitzuzählen, und lehn
   const r = ifcVorpruefung(ifc);
   assert.equal(r.gueltig, true); assert.equal(r.schema, 'IFC4');
   assert.deepEqual(r.zaehlung, { Geschosse: 2, Räume: 2, Türen: 1, Fenster: 1, Wände: 2 });
+  const ifc2x3 = ifc.replace("#5=IFCDOOR('e');", "#5=IFCDOORSTANDARDCASE('e');#10=IFCDOOR('x');");
+  assert.equal(ifcVorpruefung(ifc2x3).zaehlung.Türen, 2, 'Standardfall zählt als Tür');
+});
+
+test('Zeit: echte Berliner Uhrzeit für den Radar, mit Sommerzeit und Jahreswechsel', () => {
+  assert.equal(jetztBerlin(new Date('2026-03-29T01:30:00Z')), '2026-03-29T03:30');
+  assert.equal(jetztBerlin(new Date('2026-12-31T23:30:00Z')), '2027-01-01T00:30');
+  assert.match(jetztBerlin(), /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/);
 });

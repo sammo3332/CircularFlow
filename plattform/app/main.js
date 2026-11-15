@@ -1,9 +1,9 @@
 // Einstieg: Router, Rahmen, Ereignisse. Ein gemeinsamer Datensatz für alle Ansichten.
-import { REGIONEN, PROJEKTZEITEN, GRUPPEN, PROJEKTE } from './daten.js';
+import { REGIONEN, PROJEKTZEITEN, GRUPPEN } from './daten.js';
 import { ladePersistenz, speichere, loesche, baueDaten, leerePersistenz } from './zustand.js';
-import { schluessel, neueEntscheidung, bauteilAusErfassung, naechsteBauteilId, pruefeErfassung, erkennungSimulation, radarSchritt, pruefeMeldung, ifcVorpruefung, ZAHL, lage } from './regeln.js';
+import { schluessel, neueEntscheidung, bauteilAusErfassung, naechsteBauteilId, pruefeErfassung, erkennungSimulation, radarSchritt, pruefeMeldung, ifcVorpruefung, ZAHL, lage, anforderungTuer } from './regeln.js';
 import { esc, icon, slug, pchip, nichtGefunden } from './ui.js';
-import { zeit } from './zeit.js';
+import { zeit, jetztBerlin } from './zeit.js';
 import { karteMontieren, karteEntfernen, markerHervorheben } from './karte.js';
 import { startseite, projektUebersicht, popupHtml, gefilterteProjekte } from './ansichten/projekte.js';
 import { gebaeudeAnsicht } from './ansichten/gebaeude.js';
@@ -26,7 +26,7 @@ const ui = {
   erfassung: leererEntwurf(),
   radar: { status: '', notiz: {}, bezirk: {}, verwerfen: {}, fehler: {}, meldung: leereMeldung(), meldungFehler: {}, gespeichert: null },
   importe: { ifc: null, ifcSim: false, scanSim: false },
-  zuletzt: null, zielWahl: null, zuordnungFehler: '', resetFrage: false, fokus: null, speicherHinweis: '',
+  zuletzt: null, zielWahl: null, zuordnungFehler: '', resetFrage: false, fokus: null, fokusNachRoute: null, speicherHinweis: '',
 };
 
 const toast = document.createElement('div');
@@ -34,7 +34,9 @@ toast.className = 'toast'; toast.setAttribute('role', 'status'); toast.setAttrib
 document.body.append(toast);
 function melde(text, ms = 3600) { toast.textContent = text; clearTimeout(melde.t); melde.t = setTimeout(() => { toast.textContent = ''; }, ms); }
 
-const ctx = () => ({ R, at: ui.at, daten: db, ereignisse: p.ereignisse, ezustand: p.ezustand, ui, geo });
+const eigeneAenderungen = () => p.erfassungen.length + p.zuordnungen.length + p.ereignisse.length + p.meldungen.length + p.projekteAusRadar.length
+  + Object.keys(p.ezustand).length + Object.keys(p.radar).length + Object.keys(p.werte).length;
+const ctx = () => ({ R, at: ui.at, daten: db, ereignisse: p.ereignisse, ezustand: p.ezustand, ui, geo, eigeneAenderungen: eigeneAenderungen() });
 
 function uebernehmen(aenderung) {
   aenderung(p);
@@ -42,14 +44,15 @@ function uebernehmen(aenderung) {
   const r = speichere(speicher, p);
   if (!speicher) ui.speicherHinweis = 'Dieser Browser erlaubt keinen lokalen Speicher. Änderungen gehen beim Neuladen verloren.';
   else if (!r.ok) ui.speicherHinweis = 'Speichern im Browser ist fehlgeschlagen. Änderungen gehen beim Neuladen verloren.';
-  else if (r.fotosNichtGespeichert) ui.speicherHinweis = 'Der Browserspeicher ist voll. Fotos bleiben nur bis zum Neuladen erhalten.';
+  else if (r.fotosNichtGespeichert) ui.speicherHinweis = `Der Browserspeicher ist voll. ${r.fotosNichtGespeichert === 1 ? 'Ein Foto bleibt' : `${r.fotosNichtGespeichert} Fotos bleiben`} nur bis zum Neuladen erhalten, ältere Fotos sind gespeichert.`;
   else ui.speicherHinweis = '';
 }
 
 // ---------- Router ----------
 const projektPerSlug = (s) => db.projekte.find((x) => slug(x.kurz) === s);
 function route() {
-  const h = decodeURIComponent((location.hash || '#projekte').slice(1));
+  let h;
+  try { h = decodeURIComponent((location.hash || '#projekte').slice(1)); } catch { return { view: 'fehlt', art: 'Seite', id: location.hash.slice(1) }; }
   const m = (prefix) => (h.startsWith(prefix) ? h.slice(prefix.length) : null);
   if (h === 'projekte' || h === '') return { view: 'start' };
   for (const [prefix, view] of [['projekt-', 'projekt'], ['gebaeude-', 'gebaeude'], ['bestand-', 'bestand'], ['entscheidungen-', 'entscheidungen']]) {
@@ -102,13 +105,24 @@ function rahmen(r, inhalt) {
 
 // ---------- Rendern ----------
 let letzteRoute = null;
+// Beschreibt das fokussierte Element so, dass es nach dem Neuzeichnen wiedergefunden wird, auch ohne id.
+function fokusSelektor(el) {
+  if (!el || el === document.body || !app.contains(el)) return null;
+  if (el.id) return `#${CSS.escape(el.id)}`;
+  if (el.name && el.type === 'radio') return `input[name="${CSS.escape(el.name)}"][value="${CSS.escape(el.value)}"]`;
+  if (el.dataset.action) return ['action', 'wert', 'etage', 'key', 'hinweis', 'projekt', 'bauteil', 'entscheidung', 'schritt'].filter((k) => el.dataset[k] !== undefined)
+    .map((k) => `[data-${k}="${CSS.escape(el.dataset[k])}"]`).join('');
+  return null;
+}
 function render() {
-  const r = route(); const c = ctx();
-  if (r.view === 'erfassung' && location.hash !== letzteRoute) {
+  const r = route(); const neu = location.hash !== letzteRoute;
+  if (neu) ui.zuordnungFehler = '';
+  if (r.view === 'erfassung' && neu) {
     const ent = ui.erfassung;
     if (r.p && (ent.gespeichert || ent.projekt !== r.p.kurz || ent.raum !== r.raum)) ui.erfassung = { ...leererEntwurf(r.p.kurz, r.raum), schritt: 2, verfuegbarAb: r.p.rueckbauAb || '' };
     else if (!r.p && ent.gespeichert) ui.erfassung = leererEntwurf();
   }
+  const c = ctx();
   const inhalt = !R ? '<p class="leise">Wird geladen …</p>'
     : r.view === 'start' ? startseite(c)
       : r.view === 'projekt' ? projektUebersicht(c, r.p)
@@ -120,17 +134,24 @@ function render() {
                   : r.view === 'erfassung' ? erfassung(c)
                     : r.view === 'radar' ? radar(c, r)
                       : nichtGefunden(r.art, r.id);
-  const aktiv = document.activeElement?.id; const pos = aktiv ? document.activeElement.selectionStart : null;
+  const aktiv = document.activeElement; const sel = fokusSelektor(aktiv); const pos = aktiv?.id ? aktiv.selectionStart : null;
   if (document.getElementById('karte')) karteEntfernen(ui.start.ansicht || (ui.start.ansicht = {}));
   app.innerHTML = rahmen(r, inhalt);
   document.title = `${{ start: 'Projekte', projekt: r.p?.name, gebaeude: `Gebäude ${r.p?.kurz}`, bestand: `Bestand ${r.p?.kurz}`, pass: `${r.b?.id} Bauteilpass`, entscheidungen: `Entscheidungen ${r.p?.kurz}`, entscheidung: `Entscheidung ${r.e?.id}`, erfassung: 'Erfassung', radar: 'Projektradar' }[r.view] || 'Nicht gefunden'} · CircularFlow`;
   if (r.view === 'start' && R) karteAnzeigen(c);
-  const neu = location.hash !== letzteRoute; letzteRoute = location.hash;
-  if (neu) { document.getElementById('inhalt').focus({ preventScroll: true }); window.scrollTo(0, 0); }
-  else {
+  letzteRoute = location.hash;
+  if (neu) {
+    // Nach einem Seitenwechsel: ein gezieltes Ziel (z. B. neuer Hinweis) oder der Inhaltsanfang.
+    const ziel = ui.fokusNachRoute && document.getElementById(ui.fokusNachRoute);
+    if (ziel) { ziel.scrollIntoView({ block: 'center' }); ziel.focus({ preventScroll: true }); } else { document.getElementById('inhalt').focus({ preventScroll: true }); window.scrollTo(0, 0); }
+    ui.fokusNachRoute = null;
+  } else {
     // Ein ausdrücklich gesetzter Fokus (z. B. erstes Feld mit Fehler) hat Vorrang vor dem zuletzt aktiven Element.
-    const el = (ui.fokus && document.getElementById(ui.fokus)) || (aktiv && document.getElementById(aktiv));
-    if (el) { el.focus({ preventScroll: true }); if (el.id === aktiv && pos != null && el.setSelectionRange) { try { el.setSelectionRange(pos, pos); } catch { /* Datumsfelder */ } } }
+    const el = (ui.fokus && document.getElementById(ui.fokus)) || (sel && app.querySelector(sel));
+    if (el) {
+      el.focus({ preventScroll: Boolean(sel && !ui.fokus) });
+      if (el === document.getElementById(aktiv?.id) && pos != null && el.setSelectionRange) { try { el.setSelectionRange(pos, pos); } catch { /* Datumsfelder */ } }
+    }
   }
   ui.fokus = null;
 }
@@ -177,7 +198,11 @@ app.addEventListener('click', (ev) => {
     case 'erf-neu': ui.erfassung = a.dataset.projekt ? { ...leererEntwurf(a.dataset.projekt, a.dataset.raum), schritt: 2, verfuegbarAb: db.projekte.find((x) => x.kurz === a.dataset.projekt)?.rueckbauAb || '' } : leererEntwurf(); ui.fokus = 'h-erf'; break;
     case 'reset-frage': ui.resetFrage = true; break;
     case 'reset-nein': ui.resetFrage = false; break;
-    case 'reset-ja': loesche(speicher); p = leerePersistenz(); db = baueDaten(p); ui.resetFrage = false; ui.zuletzt = null; ui.erfassung = leererEntwurf(); melde('Eigene Erfassungen und Änderungen gelöscht.'); break;
+    case 'reset-ja':
+      loesche(speicher); p = leerePersistenz(); db = baueDaten(p);
+      Object.assign(ui, { resetFrage: false, zuletzt: null, zielWahl: null, zuordnungFehler: '', erfassung: leererEntwurf(), radar: { status: '', notiz: {}, bezirk: {}, verwerfen: {}, fehler: {}, meldung: leereMeldung(), meldungFehler: {}, gespeichert: null }, importe: { ifc: null, ifcSim: false, scanSim: false }, speicherHinweis: '' });
+      melde('Eigene Erfassungen und Änderungen gelöscht.'); break;
+    case 'zum-ziel': { const sel = document.getElementById('ziel-wahl'); if (sel) { sel.scrollIntoView({ block: 'center' }); sel.focus({ preventScroll: true }); } return; }
     case 'radar-pruefen': case 'radar-bestaetigen': case 'radar-verwerfen': radarAktion(act.slice(6), a.dataset.hinweis); return;
     case 'radar-verwerfen-frage': ui.radar.verwerfen[a.dataset.hinweis] = true; ui.fokus = `notiz-${slug(a.dataset.hinweis)}`; break;
     case 'radar-verwerfen-abbrechen': delete ui.radar.verwerfen[a.dataset.hinweis]; delete ui.radar.fehler[a.dataset.hinweis]; ui.fokus = `hinweis-titel-${slug(a.dataset.hinweis)}`; break;
@@ -200,7 +225,7 @@ app.addEventListener('input', (ev) => {
     ent.werte[f.key] = { eingabe: t.value, status: leer ? 'fehlt' : f.art === 'mass' ? 'gemessen' : 'bestaetigt', quelle: leer ? '' : f.art === 'mass' ? 'Messung vor Ort (mobile Erfassung)' : 'Eingabe vor Ort' };
     delete ent.fehler[`wert-${f.key}`]; render(); return;
   }
-  if (t.dataset.radarNotiz) { ui.radar.notiz[t.dataset.radarNotiz] = t.value; return; }
+  if (t.dataset.radarNotiz) { ui.radar.notiz[t.dataset.radarNotiz] = t.value; if (ui.radar.fehler[t.dataset.radarNotiz]) delete ui.radar.fehler[t.dataset.radarNotiz].notiz; return; }
   if (t.dataset.meldung) { ui.radar.meldung[t.dataset.meldung] = t.type === 'checkbox' ? t.checked : t.value; delete ui.radar.meldungFehler[t.dataset.meldung]; }
 });
 
@@ -249,7 +274,7 @@ function zuordnen(bkey) {
   const e = neueEntscheidung(ctx(), b, { art, projekt, id });
   uebernehmen((d) => {
     d.zuordnungen.push(e);
-    d.ereignisse.push({ at: ui.at, von: 'planung', bauteil: bkey, entscheidung: schluessel(e.projekt, e.id), art: 'anlage', sim: true, text: `Entscheidung ${e.id} angelegt: ${b.id} → ${art === 'zieloeffnung' ? 'Zielöffnung' : 'Bedarf'} ${projekt === b.projekt ? '' : `${projekt} · `}${id}.` });
+    d.ereignisse.push({ at: ui.at, von: 'browser', bauteil: bkey, entscheidung: schluessel(e.projekt, e.id), art: 'anlage', sim: true, text: `Entscheidung ${e.id} angelegt: ${b.id} → ${art === 'zieloeffnung' ? 'Zielöffnung' : 'Bedarf'} ${projekt === b.projekt ? '' : `${projekt} · `}${id}.` });
   });
   ui.zuordnungFehler = ''; ui.zielWahl = null; ui.fokus = 'h-handlung';
   render(); melde(`Entscheidung ${e.id} angelegt. Der nächste Schritt steht oben im Pass.`);
@@ -260,16 +285,16 @@ function schrittVermerken(k) {
   const l = lage(ctx(), e); if (l.haupt.wartet) return;
   const fach = l.haupt.rank === 6 && e.regel !== 'einfach';
   const rolle = { montage: 'Montagebetrieb', fach: 'Fachprüfung', bauleitung: 'Bauleitung' }[l.haupt.rolle] || 'Planung';
-  const text = fach ? `Variante ${e.id} zur Fachprüfung vorgelegt (an L. Brandt).` : `${l.haupt.text}: als Aufgabe für ${rolle} vermerkt.`;
+  const text = fach ? `Variante ${e.id} zur Fachprüfung vorgelegt (an L. Brandt, fiktiv).` : `${l.haupt.text}: als Aufgabe für ${rolle} vermerkt.`;
   if (p.ereignisse.some((x) => x.entscheidung === k && x.at === ui.at && x.text === text)) { melde('Zu dieser Projektzeit bereits vermerkt.'); return; }
-  uebernehmen((d) => d.ereignisse.push({ at: ui.at, von: 'planung', bauteil: schluessel(e.projekt, e.bauteil), entscheidung: k, art: fach ? 'vorlage' : 'aufgabe', sim: true, text }));
+  uebernehmen((d) => d.ereignisse.push({ at: ui.at, von: 'browser', bauteil: schluessel(e.projekt, e.bauteil), entscheidung: k, art: fach ? 'vorlage' : 'aufgabe', sim: true, text }));
   ui.fokus = 'h-schritt'; render(); melde(fach ? 'Zur Fachprüfung vorgelegt. Status des Bauteils aktualisiert.' : 'Im Verlauf vermerkt.');
 }
 
 function aufmassBeispiel(k) {
   const e = db.entscheidungen.find((x) => schluessel(x.projekt, x.id) === k);
   const z = db.zieloeffnungen.find((x) => x.projekt === (e.ziel.projekt || e.projekt) && x.id === e.ziel.id);
-  const beispiel = z.geprueft ? { ...R.SAMPLE_MEASUREMENT } : { valueText: String(Math.round((z.minMm + z.maxMm) / 2)), unit: 'mm', reference: `Rohbauöffnungsbreite ${z.id}, Messstelle laut ${z.sheet}`, status: 'gemessen', source: 'fiktive Aufmaßnotiz', measuredOn: ui.at.slice(0, 10), receivedAt: ui.at };
+  const beispiel = z.geprueft ? { ...R.SAMPLE_MEASUREMENT } : { valueText: String(Math.round((z.minMm + z.maxMm) / 2)), unit: 'mm', reference: anforderungTuer(R, z).reference, status: 'gemessen', source: 'fiktive Aufmaßnotiz', measuredOn: ui.at.slice(0, 10), receivedAt: ui.at };
   uebernehmen((d) => { d.ezustand[k] = { ...(d.ezustand[k] || {}), aufmass: beispiel }; });
   render();
   melde(beispiel.receivedAt <= ui.at ? 'Beispielaufmaß eingesetzt.' : `Beispielaufmaß eingesetzt. Es wirkt ab Projektzeit ${zeit(beispiel.receivedAt)}.`);
@@ -279,8 +304,12 @@ function schadenEingabe(k, wert) {
   const e = db.entscheidungen.find((x) => schluessel(x.projekt, x.id) === k);
   uebernehmen((d) => {
     d.ezustand[k] = { ...(d.ezustand[k] || {}), beschaedigtRoh: wert };
-    const roh = String(wert).trim();
-    if (ZAHL.test(roh)) d.werte[schluessel(e.projekt, e.bauteil)] = { ...(d.werte[schluessel(e.projekt, e.bauteil)] || {}), beschaedigt: { wert: Number(roh.replace(',', '.')), status: 'bestaetigt', quelle: `Eingabe in Entscheidung ${e.id}` } };
+    // Gültige Eingabe zählt wie jede getippte Messung als „gemessen“; leer, ungültig oder größer als die Fläche heißt „fehlt“.
+    const roh = String(wert).trim(); const bkey = schluessel(e.projekt, e.bauteil);
+    const flaeche = db.bauteile.find((b) => schluessel(b.projekt, b.id) === bkey)?.menge ?? 0;
+    const zahl = ZAHL.test(roh) ? Number(roh.replace(',', '.')) : null;
+    const gueltig = zahl !== null && zahl <= flaeche;
+    d.werte[bkey] = { ...(d.werte[bkey] || {}), beschaedigt: gueltig ? { wert: zahl, status: 'gemessen', quelle: `Stichprobe vor Ort, hochgerechnet (Eingabe in Entscheidung ${e.id})` } : { wert: null, status: 'fehlt', quelle: '' } };
   });
 }
 
@@ -297,21 +326,26 @@ function erfWeiter() {
   const ent = ui.erfassung; const f = pruefeErfassung(ent);
   const relevant = { 1: ['ort'], 2: [], 3: ['gruppe', 'menge', 'verfuegbarAb'], 4: Object.keys(f).filter((x) => x.startsWith('wert-')) }[ent.schritt] || [];
   ent.fehler = Object.fromEntries(Object.entries(f).filter(([x]) => relevant.includes(x)));
-  if (Object.keys(ent.fehler).length) { ui.fokus = ent.schritt === 1 ? 'erf-raum' : ent.schritt === 3 ? (ent.fehler.gruppe ? 'h-erf' : 'erf-menge') : 'h-erf'; render(); return; }
+  if (Object.keys(ent.fehler).length) {
+    const erstesWert = Object.keys(ent.fehler).find((x) => x.startsWith('wert-'));
+    ui.fokus = ent.schritt === 1 ? 'erf-raum' : ent.schritt === 3 ? (ent.fehler.gruppe ? 'erf-gruppe-feld' : ent.fehler.menge ? 'erf-menge' : 'erf-verfuegbar') : erstesWert ? `w-${erstesWert.slice(5)}` : 'h-erf';
+    render(); return;
+  }
   ent.schritt += 1; ui.fokus = 'h-erf'; render();
 }
 
 function erfSpeichern() {
   const ent = ui.erfassung; const f = pruefeErfassung(ent);
-  if (Object.keys(f).length) { ent.fehler = f; ui.fokus = 'h-erf'; render(); return; }
+  if (Object.keys(f).length) { ent.fehler = f; ui.fokus = 'erf-fehler'; render(); return; }
   const pr = db.projekte.find((x) => x.kurz === ent.projekt);
   const etage = pr.gebaeude[0].etagen.find((e) => e.raeume.some((r) => r.id === ent.raum)).id;
   const id = naechsteBauteilId(db.bauteile, ent.projekt, ent.gruppe);
   const b = bauteilAusErfassung(ent, { id, at: ui.at, etage });
   uebernehmen((d) => { d.erfassungen.push(b); });
+  const fotoNurBisNeuladen = ui.speicherHinweis.startsWith('Der Browserspeicher ist voll');
   const key = `${b.projekt}:${b.id}`;
   ui.zuletzt = key;
-  ui.erfassung = { ...leererEntwurf(), gespeichert: { key, fotoHinweis: ui.speicherHinweis.includes('Fotos') ? 'Foto nur bis zum Neuladen gespeichert' : '' } };
+  ui.erfassung = { ...leererEntwurf(), gespeichert: { key, fotoHinweis: fotoNurBisNeuladen && b.foto ? 'Foto nur bis zum Neuladen gespeichert' : '' } };
   ui.fokus = 'h-gesp'; render(); melde(`${b.projekt} · ${b.id} gespeichert.`);
 }
 
@@ -346,7 +380,8 @@ async function ifcPruefen(datei) {
 // ---------- Radar ----------
 function radarAktion(aktion, id) {
   const h = db.hinweise.find((x) => x.id === id);
-  const r = radarSchritt(h, aktion, { von: 'radar', notiz: ui.radar.notiz[id] || '', bezirk: ui.radar.bezirk[id] || '', at: ui.at });
+  // Radar-Schritte sind echte Vorgänge: Berliner Uhrzeit statt Projektzeit-Simulation.
+  const r = radarSchritt(h, aktion, { von: 'browser', notiz: ui.radar.notiz[id] || '', bezirk: ui.radar.bezirk[id] || '', at: jetztBerlin() });
   if (r.fehler) {
     ui.radar.fehler[id] = r.fehler;
     ui.fokus = r.fehler.bezirk ? `bezirk-${slug(id)}` : r.fehler.notiz ? `notiz-${slug(id)}` : `hinweis-titel-${slug(id)}`;
@@ -364,10 +399,11 @@ function radarAktion(aktion, id) {
 
 function projektAusHinweis(h, n) {
   const mitte = geo?.features.find((f) => f.properties.name === h.bezirk)?.properties.mitte || REGIONEN[0].mitte;
-  const versatz = 0.004 * ((n % 3) - 1);
+  // Versatz auf einer Spirale, damit mehrere bestätigte Projekte im selben Bezirk nicht übereinander liegen.
+  const winkel = n * 2.39996; const radius = 0.004 * (1 + Math.floor(n / 6));
   return {
     id: `P-RADAR-${String(n + 1).padStart(2, '0')}`, kurz: `R${n + 1}`, farbe: '#3b5b8c', name: h.titel, zusatz: `Aus dem Projektradar · Quelle: ${h.quelleName}`,
-    art: h.art, phase: 'Phase noch nicht erfasst', lp: 0, status: 'neu', bezirk: h.bezirk || 'Bezirk unbekannt', lage: h.lage || [mitte[0] + versatz, mitte[1] - versatz],
+    art: h.art, phase: 'Phase noch nicht erfasst', lp: 0, status: 'neu', bezirk: h.bezirk || 'Bezirk unbekannt', lage: h.lage || [mitte[0] + radius * Math.sin(winkel), mitte[1] + radius * 1.6 * Math.cos(winkel)],
     herkunft: h.quelle === 'meldung' ? 'meldung' : 'radar', hinweis: h.id, rueckbauAb: null, entscheidungBis: null, gebaeude: [],
   };
 }
@@ -376,9 +412,11 @@ function meldungSpeichern() {
   const m = ui.radar.meldung; const f = pruefeMeldung(m);
   if (Object.keys(f).length) { ui.radar.meldungFehler = f; ui.fokus = `meldung-${Object.keys(f)[0]}`; render(); return; }
   const id = `M-${String(p.meldungen.length + 1).padStart(2, '0')}`;
-  const h = { id, titel: m.titel.trim(), quelle: 'meldung', quelleName: 'Direkte Projektmeldung', quelleUrl: '', datum: ui.at.slice(0, 10), abgerufen: ui.at.slice(0, 10), art: m.art, bezirk: m.bezirk, relevanz: m.art === 'neubau' ? 'mittel' : 'hoch', relevanzText: 'Vorläufig nach Art der Maßnahme eingestuft. Die Bewertung folgt bei der Prüfung.', text: m.text.trim(), melder: m.melder.trim(), status: 'gemeldet', beispiel: false, verlauf: [{ at: ui.at, von: 'melder', aktion: 'gemeldet', notiz: `Meldung durch ${m.melder.trim()}` }] };
+  const jetzt = jetztBerlin(); // echtes Eingangsdatum, nicht die Projektzeit-Simulation
+  const h = { id, titel: m.titel.trim(), quelle: 'meldung', quelleName: 'Direkte Projektmeldung', quelleUrl: '', datum: jetzt.slice(0, 10), abgerufen: jetzt.slice(0, 10), art: m.art, bezirk: m.bezirk, relevanz: m.art === 'neubau' ? 'mittel' : 'hoch', relevanzText: 'Vorläufig nach Art der Maßnahme eingestuft. Die Bewertung folgt bei der Prüfung.', text: m.text.trim(), melder: m.melder.trim(), status: 'gemeldet', beispiel: false, verlauf: [{ at: jetzt, von: 'melder', aktion: 'gemeldet', notiz: `Meldung durch ${m.melder.trim()}` }] };
   uebernehmen((d) => d.meldungen.push(h));
   ui.radar.meldung = leereMeldung(); ui.radar.meldungFehler = {}; ui.radar.gespeichert = id;
+  ui.radar.status = ''; ui.fokusNachRoute = `hinweis-titel-${slug(id)}`; // Filter lösen, damit die neue Meldung sichtbar ist
   gehe(`#hinweis-${slug(id)}`); melde('Meldung gespeichert. Sie wartet auf Prüfung.');
 }
 
@@ -393,4 +431,3 @@ async function ladeGeo() {
 Promise.all([ladeTuerregel(), ladeGeo()]).then(([mod, g]) => { R = mod; geo = g; render(); })
   .catch(() => { app.innerHTML = '<div class="leer"><b>Die Anwendung konnte nicht starten.</b><p>Bitte über einen lokalen Server vom Repository-Wurzelverzeichnis aus öffnen (siehe README).</p></div>'; });
 
-export { PROJEKTE };

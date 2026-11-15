@@ -64,11 +64,6 @@ export function markerHervorheben(kurz, an) {
   document.querySelectorAll(`[data-marker="${kurz}"]`).forEach((m) => m.classList.toggle('hervor', an));
 }
 
-export function popupOeffnen(kurz) {
-  if (!markerSchicht) return;
-  markerSchicht.eachLayer((m) => { if (m.options.title?.startsWith(`${kurz} ·`)) { karte.setView(m.getLatLng(), Math.max(karte.getZoom(), 12)); m.openPopup(); } });
-}
-
 function osmZuschalten(meldeFehler) {
   const L = window.L;
   let fehler = 0;

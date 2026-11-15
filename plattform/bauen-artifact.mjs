@@ -29,6 +29,9 @@ writeFileSync(join(ziel, 'styles.css'), css);
 dateien['styles.css'] = join(ziel, 'styles.css');
 
 for (const datei of readdirSync(join(hier, 'app')).filter((d) => d.endsWith('.js'))) kopiere(join(hier, 'app', datei), `app/${datei}`);
+// In der veröffentlichten Fassung liegt die Türregel neben main.js; den Repository-Pfad direkt ersetzen.
+const mainPfad = join(ziel, 'app', 'main.js');
+writeFileSync(mainPfad, readFileSync(mainPfad, 'utf8').replace("'../../prototype/dist/door-rules.mjs'", "'./door-rules.mjs'"));
 for (const datei of readdirSync(join(hier, 'app', 'ansichten')).filter((d) => d.endsWith('.js'))) kopiere(join(hier, 'app', 'ansichten', datei), `app/ansichten/${datei}`);
 kopiere(join(hier, '..', 'prototype', 'dist', 'door-rules.mjs'), 'app/door-rules.mjs', 'text/javascript');
 kopiere(join(hier, 'vendor', 'leaflet', 'leaflet.js'), 'vendor/leaflet/leaflet.js');

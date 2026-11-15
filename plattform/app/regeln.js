@@ -1,6 +1,6 @@
 // Reine Fachfunktionen der Plattform: kein DOM, kein Speicher, keine Systemuhr.
 // Die geprüfte Türregel (prototype/dist/door-rules.mjs) wird als Modul R übergeben und nicht verändert.
-import { GRUPPEN, PERSONEN, WERTSTATUS } from './daten.js';
+import { GRUPPEN, PERSONEN } from './daten.js';
 import { minuten, bis, istDatum, zeit } from './zeit.js';
 
 export const schluessel = (projekt, id) => `${projekt}:${id}`;
@@ -21,8 +21,6 @@ export function wertAusEingabe(feld, eingabe, quelle = 'Eingabe') {
   }
   return { wert: roh, status: 'bestaetigt', quelle };
 }
-// Übernahme eines Vorschlags ist eine Prüfung, keine Messung.
-export const vorschlagUebernehmen = (w) => ({ ...w, status: 'bestaetigt', quelle: `${w.quelle || 'Vorschlag'}, geprüft` });
 
 export function wertText(feld, w) {
   if (!w || w.wert === null || w.wert === undefined || w.wert === '') return '–';
@@ -38,7 +36,8 @@ export function anforderungTuer(R, z) {
 export const fristenTuer = (z) => ({ measureDeadline: z.measureDeadline, replaceDeadline: z.replaceDeadline });
 
 // ---------- Doppelboden je Bedarf (Entwurfsregel, nicht geprüft) ----------
-export function bewerteBoden({ bedarf, flaecheM2, rasterIst, beschaedigtRoh, hoeheAm, lastAm, at }) {
+// rasterIst zählt nur, wenn der Wert gemessen oder bestätigt ist; ein bloßer Vorschlag kommt als rasterVorschlag.
+export function bewerteBoden({ bedarf, flaecheM2, rasterIst, rasterVorschlag = '', beschaedigtRoh, hoeheAm, lastAm, at }) {
   const roh = String(beschaedigtRoh ?? '').trim();
   const beschaedigt = ZAHL.test(roh) ? hundertstel(Number(roh.replace(',', '.'))) / 100 : null;
   const beschaedigtGueltig = beschaedigt !== null && beschaedigt <= flaecheM2;
@@ -51,7 +50,9 @@ export function bewerteBoden({ bedarf, flaecheM2, rasterIst, beschaedigtRoh, hoe
   const sollMenge = `${zahlText(bedarfM2)} m² (${bedarf.bedarfM2} m² + ${bedarf.reserveProzent} % Reserve)`;
   const k = (key, name, soll, ist, befund, ton, weg) => ({ key, name, soll, ist, befund, ton, weg });
   const kriterien = [
-    rasterIst === bedarf.raster ? k('raster', 'Rastermaß', bedarf.raster, `${rasterIst}`, 'erfüllt', 'ok', 'Regel (Entwurf)') : k('raster', 'Rastermaß', bedarf.raster, rasterIst || 'fehlt', rasterIst ? 'verfehlt' : 'offen: Angabe fehlt', rasterIst ? 'crit' : 'warn', 'Regel (Entwurf)'),
+    rasterIst === bedarf.raster ? k('raster', 'Rastermaß', bedarf.raster, `${rasterIst}`, 'erfüllt', 'ok', 'Regel (Entwurf)')
+      : rasterIst ? k('raster', 'Rastermaß', bedarf.raster, rasterIst, 'verfehlt', 'crit', 'Regel (Entwurf)')
+        : k('raster', 'Rastermaß', bedarf.raster, rasterVorschlag ? `${rasterVorschlag} (nur vorgeschlagen)` : 'fehlt', rasterVorschlag ? 'offen: Vorschlag prüfen' : 'offen: Angabe fehlt', 'warn', 'Regel (Entwurf)'),
     verwendbar === null ? k('menge', 'Menge', sollMenge, 'beschädigte Fläche fehlt oder ist ungültig', 'offen: Angabe prüfen', 'warn', 'Regel (Entwurf)')
       : hundertstel(verwendbar) >= hundertstel(bedarfM2) ? k('menge', 'Menge', sollMenge, `${zahlText(verwendbar)} m² verwendbar`, `erfüllt, ${zahlText((hundertstel(verwendbar) - hundertstel(bedarfM2)) / 100)} m² Überschuss`, 'ok', 'Regel (Entwurf)')
         : k('menge', 'Menge', sollMenge, `${zahlText(verwendbar)} m² verwendbar`, `verfehlt, ${zahlText((hundertstel(bedarfM2) - hundertstel(verwendbar)) / 100)} m² fehlen`, 'crit', 'Regel (Entwurf)'),
@@ -80,6 +81,7 @@ export function bewerteBoden({ bedarf, flaecheM2, rasterIst, beschaedigtRoh, hoe
   if (ersatzOffen && (nachweis.key === 'overdue' || nachweis.key === 'late')) add(4, 'Prüfvorlauf klären', 'planung', 'Die Nachweise sind überfällig oder verspätet eingegangen, die Ersatzentscheidung steht noch aus.');
   if (!nachweiseDa) add(5, 'Herstellerangaben zu Stützenhöhe und Tragfähigkeit beschaffen oder Probeausbau veranlassen', 'montage', 'Ohne Nachweise bleiben Aufbauhöhe und Tragfähigkeit offen.');
   if (verwendbar === null) add(5, 'Beschädigte Fläche aus der Stichprobe prüfen und gültig angeben', 'bauleitung', 'Ohne gültige Angabe bleibt die verwendbare Menge offen.');
+  if (!rasterIst) add(5, rasterVorschlag ? 'Rastermaß vor Ort prüfen und bestätigen' : 'Rastermaß vor Ort feststellen', 'bauleitung', 'Ein vorgeschlagenes oder fehlendes Rastermaß zählt nicht.');
   if (nachweiseDa && nachweis.key === 'onTime' && ersatzOffen && pruefbarErfuellt && !widerspruch) add(6, 'Variante zur fachlichen Prüfung vorlegen', 'planung', 'Rastermaß, Menge und Aufbauhöhe passen, die Nachweise liegen rechtzeitig vor. Weitere technische Anforderungen bleiben offen.');
   aufgaben.sort((a, b) => a.rank - b.rank);
   return { kriterien, nachweis, ersatz, verwendbar, bedarfM2, beschaedigtGueltig, beschaedigtFehler, haupt: aufgaben[0], weiter: aufgaben.slice(1), widerspruch, hoehe, last };
@@ -133,8 +135,11 @@ export function lageRegel(ctx, e) {
     };
   }
   if (e.regel === 'boden') {
-    const roh = zs.beschaedigtRoh ?? String(b.werte?.beschaedigt?.wert ?? '');
-    const r = bewerteBoden({ bedarf: z, flaecheM2: b.menge, rasterIst: b.werte?.raster?.wert || '', beschaedigtRoh: roh, hoeheAm: zs.hoeheAm, lastAm: zs.lastAm, at: ctx.at });
+    // Die Entwurfsregel nimmt nur gemessene oder von einer Person bestätigte Werte; Vorschläge und Lücken bleiben offen.
+    const geprueft = (w) => Boolean(w) && (w.status === 'gemessen' || w.status === 'bestaetigt');
+    const raster = b.werte?.raster;
+    const roh = zs.beschaedigtRoh ?? (geprueft(b.werte?.beschaedigt) ? String(b.werte.beschaedigt.wert ?? '') : '');
+    const r = bewerteBoden({ bedarf: z, flaecheM2: b.menge, rasterIst: geprueft(raster) ? raster.wert : '', rasterVorschlag: raster?.status === 'vorgeschlagen' ? raster.wert : '', beschaedigtRoh: roh, hoeheAm: zs.hoeheAm, lastAm: zs.lastAm, at: ctx.at });
     return {
       r, z, b, regelText: 'Regel im Entwurf · nicht geprüft', geprueft: false, haupt: r.haupt, weiter: r.weiter,
       fristen: [
@@ -258,7 +263,7 @@ export function pruefeErfassung(entwurf) {
   return fehler;
 }
 
-export function bauteilAusErfassung(entwurf, { id, at, von = 'bauleitung', etage }) {
+export function bauteilAusErfassung(entwurf, { id, at, von = 'browser', etage }) {
   const g = GRUPPEN[entwurf.gruppe];
   const werte = {};
   for (const f of g.felder) {
@@ -268,19 +273,20 @@ export function bauteilAusErfassung(entwurf, { id, at, von = 'bauleitung', etage
     werte[f.key] = { wert, status: w.status, quelle: w.quelle || 'Mobile Erfassung' };
   }
   const name = entwurf.gruppe === 'sonstig' ? (werte.bezeichnung?.wert || 'Bauteil') : g.einzahl;
+  // Kennzeichnung „simulierte Erkennung“ nur, solange ein Wert noch aus der Simulation stammt.
+  const ausSimulation = Object.values(werte).some((w) => /Simulation/.test(w.quelle || ''));
   return {
     projekt: entwurf.projekt, id, gruppe: entwurf.gruppe, name, menge: Number(String(entwurf.menge).replace(',', '.')), etage, raum: entwurf.raum,
     werte, zustand: entwurf.zustand || null, zustandText: entwurf.notiz || '', hersteller: 'unbekannt', baujahr: 'unbekannt',
     status: 'erfasst', verfuegbarAb: entwurf.verfuegbarAb || null, foto: entwurf.foto ? { daten: entwurf.foto.daten, breite: entwurf.foto.breite, hoehe: entwurf.foto.hoehe } : null,
-    erfassung: { art: 'Mobile Erfassung', am: at, von, erkennung: entwurf.erkennung ? 'Simulation' : null },
+    erfassung: { art: 'Mobile Erfassung', am: at, von, erkennung: ausSimulation ? 'Simulation' : null },
     rueckbau: [['Schadstoffverdacht', 'nicht untersucht']],
     nachweise: entwurf.foto ? [{ titel: 'Foto der mobilen Erfassung', art: 'Foto', datum: at, von, stand: 'liegt vor', ton: 'ok' }] : [],
     offen: [], neu: true,
-    verlauf: [{ at, von, text: `Mobil erfasst${entwurf.foto ? ' mit Foto' : ' ohne Foto'}${entwurf.erkennung ? ', Vorschläge aus simulierter Erkennung' : ''}.` }],
+    verlauf: [{ at, von, text: `Mobil erfasst${entwurf.foto ? ' mit Foto' : ' ohne Foto'}${ausSimulation ? ', Vorschläge aus simulierter Erkennung' : ''}.` }],
   };
 }
 
-export const wertStatusText = (s) => WERTSTATUS[s]?.label || s;
 
 // ---------- Projektradar ----------
 export const PRUEFSTATUS = {
@@ -321,6 +327,9 @@ export function ifcVorpruefung(text) {
   const kopf = String(text).slice(0, 4000);
   if (!/ISO-10303-21/.test(kopf)) return { gueltig: false, fehler: 'Keine IFC-Datei im STEP-Format (Kennung ISO-10303-21 fehlt).' };
   const schema = (kopf.match(/FILE_SCHEMA\s*\(\s*\(\s*'([^']+)'/i) || [])[1] || 'unbekannt';
-  const zaehle = (name) => (String(text).match(new RegExp(`=\\s*${name}\\s*\\(`, 'gi')) || []).length;
-  return { gueltig: true, schema, zaehlung: { Geschosse: zaehle('IFCBUILDINGSTOREY'), Räume: zaehle('IFCSPACE'), Türen: zaehle('IFCDOOR'), Fenster: zaehle('IFCWINDOW'), Wände: zaehle('IFCWALL') + zaehle('IFCWALLSTANDARDCASE') } };
+  // Ein Durchlauf über alle Entitäten. Standardfälle (IFC2x3/IFC4) zählen zur jeweiligen Klasse.
+  const anzahl = new Map();
+  for (const m of String(text).matchAll(/=\s*(IFC[A-Z]+)\s*\(/gi)) { const n = m[1].toUpperCase(); anzahl.set(n, (anzahl.get(n) || 0) + 1); }
+  const z = (...namen) => namen.reduce((s, n) => s + (anzahl.get(n) || 0), 0);
+  return { gueltig: true, schema, zaehlung: { Geschosse: z('IFCBUILDINGSTOREY'), Räume: z('IFCSPACE'), Türen: z('IFCDOOR', 'IFCDOORSTANDARDCASE'), Fenster: z('IFCWINDOW', 'IFCWINDOWSTANDARDCASE'), Wände: z('IFCWALL', 'IFCWALLSTANDARDCASE', 'IFCWALLELEMENTEDCASE') } };
 }

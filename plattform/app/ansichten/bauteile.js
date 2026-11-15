@@ -1,7 +1,7 @@
 // Bauteilbestand je Projekt und Bauteilpass.
 import { GRUPPEN, STATUS, WERTSTATUS, ZUSTAND } from '../daten.js';
-import { esc, chip, pchip, wertChip, statusChip, icon, leer, slug, routePass, routeRaum, routeEntscheidung, person, bauteilRef } from '../ui.js';
-import { naechsteHandlung, offeneNachweise, bauteilStatus, entscheidungFuer, moeglicheZiele, wertText, lage, zielVon } from '../regeln.js';
+import { esc, chip, wertChip, statusChip, icon, leer, slug, routePass, routeRaum, routeEntscheidung, person, bauteilRef } from '../ui.js';
+import { naechsteHandlung, offeneNachweise, bauteilStatus, entscheidungFuer, moeglicheZiele, wertText, lage } from '../regeln.js';
 import { zeit, datum, abstand } from '../zeit.js';
 import { projektKopf, raumVon } from './projekte.js';
 
@@ -84,7 +84,7 @@ export function pass(ctx, p, b) {
         <h2 id="h-handlung" tabindex="-1">${esc(n.text)}</h2>
         <p class="ergebnis-rolle">${n.rolle ? `${esc(person(n.rolle).rolle)} · ${esc(person(n.rolle).name)}` : ''}${n.frist ? ` · ${esc(n.fristName || 'Frist')} ${zeit(n.frist)} <span class="${a.vorbei ? 'vorbei' : ''}">(${a.text})</span>` : ''}</p>
         ${n.grund ? `<p class="ergebnis-grund">${esc(n.grund)}</p>` : ''}
-        <div class="ergebnis-aktionen">${e ? `<a class="knopf" href="${routeEntscheidung(e)}">Entscheidung ${esc(e.id)} öffnen</a>` : n.aktion === 'zuordnen' ? '<a class="knopf" href="#zuordnung">Ziel zuordnen</a>' : ''}</div>
+        <div class="ergebnis-aktionen">${e ? `<a class="knopf" href="${routeEntscheidung(e)}">Entscheidung ${esc(e.id)} öffnen</a>` : n.aktion === 'zuordnen' ? '<button type="button" class="knopf" data-action="zum-ziel">Ziel zuordnen</button>' : ''}</div>
       </section>
       <section class="flaeche steckbrief" aria-labelledby="h-steck">
         <h2 id="h-steck" class="sr">Steckbrief</h2>
@@ -105,7 +105,7 @@ export function pass(ctx, p, b) {
           <thead><tr><th scope="col">Angabe</th><th scope="col" class="r">Wert</th><th scope="col">Status</th><th scope="col">Quelle</th></tr></thead>
           <tbody>${(g.felder || []).map((f) => { const w = b.werte?.[f.key] || { status: 'fehlt' }; return `<tr><td>${esc(f.label)}${f.bezug ? `<small>Bezug: ${esc(f.bezug)}</small>` : ''}${f.hinweis ? `<small>${esc(f.hinweis)}</small>` : ''}</td><td class="r mono">${esc(wertText(f, w))}</td><td>${wertChip(w.status)}</td><td>${esc(w.quelle || '–')}</td></tr>`; }).join('')}</tbody>
         </table></div>
-        <p class="klein">Regeln werten Maße nur, wenn sie gemessen sind. Ein bestätigter Vorschlag ist geprüft, aber nicht gemessen.</p>
+        <p class="klein">Die Türregel wertet Maße nur, wenn sie gemessen sind. Die Bodenregel (Entwurf) nimmt gemessene oder von einer Person bestätigte Werte. Vorschläge zählen nie. Ein bestätigter Vorschlag ist geprüft, aber nicht gemessen.</p>
       </section>
       <section class="flaeche" aria-labelledby="h-nachweise">
         <div class="block-kopf"><h2 id="h-nachweise">Quellen und Nachweise</h2></div>
@@ -178,4 +178,3 @@ function skizze(b) {
   return `<div class="skizze-leer"><span class="mono">${esc(b.id)}</span><small>Kein Foto und keine Skizze</small></div>`;
 }
 
-export { pchip, icon, zielVon };
