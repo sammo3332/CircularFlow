@@ -64,7 +64,7 @@ function schritt3(ctx, ent) {
   const g = GRUPPEN[ent.gruppe];
   return `<h2 id="h-erf">Welches Bauteil?</h2>
     <fieldset class="gruppenwahl" id="erf-gruppe-feld" tabindex="-1" ${ent.fehler.gruppe ? 'aria-describedby="fehler-gruppe"' : ''}><legend>Bauteilgruppe</legend>
-      ${Object.entries(GRUPPEN).filter(([, x]) => x.erfassbar).map(([k, x]) => `<label class="gruppenkarte"><input type="radio" name="erf-gruppe" value="${k}" ${ent.gruppe === k ? 'checked' : ''}><span><b>${esc(x.einzahl)}</b><small>${esc(x.typ)} · Menge in ${esc(x.einheit)}</small>${er?.gruppe === k ? chip('vorgeschlagen (Simulation)', 'sim') : ''}</span></label>`).join('')}
+      ${Object.entries(GRUPPEN).filter(([, x]) => x.erfassbar).map(([k, x]) => `<label class="gruppenkarte"><input type="radio" name="erf-gruppe" value="${k}" ${ent.gruppe === k ? 'checked' : ''} ${ent.fehler.gruppe ? 'aria-invalid="true"' : ''}><span><b>${esc(x.einzahl)}</b><small>${esc(x.typ)} · Menge in ${esc(x.einheit)}</small>${er?.gruppe === k ? chip('vorgeschlagen (Simulation)', 'sim') : ''}</span></label>`).join('')}
     </fieldset>${fehlerText(ent, 'gruppe')}
     <div class="formular formular-eng">
       <div class="feld"><label for="erf-menge">Menge${g ? ` in ${esc(g.einheit)}` : ''}</label><input id="erf-menge" inputmode="decimal" value="${esc(ent.menge)}" ${ent.fehler.menge ? 'aria-invalid="true" aria-describedby="fehler-menge"' : ''}>${fehlerText(ent, 'menge')}</div>

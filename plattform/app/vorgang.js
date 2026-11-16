@@ -3,7 +3,7 @@
 // Dieses Modul darf regeln.js NICHT importieren (regeln.js importiert dieses Modul).
 // ctx: { at, daten: { bauteile, bedarfe, entscheidungen, ... }, ereignisse, ezustand }
 import { PERSONEN, GRUPPEN } from './daten.js';
-import { minuten, bis, istDatum, datum } from './zeit.js';
+import { minuten, bis, istDatum, datum, zeit } from './zeit.js';
 
 export const HINWEIS_FACH = 'laut Eintrag (Simulation), keine Fachfreigabe';
 export const HINWEIS_VORMERKUNG = 'Vormerkung (Simulation, unverbindlich)';
@@ -83,8 +83,18 @@ export const vorgangAktiv = (ctx, e) => !vorgangStatus(ctx, e).beendet;
 export const vorgaengeFuer = (ctx, projekt, bauteilId) => ctx.daten.entscheidungen.filter((e) => e.projekt === projekt && e.bauteil === bauteilId);
 export const aktiverVorgang = (ctx, projekt, bauteilId) => vorgaengeFuer(ctx, projekt, bauteilId).find((e) => vorgangAktiv(ctx, e)) || null;
 export const uebergebenerVorgang = (ctx, projekt, bauteilId) => vorgaengeFuer(ctx, projekt, bauteilId).find((e) => vorgangStatus(ctx, e).key === 'uebergeben') || null;
-// Ein Bedarf ist belegt, solange ein aktiver Vorgang ihn als Ziel hat.
-export const bedarfBelegt = (ctx, projekt, id) => ctx.daten.entscheidungen.some((e) => e.ziel?.art === 'bedarf' && (e.ziel.projekt || e.projekt) === projekt && e.ziel.id === id && vorgangAktiv(ctx, e));
+// Ein Bedarf ist belegt, solange ein aktiver Vorgang ihn als Ziel hat oder ein Vorgang mit „übergeben“ endete
+// (die Übergabe deckt den Bedarf). Ungeeignet und abgebrochen geben ihn wieder frei.
+// ausser: ein Vorgang (Entscheidung), der nicht als Sperrgrund zählt, etwa der eigene bei der Prüfung der Prüfbitte.
+export const bedarfVorgang = (ctx, projekt, id, ausser = null) => ctx.daten.entscheidungen.find((e) => e.ziel?.art === 'bedarf'
+  && (e.ziel.projekt || e.projekt) === projekt && e.ziel.id === id && !(ausser && e.projekt === ausser.projekt && e.id === ausser.id)
+  && (() => { const st = vorgangStatus(ctx, e); return st.aktiv || st.key === 'uebergeben'; })()) || null;
+export const bedarfBelegt = (ctx, projekt, id, ausser = null) => Boolean(bedarfVorgang(ctx, projekt, id, ausser));
+// Art der Belegung: null (frei), 'laufend' (aktiver Vorgang) oder 'uebergeben' (durch Übergabe gedeckt).
+export function bedarfBelegtArt(ctx, projekt, id) {
+  const e = bedarfVorgang(ctx, projekt, id);
+  return e ? (vorgangStatus(ctx, e).key === 'uebergeben' ? 'uebergeben' : 'laufend') : null;
+}
 // Ziel ist für dieses Bauteil gesperrt, wenn ein früherer Vorgang mit „ungeeignet“ endete.
 export const zielUngeeignet = (ctx, projekt, bauteilId, ziel) => vorgaengeFuer(ctx, projekt, bauteilId)
   .some((e) => e.ziel?.art === ziel.art && e.ziel.id === ziel.id && (e.ziel.projekt || e.projekt) === (ziel.projekt || projekt) && vorgangStatus(ctx, e).key === 'ungeeignet');
@@ -99,6 +109,10 @@ const einheitVon = (b) => GRUPPEN[b?.gruppe]?.einheit || '';
 export function vorgangSchritt(ctx, e, aktion, eingabe = {}) {
   if (!e) return { fehler: { allgemein: 'Diesen Vorgang gibt es nicht mehr.' } };
   if (!AKTIONEN.includes(aktion)) return { fehler: { allgemein: 'Diese Aktion gibt es nicht.' } };
+  // Rückdatierte Einträge: Ein neuer Schritt darf nicht vor einem schon vorhandenen Eintrag dieses Vorgangs liegen.
+  const spaeter = (ctx.ereignisse || []).filter((x) => x && x.entscheidung === vorgangSchluessel(e) && x.at && minuten(x.at) > minuten(ctx.at))
+    .sort((a, c) => minuten(c.at) - minuten(a.at))[0];
+  if (spaeter) return { fehler: { allgemein: `Es gibt Einträge nach diesem Stichtag. Stichtag auf ${zeit(spaeter.at)} oder später stellen.` } };
   const st = vorgangStatus(ctx, e);
   if (!st.erlaubt.includes(aktion)) return { fehler: { allgemein: st.beendet ? `Der Vorgang ist beendet (${st.label}). Es sind keine weiteren Schritte möglich.` : `Dieser Schritt ist im Status „${st.label}“ nicht möglich.` } };
   const tag = stichtag(ctx); const b = bauteilZu(ctx, e); const d = bedarfZu(ctx, e);

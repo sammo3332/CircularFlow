@@ -280,11 +280,13 @@ export function offeneNachweise(ctx, b) {
 
 // Mögliche Ziele für ein Bauteil: Zielöffnungen im Projekt (Türen) und Bedarfe derselben Gruppe in der Region.
 export function moeglicheZiele(ctx, b) {
-  // Nur aktive Vorgänge belegen ein Ziel. Ein für dieses Bauteil mit „ungeeignet“ beendetes Ziel bleibt gesperrt.
+  // Ein übergebenes Bauteil ist abgeschlossen und wird keinem Ziel mehr angeboten.
+  if (uebergebenerVorgang(ctx, b.projekt, b.id)) return { oeffnungen: [], bedarfe: [] };
+  // Aktive und übergebene Vorgänge belegen ihr Ziel. Ein für dieses Bauteil mit „ungeeignet“ beendetes Ziel bleibt gesperrt.
   const belegt = new Set();
   for (const e of ctx.daten.entscheidungen) {
     const st = vorgangStatus(ctx, e); const k = `${e.ziel.art}:${e.ziel.projekt || e.projekt}:${e.ziel.id}`;
-    if (st.aktiv || (st.key === 'ungeeignet' && e.projekt === b.projekt && e.bauteil === b.id)) belegt.add(k);
+    if (st.aktiv || st.key === 'uebergeben' || (st.key === 'ungeeignet' && e.projekt === b.projekt && e.bauteil === b.id)) belegt.add(k);
   }
   const offen = (art, p, id) => !belegt.has(`${art}:${p}:${id}`);
   const oeffnungen = GRUPPEN[b.gruppe].zuordnung === 'zieloeffnung'

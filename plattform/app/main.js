@@ -1,12 +1,12 @@
 // Einstieg: Router, Rahmen, Ereignisse. Ein gemeinsamer Datensatz für alle Ansichten.
 import { REGIONEN, PROJEKTZEITEN, GRUPPEN } from './daten.js';
-import { loeseAbgleichSchluessel, abgleich, abgleichListe, pruefbitteAnlegen } from './abgleich.js';
+import { loeseAbgleichSchluessel, abgleich, abgleichListe, pruefbitteAnlegen, pruefbitteErlaubt } from './abgleich.js';
 import { pruefeBedarf, bedarfAusEntwurf, naechsteBedarfId, bedarfAenderung } from './bedarf.js';
 import { pruefeProjekt, projektAusEntwurf } from './projektanlage.js';
 import { vorgangSchritt, checklisteSetzen } from './vorgang.js';
 import { neuerUiZustand, leererKatalog, leereBedarfsliste, leererBestand, leereRadarFilter, leeresBedarfsformular, leeresProjektformular, leeresVorgangsformular, bedarfsformularStarten } from './uizustand.js';
 import { ladePersistenz, speichere, loesche, baueDaten, leerePersistenz, anzahlEigeneAenderungen } from './zustand.js';
-import { schluessel, neueEntscheidung, bauteilAusErfassung, naechsteBauteilId, pruefeErfassung, erkennungSimulation, radarSchritt, pruefeMeldung, ifcVorpruefung, ZAHL, lage, beispielAufmassRechtzeitig } from './regeln.js';
+import { schluessel, moeglicheZiele, neueEntscheidung, bauteilAusErfassung, naechsteBauteilId, pruefeErfassung, erkennungSimulation, radarSchritt, pruefeMeldung, ifcVorpruefung, ZAHL, lage, beispielAufmassRechtzeitig } from './regeln.js';
 import { esc, icon, slug, pchip, nichtGefunden, laedt, routeBedarf, routeEntscheidung } from './ui.js';
 import { zeit, jetztBerlin } from './zeit.js';
 import { karteMontieren, karteEntfernen, markerHervorheben } from './karte.js';
@@ -368,6 +368,9 @@ function zuordnen(bkey) {
   if (!wahl) { ui.zuordnungFehler = 'Bitte ein Ziel wählen.'; ui.fokus = 'ziel-wahl'; render(); return; }
   const [art, projekt, id] = wahl.split('|');
   const b = db.bauteile.find((x) => `${x.projekt}:${x.id}` === bkey);
+  // Nur Ziele, die die Fachregel noch anbietet (ein übergebenes Bauteil und belegte Ziele nicht).
+  const frei = moeglicheZiele(ctx(), b); const liste = art === 'zieloeffnung' ? frei.oeffnungen : frei.bedarfe;
+  if (!liste.some((z) => z.projekt === projekt && z.id === id)) { ui.zuordnungFehler = 'Dieses Ziel ist für das Bauteil nicht mehr möglich.'; ui.fokus = 'ziel-wahl'; render(); return; }
   const e = neueEntscheidung(ctx(), b, { art, projekt, id });
   uebernehmen((d) => {
     d.zuordnungen.push(e);
@@ -473,6 +476,11 @@ function vorgangAktion(k, aktion) {
   const e = db.entscheidungen.find((x) => schluessel(x.projekt, x.id) === k);
   if (ui.vorgangForm.k !== k) ui.vorgangForm = { ...leeresVorgangsformular(), k };
   const vf = ui.vorgangForm;
+  // Prüfbitte nur, wenn die Fachregel sie zur Projektzeit erlaubt (Zeit-, Mengen- und Türregel); sonst Grund anzeigen.
+  if (aktion === 'pruefbitte') {
+    const pb = pruefbitteErlaubt(ctx(), e);
+    if (!pb.erlaubt) { vf.aktion = aktion; vf.fehler = { allgemein: pb.grund }; ui.fokus = 'vorgang-fehler'; render(); return; }
+  }
   const res = vorgangSchritt(ctx(), e, aktion, vf.eingabe[aktion] || {});
   if (res.fehler) {
     const { allgemein, ...felder } = res.fehler;

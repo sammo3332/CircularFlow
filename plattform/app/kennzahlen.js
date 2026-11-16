@@ -65,7 +65,9 @@ export function kennzahlen(ctx, { horizontTage = 90, kritischTage = 7 } = {}) {
   const paare = abgleichListe(ctx);
   const nachErgebnis = {};
   for (const k of ERGEBNIS_REIHENFOLGE) { const l = paare.filter((a) => a.gesamt.key === k); nachErgebnis[k] = { anzahl: l.length, eintraege: l }; }
-  const passendePaare = { anzahl: paare.length, eintraege: paare, nachErgebnis };
+  // „Paare derselben Gruppe“ zählt alle Ergebnisse; „prüfbar“ nur weiter prüfen und knapp.
+  const pruefbarePaare = paare.filter((a) => a.gesamt.key === 'weiter' || a.gesamt.key === 'knapp');
+  const passendePaare = { anzahl: paare.length, eintraege: paare, nachErgebnis, pruefbar: pruefbarePaare.length, pruefbarEintraege: pruefbarePaare };
 
   // Vorgänge je Status (alle, auch beendete; E-01 und E-02 zählen mit).
   const alle = ctx.daten.entscheidungen.map((e) => ({ e, status: vorgangStatus(ctx, e) }));
@@ -83,11 +85,13 @@ export function kennzahlen(ctx, { horizontTage = 90, kritischTage = 7 } = {}) {
   for (const e of ctx.daten.entscheidungen) {
     const st = vorgangStatus(ctx, e); if (!st.aktiv) continue;
     const schritt = naechsterVorgangsschritt(ctx, e);
-    const liste = schritt ? (schritt.frist ? [{ name: schritt.fristName, at: schritt.frist, ton: schritt.ton }] : []) : lage(ctx, e).fristen;
+    // Nach dem Fachergebnis ist eine verstrichene Frist überfällig, solange der Vorgang nicht erledigt ist (abgelaufene Vormerkung,
+    // Bestellfrist ohne Vormerkung, Übergabetermin vorbei). Davor gilt die Tür- und Bodenregel: dort kennzeichnet „crit“ die nicht erfüllte Frist.
+    const liste = schritt ? (schritt.frist ? [{ name: schritt.fristName, at: schritt.frist, ton: schritt.ton, offen: true }] : []) : lage(ctx, e).fristen.map((f) => ({ ...f, offen: f.ton === 'crit' }));
     for (const f of liste) {
       const t = minuten(f.at); const vorbei = t < jetzt;
-      if ((vorbei && f.ton !== 'crit') || (!vorbei && t > ende)) continue;
-      fristen.push({ art: 'entscheidung', projekt: e.projekt, id: e.id, ref: e, name: f.name, at: f.at, ueberfaellig: vorbei, ton: f.ton, tage: Math.floor((t - jetzt) / 1440) });
+      if ((vorbei && !f.offen) || (!vorbei && t > ende)) continue;
+      fristen.push({ art: 'entscheidung', projekt: e.projekt, id: e.id, ref: e, name: f.name, at: f.at, ueberfaellig: vorbei, ton: vorbei ? 'crit' : f.ton, tage: Math.floor((t - jetzt) / 1440) });
     }
   }
   for (const d of offeneBedarfe) {

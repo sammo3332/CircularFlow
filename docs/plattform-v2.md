@@ -123,6 +123,8 @@ Stichtag H = Projektzeit. Mengen nie über Einheiten addieren.
 | Offene Prüfpunkte | Bauteile mit mindestens einem offenen Nachweis, dazu Zahl der Punkte | Bestand mit Filter „offen“ |
 | Zeitkritisch (7 Tage) | Fristen zwischen H und H + 7 Tagen; Überfälliges hervorgehoben | Entscheidung oder Bedarf |
 
+Ein Vorgang mit dem Status „übergeben“ belegt seinen Bedarf: Der Bedarf zählt nicht mehr unter „Bedarfe offen“, wird im Abgleich nicht mehr angeboten, und seine Bestellfrist ist nicht mehr zeitkritisch. Erst „ungeeignet“ oder „abgebrochen“ geben ihn wieder frei. „Paare derselben Gruppe“ zählt alle Ergebnisse; daneben steht „davon prüfbar“ (weiter prüfen oder knapp). Überfällig ist eine Frist, die verstrichen ist, während der Vorgang nicht erledigt ist (zum Beispiel abgelaufene Vormerkung, Bestellfrist ohne Vormerkung, Übergabetermin vorbei). Eine Prüfbitte ist nur erlaubt, wenn der Abgleich des Paares sie erlaubt (Ziel Bedarf) oder die Türregel Rang 6 erreicht hat (Ziel Zielöffnung); sonst zeigt die Entscheidungsseite den Grund.
+
 ## 5. Navigation
 
 Übersicht · Projekte (Karte, Liste; Reiter Radar und Projekt erfassen) · Bauteile (Katalog) · Bedarfe · Erfassen.

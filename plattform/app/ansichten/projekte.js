@@ -3,6 +3,7 @@ import { REGIONEN, ARTEN, GRUPPEN } from '../daten.js';
 import { esc, chip, pchip, artText, icon, leer, slug, routePass, routeRaum, routeEntscheidung, projekteReiter, seitenkopf, tonMarke } from '../ui.js';
 import { naechsteHandlung, lageVorgang, naechsteFrist, tonVon } from '../regeln.js';
 import { zeit, datum } from '../zeit.js';
+import { bedarfVorgang, bedarfBelegtArt } from '../vorgang.js';
 
 const HERKUNFT = { beispiel: ['Beispiel', 'sim'], radar: ['aus Radar bestätigt', 'info'], meldung: ['Projektmeldung', 'info'], eigen: ['Eigene Eingabe', 'sim'] };
 export const herkunftChip = (p) => chip(...(HERKUNFT[p.herkunft] || ['Beispiel', 'sim']));
@@ -116,14 +117,15 @@ export function projektUebersicht(ctx, p) {
       <div class="block-kopf"><h2 id="h-ang">Angebotene Bauteile</h2>${ang.length ? `<a class="leise" href="#bestand-${slug(p.kurz)}">Ganzer Bestand</a>` : ''}</div>
       ${ang.length ? `<ul class="flaeche kompaktliste">${ang.slice(0, 8).map((b) => { const n = naechsteHandlung(ctx, b); return `<li><a href="${routePass(b)}"><span class="mono">${esc(b.id)}</span><span><b>${esc(b.name)}</b><small>${esc(b.menge)} ${esc(GRUPPEN[b.gruppe].einheit)} · Raum ${esc(b.raum)}${b.verfuegbarAb ? ` · ab ${datum(b.verfuegbarAb + 'T00:00')}` : ''}</small></span><span class="kl-schritt">${tonMarke(n.ton)}${esc(n.text)}</span></a></li>`; }).join('')}${ang.length > 8 ? `<li class="mehr"><a href="#bestand-${slug(p.kurz)}">und ${ang.length - 8} weitere im Bestand</a></li>` : ''}</ul>`
         : leer('Keine angebotenen Bauteile.', p.art === 'neubau' ? 'Dieses Projekt sucht Bauteile, siehe Bedarfe.' : 'Bauteile entstehen über die Erfassung vor Ort.', (p.gebaeude || []).length ? `<a class="knopf" href="#erfassung">${icon('kamera')} Bauteil erfassen</a>` : '')}
-      ${bed.length ? `<div class="block-kopf"><h2>Bedarfe</h2></div><ul class="flaeche kompaktliste">${bed.map((d) => `<li><span class="mono">${esc(d.id)}</span><span><b>${esc(d.titel)}</b><small>${esc(GRUPPEN[d.gruppe].name)} · ${d.bedarfM2 ? `${d.bedarfM2} m² + ${d.reserveProzent} % Reserve` : `${d.menge} ${esc(d.einheit)}`}${d.text ? ` · ${esc(d.text)}` : ''}</small></span>${bedarfBelegt(ctx, d)}</li>`).join('')}</ul>` : ''}
+      ${bed.length ? `<div class="block-kopf"><h2>Bedarfe</h2></div><ul class="flaeche kompaktliste">${bed.map((d) => `<li><span class="mono">${esc(d.id)}</span><span><b>${esc(d.titel)}</b><small>${esc(GRUPPEN[d.gruppe].name)} · ${d.bedarfM2 ? `${esc(d.bedarfM2)} m² + ${esc(d.reserveProzent)} % Reserve` : `${esc(d.menge)} ${esc(d.einheit)}`}${d.text ? ` · ${esc(d.text)}` : ''}</small></span>${bedarfMarke(ctx, d)}</li>`).join('')}</ul>` : ''}
       ${offen.length ? `<div class="block-kopf"><h2>Entscheidungen</h2><a class="leise" href="#entscheidungen-${slug(p.kurz)}">Alle</a></div><ul class="flaeche kompaktliste">${offen.map((e) => { const l = lageVorgang(ctx, e); return `<li><a href="${routeEntscheidung(e)}"><span class="mono">${esc(e.id)}</span><span><b>${esc(e.bauteil)} → ${esc(e.ziel.id)}</b><small>${esc(l.regelText)}</small></span><span class="kl-schritt">${tonMarke(tonVon(l.haupt))}${esc(l.haupt.text)}</span></a></li>`; }).join('')}</ul>` : ''}
     </section>
   </div>`;
 }
 
-function bedarfBelegt(ctx, d) {
-  const e = ctx.daten.entscheidungen.find((x) => x.ziel.art === 'bedarf' && x.ziel.id === d.id && (x.ziel.projekt || x.projekt) === d.projekt);
-  return e ? `<a class="kl-schritt" href="${routeEntscheidung(e)}">${chip(`zugeordnet: ${e.projekt} · ${e.bauteil}`, 'info')}</a>` : `<span class="kl-schritt">${chip('offen', 'neutral')}</span>`;
+// Beleg eines Bedarfs: Fachregel vorgang.bedarfVorgang (aktiv oder übergeben); beendete Vorgänge zählen nicht.
+function bedarfMarke(ctx, d) {
+  const e = bedarfVorgang(ctx, d.projekt, d.id);
+  return e ? `<a class="kl-schritt" href="${routeEntscheidung(e)}">${chip(`${bedarfBelegtArt(ctx, d.projekt, d.id) === 'uebergeben' ? 'übergeben' : 'zugeordnet'}: ${e.projekt} · ${e.bauteil}`, 'info')}</a>` : `<span class="kl-schritt">${chip('offen', 'neutral')}</span>`;
 }
 

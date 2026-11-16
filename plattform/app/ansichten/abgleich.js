@@ -1,8 +1,8 @@
 // Abgleich: Liste aller Paare und die erklärte Prüfung eines Paares. Der Knopf „Prüfbitte anlegen“ (oder sein Sperrgrund) steht hier; angelegt wird in main.js.
 import { GRUPPEN, ZUSTAND } from '../daten.js';
-import { abgleich, abgleichListe, ERGEBNIS, ERGEBNIS_REIHENFOLGE, HINWEIS_ABGLEICH } from '../abgleich.js';
+import { abgleich, abgleichListe, reserveText, ERGEBNIS, ERGEBNIS_REIHENFOLGE, HINWEIS_ABGLEICH } from '../abgleich.js';
 import { offeneNachweise } from '../regeln.js';
-import { esc, chip, icon, leer, pchip, gruppenChip, seitenkopf, person, routeBedarf, routePass, routeAbgleich, ergebnisChip, tagText, tonSymbol } from '../ui.js';
+import { esc, chip, icon, leer, pchip, gruppenChip, seitenkopf, person, routeBedarf, routePass, routeAbgleich, routeEntscheidung, ergebnisChip, tagText, tonSymbol } from '../ui.js';
 import { zeit } from '../zeit.js';
 import { verfuegbarText } from './bauteile.js';
 import { bedarfeReiter, bestellfristVon, mengeBedarf } from './bedarfe.js';
@@ -15,7 +15,8 @@ const tageText = (n) => `${n} ${n === 1 ? 'Tag' : 'Tage'}`;
 
 function kurz(ctx, a) {
   const z = a.zeit;
-  if (a.gesamt.key === 'weiter' || a.gesamt.key === 'knapp') return `Reserve ${tageText(z.reserveTage)}${z.lagertage ? `, Zwischenlager ${tageText(z.lagertage)}` : ''}`;
+  if (a.gesamt.key === 'weiter' || a.gesamt.key === 'knapp') return `Reserve ${reserveText(z.reserveTage)}${z.lagertage ? `, Zwischenlager ${tageText(z.lagertage)}` : ''}`;
+  if (a.gesamt.key === 'spaet' && z.reserveTage !== null) return `Reserve ${reserveText(z.reserveTage)}`;
   return a.gruende[0] || '';
 }
 
@@ -24,7 +25,9 @@ export function abgleichListeSeite(ctx) {
   const alle = abgleichListe(ctx);
   const liste = f ? alle.filter((a) => a.gesamt.key === f) : alle;
   const zahl = (k) => alle.filter((a) => a.gesamt.key === k).length;
-  return `${seitenkopf({ titel: 'Passende Paare', untertitel: `Angebote und Bedarfe derselben Bauteilgruppe, geprüft nach Typ, Menge und Zeit. ${VORSCHLAG}.` })}
+  const pruefbar = zahl('weiter') + zahl('knapp');
+  return `${seitenkopf({ titel: 'Paare derselben Gruppe', untertitel: `Angebote und Bedarfe derselben Bauteilgruppe, geprüft nach Typ, Menge und Zeit. ${VORSCHLAG}.` })}
+  <p class="zahlenzeile" id="paare-zahlen"><b class="mono">${alle.length}</b> ${alle.length === 1 ? 'Paar' : 'Paare'} derselben Gruppe, davon <b class="mono">${pruefbar}</b> prüfbar (weiter prüfen oder knapp). Die übrigen sind zu spät, unvollständig oder klärungsbedürftig.</p>
   ${bedarfeReiter('abgleich')}
   <div class="filterleiste" role="group" aria-label="Nach Ergebnis filtern">
     <button type="button" class="filterchip" aria-pressed="${!f}" data-action="abgleich-filter" data-wert="">Alle ${alle.length}</button>
@@ -82,7 +85,7 @@ export function abgleichSeite(ctx, bauteil, bedarf) {
   const [mLabel, mTon] = MENGE_CHIP[a.menge.status] || ['–', 'neutral'];
   const reihe = (name, wert) => `<tr><th scope="row">${name}</th><td>${wert}</td></tr>`;
   return `${seitenkopf({
-    pfad: [['#bedarfe', 'Bedarfe'], ['#abgleich', 'Passende Paare']], aktuell: `${a.bauteil.id} → ${a.bedarf.id}`,
+    pfad: [['#bedarfe', 'Bedarfe'], ['#abgleich', 'Paare derselben Gruppe']], aktuell: `${a.bauteil.id} → ${a.bedarf.id}`,
     eyebrow: 'Abgleich · Angebot und Bedarf', titel: `<span class="mono">${esc(a.bauteil.id)}</span> und <span class="mono">${esc(a.bedarf.id)}</span>: ${esc(a.gesamt.label)}`,
     untertitel: `${ergebnisChip(a.gesamt)} ${chip(VORSCHLAG, 'sim')} <span>Stichtag der Demo ${zeit(ctx.at)} (Simulation)</span>`,
   })}
@@ -91,7 +94,7 @@ export function abgleichSeite(ctx, bauteil, bedarf) {
     <h2 id="h-ab-ergebnis" tabindex="-1">${tonSymbol(a.gesamt.ton)}${esc(a.gesamt.label)}</h2>
     <p class="ergebnis-rolle">${VORSCHLAG}. ${esc(a.hinweis)}</p>
     <ul class="gruende">${a.gruende.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
-    <div class="naechster"><p class="label">Nächster Schritt · ${esc(person(a.naechsterSchritt.rolle).rolle)}</p><p><b>${esc(a.naechsterSchritt.text)}</b></p></div>
+    <div class="naechster"><p class="label">Nächster Schritt · ${esc(person(a.naechsterSchritt.rolle).rolle)}</p><p><b>${esc(a.naechsterSchritt.text)}</b>${a.naechsterSchritt.vorgang ? ` <a href="${routeEntscheidung(a.naechsterSchritt.vorgang)}">Vorgang ${esc(a.naechsterSchritt.vorgang.id)} öffnen</a>` : ''}</p></div>
     <div class="ergebnis-aktionen">
       <button type="button" class="knopf" id="btn-pruefbitte" data-action="pruefbitte-anlegen" data-key="${esc(a.schluessel)}" ${a.pruefbitteMoeglich ? '' : 'aria-disabled="true" aria-describedby="pruefbitte-grund"'}>${icon('flagge')} Prüfbitte anlegen</button>
       ${a.pruefbitteMoeglich ? '<span class="leise">Legt einen Vorgang an und bittet die Fachprüfung um Eignungsprüfung. Simulation, es wird nichts versendet.</span>' : `<span class="sperrgrund" id="pruefbitte-grund" tabindex="-1">${tonSymbol('warn')}<span><b>Gesperrt.</b> ${esc(a.sperrgrund)}</span></span>`}
@@ -104,7 +107,7 @@ export function abgleichSeite(ctx, bauteil, bedarf) {
       <tr><th scope="row">Typ</th><td>${chip(a.typ.ok ? 'Passt' : 'Widerspruch', a.typ.ok ? 'ok' : 'warn')}</td><td>${esc(a.typ.text)}</td></tr>
       <tr><th scope="row">Menge</th><td>${chip(mLabel, mTon)}</td><td>${esc(a.menge.text)}<small>Quelle: ${esc(a.menge.quelle)}. Keine Umrechnung zwischen Einheiten.</small></td></tr>
       <tr><th scope="row">Zeit</th><td>${chip(zeitBefund.label, zeitBefund.ton)}</td><td>${z.gruende.length ? `<ul class="gruende">${z.gruende.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>` : 'Kein Zeitergebnis.'}</td></tr>
-      <tr><th scope="row">Übergabe und Lager</th><td>${z.uebergabe ? chip(z.lagertage ? `${tageText(z.lagertage)} Lager` : 'ohne Zwischenlager', z.lagertage ? 'warn' : 'ok') : chip('offen', 'info')}</td><td>${z.uebergabe ? `Frühester Übergabetag ${tagText(z.uebergabe.fruehestens)}; Übergabe möglich von ${tagText(z.uebergabe.von)} bis ${tagText(z.uebergabe.bis)}.` : 'Noch nicht berechenbar, weil Angaben fehlen oder die Zeit nicht reicht.'}</td></tr>
+      <tr><th scope="row">Übergabe und Lager</th><td>${z.uebergabe ? (z.lagertage === null ? chip('Lager offen', 'info') : chip(z.lagertage ? `${tageText(z.lagertage)} Lager` : 'ohne Zwischenlager', z.lagertage ? 'warn' : 'ok')) : chip('offen', 'info')}</td><td>${z.uebergabe ? `Frühester Übergabetag ${tagText(z.uebergabe.fruehestens)}${z.status === 'spaet' ? (z.uebergabe.bis ? `; das Annahmefenster endet am ${tagText(z.uebergabe.bis)}. Zu spät für diese Entscheidung.` : '.') : `; Übergabe möglich von ${tagText(z.uebergabe.von)} bis ${tagText(z.uebergabe.bis)}.`}` : 'Noch nicht berechenbar, weil Angaben fehlen.'}</td></tr>
       <tr><th scope="row">Entfernung</th><td>${chip('ohne Einfluss', 'neutral')}</td><td>${esc(a.entfernung.text)}<small>Luftlinie zwischen den symbolischen Projektlagen. Sie beeinflusst das Ergebnis nicht.</small></td></tr>
     </tbody></table></div>
   </section>
@@ -117,10 +120,10 @@ export function abgleichSeite(ctx, bauteil, bedarf) {
         ${reihe('Mindestprüfzeit', z.pruefzeitTage !== null ? `<span class="mono">${tageText(z.pruefzeitTage)}</span>${z.geschaetzt.includes('Mindestprüfzeit') ? ` ${chip('geschätzt', 'warn')}` : ''}` : chip('fehlt', 'info'))}
         ${reihe('Prüfende', tagOderFehlt(z.pruefende))}
         ${reihe('Bestellfrist', `${tagOderFehlt(z.bestellfrist)}${z.geschaetzt.includes('Bestellfrist') ? ` ${chip('geschätzt', 'warn')}` : ''}`)}
-        ${reihe('Reserve bis zur Bestellfrist', z.reserveBestellung !== undefined ? `<span class="mono">${tageText(z.reserveBestellung)}</span>` : '<span class="leise">nicht berechenbar</span>')}
+        ${reihe('Reserve bis zur Bestellfrist', z.reserveBestellung !== null ? `<span class="mono">${esc(reserveText(z.reserveBestellung))}</span>` : '<span class="leise">nicht berechenbar</span>')}
         ${reihe('Verfügbar', `${z.verfuegbarAb ? `<span class="mono">ab ${tagText(z.verfuegbarAb)}</span>` : chip('fehlt', 'info')}${z.verfuegbarBis ? ` <span class="mono">bis ${tagText(z.verfuegbarBis)}</span>` : ''}`)}
         ${reihe('Annahmefenster', z.annahmeVon && z.annahmeBis ? `<span class="mono">${tagText(z.annahmeVon)} bis ${tagText(z.annahmeBis)}</span>${z.geschaetzt.includes('Annahmefenster') ? ` ${chip('geschätzt', 'warn')}` : ''}` : chip('fehlt', 'info'))}
-        ${reihe('Reserve im Annahmefenster', z.reserveAnnahme !== undefined ? `<span class="mono">${tageText(z.reserveAnnahme)}</span>` : '<span class="leise">nicht berechenbar</span>')}
+        ${reihe('Reserve im Annahmefenster', z.reserveAnnahme !== null ? `<span class="mono">${esc(reserveText(z.reserveAnnahme))}</span>` : '<span class="leise">nicht berechenbar</span>')}
       </tbody></table>
       <p class="klein">Kalendertage, Berliner Zeit. Ein Grenztag zählt als rechtzeitig. Mindestprüfzeiten im Beispiel sind Annahmen.</p>
     </section>
@@ -133,7 +136,7 @@ export function abgleichSeite(ctx, bauteil, bedarf) {
       </section>
       <section class="flaeche" aria-labelledby="h-ab-punkte">
         <h2 id="h-ab-punkte">Prüfpunkte</h2>
-        ${a.pruefpunkte.length ? `<ul class="pruefpunkte">${a.pruefpunkte.map((x) => `<li><span>${esc(x.text)}</span><small>${esc(person(x.rolle).rolle)}</small></li>`).join('')}</ul>` : '<p class="leer-zeile">Keine Prüfpunkte, solange der Abgleich nicht zeitlich und fachlich passt.</p>'}
+        ${a.pruefpunkte.length ? `<ul class="pruefpunkte">${a.pruefpunkte.map((x) => `<li><span>${esc(x.text)}</span><small>${esc(person(x.rolle).rolle)}</small></li>`).join('')}</ul>` : `<p class="leer-zeile">${a.typ.ok ? 'Keine Prüfpunkte.' : 'Keine Prüfpunkte, weil Angebot und Bedarf nicht zur selben Bauteilgruppe und Einheit gehören.'}</p>`}
       </section>
     </div>
   </div>`;

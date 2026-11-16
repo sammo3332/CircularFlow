@@ -3,8 +3,8 @@
 // Zeitprüfung in Kalendertagen (Europe/Berlin). Stichtag S = Tag der Projektzeit (ctx.at).
 import { GRUPPEN } from './daten.js';
 import { minuten, ausMinuten, istDatum, datum } from './zeit.js';
-import { bewerteBoden, offeneNachweise, neueEntscheidung, schluessel, zahlText } from './regeln.js';
-import { aktiverVorgang, uebergebenerVorgang, bedarfBelegt, zielUngeeignet, pruefbitteEreignis } from './vorgang.js';
+import { bewerteBoden, offeneNachweise, neueEntscheidung, schluessel, zahlText, lage } from './regeln.js';
+import { aktiverVorgang, uebergebenerVorgang, bedarfBelegt, bedarfVorgang, zielUngeeignet, pruefbitteEreignis, vorgangStatus } from './vorgang.js';
 import { fehlendeZeitangaben } from './bedarf.js';
 
 export const ERGEBNIS = {
@@ -136,7 +136,7 @@ function pruefeZeit(ctx, bauteil, bedarf, typ) {
     stichtag: tagText(S), pruefbeginn: tagText(P), pruefbeginnQuelle, pruefende: E !== null ? tagText(E) : null, pruefzeitTage: pz.wert,
     bestellfrist: F.tag !== null ? tagText(F.tag) : null, annahmeVon: A1.tag !== null ? tagText(A1.tag) : null, annahmeBis: A2.tag !== null ? tagText(A2.tag) : null,
     verfuegbarAb: V1.tag !== null ? tagText(V1.tag) : null, verfuegbarBis: V2.tag !== null ? tagText(V2.tag) : null,
-    uebergabe: null, reserveTage: null, lagertage: null, geschaetzt, gruende, fehlend, klaerung,
+    uebergabe: null, reserveTage: null, reserveBestellung: null, reserveAnnahme: null, lagertage: null, geschaetzt, gruende, fehlend, klaerung,
   };
   if (klaerung.length) return { ...basis, status: 'klaerung', gruende: klaerung };
 
@@ -148,7 +148,19 @@ function pruefeZeit(ctx, bauteil, bedarf, typ) {
   if (A2.tag !== null && Number.isFinite(Ulower) && Ulower > A2.tag) {
     gruende.push(U !== null ? `Frühester Übergabetag ${dt(U)} liegt ${tage(U - A2.tag)} nach dem Ende des Annahmefensters ${dt(A2.tag)}.` : `Verfügbar ab ${dt(Ulower)} liegt ${tage(Ulower - A2.tag)} nach dem Ende des Annahmefensters ${dt(A2.tag)}.`);
   }
-  if (gruende.length) return { ...basis, status: 'spaet', gruende };
+  if (gruende.length) {
+    // Auch „zu spät“ zeigt Reserve (negativ), Übergabe und Lager, soweit berechenbar, damit Gründe, Rechnung und Prüfpunkte übereinstimmen.
+    const reserveB = F.tag !== null && E !== null ? F.tag - E : null;
+    const startS = U !== null ? (A1.tag !== null ? Math.max(U, A1.tag) : U) : null;
+    const reserveA = A2.tag !== null && startS !== null ? A2.tag - startS : null;
+    const bekannt = [reserveB, reserveA].filter((x) => x !== null);
+    const minimum = bekannt.length ? Math.min(...bekannt) : null;
+    return {
+      ...basis, status: 'spaet', gruende, reserveTage: minimum !== null && minimum < 0 ? minimum : null, reserveBestellung: reserveB, reserveAnnahme: reserveA,
+      lagertage: A1.tag !== null && U !== null ? Math.max(0, A1.tag - U) : null,
+      uebergabe: U !== null ? { fruehestens: tagText(U), von: tagText(startS), bis: A2.tag !== null ? tagText(A2.tag) : null } : null,
+    };
+  }
 
   if (fehlend.length) return { ...basis, status: 'fehlt', gruende: fehlend.map((f) => `${f} fehlt.`) };
 
@@ -172,7 +184,7 @@ function entfernung(ctx, bauteil, bedarf) {
 }
 
 // ---------- Abgleich ----------
-export function abgleich(ctx, bauteil, bedarf) {
+export function abgleich(ctx, bauteil, bedarf, opt = {}) {
   const typ = pruefeTyp(ctx, bauteil, bedarf);
   const menge = pruefeMenge(ctx, bauteil, bedarf, typ);
   const zeit = pruefeZeit(ctx, bauteil, bedarf, typ);
@@ -180,18 +192,17 @@ export function abgleich(ctx, bauteil, bedarf) {
   let key = zeit.status;
   if (!typ.ok) key = 'klaerung';
   else if (key !== 'klaerung' && key !== 'spaet' && fehltMenge) key = 'fehlt';
-  const gruende = !typ.ok ? [typ.text] : key === 'fehlt' && zeit.status !== 'fehlt' ? ['Die Menge fehlt.'] : zeit.gruende;
   const fehlend = [...zeit.fehlend, ...(fehltMenge ? ['Menge'] : [])];
+  // Bei „Angaben fehlen“ nennen die Gründe alle fehlenden Angaben, auch die Menge.
+  const gruende = !typ.ok ? [typ.text] : key === 'fehlt' ? [...zeit.fehlend.map((f) => `${f} fehlt.`), ...(fehltMenge ? [menge.text] : [])] : zeit.gruende;
   const gesamt = { key, ...ERGEBNIS[key] };
   const rolleFehlend = (zeit.fehlend[0] || '').startsWith('Verfügbar') ? 'bauleitung' : 'planung';
 
   const pruefpunkte = [];
   const pp = (art, text, rolle) => pruefpunkte.push({ art, text, rolle });
-  if (typ.ok && ['weiter', 'knapp'].includes(key)) {
-    if (zeit.lagertage > 0) pp('zwischenlager', `Zwischenlagerung klären: ${tage(zeit.lagertage)} zwischen dem frühesten Übergabetag ${datum(zeit.uebergabe.fruehestens)} und dem Beginn des Annahmefensters ${datum(zeit.annahmeVon)}.`, 'bauleitung');
-  } else if (typ.ok && key === 'spaet' && zeit.verfuegbarAb && zeit.annahmeVon && zeit.pruefende) {
-    const U = Math.max(tagNr(zeit.verfuegbarAb), tagNr(zeit.pruefende)); const l = tagNr(zeit.annahmeVon) - U;
-    if (l > 0) pp('zwischenlager', `Zwischenlagerung klären: ${tage(l)} zwischen dem frühesten Übergabetag ${dt(U)} und dem Beginn des Annahmefensters ${datum(zeit.annahmeVon)}.`, 'bauleitung');
+  // Zwischenlagerung aus derselben Rechnung wie die Übergabe- und Lagerzeile (auch bei „zu spät“, wenn berechenbar).
+  if (typ.ok && ['weiter', 'knapp', 'spaet'].includes(key) && zeit.lagertage > 0 && zeit.uebergabe) {
+    pp('zwischenlager', `Zwischenlagerung klären: ${tage(zeit.lagertage)} zwischen dem frühesten Übergabetag ${datum(zeit.uebergabe.fruehestens)} und dem Beginn des Annahmefensters ${datum(zeit.annahmeVon)}.`, 'bauleitung');
   }
   if (typ.ok && zeit.verfuegbarBis && zeit.pruefende && tagNr(zeit.verfuegbarBis) < tagNr(zeit.pruefende)) pp('verfuegbarkeit', `Die Verfügbarkeit endet am ${datum(zeit.verfuegbarBis)}, vor dem Prüfende ${datum(zeit.pruefende)}. Verbleib des Bauteils klären.`, 'bauleitung');
   if (typ.ok && zeit.geschaetzt.length) pp('geschaetzt', `Geschätzte Angaben bestätigen: ${zeit.geschaetzt.join(', ')}.`, 'planung');
@@ -203,32 +214,69 @@ export function abgleich(ctx, bauteil, bedarf) {
     pp('eignung', 'Eignung (Zustand, Maße, Nachweise) von einer Fachperson prüfen lassen.', 'fach');
   }
 
-  const naechster = {
-    weiter: { text: 'Prüfbitte an die Fachprüfung anlegen', rolle: 'planung' },
-    knapp: { text: 'Prüfbitte sofort anlegen: kein Zeitpuffer mehr', rolle: 'planung' },
-    spaet: { text: 'Klären, ob die Bestellentscheidung noch offen ist oder ein späterer Bedarf passt', rolle: 'planung' },
-    fehlt: { text: `Fehlende Angaben ergänzen: ${fehlend.join(', ')}`, rolle: rolleFehlend },
-    klaerung: { text: 'Widerspruch in den Angaben klären und den Abgleich erneut prüfen', rolle: 'planung' },
+  const sp = sperre(ctx, bauteil, bedarf, typ, key, gruende, opt.ausser);
+  const sperrgrund = sp.grund;
+  const text = {
+    weiter: 'Prüfbitte an die Fachprüfung anlegen',
+    knapp: 'Prüfbitte sofort anlegen: kein Zeitpuffer mehr',
+    spaet: 'Klären, ob die Bestellentscheidung noch offen ist oder ein späterer Bedarf passt',
+    fehlt: `Fehlende Angaben ergänzen: ${fehlend.join(', ')}`,
+    klaerung: 'Widerspruch in den Angaben klären und den Abgleich erneut prüfen',
   }[key];
-
-  // Sperren der Prüfbitte: bauliche Gründe zuerst, dann das Ergebnis.
-  let sperrgrund = null;
-  const aktiv = aktiverVorgang(ctx, bauteil.projekt, bauteil.id);
-  if (!typ.ok) sperrgrund = `${ERGEBNIS.klaerung.label}: ${typ.text}`;
-  else if (bauteil.status === 'nicht') sperrgrund = 'Das Bauteil ist als nicht wiederverwendbar eingestuft.';
-  else if (bauteil.ziel) sperrgrund = `Das Bauteil hat bereits ein festes Ziel (${bauteil.ziel}).`;
-  else if (aktiv) sperrgrund = `Für dieses Bauteil läuft bereits der Vorgang ${aktiv.id}.`;
-  else if (uebergebenerVorgang(ctx, bauteil.projekt, bauteil.id)) sperrgrund = 'Das Bauteil wurde bereits übergeben.';
-  else if (bedarfBelegt(ctx, bedarf.projekt, bedarf.id)) sperrgrund = 'Der Bedarf gehört bereits zu einem laufenden Vorgang.';
-  else if (zielUngeeignet(ctx, bauteil.projekt, bauteil.id, { art: 'bedarf', id: bedarf.id, projekt: bedarf.projekt })) sperrgrund = 'Dieses Bauteil wurde für diesen Bedarf bereits als ungeeignet beendet.';
-  else if (!['weiter', 'knapp'].includes(key)) sperrgrund = `${ERGEBNIS[key].label}: ${gruende[0] || naechster.text}`;
+  const rolle = { weiter: 'planung', knapp: 'planung', spaet: 'planung', fehlt: rolleFehlend, klaerung: 'planung' }[key];
+  // Ist die Prüfbitte bei weiter/knapp gesperrt, nennt der nächste Schritt den Grund oder den laufenden Vorgang statt „Prüfbitte anlegen“.
+  let naechster = { text, rolle };
+  if (['weiter', 'knapp'].includes(key) && sperrgrund) {
+    naechster = sp.vorgang ? { text: `Vorgang ${sp.vorgang.id} öffnen: ${sperrgrund}`, rolle, vorgang: sp.vorgang } : { text: `Prüfbitte derzeit gesperrt: ${sperrgrund}`, rolle };
+  }
 
   return {
     schluessel: abgleichSchluessel(bauteil, bedarf), stand: ctx.at, bauteil, bedarf,
     typ, menge, zeit: { ...zeit, gruende }, entfernung: entfernung(ctx, bauteil, bedarf),
     pruefpunkte, naechsterSchritt: naechster, gesamt, fehlend, gruende, hinweis: HINWEIS_ABGLEICH,
-    pruefbitteMoeglich: sperrgrund === null, sperrgrund,
+    pruefbitteMoeglich: sperrgrund === null, sperrgrund, vorgang: sp.vorgang || null,
   };
+}
+
+// Sperren der Prüfbitte: bauliche Gründe zuerst, dann das Ergebnis. ausser = eigener Vorgang, der nicht als Sperrgrund zählt.
+function sperre(ctx, bauteil, bedarf, typ, key, gruende, ausser = null) {
+  const gleichV = (v) => ausser && v && v.projekt === ausser.projekt && v.id === ausser.id;
+  const aktivV = aktiverVorgang(ctx, bauteil.projekt, bauteil.id);
+  const aktiv = gleichV(aktivV) ? null : aktivV;
+  const belegtV = bedarfVorgang(ctx, bedarf.projekt, bedarf.id, ausser);
+  const aus = (grund, vorgang = null) => ({ grund, vorgang });
+  if (!typ.ok) return aus(`${ERGEBNIS.klaerung.label}: ${typ.text}`);
+  if (bauteil.status === 'nicht') return aus('Das Bauteil ist als nicht wiederverwendbar eingestuft.');
+  if (bauteil.ziel) return aus(`Das Bauteil hat bereits ein festes Ziel (${bauteil.ziel}).`);
+  if (aktiv) return aus(`Für dieses Bauteil läuft bereits der Vorgang ${aktiv.id}.`, aktiv);
+  if (uebergebenerVorgang(ctx, bauteil.projekt, bauteil.id)) return aus('Das Bauteil wurde bereits übergeben.');
+  if (belegtV) return vorgangStatus(ctx, belegtV).key === 'uebergeben' ? aus(`Der Bedarf ist bereits durch eine Übergabe gedeckt (Vorgang ${belegtV.id}).`, belegtV) : aus(`Der Bedarf gehört bereits zum laufenden Vorgang ${belegtV.id}.`, belegtV);
+  if (zielUngeeignet(ctx, bauteil.projekt, bauteil.id, { art: 'bedarf', id: bedarf.id, projekt: bedarf.projekt })) return aus('Dieses Bauteil wurde für diesen Bedarf bereits als ungeeignet beendet.');
+  if (!['weiter', 'knapp'].includes(key)) return aus(`${ERGEBNIS[key].label}: ${gruende[0] || ''}`.trim());
+  return aus(null);
+}
+
+// Reserve als Text, auch negativ: „5 Tage“, „−5 Tage, zu spät“. Leer, wenn nicht berechenbar.
+export const reserveText = (n) => (n === null || n === undefined ? '' : n < 0 ? `−${tage(-n)}, zu spät` : tage(n));
+
+// Darf für diesen Vorgang (Entscheidung E-xx) eine Prüfbitte angelegt werden? Reine Prüfung zur Projektzeit ctx.at.
+// Ziel „Bedarf“: der Abgleich dieses Paares muss die Prüfbitte erlauben (der eigene Vorgang zählt nicht als Sperrgrund).
+// Ziel „Zielöffnung“: die Türregel muss Rang 6 erreicht haben (wie der Knopf „Zur Fachprüfung vorlegen“).
+export function pruefbitteErlaubt(ctx, e) {
+  if (!e) return { erlaubt: false, grund: 'Diesen Vorgang gibt es nicht mehr.' };
+  const st = vorgangStatus(ctx, e);
+  if (!st.erlaubt.includes('pruefbitte')) return { erlaubt: false, grund: st.beendet ? `Der Vorgang ist beendet (${st.label}).` : `Im Status „${st.label}“ ist keine Prüfbitte mehr nötig oder möglich.` };
+  const b = ctx.daten.bauteile.find((x) => x.projekt === e.projekt && x.id === e.bauteil);
+  if (!b) return { erlaubt: false, grund: 'Das Bauteil gibt es nicht mehr.' };
+  if (e.ziel?.art === 'bedarf') {
+    const d = ctx.daten.bedarfe.find((x) => x.projekt === (e.ziel.projekt || e.projekt) && x.id === e.ziel.id);
+    if (!d) return { erlaubt: false, grund: 'Der Bedarf gibt es nicht mehr.' };
+    const a = abgleich(ctx, b, d, { ausser: e });
+    return a.pruefbitteMoeglich ? { erlaubt: true, grund: null } : { erlaubt: false, grund: `Keine Prüfbitte möglich: ${a.sperrgrund}` };
+  }
+  const l = lage(ctx, e);
+  if (l.haupt.rank === 6 && !l.haupt.wartet) return { erlaubt: true, grund: null };
+  return { erlaubt: false, grund: `Keine Prüfbitte möglich: Die Türregel ist noch nicht bei „zur Fachprüfung vorlegen“ (Rang ${l.haupt.rank}). Zuerst offene Anforderungen klären: ${l.haupt.text}.` };
 }
 
 // ---------- Liste aller Kandidatenpaare ----------

@@ -2,7 +2,7 @@
 import { GRUPPEN } from '../daten.js';
 import { abgleichListe } from '../abgleich.js';
 import { fehlendeZeitangaben } from '../bedarf.js';
-import { bedarfBelegt, vorgangStatus } from '../vorgang.js';
+import { bedarfBelegt, bedarfBelegtArt, bedarfVorgang, vorgangStatus } from '../vorgang.js';
 import { esc, chip, icon, leer, pchip, gruppenChip, seitenkopf, person, routeBedarf, routeAbgleich, routeEntscheidung, tagText, ergebnisChip } from '../ui.js';
 import { verfuegbarText } from './bauteile.js';
 
@@ -11,9 +11,8 @@ export const mengeBedarf = (d) => (d.bedarfM2 !== undefined ? `${String(d.bedarf
 const markierung = (d, key) => (d.belegt?.[key] === 'geschaetzt' ? ` ${chip('geschätzt', 'warn')}` : d.belegt?.[key] === 'belegt' ? ' <small class="inline">belegt</small>' : '');
 const fenster = (d) => (d.annahmeVon && d.annahmeBis ? `${tagText(d.annahmeVon)} bis ${tagText(d.annahmeBis)}` : d.annahmeVon || d.annahmeBis ? `${d.annahmeVon ? `ab ${tagText(d.annahmeVon)}` : `bis ${tagText(d.annahmeBis)}`} (unvollständig)` : '');
 
-export function aktiverVorgangFuerBedarf(ctx, d) {
-  return ctx.daten.entscheidungen.find((e) => e.ziel?.art === 'bedarf' && e.ziel.id === d.id && (e.ziel.projekt || e.projekt) === d.projekt && vorgangStatus(ctx, e).aktiv) || null;
-}
+// Beschriftung für einen belegten Bedarf (Fachregel: vorgang.bedarfBelegtArt).
+export const belegtText = (ctx, d) => (bedarfBelegtArt(ctx, d.projekt, d.id) === 'uebergeben' ? 'übergeben, gedeckt' : 'im Vorgang');
 
 export function bedarfeEintraege(ctx) {
   const f = ctx.ui.bedarfe;
@@ -23,14 +22,14 @@ export function bedarfeEintraege(ctx) {
 
 function zeile(ctx, d) {
   const p = ctx.daten.projekte.find((x) => x.kurz === d.projekt);
-  const fehlt = fehlendeZeitangaben(d); const n = abgleichListe(ctx, { bedarf: d }).length; const belegt = bedarfBelegt(ctx, d.projekt, d.id);
+  const fehlt = fehlendeZeitangaben(d); const liste = abgleichListe(ctx, { bedarf: d }); const n = liste.length; const np = liste.filter((a) => a.gesamt.key === 'weiter' || a.gesamt.key === 'knapp').length; const belegt = bedarfBelegt(ctx, d.projekt, d.id);
   return `<tr data-href="${routeBedarf(d)}">
     <td data-label="Bedarf"><div class="bt-name"><span class="bref">${p ? pchip(p) : esc(d.projekt)}<span class="mono">${esc(d.id)}</span></span><span><a href="${routeBedarf(d)}"><b>${esc(d.titel)}</b></a><small>${gruppenChip(d.gruppe, GRUPPEN[d.gruppe].name)}</small></span></div></td>
     <td data-label="Menge" class="r mono">${esc(mengeBedarf(d))}</td>
     <td data-label="Bestellfrist">${bestellfristVon(d) ? `<span class="mono">${tagText(bestellfristVon(d))}</span>${markierung(d, 'bestellfrist')}` : chip('fehlt', 'info')}</td>
     <td data-label="Annahmefenster">${fenster(d) ? `<span class="mono">${fenster(d)}</span>${markierung(d, 'annahme')}` : chip('fehlt', 'info')}</td>
     <td data-label="Zeitangaben">${fehlt.length ? chip(`${fehlt.length} von 4 fehlen`, 'info', ` title="${esc(fehlt.join(', '))}"`) : chip('vollständig', 'ok')}${fehlt.length ? `<small>${esc(fehlt.join(', '))}</small>` : ''}</td>
-    <td data-label="Passende Angebote" class="r mono">${belegt ? chip('im Vorgang', 'info') : `<b>${n}</b>`}</td>
+    <td data-label="Angebote derselben Gruppe (davon prüfbar)" class="r mono">${belegt ? chip(belegtText(ctx, d), 'info') : `<b>${n}</b> <small>davon <b>${np}</b> prüfbar</small>`}</td>
   </tr>`;
 }
 
@@ -54,7 +53,7 @@ export function bedarfe(ctx) {
     ${aktiv ? '<button type="button" class="knopf-leise" id="bed-reset" data-action="bedarfe-reset">Filter zurücksetzen</button>' : ''}
   </div>
   ${liste.length ? `<div class="tabelle-rahmen"><table class="tab-karten bedarfe-tab">
-    <thead><tr><th scope="col">Bedarf</th><th scope="col" class="r">Menge</th><th scope="col">Bestellfrist</th><th scope="col">Annahmefenster</th><th scope="col">Zeitangaben</th><th scope="col" class="r">Passende Angebote</th></tr></thead>
+    <thead><tr><th scope="col">Bedarf</th><th scope="col" class="r">Menge</th><th scope="col">Bestellfrist</th><th scope="col">Annahmefenster</th><th scope="col">Zeitangaben</th><th scope="col" class="r">Angebote derselben Gruppe<small>davon prüfbar</small></th></tr></thead>
     <tbody>${liste.map((d) => zeile(ctx, d)).join('')}</tbody></table></div>
     <p class="hinweis-zeile">Sortiert nach Bestellfrist. Fehlende Zeitangaben machen den Abgleich unvollständig („Angaben fehlen“). Geschätzte Angaben sind gekennzeichnet.</p>`
     : leer('Kein Bedarf passt zu den Filtern.', 'Filter zurücksetzen oder einen Bedarf erfassen.', '<button type="button" class="knopf" data-action="bedarfe-reset">Filter zurücksetzen</button>')}`;
@@ -62,7 +61,7 @@ export function bedarfe(ctx) {
 
 // Reiter im Bereich „Bedarfe“.
 export function bedarfeReiter(aktiv) {
-  return `<nav class="reiter" aria-label="Bedarfe">${[['bedarfe', '#bedarfe', 'Bedarfe'], ['abgleich', '#abgleich', 'Passende Paare']].map(([k, h, t]) => `<a href="${h}" ${aktiv === k ? 'aria-current="page"' : ''}>${t}</a>`).join('')}</nav>`;
+  return `<nav class="reiter" aria-label="Bedarfe">${[['bedarfe', '#bedarfe', 'Bedarfe'], ['abgleich', '#abgleich', 'Paare derselben Gruppe']].map(([k, h, t]) => `<a href="${h}" ${aktiv === k ? 'aria-current="page"' : ''}>${t}</a>`).join('')}</nav>`;
 }
 
 const angabe = (k, v) => `<div><dt>${k}</dt><dd>${v}</dd></div>`;
@@ -70,7 +69,7 @@ const fehltChip = () => chip('fehlt', 'info');
 
 export function bedarfDetail(ctx, d) {
   const p = ctx.daten.projekte.find((x) => x.kurz === d.projekt); const g = GRUPPEN[d.gruppe];
-  const fehlt = fehlendeZeitangaben(d); const paare = abgleichListe(ctx, { bedarf: d }); const e = aktiverVorgangFuerBedarf(ctx, d);
+  const fehlt = fehlendeZeitangaben(d); const paare = abgleichListe(ctx, { bedarf: d }); const e = bedarfVorgang(ctx, d.projekt, d.id);
   const boden = d.bedarfM2 !== undefined;
   return `${seitenkopf({
     pfad: [['#bedarfe', 'Bedarfe']], aktuell: d.id,
@@ -97,8 +96,8 @@ export function bedarfDetail(ctx, d) {
       ${fehlt.length ? `<div class="ergebnisbox"><p><b>Für den Abgleich fehlt:</b> ${esc(fehlt.join(', '))}.</p><p class="leise">Ohne diese Angaben zeigt der Abgleich „Angaben fehlen“, sofern nicht schon etwas sicher zu spät ist.</p></div>` : ''}
     </section>
     <section class="flaeche" aria-labelledby="h-bd-angebote">
-      <div class="block-kopf"><h2 id="h-bd-angebote">Passende Angebote</h2><span class="leise">${paare.length} ${paare.length === 1 ? 'Angebot' : 'Angebote'}</span></div>
-      ${e ? `<p class="hinweisbox">Dieser Bedarf gehört zum laufenden Vorgang <a href="${routeEntscheidung(e)}">${esc(e.projekt)} · ${esc(e.id)}</a> (Bauteil ${esc(e.bauteil)}). Weitere Angebote sind erst nach dessen Ende möglich.</p>` : ''}
+      <div class="block-kopf"><h2 id="h-bd-angebote">Angebote derselben Gruppe</h2><span class="leise"><b>${paare.length}</b> ${paare.length === 1 ? 'Angebot' : 'Angebote'}, davon <b>${paare.filter((a) => a.gesamt.key === 'weiter' || a.gesamt.key === 'knapp').length}</b> prüfbar (weiter prüfen oder knapp)</span></div>
+      ${e ? `<p class="hinweisbox">Dieser Bedarf ${vorgangStatus(ctx, e).key === 'uebergeben' ? 'ist durch die Übergabe im Vorgang' : 'gehört zum laufenden Vorgang'} <a href="${routeEntscheidung(e)}">${esc(e.projekt)} · ${esc(e.id)}</a> (Bauteil ${esc(e.bauteil)}) ${vorgangStatus(ctx, e).key === 'uebergeben' ? 'gedeckt. Weitere Angebote werden nicht mehr vorgeschlagen.' : 'belegt. Weitere Angebote sind erst nach dessen Ende möglich.'}</p>` : ''}
       ${paare.length ? `<ul class="paarliste">${paare.map((a) => `<li><a class="paar" href="${routeAbgleich(a.schluessel)}">
         <span class="paar-kopf">${ergebnisChip(a.gesamt)}<span class="bref">${pchip(ctx.daten.projekte.find((x) => x.kurz === a.bauteil.projekt) || { kurz: a.bauteil.projekt, farbe: '#555', name: '' })}<span class="mono">${esc(a.bauteil.id)}</span></span></span>
         <b>${esc(a.bauteil.name)}</b>

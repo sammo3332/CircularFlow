@@ -72,7 +72,7 @@ test('Übersicht, Katalog, Bedarfe und Arbeitsliste rendern ohne Fehler', () => 
 test('Bedarf-Detail für jeden Bedarf', () => {
   for (const [name, c] of KONTEXTE()) for (const d of c.daten.bedarfe) sauber(bedarfDetail(c, d), `Bedarf ${d.projekt} ${d.id} ${name}`);
   const c = mitUi(); const h = bedarfDetail(c, c.daten.bedarfe.find((d) => d.id === 'BD-22'));
-  assert.match(h, /geschätzt/); assert.match(h, /Passende Angebote/); assert.match(h, /Bedarf ergänzen|Angaben ändern/);
+  assert.match(h, /geschätzt/); assert.match(h, /Angebote derselben Gruppe/); assert.match(h, /Bedarf ergänzen|Angaben ändern/);
 });
 
 test('Abgleichseite für alle Paare und auch für unpassende Kombinationen', () => {
@@ -106,7 +106,7 @@ test('Projekt-, Gebäude-, Bestand-, Pass-, Entscheidungs-, Erfassungs- und Rada
       sauber(bestand(c, p), `Bestand ${p.kurz} ${name}`);
       sauber(entscheidungsListe(c, p), `Entscheidungen ${p.kurz} ${name}`);
     }
-    for (const b of c.daten.bauteile) { const h = pass(c, c.daten.projekte.find((p) => p.kurz === b.projekt), b); sauber(h, `Pass ${b.projekt} ${b.id} ${name}`); if (b.status !== 'nicht') assert.match(h, /Passende Bedarfe/); }
+    for (const b of c.daten.bauteile) { const h = pass(c, c.daten.projekte.find((p) => p.kurz === b.projekt), b); sauber(h, `Pass ${b.projekt} ${b.id} ${name}`); if (b.status !== 'nicht') assert.match(h, /Bedarfe derselben Gruppe/); }
     for (const e of c.daten.entscheidungen) sauber(entscheidungsSeite(c, c.daten.projekte.find((p) => p.kurz === e.projekt), e), `Entscheidung ${e.projekt} ${e.id} ${name}`);
     for (const schritt of [1, 2, 3, 4, 5]) { c.ui.erfassung = { ...c.ui.erfassung, schritt, projekt: 'LH', raum: '1.14', gruppe: 'tuer' }; sauber(erfassung(c), `Erfassung Schritt ${schritt} ${name}`); }
     for (const tab of ['hinweise', 'quellen', 'melden']) sauber(radar(c, { tab }), `Radar ${tab} ${name}`);
@@ -299,7 +299,8 @@ test('Entscheidungsseite: E-01 und E-02 bleiben wie bisher bedienbar', () => {
   const lh = c.daten.projekte.find((x) => x.kurz === 'LH');
   const h1 = entscheidungsSeite(c, lh, e1); sauber(h1, 'E-01');
   assert.match(h1, /id="btn-aufmass-beispiel"/); assert.match(h1, /Rechtzeitigen Eingang zeigen/); assert.match(h1, /id="aktion-schritt"/);
-  assert.deepEqual(formIds(h1), ['pruefbitte', 'abbruch']);
+  // Befund 1: Die Türregel steht noch nicht bei Rang 6; statt des Prüfbitte-Formulars steht der Grund.
+  assert.deepEqual(formIds(h1), ['abbruch']); assert.match(h1, /id="pruefbitte-gesperrt"/); assert.match(h1, /Keine Prüfbitte möglich/);
   const h2 = entscheidungsSeite(c, lh, e2); sauber(h2, 'E-02'); assert.match(h2, /id="btn-hoeheAm"/); assert.match(h2, /Befund Menge/);
   // Nach „Zur Fachprüfung vorlegen“ (bestehendes Ereignis) wartet der Vorgang wie bisher; Fachergebnis wird bedienbar
   const p = leerePersistenz(); p.ereignisse.push({ at: START, von: 'browser', bauteil: 'LH:DB-01', entscheidung: 'LH:E-02', art: 'vorlage', sim: true, text: 'Variante E-02 zur Fachprüfung vorgelegt.' });

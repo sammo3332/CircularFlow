@@ -5,6 +5,7 @@ import { naechsteHandlung, offeneNachweise, bauteilStatus, entscheidungFuer, moe
 import { zeit, datum, abstand } from '../zeit.js';
 import { projektKopf, raumVon } from './projekte.js';
 import { abgleichListe } from '../abgleich.js';
+import { uebergebenerVorgang } from '../vorgang.js';
 
 const werteZaehlung = (b) => {
   const z = { gemessen: 0, bestaetigt: 0, vorgeschlagen: 0, fehlt: 0 };
@@ -103,7 +104,7 @@ export function pass(ctx, p, b) {
         </dl>
       </section>
       ${b.status === 'nicht' ? '' : `<section class="flaeche" aria-labelledby="h-passend">
-        <div class="block-kopf"><h2 id="h-passend">Passende Bedarfe</h2><span class="leise">${paare.length} ${paare.length === 1 ? 'Bedarf' : 'Bedarfe'} · Vorschlag zur Prüfung, keine Freigabe</span></div>
+        <div class="block-kopf"><h2 id="h-passend">Bedarfe derselben Gruppe</h2><span class="leise"><b>${paare.length}</b> ${paare.length === 1 ? 'Bedarf' : 'Bedarfe'}, davon <b>${paare.filter((a) => a.gesamt.key === 'weiter' || a.gesamt.key === 'knapp').length}</b> prüfbar · Vorschlag zur Prüfung, keine Freigabe</span></div>
         ${paare.length ? `<ul class="paarliste">${paare.map((x) => `<li><a class="paar" href="${routeAbgleich(x.schluessel)}"><span class="paar-kopf">${ergebnisChip(x.gesamt)}<span class="bref">${pchip(ctx.daten.projekte.find((q) => q.kurz === x.bedarf.projekt) || { kurz: x.bedarf.projekt, farbe: '#55605b', name: '' })}<span class="mono">${esc(x.bedarf.id)}</span></span></span><b>${esc(x.bedarf.titel)}</b><small>${esc(x.gruende[0] || '')}</small></a></li>`).join('')}</ul>`
           : `<p class="leer-zeile">${b.ziel ? `Das Bauteil hat bereits ein festes Ziel (${esc(b.ziel)}).` : e ? `Für dieses Bauteil läuft bereits der Vorgang ${esc(e.id)}.` : 'Kein offener Bedarf derselben Bauteilgruppe, für den dieses Bauteil in Frage kommt.'}</p>`}
       </section>`}
@@ -149,6 +150,14 @@ function zuordnung(ctx, p, b, e) {
     </section>`;
   }
   if (b.status === 'nicht' || b.status === 'vorgemerkt') return '';
+  const fertig = uebergebenerVorgang(ctx, b.projekt, b.id);
+  if (fertig) {
+    return `<section class="flaeche verknuepft" id="zuordnung" aria-labelledby="h-zu">
+      <h2 id="h-zu">Abgeschlossen</h2>
+      <p>Das Bauteil wurde übergeben (Vorgang ${esc(fertig.id)}, Simulation, laut Eintrag). Es wird keinem weiteren Ziel zugeordnet.</p>
+      <a class="knopf-zweit" href="${routeEntscheidung(fertig)}">Vorgang ${esc(fertig.id)} ansehen</a>
+    </section>`;
+  }
   const { oeffnungen, bedarfe } = moeglicheZiele(ctx, b);
   const fehler = ctx.ui.zuordnungFehler;
   const key = `${b.projekt}:${b.id}`;

@@ -19,15 +19,23 @@ export function ladePersistenz(speicher) {
     const passt = (k) => (Array.isArray(leer[k]) ? Array.isArray(d[k]) : d[k] && typeof d[k] === 'object' && !Array.isArray(d[k]));
     for (const k of Object.keys(leer)) if (k !== 'version' && passt(k)) leer[k] = d[k];
     // Einträge ohne Pflichtfelder (z. B. aus einem beschädigten Stand) werden ausgelassen.
-    const objekt = (x) => x && typeof x === 'object';
-    leer.erfassungen = leer.erfassungen.filter((e) => objekt(e) && e.projekt && e.id && GRUPPEN[e.gruppe]);
-    leer.zuordnungen = leer.zuordnungen.filter((e) => objekt(e) && e.projekt && e.id && e.bauteil && objekt(e.ziel));
-    leer.ereignisse = leer.ereignisse.filter(objekt);
+    // Schlüsselfelder müssen die richtige Art haben (Zeichenketten) und dürfen nicht doppelt vorkommen; doppelte Einträge entfallen.
+    const objekt = (x) => x && typeof x === 'object' && !Array.isArray(x);
+    const zk = (v) => typeof v === 'string' && v.trim() !== '';
+    const einmalig = (liste, key) => { const gesehen = new Set(); return liste.filter((x) => { const k = key(x); if (gesehen.has(k)) return false; gesehen.add(k); return true; }); };
+    leer.erfassungen = einmalig(leer.erfassungen.filter((e) => objekt(e) && zk(e.projekt) && zk(e.id) && GRUPPEN[e.gruppe]), (e) => `${e.projekt}:${e.id}`);
+    const vorhandeneEntscheidungen = new Set(ENTSCHEIDUNGEN.map((e) => `${e.projekt}:${e.id}`));
+    leer.zuordnungen = einmalig(leer.zuordnungen.filter((e) => objekt(e) && zk(e.projekt) && zk(e.id) && zk(e.bauteil) && objekt(e.ziel) && zk(e.ziel.art) && zk(e.ziel.id)
+      && !vorhandeneEntscheidungen.has(`${e.projekt}:${e.id}`)), (e) => `${e.projekt}:${e.id}`);
+    leer.ereignisse = leer.ereignisse.filter((x) => objekt(x) && (x.at === undefined || zk(x.at)) && (x.entscheidung === undefined || zk(x.entscheidung)) && (x.bauteil === undefined || zk(x.bauteil)));
     leer.meldungen = leer.meldungen.filter((m) => objekt(m) && m.id && m.status);
     leer.projekteAusRadar = leer.projekteAusRadar.filter((x) => objekt(x) && x.kurz && Array.isArray(x.lage));
     // Neue Schlüssel (Fassung 2): ältere Stände ohne sie laden unverändert; beschädigte Einträge entfallen.
-    leer.bedarfe = leer.bedarfe.filter((x) => objekt(x) && x.projekt && x.id && GRUPPEN[x.gruppe] && typeof x.titel === 'string');
-    leer.projekteEigen = leer.projekteEigen.filter((x) => objekt(x) && x.kurz && x.id && typeof x.name === 'string' && Array.isArray(x.lage) && x.lage.length === 2 && x.lage.every(Number.isFinite) && Array.isArray(x.gebaeude));
+    const beispielBedarfe = new Set(BEDARFE.map((d) => d.id));
+    leer.bedarfe = einmalig(leer.bedarfe.filter((x) => objekt(x) && zk(x.projekt) && zk(x.id) && GRUPPEN[x.gruppe] && typeof x.titel === 'string' && !beispielBedarfe.has(x.id)), (x) => x.id);
+    const beispielKuerzel = new Set(PROJEKTE.map((x) => String(x.kurz).toUpperCase()));
+    leer.projekteEigen = einmalig(leer.projekteEigen.filter((x) => objekt(x) && zk(x.kurz) && zk(x.id) && typeof x.name === 'string' && Array.isArray(x.lage) && x.lage.length === 2 && x.lage.every(Number.isFinite) && Array.isArray(x.gebaeude)
+      && !beispielKuerzel.has(x.kurz.toUpperCase())), (x) => x.kurz.toUpperCase());
     leer.bedarfAenderungen = Object.fromEntries(Object.entries(leer.bedarfAenderungen).filter(([k, v]) => /^[^:]+:[^:]+$/.test(k) && objekt(v) && !Array.isArray(v)));
     return leer;
   } catch { return leerePersistenz(); }

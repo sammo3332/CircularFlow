@@ -4,6 +4,7 @@
 import { PERSONEN, GRUPPEN } from '../daten.js';
 import { HINWEIS_FACH, HINWEIS_VORMERKUNG, checkliste } from '../vorgang.js';
 import { offeneNachweise, schluessel } from '../regeln.js';
+import { pruefbitteErlaubt } from '../abgleich.js';
 import { esc, chip, feld, feldAttr, optionen, tonSymbol, tagText, routeAbgleich } from '../ui.js';
 import { zeit, datum } from '../zeit.js';
 
@@ -45,11 +46,13 @@ function formular(ctx, k, aktion, titel, intro, felder, knopf, klasse = '') {
 
 function formulare(ctx, e, st, b, d) {
   const k = schluessel(e.projekt, e.id); const einheit = GRUPPEN[b?.gruppe]?.einheit || '';
+  // Die Prüfbitte erscheint nur, wenn die Fachregel (abgleich.pruefbitteErlaubt) sie zur Projektzeit erlaubt; sonst steht der Grund da.
+  const pb = st.erlaubt.includes('pruefbitte') ? pruefbitteErlaubt(ctx, e) : { erlaubt: true };
   const f = {
-    pruefbitte: () => formular(ctx, k, 'pruefbitte', 'Prüfbitte anlegen', 'Bittet die Fachprüfung um die Eignungsprüfung. Simulation, es wird nichts versendet.', () => '', 'Prüfbitte anlegen'),
+    pruefbitte: () => !pb.erlaubt ? `<div class="vorgangsform" id="pruefbitte-gesperrt" role="group" aria-labelledby="h-vf-pruefbitte"><h3 id="h-vf-pruefbitte">Prüfbitte noch nicht möglich</h3><p class="sperrgrund" tabindex="-1">${tonSymbol('warn')}<span><b>Gesperrt.</b> ${esc(pb.grund)}</span></p><p class="leise">Die Prüfung gilt für den Stichtag ${esc(datum(ctx.at))}. ${e.ziel?.art === 'bedarf' ? 'Im Abgleich steht die genaue Begründung.' : ''}</p></div>` : formular(ctx, k, 'pruefbitte', 'Prüfbitte anlegen', 'Bittet die Fachprüfung um die Eignungsprüfung. Simulation, es wird nichts versendet.', () => '', 'Prüfbitte anlegen'),
     fachergebnis: () => formular(ctx, k, 'fachergebnis', 'Fachergebnis eintragen', `Trägt ein, was die Fachperson mitgeteilt hat: ${HINWEIS_FACH}.`, ({ fld, ff, werte, fe }) => `
-      <fieldset class="optionswahl ${fe.urteil ? 'feld-fehler' : ''}" id="vf-urteil" tabindex="-1" ${fe.urteil ? 'aria-invalid="true" aria-describedby="vf-urteil-f"' : ''}><legend>Ergebnis (Pflicht)</legend>
-        ${Object.entries(WORT).map(([v, t]) => `<label class="zustandschip"><input type="radio" id="vf-urteil-${v}" ${ff('urteil')} value="${v}" ${werte.urteil === v ? 'checked' : ''}><span><b>${esc(t[0].toUpperCase() + t.slice(1))}</b></span></label>`).join('')}
+      <fieldset class="optionswahl ${fe.urteil ? 'feld-fehler' : ''}" id="vf-urteil" tabindex="-1" ${fe.urteil ? 'aria-describedby="vf-urteil-f"' : ''}><legend>Ergebnis (Pflicht)</legend>
+        ${Object.entries(WORT).map(([v, t]) => `<label class="zustandschip"><input type="radio" id="vf-urteil-${v}" ${ff('urteil')} value="${v}" ${werte.urteil === v ? 'checked' : ''} ${fe.urteil ? 'aria-invalid="true"' : ''}><span><b>${esc(t[0].toUpperCase() + t.slice(1))}</b></span></label>`).join('')}
         ${fe.urteil ? `<p class="feld-meldung" id="vf-urteil-f">${esc(fe.urteil)}</p>` : ''}</fieldset>
       <div class="formular formular-eng">
         ${fld('vf-person', 'person', 'Name der Fachperson (Pflicht, als Text)', 'Nur Name oder Funktion, keine Kontaktdaten. Wird als Eintrag von „Sie“ gespeichert.', (a, w) => `<input ${a} ${ff('person', ' maxlength="80" autocomplete="off"')} value="${esc(w)}">`)}

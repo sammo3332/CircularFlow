@@ -27,6 +27,9 @@ export function pruefeProjekt(entwurf, projekte = []) {
   return fehler;
 }
 
+// Kürzel, deren Kleinschreibung eine feste Route ergäbe (z. B. #projekt-neu, #bedarf-ergaenzen-…), werden nie vergeben.
+export const RESERVIERTE_KUERZEL = ['neu', 'ergaenzen'];
+
 const FOLD = (s) => s.replace(/ä/gi, 'a').replace(/ö/gi, 'o').replace(/ü/gi, 'u').replace(/ß/g, 's').normalize('NFD').replace(/[^A-Za-z]/g, '').toUpperCase();
 
 // Eindeutiges Kürzel aus 2 bis 3 Großbuchstaben; kollidiert nie mit vorhandenen (auch nicht mit R1, R2 …, die Ziffern enthalten).
@@ -40,11 +43,12 @@ export function neuesKuerzel(name, projekte) {
   if (erstes.length >= 2) kandidaten.push(erstes.slice(0, 3), erstes.slice(0, 2));
   const alle = woerter.join('');
   for (let i = 2; i <= alle.length && kandidaten.length < 40; i += 1) kandidaten.push(alle.slice(0, 2) + alle[i] );
-  const frei = kandidaten.filter((k) => /^[A-Z]{2,3}$/.test(k)).find((k) => !belegt.has(k));
+  const ok = (k) => !belegt.has(k) && !RESERVIERTE_KUERZEL.includes(k.toLowerCase());
+  const frei = kandidaten.filter((k) => /^[A-Z]{2,3}$/.test(k)).find(ok);
   if (frei) return frei;
   const A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  for (const x of A) for (const y of A) { if (!belegt.has(x + y) && !/^R\d/.test(x + y)) return x + y; }
-  for (const x of A) for (const y of A) for (const z of A) { if (!belegt.has(x + y + z)) return x + y + z; }
+  for (const x of A) for (const y of A) { if (ok(x + y) && !/^R\d/.test(x + y)) return x + y; }
+  for (const x of A) for (const y of A) for (const z of A) { if (ok(x + y + z)) return x + y + z; }
   return 'XXX';
 }
 

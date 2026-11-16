@@ -13,7 +13,7 @@
   --ok: #1f6b42; --ok-bg: #e2f1e7; --warn: #7d4c00; --warn-bg: #fbecd0; --crit: #a2261d; --crit-bg: #fbe5e1;
   --info: #1f4f96; --info-bg: #e4ecf8; --neutral: #4d5853; --neutral-bg: #eaece8; --sim: #594810; --sim-bg: #f5eecb;
   /* Bauteilgruppen: feste Reihenfolge in der ganzen App, validierte Referenzpalette, keine Statusfarben */
-  --g-tuer: #2a78d6; --g-boden: #e87ba4; --g-heiz: #6250d6; --g-wand: #1baf7a; --g-licht: #eb6834; --g-sonstig: #7d8781;
+  --g-tuer: #2a78d6; --g-boden: #cc4f84; --g-heiz: #6250d6; --g-wand: #14948f; --g-licht: #eb6834; --g-sonstig: #7d8781;
   
   --karte-flaeche: #f7f6f1; --karte-grenze: #9aa69f; --karte-umland: #e3e6e0;
   --plan-raum: #fbfbf8; --plan-wand: #3d4743; --plan-aktiv: #dcefe7;
@@ -752,3 +752,7 @@ legend { font-size: var(--t-s); font-weight: 620; color: var(--tinte-2); margin-
 }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
 .checkliste .chip { justify-self: start; }
+
+/* Zahlenzeile und Nebenzahl (Paare derselben Gruppe, davon prüfbar) */
+.zahlenzeile { margin: 0 0 var(--s-3, 12px); font-size: var(--t-m, 1rem); }
+.kachel-neben { display: block; margin-top: 2px; font-weight: 600; font-size: var(--t-s, .875rem); color: var(--tinte-2, inherit); }

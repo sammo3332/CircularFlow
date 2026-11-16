@@ -13,7 +13,6 @@ const SYMBOL = {
 const SYMBOLTEXT = { ok: 'in Ordnung', warn: 'Achtung', crit: 'dringend', info: 'Hinweis' };
 export const tonSymbol = (ton) => (SYMBOL[ton] ? `<svg class="tsym t-${ton}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${SYMBOL[ton]}</svg>` : '');
 export const tonMarke = (ton) => (SYMBOL[ton] ? `${tonSymbol(ton)}<span class="sr">${SYMBOLTEXT[ton]}: </span>` : '');
-export const tonWort = (ton) => SYMBOLTEXT[ton] || '';
 export const chip = (label, ton = 'neutral', extra = '') => `<span class="chip chip-${ton}"${extra}>${tonSymbol(ton)}${esc(label)}</span>`;
 export const ergebnisChip = (gesamt) => chip(gesamt.label, gesamt.ton);
 export const person = (k) => PERSONEN[k] || { rolle: '', name: '', stelle: '' };
@@ -63,7 +62,6 @@ export function icon(n) {
 
 export const leer = (titel, text, aktion = '') => `<div class="leer"><b>${esc(titel)}</b><p>${esc(text)}</p>${aktion}</div>`;
 export const laedt = (text = 'Wird geladen …') => `<div class="laden" role="status"><i class="laden-punkt" aria-hidden="true"></i>${esc(text)}</div>`;
-export const fehlerBox = (titel, text) => `<div class="leer leer-fehler" role="alert">${tonSymbol('crit')}<b>${esc(titel)}</b><p>${esc(text)}</p></div>`;
 
 // Seitenkopf: Pfad, Überschrift, Untertitel, Aktionen. pfad: [[href, text], ...] ohne die aktuelle Seite; titel und untertitel sind HTML.
 export function seitenkopf({ pfad = [], aktuell = '', eyebrow = '', titel, untertitel = '', aktionen = '' }) {

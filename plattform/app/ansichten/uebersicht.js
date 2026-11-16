@@ -11,10 +11,10 @@ export const KERNFRAGE = 'Was wird wo und wann verfügbar, welches Projekt könn
 const mengenText = (m) => Object.entries(m).map(([e, v]) => `${String(v).replace('.', ',')} ${e}`).join(' · ') || 'keine Mengen';
 
 // Kachel: Überschrift, große Zahl als Link zur Ziel-Liste, kurzer Text, Teillinks. Die ganze Fläche ist klickbar.
-function kachel({ id, titel, zahl, einheit = '', href, aktion = '', text = '', kopfExtra = '', teile = '', ziel }) {
+function kachel({ id, titel, zahl, einheit = '', neben = '', href, aktion = '', text = '', kopfExtra = '', teile = '', ziel }) {
   return `<section class="kachel" aria-labelledby="${id}">
     <div class="kachel-kopf"><h2 id="${id}">${esc(titel)}</h2>${kopfExtra}</div>
-    <a class="kachel-haupt" href="${esc(href)}" ${aktion} aria-label="${esc(`${titel}: ${zahl} ${einheit}. ${ziel}`)}"><b class="kachel-zahl">${zahl}</b>${einheit ? `<span class="kachel-einheit">${esc(einheit)}</span>` : ''}</a>
+    <a class="kachel-haupt" href="${esc(href)}" ${aktion} aria-label="${esc(`${titel}: ${zahl} ${einheit}${neben ? `, ${neben}` : ''}. ${ziel}`)}"><b class="kachel-zahl">${zahl}</b>${einheit ? `<span class="kachel-einheit">${esc(einheit)}</span>` : ''}${neben ? `<span class="kachel-neben">${esc(neben)}</span>` : ''}</a>
     ${text ? `<p class="kachel-text">${text}</p>` : ''}
     ${teile}
     <p class="kachel-ziel" aria-hidden="true">${esc(ziel)} ${icon('pfeilrechts')}</p>
@@ -57,8 +57,8 @@ export function uebersicht(ctx) {
       text: `Verfügbar ab zwischen Stichtag und ${tage} Tage danach, ohne festes Ziel. Mengen je Einheit: <b>${esc(mengenText(bv.mengen))}</b>.`, ziel: 'Im Katalog ansehen',
     }),
     kachel({
-      id: 'k-paare', titel: 'Passende Paare', zahl: pp.anzahl, einheit: pp.anzahl === 1 ? 'Paar' : 'Paare', href: '#abgleich', aktion: 'data-action="abgleich-filter" data-wert=""',
-      text: 'Angebot und Bedarf derselben Gruppe, nach Ergebnis des Abgleichs.',
+      id: 'k-paare', titel: 'Paare derselben Gruppe', zahl: pp.anzahl, einheit: pp.anzahl === 1 ? 'Paar' : 'Paare', neben: `davon ${pp.pruefbar} prüfbar`, href: '#abgleich', aktion: 'data-action="abgleich-filter" data-wert=""',
+      text: 'Angebot und Bedarf derselben Gruppe, nach Ergebnis des Abgleichs. „Prüfbar“ heißt weiter prüfen oder knapp; die übrigen sind zu spät, unvollständig oder klärungsbedürftig.',
       teile: `<ul class="kachel-liste">${ERGEBNIS_REIHENFOLGE.map((k) => `<li><a href="#abgleich" data-action="abgleich-filter" data-wert="${k}">${chip(ERGEBNIS[k].label, ERGEBNIS[k].ton)}<b class="mono">${pp.nachErgebnis[k].anzahl}</b></a></li>`).join('')}</ul>`, ziel: 'Alle Paare ansehen',
     }),
     kachel({
