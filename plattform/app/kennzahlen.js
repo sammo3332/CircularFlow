@@ -2,7 +2,7 @@
 // Stichtag H = Projektzeit (ctx.at). Mengen werden nie über Einheiten addiert. Keine CO₂-, Kosten- oder Abfallwerte.
 import { GRUPPEN } from './daten.js';
 import { minuten } from './zeit.js';
-import { offeneNachweise, lage } from './regeln.js';
+import { offeneNachweise, lageVorgang } from './regeln.js';
 import { vorgangStatus, VORGANG_STATUS, naechsterVorgangsschritt, aktiverVorgang, uebergebenerVorgang, bedarfBelegt, tagesende } from './vorgang.js';
 import { abgleichListe, ERGEBNIS_REIHENFOLGE } from './abgleich.js';
 
@@ -87,7 +87,8 @@ export function kennzahlen(ctx, { horizontTage = 90, kritischTage = 7 } = {}) {
     const schritt = naechsterVorgangsschritt(ctx, e);
     // Nach dem Fachergebnis ist eine verstrichene Frist überfällig, solange der Vorgang nicht erledigt ist (abgelaufene Vormerkung,
     // Bestellfrist ohne Vormerkung, Übergabetermin vorbei). Davor gilt die Tür- und Bodenregel: dort kennzeichnet „crit“ die nicht erfüllte Frist.
-    const liste = schritt ? (schritt.frist ? [{ name: schritt.fristName, at: schritt.frist, ton: schritt.ton, offen: true }] : []) : lage(ctx, e).fristen.map((f) => ({ ...f, offen: f.ton === 'crit' }));
+    // Vor dem Fachergebnis: Tür- oder Bodenregel und die Bestellfrist des Bedarfs (lageVorgang).
+    const liste = schritt ? (schritt.frist ? [{ name: schritt.fristName, at: schritt.frist, ton: schritt.ton, offen: true }] : []) : lageVorgang(ctx, e).fristen.map((f) => ({ ...f, offen: f.ton === 'crit' }));
     for (const f of liste) {
       const t = minuten(f.at); const vorbei = t < jetzt;
       if ((vorbei && !f.offen) || (!vorbei && t > ende)) continue;

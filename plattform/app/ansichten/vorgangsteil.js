@@ -6,7 +6,7 @@ import { HINWEIS_FACH, HINWEIS_VORMERKUNG, checkliste } from '../vorgang.js';
 import { offeneNachweise, schluessel } from '../regeln.js';
 import { pruefbitteErlaubt } from '../abgleich.js';
 import { esc, chip, feld, feldAttr, optionen, tonSymbol, tagText, routeAbgleich } from '../ui.js';
-import { zeit, datum } from '../zeit.js';
+import { zeit, datum, minuten } from '../zeit.js';
 
 // Fehlerschlüssel aus vorgangSchritt → Feld-ID (Fokus auf das erste fehlerhafte Feld).
 export const VORGANG_FELD_ID = { urteil: 'vf-urteil', person: 'vf-person', notiz: 'vf-notiz', menge: 'vf-menge', ablauf: 'vf-ablauf', termin: 'vf-termin', ort: 'vf-ort', rolle: 'vf-rolle', datum: 'vf-datum', grund: 'vf-grund' };
@@ -95,14 +95,19 @@ export function vorgangsBereich(ctx, e, l) {
   const ks = kette(st);
   const fs = st.beendet ? [] : formulare(ctx, e, st, b, d);
   const sn = st.pruefbitte?.schnappschuss;
+  // Verstrichene, nicht erfüllte Fristen: Der Vorgang bleibt offen und dokumentierbar (Abgelaufene Vormerkung und überschrittener
+  // Übergabetermin haben ihren eigenen Satz in der Statuszeile).
+  const verstrichen = st.beendet ? [] : (l.fristen || []).filter((f) => f.at && f.ton === 'crit' && minuten(f.at) < minuten(ctx.at)
+    && !(st.abgelaufen && f.name === 'Vormerkung abgelaufen') && !(st.ueberfaellig && f.name === 'Übergabetermin'));
   return `<section class="flaeche vorgang" id="vorgang" aria-labelledby="h-vorgang">
     <div class="block-kopf"><h2 id="h-vorgang">Vorgang</h2><span class="leise">Einträge der Simulation, keine Fachfreigabe</span></div>
     <div class="vorgang-status" id="vorgang-status" tabindex="-1">
       <span class="label">Aktueller Status</span>
-      <span class="vs-zeile">${chip(st.label, st.ton)}${st.abgelaufen ? ' <b>Die Vormerkung ist abgelaufen.</b>' : st.ueberfaellig ? ' <b>Der Übergabetermin ist überschritten.</b>' : ''}</span>
+      <span class="vs-zeile">${chip(st.label, st.ton)}${st.abgelaufen ? ' <b>Die Vormerkung ist abgelaufen.</b> Erneuern oder Abbrechen bleibt möglich.' : st.ueberfaellig ? ' <b>Der Übergabetermin ist überschritten.</b> Übergabe eintragen oder Abbrechen bleibt möglich.' : ''}</span>
     </div>
     <ol class="kette" aria-label="Stationen des Vorgangs">${ks.map((s, i) => `<li class="k-${s.zustand === 'entfällt' ? 'aus' : s.zustand}" ${s.zustand === 'aktuell' ? 'aria-current="step"' : ''}><span class="k-nr mono" aria-hidden="true">${i + 1}</span><span class="k-text"><b>${s.name}</b><small>${s.zustand === 'erledigt' ? `erledigt${s.text ? ` · ${esc(s.text)}` : ''}` : s.zustand === 'aktuell' ? `jetzt${s.text ? ` · ${esc(s.text)}` : ''}` : s.zustand === 'entfällt' ? 'entfällt' : 'offen'}</small></span></li>`).join('')}</ol>
     ${st.beendet ? `<p class="kette-ende hinweisbox">${tonSymbol(st.ton === 'crit' ? 'crit' : st.ton === 'ok' ? 'ok' : 'info')} <b>Der Vorgang ist beendet: ${esc(st.label)}.</b> ${st.key === 'ungeeignet' ? `Das Fachergebnis lautet „ungeeignet“ (${esc(HINWEIS_FACH)}); das Bauteil ist für andere Ziele wieder frei.${st.fachergebnis?.notiz ? ` Grund: ${esc(st.fachergebnis.notiz)}` : ''}` : st.key === 'abgebrochen' ? `Grund: ${esc(st.abbruch.grund)}. Bauteil und Bedarf sind wieder frei.` : 'Es sind keine weiteren Schritte möglich.'}</p>` : ''}
+    ${verstrichen.length ? `<p class="hinweisbox hinweisbox-warn" id="frist-verstrichen">${tonSymbol('warn')} <span><b>${verstrichen.length === 1 ? 'Frist verstrichen' : 'Fristen verstrichen'}:</b> ${verstrichen.map((f) => `${esc(f.name)} ${esc(zeit(f.at))}`).join(' · ')}. Der Vorgang bleibt offen: Einträge bleiben möglich und stehen mit Datum im Verlauf.</span></p>` : ''}
     ${sn ? `<p class="klein">Grundlage der Prüfbitte: Abgleich „${esc(sn.gesamt?.label || '')}“ <a href="${routeAbgleich(sn.schluessel)}">${esc(sn.bauteil?.id || '')} und ${esc(sn.bedarf?.id || '')}</a> (Stand ${esc(zeit(sn.stand || st.pruefbitte.at))}. Vorschlag zur Prüfung, keine fachliche Freigabe.</p>` : ''}
     ${allg ? `<p class="feld-meldung" id="vorgang-fehler" tabindex="-1" role="alert">${esc(allg)}</p>` : ''}
     ${fs.length ? `<div class="vorgang-aktionen">${fs.join('')}</div>` : ''}

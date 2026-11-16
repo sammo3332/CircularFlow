@@ -15,6 +15,8 @@ export const ERGEBNIS = {
   klaerung: { label: 'Klärung nötig', ton: 'warn' },
 };
 export const ERGEBNIS_REIHENFOLGE = ['weiter', 'knapp', 'fehlt', 'klaerung', 'spaet'];
+// Mengenlücke als Satz für Listen und Karten: „Es fehlen mindestens 50,2 m²“, solange die beschädigte Fläche unbekannt ist.
+export const lueckeText = (m) => (m?.status === 'teilweise' ? `Es fehlen ${m.mindestens ? 'mindestens ' : ''}${zahlText(m.luecke)} ${m.einheit}.` : '');
 export const HINWEIS_ABGLEICH = 'Entwurfsregel, fachlich nicht geprüft. Die Angaben sind Beispiele, die Lage ist symbolisch.';
 
 // ---------- Schlüssel für Routen ----------
@@ -272,7 +274,7 @@ export function pruefbitteErlaubt(ctx, e) {
     const d = ctx.daten.bedarfe.find((x) => x.projekt === (e.ziel.projekt || e.projekt) && x.id === e.ziel.id);
     if (!d) return { erlaubt: false, grund: 'Der Bedarf gibt es nicht mehr.' };
     const a = abgleich(ctx, b, d, { ausser: e });
-    return a.pruefbitteMoeglich ? { erlaubt: true, grund: null } : { erlaubt: false, grund: `Keine Prüfbitte möglich: ${a.sperrgrund}` };
+    return a.pruefbitteMoeglich ? { erlaubt: true, grund: null, ergebnis: a.gesamt.key } : { erlaubt: false, grund: `Keine Prüfbitte möglich: ${a.sperrgrund}`, ergebnis: a.gesamt.key };
   }
   const l = lage(ctx, e);
   if (l.haupt.rank === 6 && !l.haupt.wartet) return { erlaubt: true, grund: null };

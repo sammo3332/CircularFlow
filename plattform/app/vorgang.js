@@ -117,6 +117,8 @@ export function vorgangSchritt(ctx, e, aktion, eingabe = {}) {
   if (!st.erlaubt.includes(aktion)) return { fehler: { allgemein: st.beendet ? `Der Vorgang ist beendet (${st.label}). Es sind keine weiteren Schritte möglich.` : `Dieser Schritt ist im Status „${st.label}“ nicht möglich.` } };
   const tag = stichtag(ctx); const b = bauteilZu(ctx, e); const d = bedarfZu(ctx, e);
   const fehler = {};
+  // Nach Ablauf der Bestellfrist bleibt der Vorgang dokumentierbar; der Eintrag hält fest, dass er danach kam.
+  const nachFrist = d?.bestellfrist && minuten(ctx.at) > minuten(tagesende(d.bestellfrist)) ? ` Eingetragen nach Ablauf der Bestellfrist (${datum(d.bestellfrist)}).` : '';
   const einheit = einheitVon(b);
   if (aktion === 'pruefbitte') {
     return { ereignis: ereignis(ctx, e, 'pruefbitte', { schnappschuss: eingabe.schnappschuss || null }, 'Prüfbitte an die Fachprüfung angelegt (Simulation).') };
@@ -129,7 +131,7 @@ export function vorgangSchritt(ctx, e, aktion, eingabe = {}) {
     if ((urteil === 'bedingt' || urteil === 'ungeeignet') && !notiz) fehler.notiz = urteil === 'bedingt' ? 'Bitte die Bedingung eintragen.' : 'Bitte den Grund eintragen.';
     if (Object.keys(fehler).length) return { fehler };
     const wort = { geeignet: 'geeignet', bedingt: 'bedingt geeignet', ungeeignet: 'ungeeignet' }[urteil];
-    return { ereignis: ereignis(ctx, e, 'fachergebnis', { urteil, person, notiz, hinweis: HINWEIS_FACH }, `Fachergebnis: ${wort}. Eingetragen für ${person}, ${HINWEIS_FACH}.${notiz ? ` ${notiz}` : ''}`) };
+    return { ereignis: ereignis(ctx, e, 'fachergebnis', { urteil, person, notiz, hinweis: HINWEIS_FACH }, `Fachergebnis: ${wort}. Eingetragen für ${person}, ${HINWEIS_FACH}.${notiz ? ` ${notiz}` : ''}${nachFrist}`) };
   }
   if (aktion === 'vormerkung') {
     const roh = feld(eingabe.menge); const ablauf = feld(eingabe.ablauf);
@@ -139,7 +141,7 @@ export function vorgangSchritt(ctx, e, aktion, eingabe = {}) {
     if (!istDatum(ablauf)) fehler.ablauf = 'Bitte ein gültiges Ablaufdatum eingeben.';
     else if (ablauf < tag) fehler.ablauf = `Das Ablaufdatum darf nicht vor dem Stichtag (${datum(tag)}) liegen.`;
     if (Object.keys(fehler).length) return { fehler };
-    return { ereignis: ereignis(ctx, e, 'vormerkung', { menge: m, einheit, ablauf, hinweis: HINWEIS_VORMERKUNG }, `${HINWEIS_VORMERKUNG}: ${String(m).replace('.', ',')} ${einheit} bis ${datum(ablauf)}.`) };
+    return { ereignis: ereignis(ctx, e, 'vormerkung', { menge: m, einheit, ablauf, hinweis: HINWEIS_VORMERKUNG }, `${HINWEIS_VORMERKUNG}: ${String(m).replace('.', ',')} ${einheit} bis ${datum(ablauf)}.${nachFrist}`) };
   }
   if (aktion === 'uebergabe-geplant') {
     const termin = feld(eingabe.termin); const ort = feld(eingabe.ort); const rolle = feld(eingabe.rolle);
@@ -165,7 +167,7 @@ export function vorgangSchritt(ctx, e, aktion, eingabe = {}) {
   // abbruch
   const grund = feld(eingabe.grund);
   if (!grund) return { fehler: { grund: 'Bitte den Grund für den Abbruch eintragen.' } };
-  return { ereignis: ereignis(ctx, e, 'abbruch', { grund }, `Vorgang abgebrochen. Grund: ${grund}`) };
+  return { ereignis: ereignis(ctx, e, 'abbruch', { grund }, `Vorgang abgebrochen. Grund: ${grund}${nachFrist}`) };
 }
 
 // Prüfbitte-Ereignis aus einem Abgleichergebnis (Schnappschuss ist reine Daten, ohne Objektverweise).

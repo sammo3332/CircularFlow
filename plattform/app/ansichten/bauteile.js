@@ -4,7 +4,7 @@ import { esc, chip, wertChip, statusChip, icon, leer, slug, routePass, routeRaum
 import { naechsteHandlung, offeneNachweise, bauteilStatus, entscheidungFuer, moeglicheZiele, wertText, lage } from '../regeln.js';
 import { zeit, datum, abstand } from '../zeit.js';
 import { projektKopf, raumVon } from './projekte.js';
-import { abgleichListe, zuordnungZumBedarf } from '../abgleich.js';
+import { abgleichListe, zuordnungZumBedarf, lueckeText } from '../abgleich.js';
 import { uebergebenerVorgang } from '../vorgang.js';
 
 const werteZaehlung = (b) => {
@@ -108,7 +108,7 @@ export function pass(ctx, p, b) {
       </section>
       ${b.status === 'nicht' ? '' : `<section class="flaeche" aria-labelledby="h-passend">
         <div class="block-kopf"><h2 id="h-passend">Bedarfe derselben Gruppe</h2><span class="leise"><b>${paare.length}</b> ${paare.length === 1 ? 'Bedarf' : 'Bedarfe'}, davon <b>${paare.filter((a) => a.gesamt.key === 'weiter' || a.gesamt.key === 'knapp').length}</b> prüfbar · Vorschlag zur Prüfung, keine Freigabe</span></div>
-        ${paare.length ? `<ul class="paarliste">${paare.map((x) => `<li><a class="paar" href="${routeAbgleich(x.schluessel)}"><span class="paar-kopf">${ergebnisChip(x.gesamt)}<span class="bref">${pchip(ctx.daten.projekte.find((q) => q.kurz === x.bedarf.projekt) || { kurz: x.bedarf.projekt, farbe: '#55605b', name: '' })}<span class="mono">${esc(x.bedarf.id)}</span></span></span><b>${esc(x.bedarf.titel)}</b><small>${esc(x.gruende[0] || '')}</small></a></li>`).join('')}</ul>`
+        ${paare.length ? `<ul class="paarliste">${paare.map((x) => `<li><a class="paar" href="${routeAbgleich(x.schluessel)}"><span class="paar-kopf">${ergebnisChip(x.gesamt)}<span class="bref">${pchip(ctx.daten.projekte.find((q) => q.kurz === x.bedarf.projekt) || { kurz: x.bedarf.projekt, farbe: '#55605b', name: '' })}<span class="mono">${esc(x.bedarf.id)}</span></span></span><b>${esc(x.bedarf.titel)}</b>${x.menge?.status === 'teilweise' ? `<small class="paar-luecke t-${esc(x.menge.ton)}">${tonMarke(x.menge.ton)}${esc(lueckeText(x.menge))}</small>` : ''}<small>${esc(x.gruende[0] || '')}</small></a></li>`).join('')}</ul>`
           : `<p class="leer-zeile">${b.ziel ? `Das Bauteil hat bereits ein festes Ziel (${esc(b.ziel)}).` : e ? `Für dieses Bauteil läuft bereits der Vorgang ${esc(e.id)}.` : 'Kein offener Bedarf derselben Bauteilgruppe, für den dieses Bauteil in Frage kommt.'}</p>`}
       </section>`}
       <section class="flaeche" aria-labelledby="h-werte">
@@ -179,7 +179,7 @@ function zuordnung(ctx, p, b, e) {
     : !waehlbar ? `<p class="leer-zeile" id="ziel-hinweis">Zurzeit ist kein Ziel zuordenbar. ${sperrSatz}</p>`
     : `<div class="feld"><label for="ziel-wahl">Ziel</label><select id="ziel-wahl" data-bauteil="${esc(key)}" ${fehler ? 'aria-invalid="true"' : ''} ${beschrieben ? `aria-describedby="${beschrieben}"` : ''}><option value="">Bitte wählen</option>
       ${oeffnungen.length ? `<optgroup label="Zielöffnungen im Projekt ${esc(p.kurz)}">${oeffnungen.map((z) => opt(`zieloeffnung|${z.projekt}|${z.id}`, `${esc(z.id)} · Raum ${esc(z.raum)} · Soll ${z.minMm}–${z.maxMm} mm`)).join('')}</optgroup>` : ''}
-      ${bewertet.length ? `<optgroup label="Bedarfe">${bewertet.map(({ d, z }) => opt(`bedarf|${d.projekt}|${d.id}`, `${esc(d.projekt)} · ${esc(d.id)} · ${esc(d.titel)} · Abgleich: ${esc(z.ergebnis.gesamt.label)}`, !z.moeglich)).join('')}</optgroup>` : ''}
+      ${bewertet.length ? `<optgroup label="Bedarfe">${bewertet.map(({ d, z }) => opt(`bedarf|${d.projekt}|${d.id}`, `${esc(d.projekt)} · ${esc(d.id)} · ${esc(d.titel)} · Abgleich: ${esc(z.ergebnis.gesamt.label)}${z.ergebnis.menge?.status === 'teilweise' ? ` · ${esc(lueckeText(z.ergebnis.menge).replace(/\.$/, ''))}` : ''}`, !z.moeglich)).join('')}</optgroup>` : ''}
     </select>${sperrSatz ? `<p class="feld-hinweis" id="ziel-hinweis">${sperrSatz}</p>` : ''}${fehler ? `<p class="feld-meldung" id="ziel-fehler">${esc(fehler)}</p>` : ''}</div>
     <button type="button" class="knopf" id="btn-zuordnen" data-action="zuordnen" data-bauteil="${esc(b.projekt)}:${esc(b.id)}">Zuordnen und Entscheidung anlegen</button>`}
   </section>`;

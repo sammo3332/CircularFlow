@@ -68,7 +68,7 @@ test('Befund 1: erlaubter Abgleich TW-05 → BD-22 aus dem Pass bleibt möglich,
   const p = leerePersistenz(); const e = imPass(p, 'KB', 'TW-05', { art: 'bedarf', id: 'BD-22', projekt: 'SB' });
   const c = kontext(p, START); const ee = entscheidung(c, e.projekt, e.id);
   assert.equal(abgleich(c, bauteil(c, 'KB', 'TW-05'), bedarf(c, 'SB', 'BD-22')).pruefbitteMoeglich, false, 'ohne Ausnahme sperrt der laufende Vorgang');
-  assert.deepEqual(pruefbitteErlaubt(c, ee), { erlaubt: true, grund: null });
+  assert.deepEqual(pruefbitteErlaubt(c, ee), { erlaubt: true, grund: null, ergebnis: 'weiter' });
   assert.deepEqual(formIds(seite({ ...c, ui: neuerUiZustand() }, ee)), ['pruefbitte', 'abbruch']);
   // Nach der Prüfbitte keine zweite
   const res = vorgangSchritt(c, ee, 'pruefbitte', {}); p.ereignisse.push(res.ereignis);

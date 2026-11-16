@@ -166,6 +166,7 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--fokus); out
 .fehlerbox { border-color: var(--crit); background: var(--crit-bg); color: var(--crit); }
 .fehlerbox ul { display: block; padding-left: 18px; list-style: disc; } .fehlerbox li { display: list-item; }
 .hinweisbox { padding: var(--s-3) 14px; border-radius: var(--r-l); background: var(--info-bg); color: var(--info); font-size: 13.5px; margin: 0; }
+.hinweisbox-warn { background: var(--warn-bg); color: var(--warn); }
 .feld { display: grid; grid-template-columns: minmax(0, 1fr); gap: 5px; align-content: start; min-width: 0; }
 .feld label, .filter > span { font-size: var(--t-s); font-weight: 620; color: var(--tinte-2); }
 .feld-fehler input, .feld-fehler select { border-color: var(--crit); border-width: 2px; }
@@ -361,6 +362,8 @@ tfoot th, tfoot td { border-top: 2px solid var(--linie-2); background: var(--fla
 .paar:hover { border-color: var(--gruen); background: var(--flaeche-2); }
 .paar-kopf { display: flex; flex-wrap: wrap; align-items: center; gap: 6px var(--s-3); }
 .paar small { font-size: var(--t-s); }
+.paar small.paar-luecke { display: flex; align-items: center; gap: 5px; font-weight: 600; color: var(--tinte); }
+.paar-luecke.t-crit { color: var(--crit); } .paar-luecke.t-warn { color: var(--warn); }
 .ergebnis-kopf { display: grid; gap: var(--s-2); }
 .ergebnis-kopf h2 { display: flex; align-items: center; gap: 10px; font-size: clamp(20px, 2.2vw, 26px); font-weight: 700; font-stretch: 90%; }
 .ergebnis-kopf h2 .tsym { width: 24px; height: 24px; }

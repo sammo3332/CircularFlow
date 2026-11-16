@@ -68,6 +68,7 @@ export function entscheidungsSeite(ctx, p, e) {
       <div class="ergebnis-aktionen">
         ${aktion ? `<button type="button" class="knopf" id="aktion-schritt" data-action="schritt" data-entscheidung="${esc(k)}">${aktion}</button>`
     : st.beendet ? '' : nachRegel ? '<button type="button" class="knopf" id="aktion-zum-vorgang" data-action="zum-vorgang">Zum Vorgang</button>' : '<span class="chip chip-info">Liegt der Fachprüfung vor</span>'}
+        ${l.pruefbitteGesperrt && ['fehlt', 'klaerung'].includes(l.pruefbitteGesperrt.ergebnis) ? `<a class="knopf-zweit" id="aktion-bedarf-ergaenzen" href="#bedarf-ergaenzen-${slug(z.projekt)}-${slug(z.id)}">Bedarf ${esc(z.id)} ergänzen</a>` : ''}
         <span class="leise">Wird mit Projektzeit im Verlauf vermerkt. Simulation, nichts wird versendet.</span>
       </div>
     </div>

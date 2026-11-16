@@ -1,9 +1,9 @@
 // Bedarfe: Liste und Detail. Erfassen und Ergänzen stehen in bedarfform.js.
 import { GRUPPEN } from '../daten.js';
-import { abgleichListe } from '../abgleich.js';
+import { abgleichListe, lueckeText } from '../abgleich.js';
 import { fehlendeZeitangaben } from '../bedarf.js';
 import { bedarfBelegt, bedarfBelegtArt, bedarfVorgang, vorgangStatus } from '../vorgang.js';
-import { esc, chip, icon, leer, pchip, gruppenChip, seitenkopf, person, routeBedarf, routeAbgleich, routeEntscheidung, tagText, ergebnisChip } from '../ui.js';
+import { esc, chip, icon, leer, pchip, gruppenChip, seitenkopf, person, routeBedarf, routeAbgleich, routeEntscheidung, tagText, ergebnisChip, tonMarke } from '../ui.js';
 import { verfuegbarText } from './bauteile.js';
 
 export const bestellfristVon = (d) => d.bestellfrist ?? d.fristen?.ersatz?.slice(0, 10) ?? null;
@@ -102,6 +102,7 @@ export function bedarfDetail(ctx, d) {
         <span class="paar-kopf">${ergebnisChip(a.gesamt)}<span class="bref">${pchip(ctx.daten.projekte.find((x) => x.kurz === a.bauteil.projekt) || { kurz: a.bauteil.projekt, farbe: '#555', name: '' })}<span class="mono">${esc(a.bauteil.id)}</span></span></span>
         <b>${esc(a.bauteil.name)}</b>
         <small>${esc(a.menge.status === 'fehlt' ? 'Menge fehlt' : `${String(a.bauteil.menge).replace('.', ',')} ${esc(a.menge.einheit)}`)} · ${esc(verfuegbarText(a.bauteil))}</small>
+        ${a.menge.status === 'teilweise' ? `<small class="paar-luecke t-${esc(a.menge.ton)}">${tonMarke(a.menge.ton)}${esc(lueckeText(a.menge))}</small>` : ''}
         <small>${esc(a.gruende[0] || '')}</small></a></li>`).join('')}</ul>`
         : (e ? '' : leer('Kein passendes Angebot.', 'Es gibt kein angebotenes Bauteil derselben Gruppe, das für diesen Bedarf in Frage kommt.'))}
     </section>

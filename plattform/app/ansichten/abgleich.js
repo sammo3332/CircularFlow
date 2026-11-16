@@ -1,6 +1,6 @@
 // Abgleich: Liste aller Paare und die erklärte Prüfung eines Paares. Der Knopf „Prüfbitte anlegen“ (oder sein Sperrgrund) steht hier; angelegt wird in main.js.
 import { GRUPPEN, ZUSTAND } from '../daten.js';
-import { abgleich, abgleichListe, reserveText, ERGEBNIS, ERGEBNIS_REIHENFOLGE, HINWEIS_ABGLEICH } from '../abgleich.js';
+import { abgleich, abgleichListe, reserveText, ERGEBNIS, ERGEBNIS_REIHENFOLGE, HINWEIS_ABGLEICH, lueckeText } from '../abgleich.js';
 import { offeneNachweise } from '../regeln.js';
 import { esc, chip, icon, leer, pchip, gruppenChip, seitenkopf, person, routeBedarf, routePass, routeAbgleich, routeEntscheidung, ergebnisChip, tagText, tonSymbol } from '../ui.js';
 import { zeit } from '../zeit.js';
@@ -39,7 +39,7 @@ export function abgleichListeSeite(ctx) {
       <td data-label="Ergebnis">${ergebnisChip(a.gesamt)}</td>
       <td data-label="Angebot"><div class="bt-name"><span class="bref">${pchip(projektVon(ctx, a.bauteil.projekt))}<span class="mono">${esc(a.bauteil.id)}</span></span><span><a href="${routeAbgleich(a.schluessel)}"><b>${esc(a.bauteil.name)}</b></a><small>${esc(mengeText(a.bauteil))} · ${esc(verfuegbarText(a.bauteil))}</small></span></div></td>
       <td data-label="Bedarf"><div class="bt-name"><span class="bref">${pchip(projektVon(ctx, a.bedarf.projekt))}<span class="mono">${esc(a.bedarf.id)}</span></span><span><b>${esc(a.bedarf.titel)}</b><small>${esc(mengeBedarf(a.bedarf))}${bestellfristVon(a.bedarf) ? ` · Bestellfrist ${tagText(bestellfristVon(a.bedarf))}` : ''}</small></span></div></td>
-      <td data-label="Zeit und Menge">${esc(kurz(ctx, a))}<small>${esc(a.menge.status === 'teilweise' ? `Menge: es fehlen ${String(a.menge.luecke).replace('.', ',')} ${a.menge.einheit}` : a.menge.status === 'gedeckt' ? 'Menge gedeckt' : a.menge.status === 'fehlt' ? 'Menge fehlt' : '')}</small></td>
+      <td data-label="Zeit und Menge">${esc(kurz(ctx, a))}<small>${esc(a.menge.status === 'teilweise' ? `Menge: ${lueckeText(a.menge).replace(/^Es/, 'es').replace(/\.$/, '')}` : a.menge.status === 'gedeckt' ? 'Menge gedeckt' : a.menge.status === 'fehlt' ? 'Menge fehlt' : '')}</small></td>
       <td data-label="Entfernung">${esc(a.entfernung.text)}</td></tr>`).join('')}</tbody></table></div>
     <p class="hinweis-zeile">${esc(HINWEIS_ABGLEICH)} Bauteile und Bedarfe mit laufendem Vorgang erscheinen hier nicht.</p>`
     : leer('Kein Paar in diesem Ergebnis.', alle.length ? 'Anderes Ergebnis wählen.' : 'Es gibt derzeit keine Kombination aus freiem Angebot und offenem Bedarf.', alle.length ? '<button type="button" class="knopf" data-action="abgleich-filter" data-wert="">Alle Paare zeigen</button>' : '')}`;

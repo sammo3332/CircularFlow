@@ -2,7 +2,9 @@
 // Die geprüfte Türregel (prototype/dist/door-rules.mjs) wird als Modul R übergeben und nicht verändert.
 import { GRUPPEN, PERSONEN } from './daten.js';
 import { minuten, bis, istDatum, zeit, ausMinuten } from './zeit.js';
-import { vorgangStatus, naechsterVorgangsschritt, aktiverVorgang, uebergebenerVorgang } from './vorgang.js';
+import { vorgangStatus, naechsterVorgangsschritt, aktiverVorgang, uebergebenerVorgang, tagesende } from './vorgang.js';
+// Zirkulärer Import mit abgleich.js (das lage() nutzt): unbedenklich, weil keines der Module beim Laden Funktionen des anderen aufruft.
+import { pruefbitteErlaubt } from './abgleich.js';
 
 export const schluessel = (projekt, id) => `${projekt}:${id}`;
 export const rolleKey = (role) => Object.keys(PERSONEN).find((k) => PERSONEN[k].rolle === role) || 'planung';
@@ -201,14 +203,35 @@ export function naechsteFrist(l, at) { return l.fristen.filter((f) => minuten(f.
 export function lageVorgang(ctx, e) {
   const l = lage(ctx, e); const st = vorgangStatus(ctx, e);
   const schritt = naechsterVorgangsschritt(ctx, e);
+  const jetzt = minuten(ctx.at);
   if (schritt) {
-    const fristen = schritt.frist ? [{ name: schritt.fristName, at: schritt.frist, rolle: schritt.rolle || 'planung', status: schritt.ton === 'crit' || schritt.rank <= 4 ? 'überfällig oder abgelaufen' : 'offen', ton: schritt.ton === 'crit' || schritt.rank <= 4 ? 'crit' : 'ok' }] : [];
+    // Der Status einer Frist folgt ihrem Datum: Verstrichen ist verstrichen, auch vor dem nächsten Schritt.
+    const vorbei = Boolean(schritt.frist) && minuten(schritt.frist) < jetzt;
+    const fristen = schritt.frist ? [{ name: schritt.fristName, at: schritt.frist, rolle: schritt.rolle || 'planung', status: vorbei ? 'verstrichen' : 'offen', ton: vorbei || schritt.ton === 'crit' ? 'crit' : 'ok' }] : [];
     return { ...l, vorgang: st, haupt: { rank: schritt.rank, text: schritt.text, rolle: schritt.rolle, grund: schritt.grund }, weiter: [], fristen };
   }
+  // Vor dem Fachergebnis gehört die Bestellfrist des Bedarfs zu den Fristen des Vorgangs: Prüfung und Vormerkung müssen davor liegen.
+  const d = e.ziel?.art === 'bedarf' ? l.z : null;
+  const bf = d?.bestellfrist && !st.beendet ? tagesende(d.bestellfrist) : null;
+  const fristen = bf ? [...l.fristen, { name: 'Bestellfrist', at: bf, rolle: d.zustaendig || 'planung', status: minuten(bf) < jetzt ? 'verstrichen' : 'offen', ton: minuten(bf) < jetzt ? 'crit' : 'warn' }] : l.fristen;
   if (st.key === 'pruefbitte' && l.haupt.rank === 6 && !l.haupt.wartet) {
-    return { ...l, vorgang: st, haupt: { rank: 6, wartet: true, text: 'Rückmeldung der Fachprüfung abwarten', rolle: 'fach', grund: `Die Prüfbitte liegt seit ${zeit(st.pruefbitte.at)} der Fachprüfung vor. Weitere technische Anforderungen bleiben offen.` } };
+    return { ...l, fristen, vorgang: st, haupt: { rank: 6, wartet: true, text: 'Rückmeldung der Fachprüfung abwarten', rolle: 'fach', grund: `Die Prüfbitte liegt seit ${zeit(st.pruefbitte.at)} der Fachprüfung vor. Weitere technische Anforderungen bleiben offen.` } };
   }
-  return { ...l, vorgang: st };
+  // Regel erfüllt, Prüfbitte aber gesperrt (Ziel Bedarf, Abgleich erlaubt sie nicht): Der nächste Schritt ist das Klären,
+  // nicht das Vorlegen. So führt auch „Zur Fachprüfung vorlegen“ nicht an der Sperre der Prüfbitte vorbei.
+  if (st.key === 'offen' && d && l.haupt.rank === 6 && !l.haupt.wartet) {
+    const pb = pruefbitteErlaubt(ctx, e);
+    if (!pb.erlaubt) return { ...l, fristen, vorgang: st, pruefbitteGesperrt: pb, haupt: gesperrterSchritt(pb, d) };
+  }
+  return { ...l, fristen, vorgang: st };
+}
+function gesperrterSchritt(pb, d) {
+  const grund = String(pb.grund || '').replace(/^Keine Prüfbitte möglich: /, '');
+  const rolle = d.zustaendig || 'planung';
+  if (pb.ergebnis === 'spaet') return { rank: 2, text: 'Zu spät für eine Prüfbitte: Ersatz planen oder Vorgang abbrechen', rolle, grund: `Die Regel ist erfüllt, für eine Prüfbitte ist es aber zu spät. ${grund}` };
+  if (pb.ergebnis === 'fehlt') return { rank: 4, text: 'Fehlende Angaben zum Bedarf ergänzen', rolle, grund: `Die Regel ist erfüllt, die Prüfbitte ist aber noch gesperrt. ${grund} Nach dem Ergänzen ist sie möglich.` };
+  if (pb.ergebnis === 'klaerung') return { rank: 4, text: 'Widersprüchliche Angaben zum Bedarf klären', rolle, grund: `Die Regel ist erfüllt, die Prüfbitte ist aber noch gesperrt. ${grund}` };
+  return { rank: 4, text: 'Prüfbitte noch nicht möglich', rolle, grund: pb.grund };
 }
 
 // Offene Entscheidungen nach Handlungsdruck: wartende zuletzt, dann Rang des nächsten Schritts, dann nächste Frist.
