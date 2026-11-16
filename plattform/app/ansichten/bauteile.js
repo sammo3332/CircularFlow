@@ -67,7 +67,10 @@ function zeile(ctx, p, b) {
 export function pass(ctx, p, b) {
   const g = GRUPPEN[b.gruppe]; const s = bauteilStatus(ctx, b); const n = naechsteHandlung(ctx, b);
   const offen = offeneNachweise(ctx, b); const e = entscheidungFuer(ctx, b); const r = raumVon(p, b.raum);
-  const ziele = e ? null : moeglicheZiele(ctx, b); const hatZiel = Boolean(ziele && (ziele.oeffnungen.length || ziele.bedarfe.length));
+  // Ziel zählt nur, wenn es wählbar ist: Bedarfe, die der Abgleich ausschließt („zu spät“, „Klärung nötig“), nicht.
+  const ziele = e ? null : moeglicheZiele(ctx, b);
+  const hatZiel = Boolean(ziele && (ziele.oeffnungen.length || ziele.bedarfe.some((d) => zuordnungZumBedarf(ctx, b, d).moeglich)));
+  const nurGesperrt = Boolean(ziele && !hatZiel && ziele.bedarfe.length);
   const verlauf = [...(b.verlauf || []), ...ctx.ereignisse.filter((x) => x.bauteil === `${b.projekt}:${b.id}`)]
     .filter((v) => v.at <= ctx.at).sort((x, y) => (x.at < y.at ? 1 : -1));
   const a = n.frist ? abstand(n.frist, ctx.at) : null;
@@ -88,7 +91,7 @@ export function pass(ctx, p, b) {
         <h2 id="h-handlung" tabindex="-1">${esc(n.text)}</h2>
         <p class="ergebnis-rolle">${n.rolle ? `${esc(person(n.rolle).rolle)} · ${esc(person(n.rolle).name)}` : ''}${n.frist ? ` · ${esc(n.fristName || 'Frist')} ${zeit(n.frist)} <span class="${a.vorbei ? 'vorbei' : ''}">(${a.text})</span>` : ''}</p>
         ${n.grund ? `<p class="ergebnis-grund">${esc(n.grund)}</p>` : ''}
-        <div class="ergebnis-aktionen">${e ? `<a class="knopf" href="${routeEntscheidung(e)}">Entscheidung ${esc(e.id)} öffnen</a>` : n.aktion === 'zuordnen' && hatZiel ? '<button type="button" class="knopf" data-action="zum-ziel">Ziel zuordnen</button>' : n.aktion === 'zuordnen' ? '<p class="leise">Noch kein freies Ziel dieser Bauteilgruppe. Ein passender Bedarf oder eine Zielöffnung muss zuerst angelegt werden.</p>' : ''}</div>
+        <div class="ergebnis-aktionen">${e ? `<a class="knopf" href="${routeEntscheidung(e)}">Entscheidung ${esc(e.id)} öffnen</a>` : n.aktion === 'zuordnen' && hatZiel ? '<button type="button" class="knopf" data-action="zum-ziel">Ziel zuordnen</button>' : n.aktion === 'zuordnen' ? (nurGesperrt ? '<p class="leise">Zurzeit ist kein Ziel zuordenbar: Der Abgleich schließt die vorhandenen Bedarfe aus. Die Gründe stehen unten unter „Ziel zuordnen“.</p>' : '<p class="leise">Noch kein freies Ziel dieser Bauteilgruppe. Ein passender Bedarf oder eine Zielöffnung muss zuerst angelegt werden.</p>') : ''}</div>
       </section>
       <section class="flaeche steckbrief" aria-labelledby="h-steck">
         <h2 id="h-steck" class="sr">Steckbrief</h2>
@@ -163,15 +166,22 @@ function zuordnung(ctx, p, b, e) {
   const key = `${b.projekt}:${b.id}`;
   const gewaehlt = ctx.ui.zielWahl?.fuer === key ? ctx.ui.zielWahl.wert : '';
   const opt = (wert, text, gesperrt = false) => `<option value="${esc(wert)}" ${wert === gewaehlt && !gesperrt ? 'selected' : ''} ${gesperrt ? 'disabled' : ''}>${text}</option>`;
+  // Gesperrte Bedarfe bleiben sichtbar, ihr Grund steht direkt am Feld (mit Link zum Abgleich), nicht erst nach dem Klick.
+  const bewertet = bedarfe.map((d) => ({ d, z: zuordnungZumBedarf(ctx, b, d) }));
+  const gesperrt = bewertet.filter((x) => !x.z.moeglich);
+  const waehlbar = oeffnungen.length + bewertet.length - gesperrt.length;
+  const sperrSatz = gesperrt.length ? `Nicht wählbar: ${gesperrt.map(({ d, z }) => `<a href="${routeAbgleich(z.ergebnis.schluessel)}">${esc(d.projekt)} · ${esc(d.id)}</a> (${esc(z.ergebnis.gesamt.label)})`).join(', ')}. Der Abgleich schließt ${gesperrt.length === 1 ? 'diesen Bedarf' : 'diese Bedarfe'} aus, der Link zeigt den Grund.` : '';
+  const beschrieben = [gesperrt.length ? 'ziel-hinweis' : '', fehler ? 'ziel-fehler' : ''].filter(Boolean).join(' ');
   return `<section class="flaeche zuordnung" id="zuordnung" aria-labelledby="h-zu">
     <h2 id="h-zu">Ziel zuordnen</h2>
     <p class="leise">Ein Bauteil geht an eine Zielöffnung im Projekt oder an einen Bedarf in der Region. Daraus entsteht eine Entscheidung mit Fristen und nächstem Schritt.</p>
-    ${oeffnungen.length || bedarfe.length ? `<div class="feld"><label for="ziel-wahl">Ziel</label><select id="ziel-wahl" data-bauteil="${esc(key)}" ${fehler ? 'aria-invalid="true" aria-describedby="ziel-fehler"' : ''}><option value="">Bitte wählen</option>
+    ${!(oeffnungen.length || bedarfe.length) ? '<p class="leer-zeile">Kein freies Ziel dieser Bauteilgruppe vorhanden.</p>'
+    : !waehlbar ? `<p class="leer-zeile" id="ziel-hinweis">Zurzeit ist kein Ziel zuordenbar. ${sperrSatz}</p>`
+    : `<div class="feld"><label for="ziel-wahl">Ziel</label><select id="ziel-wahl" data-bauteil="${esc(key)}" ${fehler ? 'aria-invalid="true"' : ''} ${beschrieben ? `aria-describedby="${beschrieben}"` : ''}><option value="">Bitte wählen</option>
       ${oeffnungen.length ? `<optgroup label="Zielöffnungen im Projekt ${esc(p.kurz)}">${oeffnungen.map((z) => opt(`zieloeffnung|${z.projekt}|${z.id}`, `${esc(z.id)} · Raum ${esc(z.raum)} · Soll ${z.minMm}–${z.maxMm} mm`)).join('')}</optgroup>` : ''}
-      ${bedarfe.length ? `<optgroup label="Bedarfe">${bedarfe.map((d) => { const z = zuordnungZumBedarf(ctx, b, d); return opt(`bedarf|${d.projekt}|${d.id}`, `${esc(d.projekt)} · ${esc(d.id)} · ${esc(d.titel)} · Abgleich: ${esc(z.ergebnis.gesamt.label)}`, !z.moeglich); }).join('')}</optgroup>` : ''}
-    </select>${fehler ? `<p class="feld-meldung" id="ziel-fehler">${esc(fehler)}</p>` : ''}</div>
-    <button type="button" class="knopf" id="btn-zuordnen" data-action="zuordnen" data-bauteil="${esc(b.projekt)}:${esc(b.id)}">Zuordnen und Entscheidung anlegen</button>`
-    : '<p class="leer-zeile">Kein freies Ziel dieser Bauteilgruppe vorhanden.</p>'}
+      ${bewertet.length ? `<optgroup label="Bedarfe">${bewertet.map(({ d, z }) => opt(`bedarf|${d.projekt}|${d.id}`, `${esc(d.projekt)} · ${esc(d.id)} · ${esc(d.titel)} · Abgleich: ${esc(z.ergebnis.gesamt.label)}`, !z.moeglich)).join('')}</optgroup>` : ''}
+    </select>${sperrSatz ? `<p class="feld-hinweis" id="ziel-hinweis">${sperrSatz}</p>` : ''}${fehler ? `<p class="feld-meldung" id="ziel-fehler">${esc(fehler)}</p>` : ''}</div>
+    <button type="button" class="knopf" id="btn-zuordnen" data-action="zuordnen" data-bauteil="${esc(b.projekt)}:${esc(b.id)}">Zuordnen und Entscheidung anlegen</button>`}
   </section>`;
 }
 

@@ -232,7 +232,7 @@ app.addEventListener('click', (ev) => {
     }
     case 'katalog-vorgabe-weg': ui.katalog.vorgabe = null; ui.katalog.gruppe = ''; ui.fokus = 'kat-q'; break;
     // Hauptnavigation „Bauteile“ öffnet den ganzen Katalog: eine Vorgabe aus der Übersicht (Kachel, Diagramm) entfällt.
-    case 'nav': if (a.dataset.ziel !== 'bauteile' || !ui.katalog.vorgabe) return; ui.katalog.vorgabe = null; ui.katalog.gruppe = ''; if (zumLink(a)) return; break;
+    case 'nav': if (ev.ctrlKey || ev.metaKey || ev.shiftKey || a.dataset.ziel !== 'bauteile' || !ui.katalog.vorgabe) return; ui.katalog.vorgabe = null; ui.katalog.gruppe = ''; if (zumLink(a)) return; break;
     case 'katalog-reset': ui.katalog = leererKatalog(); ui.fokus = 'kat-q'; break;
     case 'bedarfe-vorgabe': ui.bedarfe = { ...leereBedarfsliste(), offen: true }; if (zumLink(a)) return; break;
     case 'bedarfe-reset': ui.bedarfe = leereBedarfsliste(); ui.fokus = 'bed-gruppe'; break;

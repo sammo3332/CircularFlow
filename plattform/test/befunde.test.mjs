@@ -245,3 +245,28 @@ test('Nachprüfung: Die Kartenseite zeigt wieder zwei offene Entscheidungen mit 
   assert.equal((abschnitt.match(/<small>Zuständig<\/small>/g) || []).length, 2);
   assert.ok(html.indexOf('class="offene"') < html.indexOf('id="karte"'), 'Karten stehen vor der Karte');
 });
+
+test('Nachprüfung: Der Pass nennt gesperrte Bedarfe am Feld und zeigt ohne wählbares Ziel keinen Knopf', () => {
+  const lh = PROJEKTE.find((x) => x.kurz === 'LH'); const kb = PROJEKTE.find((x) => x.kurz === 'KB');
+  const c = mitUi();
+  const html = pass(c, lh, bauteil(c, 'LH', 'TW-01'));
+  assert.match(html, /<select id="ziel-wahl"[^>]*aria-describedby="ziel-hinweis"/);
+  assert.match(html, /<p class="feld-hinweis" id="ziel-hinweis">Nicht wählbar: <a href="#abgleich-lh-tw-01--sb-bd-23">SB · BD-23<\/a> \(Für diese Entscheidung zu spät\)/);
+  // Bestellfrist von BD-22 vor dem Prüfende: dann ist auch BD-22 zu spät und für TW-01 kein Ziel mehr wählbar.
+  const pers = leerePersistenz(); pers.bedarfAenderungen = { 'SB:BD-22': { bestellfrist: '2026-11-20' } };
+  const c2 = mitUi(pers);
+  assert.equal(zuordnungZumBedarf(c2, bauteil(c2, 'LH', 'TW-01'), bedarf(c2, 'SB', 'BD-22')).moeglich, false);
+  const html2 = pass(c2, lh, bauteil(c2, 'LH', 'TW-01'));
+  assert.doesNotMatch(html2, /id="ziel-wahl"/);
+  assert.doesNotMatch(html2, /id="btn-zuordnen"/);
+  assert.match(html2, /<p class="leer-zeile" id="ziel-hinweis">Zurzeit ist kein Ziel zuordenbar\. Nicht wählbar: .*BD-22.*BD-23/);
+  // T-31 (nächste Handlung „zuordnen“): ohne Sperre Knopf „Ziel zuordnen“ und kein Hinweis …
+  assert.match(pass(c, kb, bauteil(c, 'KB', 'T-31')), /data-action="zum-ziel"/);
+  assert.doesNotMatch(pass(c, kb, bauteil(c, 'KB', 'T-31')), /id="ziel-hinweis"/);
+  // … ist BD-21 sicher zu spät, gibt es keinen Knopf mehr, und die Handlung nennt den Grund.
+  const pers3 = leerePersistenz(); pers3.bedarfAenderungen = { 'SB:BD-21': { bestellfrist: '2026-11-20', pruefzeitTage: 14 } };
+  const c3 = mitUi(pers3);
+  const html3 = pass(c3, kb, bauteil(c3, 'KB', 'T-31'));
+  assert.doesNotMatch(html3, /data-action="zum-ziel"/);
+  assert.match(html3, /Zurzeit ist kein Ziel zuordenbar: Der Abgleich schließt die vorhandenen Bedarfe aus/);
+});
