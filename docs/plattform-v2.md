@@ -322,3 +322,123 @@ Alles läuft als Simulation mit Beispieldaten.
 3. Soll ein Fachergebnis nur möglich sein, wenn der Abgleich die Prüfbitte erlaubt hat?
 4. Soll die geteilte Seite auf Fassung 2 aktualisiert werden? Dafür ist eine ausdrückliche Freigabe nötig.
 5. Soll Fassung 2 den Produktbrief v0.2 fortschreiben, oder bleibt sie ein Demo-Entwurf?
+
+## 10. Prüfauftrag nach der Übergabe · 16.11.2026
+
+**Auftrag (Houssam, 16.11.2026):** Übersicht und Entscheidungen aus Abschnitt 8 bleiben für die Demo. Zu prüfen:
+1. Ein Fachergebnis lässt sich erst nach einer tatsächlich angelegten Prüfbitte eintragen.
+2. Ein laufender Vorgang bleibt bei Fristablauf dokumentierbar.
+3. Doppelboden: Bei 7 m² Bestand und 57,2 m² Bedarf ist die fehlende Menge von mindestens 50,2 m² auch bei
+   unbekannter Schadfläche erkennbar.
+
+Danach den kürzesten zuverlässigen Pitch-Ablauf für die geprüfte Vorschau liefern. Über die öffentliche Freigabe
+entscheidet das Team nach der Generalprobe.
+
+- **Nutzerproblem:** Die Jury muss sehen, dass ein Vorschlag nie als Freigabe durchgeht, dass ein Vorgang nach
+  einer verstrichenen Frist weiter festhält, was geschieht, und dass eine Teilmenge als Teilmenge erkennbar ist.
+- **Ausgeschlossen:** neue Funktionen, Änderungen an der Übersicht und an Abschnitt 8, die öffentliche Freigabe,
+  der Produktbrief.
+- **Akzeptanz:** je Punkt Tests in `plattform/test/pruefauftrag.test.mjs` und eine Browserprüfung.
+- **Ausgang:** `74fa0f9`. Codestand danach: `1063421` und `2121b92`. Pitch-Ablauf: `a48ac47` und dieser Commit.
+
+### Ergebnis je Punkt
+
+**1. Fachergebnis nur nach Prüfbitte**
+- Der Fachkern ließ ein Fachergebnis schon vorher nur nach einer Prüfbitte zu. Gespeicherte, vordatierte und vor
+  der Prüfbitte datierte Fachergebnisse zählen nicht.
+- **Gefunden:** Der ältere Knopf „Zur Fachprüfung vorlegen“ legt eine Vorlage an, und die zählt wie eine
+  Prüfbitte. Beim Doppelboden (E-02 mit beiden Nachweisen) umging er so die Sperre des Abgleichs, während der
+  Vorgang gleichzeitig „Prüfbitte noch nicht möglich“ meldete.
+- **Jetzt:** Für alle Wege gilt dieselbe Sperre (`regeln.vermerkSchritt`, `lageVorgang`).
+  - E-02 nennt „Fehlende Angaben zum Bedarf ergänzen“ und bietet einen Link dorthin.
+  - Die Vorlage ist erst möglich, wenn BD-01 Mindestprüfzeit und Annahmefenster hat.
+  - Der alte Knopf trägt nicht mehr rückdatiert ein.
+
+**2. Dokumentierbar bei Fristablauf**
+- Eintragen ließ sich schon vorher jeder erlaubte Schritt.
+- **Gefunden:**
+  - Während einer laufenden Prüfbitte fehlte die Bestellfrist des Bedarfs auf der Entscheidungsseite und unter
+    „Zeitkritisch“.
+  - Nach dem Fachergebnis stand eine verstrichene Frist weiter als „offen“.
+  - Arbeitsliste und Kartenkarten verdeckten eine verstrichene Frist durch die nächste.
+- **Jetzt:**
+  - Die Bestellfrist gehört zu den Fristen des Vorgangs, ihr Status folgt dem Datum.
+  - Die Seite meldet „Frist verstrichen: … Der Vorgang bleibt offen. Weiter möglich: …“.
+  - Einträge danach vermerken „Eingetragen nach Ablauf der Bestellfrist (…)“, beim Doppelboden „der
+    Ersatzentscheidung“.
+  - Listen und Karten zeigen die verstrichene Frist zuerst.
+
+**3. Doppelboden 7 m² gegen 57,2 m²**
+- Entscheidung und Abgleichseite waren richtig.
+- **Gefunden:** Die Paarliste schrieb „es fehlen 50,2 m²“ ohne „mindestens“. Pass und Bedarfsseite nannten die
+  Lücke gar nicht.
+- **Jetzt:** An allen Stellen steht „Es fehlen mindestens 50,2 m²“, auch im Auswahlfeld des Passes.
+
+### Prüfungen
+
+**Tests:** `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs`
+ergab auf `2121b92` 190 von 190. Gegenprobe: In einer Kopie wurde jede der 12 Korrekturen einzeln
+zurückgenommen, und die neuen Tests erkannten jede Rücknahme.
+
+**Browser** (Chromium über Playwright, de-DE, Europe/Berlin) auf `2121b92`:
+
+| Prüfung | Ergebnis |
+|---|---|
+| Prüfauftrag | 33 von 33 |
+| Jury-Ablauf | 55 von 55 |
+| Fassung 1.1 | 26 von 26 |
+| Dunkelmodus | 0 Verstöße auf 8 Ansichten |
+| Handy | 13 Routen ohne seitliches Scrollen |
+| Nachprüfung | 13 von 13 |
+| Hinweis im Pass | 12 von 12 |
+| Fokus | 3 von 3 |
+| Tastaturskript | 35 von 37, die bekannten zwei Fehlalarme des Skripts |
+| Pitch-Ablauf | 28 von 28 lokal, 28 von 28 auf den gebauten Dateien der Vorschau |
+| Rauchtest Vorschau | 4 von 4 |
+
+**cf-review auf `1063421`:** kein blockierender und kein hoher Befund, 2 mittlere und 6 geringe Punkte.
+- **In `2121b92` behoben:**
+  - Überschrift nach der Sperrart,
+  - verstrichene Frist zuerst,
+  - Vermerktext,
+  - Hinweis mit den möglichen Schritten,
+  - Hinweis beim Doppelboden,
+  - CSS-Spezifität,
+  - ungültiges Datum der Bestellfrist (in `lageVorgang` und `vorgangSchritt`; die Bedarfsliste in `kennzahlen.js` prüft es
+    nicht eigens),
+  - fehlender Vorgang.
+- **Bewusst offen:** Gespeicherte Prüfbitte- und Vorlage-Ereignisse zählen ohne erneute Prüfung der Freigabe. Es
+  sind nur eigene Einträge in diesem Browser, und ein älterer Test nutzt das.
+
+**cf-test auf `a48ac47`:** Agent 4 hat den Pitch-Ablauf wörtlich über die sichtbaren Beschriftungen befolgt, auf den
+gebauten Dateien der Vorschau, in 1280 × 720 und 390 × 844.
+- Alle Schritte sind bestanden, ohne Konsolenfehler und ohne Anfragen nach außen.
+- Kein blockierender, hoher oder mittlerer Befund.
+- Fünf geringe Befunde betrafen den Wortlaut des Dokuments (Status der Vormerkung, Klickzahl, klickbare Fläche der
+  Kachel, Landeseite nach dem Zurücksetzen, Feldname „Menge in m²“). Sie sind in `docs/pitch-ablauf.md`
+  eingearbeitet, ebenso die Hinweise, wo man in 1280 × 720 scrollen muss.
+
+**Vorschau:** Seite „CircularFlow Fassung 2“, Version 2 mit Code `2121b92`. Sie unterscheidet sich vom Build nur im
+Titel. Die Seite ist inzwischen als „Jeder mit dem Link“ geteilt; diese Einstellung stammt nicht von Claude. Die
+geteilte Seite der Fassung 1.1 ist unverändert.
+
+**Nicht geprüft:**
+- die Vorschau auf claude.ai selbst (kein Browserzugang),
+- die Datumseingabe per Tastatur auf einem deutschen Rechner,
+- echte Geräte, Safari und Firefox,
+- Bildschirmleser.
+
+### Rückmeldungen zu Abschnitt 9 und offene Entscheidungen
+
+Zu Abschnitt 9:
+- Punkt 1 (Abschnitt 8) und Punkt 2 (Übersicht als Start) sind für die Demo bestätigt.
+- Punkt 3 ist beantwortet: Ein Fachergebnis gibt es nur nach einer Prüfbitte, und die Prüfbitte nur mit Freigabe.
+- Punkt 4 entscheidet das Team nach der Generalprobe.
+- Punkt 5 ist offen.
+
+Neu zu entscheiden:
+1. Die Prüfbitte zum Doppelboden setzt vollständige Bedarfsangaben voraus (Mindestprüfzeit und Annahmefenster
+   fehlen bei BD-01 und BD-02). Das folgt Abschnitt 4. Die Alternative wäre, dass die Bodenregel allein genügt.
+2. Vorschlagswerte im Vormerkformular (Menge, „gilt bis“ gleich Ende des Annahmefensters), damit die Vormerkung im
+   Pitch ohne Datumseingabe auskommt. Nicht umgesetzt.
+3. Soll die Vorschau bis zur Generalprobe wieder privat sein?

@@ -52,6 +52,8 @@ und Herkunftsseite an openstreetmap.org.
 
 Zurücksetzen: Erfassen → „In diesem Browser gespeichert“ → „Zurücksetzen“.
 
+Für den Auftritt gibt es einen kürzeren, geprüften Ablauf mit Zusätzen für Fragen der Jury: [`docs/pitch-ablauf.md`](../docs/pitch-ablauf.md).
+
 ## Was echt ist und was simuliert
 
 | Bereich | Stand |
