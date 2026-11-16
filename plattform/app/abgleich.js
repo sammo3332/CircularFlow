@@ -19,12 +19,12 @@ export const HINWEIS_ABGLEICH = 'Entwurfsregel, fachlich nicht geprüft. Die Ang
 
 // ---------- Schlüssel für Routen ----------
 const slug = (s) => String(s).toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-// Form: <projekt>-<bauteil>~<projekt>-<bedarf>, z. B. kb-tw-05~sb-bd-22
-export const abgleichSchluessel = (bauteil, bedarf) => `${slug(bauteil.projekt)}-${slug(bauteil.id)}~${slug(bedarf.projekt)}-${slug(bedarf.id)}`;
+// Form: <projekt>-<bauteil>--<projekt>-<bedarf>, z. B. kb-tw-05--sb-bd-22 (nur ASCII, ein Doppelbindestrich trennt; slug() erzeugt nie zwei Bindestriche)
+export const abgleichSchluessel = (bauteil, bedarf) => `${slug(bauteil.projekt)}-${slug(bauteil.id)}--${slug(bedarf.projekt)}-${slug(bedarf.id)}`;
 // Löst den Schlüssel gegen die Daten auf; IDs dürfen Bindestriche enthalten (T-07, DB-01). Liefert { bauteil, bedarf } oder null.
 export function loeseAbgleichSchluessel(ctxOderDaten, text) {
   const daten = ctxOderDaten?.daten || ctxOderDaten;
-  const teile = String(text ?? '').toLowerCase().split('~');
+  const teile = String(text ?? '').toLowerCase().split('--');
   if (teile.length !== 2 || !daten) return null;
   const finde = (teil, liste) => liste.find((x) => teil === `${slug(x.projekt)}-${slug(x.id)}`) || null;
   const bauteil = finde(teile[0], daten.bauteile); const bedarf = finde(teile[1], daten.bedarfe);

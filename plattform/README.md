@@ -50,7 +50,7 @@ und Herkunftsseite an openstreetmap.org.
 ## Prüfen
 
 ```sh
-node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/regeln.test.mjs
+node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs
 ```
 
 ## Dateien
@@ -65,7 +65,9 @@ node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform
 | `app/zustand.js` | gemeinsamer Datenstand aus Beispieldaten und eigenen Änderungen |
 | `app/karte.js` | Leaflet-Karte mit Bezirken und Projektmarkern |
 | `app/ui.js`, `app/zeit.js` | Bausteine für die Oberfläche, Datum und Zeit ohne Zeitzone des Geräts |
-| `app/ansichten/` | Startseite, Projekt, Gebäude, Bestand, Pass, Entscheidung, Erfassung, Radar |
+| `app/ansichten/` | Übersicht (mit Diagramm), Katalog, Bedarfe, Abgleich, Arbeitsliste, Projekt, Gebäude, Bestand, Pass, Entscheidung, Erfassung, Radar |
+| `app/uizustand.js` | Zustand der Oberfläche (Filter, Auswahl), unabhängig vom Browser prüfbar |
+| `test/ansichten.test.mjs` | rendert alle Ansichten in Node, prüft Kachel-Zahlen gegen Ziellisten |
 | `daten/dortmund-stadtbezirke.geojson` | vereinfachte Bezirksgrenzen, Quelle in der Datei |
 | `vendor/leaflet/` | Leaflet 1.9.4 mit Lizenz (BSD-2-Clause) |
 | `fonts/` | Archivo und JetBrains Mono, SIL Open Font License 1.1 |

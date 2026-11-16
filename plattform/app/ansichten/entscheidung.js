@@ -1,6 +1,6 @@
 // Wiederverwendungsentscheidung (Bauteil → Zielöffnung oder Bedarf) und Liste je Projekt.
 import { GRUPPEN, PROJEKTE } from '../daten.js';
-import { esc, chip, leer, slug, routePass, routeEntscheidung, routeRaum, person, bauteilRef, pchip } from '../ui.js';
+import { esc, chip, leer, slug, routePass, routeEntscheidung, routeRaum, person, bauteilRef, pchip, tonMarke, tonSymbol } from '../ui.js';
 import { lage, tonVon, naechsteFrist, schluessel, wertText } from '../regeln.js';
 import { zeit, abstand, minuten } from '../zeit.js';
 import { projektKopf, raumVon } from './projekte.js';
@@ -20,7 +20,7 @@ function zeile(ctx, p, e, l) {
   return `<a class="entscheidung-zeile" href="${routeEntscheidung(e)}">
     <span class="ez-id"><span class="mono">${esc(e.id)}</span>${chip(l.geprueft ? 'Regel geprüft' : 'Entwurf', l.geprueft ? 'ok' : 'neutral')}${l.r?.deckung?.key === 'teil' ? chip(l.r.deckung.label, 'crit') : ''}</span>
     <span class="ez-titel"><b>${esc(l.b.id)} ${esc(l.b.name)}</b><small>→ ${e.ziel.art === 'zieloeffnung' ? `Zielöffnung ${esc(l.z.id)}, Raum ${esc(l.z.raum)}` : `Bedarf ${esc(l.z.projekt)} · ${esc(l.z.id)}`}</small></span>
-    <span class="ez-schritt"><i class="streifen t-${tonVon(l.haupt)}"></i><span><small>Nächster Schritt · ${esc(person(l.haupt.rolle).rolle)}</small><b>${esc(l.haupt.text)}</b>${l.weiter.length ? `<small>und ${l.weiter.length} weitere offene Aufgabe${l.weiter.length > 1 ? 'n' : ''}</small>` : ''}</span></span>
+    <span class="ez-schritt">${tonMarke(tonVon(l.haupt))}<span><small>Nächster Schritt · ${esc(person(l.haupt.rolle).rolle)}</small><b>${esc(l.haupt.text)}</b>${l.weiter.length ? `<small>und ${l.weiter.length} weitere offene Aufgabe${l.weiter.length > 1 ? 'n' : ''}</small>` : ''}</span></span>
     <span class="ez-frist">${f ? `<small>${esc(f.name)}</small><span class="mono">${zeit(f.at)}</span><small class="${a.vorbei ? 'vorbei' : ''}">${a.text}</small>` : '<small>keine Frist</small>'}</span>
   </a>`;
 }
@@ -36,7 +36,7 @@ export function entscheidungsSeite(ctx, p, e) {
   const herkunft = raumVon(p, b.raum);
   const ziel = e.ziel.art === 'zieloeffnung' ? raumVon(p, z.raum) : (zielProjekt ? raumVon(zielProjekt, z.raeume?.[0]) : null);
   return `
-  <nav class="pfad" aria-label="Pfad"><a href="#projekte">Projekte</a><span>/</span><a href="#projekt-${slug(p.kurz)}">${esc(p.name)}</a><span>/</span><a href="#entscheidungen-${slug(p.kurz)}">Entscheidungen</a><span>/</span><span aria-current="page">${esc(e.id)}</span></nav>
+  <nav class="pfad" aria-label="Pfad"><a href="#projekte">Projekte</a><span aria-hidden="true">/</span><a href="#projekt-${slug(p.kurz)}">${esc(p.name)}</a><span aria-hidden="true">/</span><a href="#entscheidungen-${slug(p.kurz)}">Entscheidungen</a><span aria-hidden="true">/</span><span aria-current="page">${esc(e.id)}</span></nav>
   <section class="seitenkopf">
     <div>
       <p class="eyebrow">Wiederverwendungsentscheidung · <span class="mono">${esc(e.id)}</span></p>
@@ -44,14 +44,14 @@ export function entscheidungsSeite(ctx, p, e) {
       <p class="unter">${chip(l.regelText, l.geprueft ? 'ok' : 'neutral')} <a href="${routePass(b)}">Bauteilpass ${esc(b.id)}</a></p>
     </div>
   </section>
-  ${l.r?.deckung ? `<section class="befund t-rand-${l.r.deckung.ton}" id="befund-deckung" aria-labelledby="h-befund">
-    <p class="label">Befund Menge · Regel im Entwurf</p>
+  ${l.r?.deckung ? `<section class="befund t-${l.r.deckung.ton}" id="befund-deckung" aria-labelledby="h-befund">
+    <p class="label">${tonSymbol(l.r.deckung.ton)}Befund Menge · Regel im Entwurf</p>
     <h2 id="h-befund">${esc(l.r.deckung.label)}</h2>
     <p>${esc(l.r.deckung.text)}</p>
   </section>` : ''}
-  <section class="ergebnis t-rand-${ton}" aria-labelledby="h-schritt">
+  <section class="ergebnis t-${ton}" aria-labelledby="h-schritt">
     <div class="ergebnis-haupt">
-      <p class="label">Nächster fachlicher Schritt</p>
+      <p class="label">${tonSymbol(ton)}Nächster fachlicher Schritt</p>
       <h2 id="h-schritt" tabindex="-1">${esc(l.haupt.text)}</h2>
       <p class="ergebnis-rolle">${esc(person(l.haupt.rolle).rolle)} · ${esc(person(l.haupt.rolle).name)}, ${esc(person(l.haupt.rolle).stelle)}</p>
       <p class="ergebnis-grund">${esc(l.haupt.grund)}</p>
@@ -98,8 +98,8 @@ function eingangKarte(ctx, l, k) {
   const knopf = ms.key === 'onTime' || ms.key === 'late' ? ''
     : `<div class="ergebnis-aktionen"><button type="button" class="knopf" id="btn-aufmass-beispiel" data-action="aufmass-beispiel" data-entscheidung="${esc(k)}">Rechtzeitigen Eingang zeigen</button>
       <span class="leise">Beispiel, Simulation: setzt ein gemessenes Aufmaß mit Eingang vor der Frist${l.req.target === 'B-02' ? ' (890 mm, Eingang Mi 18.11., 15:00)' : ''} und stellt die Projektzeit, falls nötig, auf den Eingang vor.</span></div>`;
-  return `<section class="befund t-rand-${ton}" id="aufmass-eingang" tabindex="-1" aria-labelledby="h-eingang">
-    <p class="label">Aufmaßeingang · Rohbauöffnung ${esc(l.z.id)}</p>
+  return `<section class="befund t-${ton}" id="aufmass-eingang" tabindex="-1" aria-labelledby="h-eingang">
+    <p class="label">${tonSymbol(ton)}Aufmaßeingang · Rohbauöffnung ${esc(l.z.id)}</p>
     <h2 id="h-eingang">${titel}</h2>
     <p>${esc(eingang)} · Aufmaßfrist ${zeit(frist)}${vorher}</p>
     ${knopf}

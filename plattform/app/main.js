@@ -1,8 +1,10 @@
 // Einstieg: Router, Rahmen, Ereignisse. Ein gemeinsamer Datensatz für alle Ansichten.
 import { REGIONEN, PROJEKTZEITEN, GRUPPEN } from './daten.js';
+import { loeseAbgleichSchluessel } from './abgleich.js';
+import { neuerUiZustand, leererKatalog, leereBedarfsliste, leererBestand, leereRadarFilter } from './uizustand.js';
 import { ladePersistenz, speichere, loesche, baueDaten, leerePersistenz } from './zustand.js';
 import { schluessel, neueEntscheidung, bauteilAusErfassung, naechsteBauteilId, pruefeErfassung, erkennungSimulation, radarSchritt, pruefeMeldung, ifcVorpruefung, ZAHL, lage, beispielAufmassRechtzeitig } from './regeln.js';
-import { esc, icon, slug, pchip, nichtGefunden } from './ui.js';
+import { esc, icon, slug, pchip, nichtGefunden, laedt } from './ui.js';
 import { zeit, jetztBerlin } from './zeit.js';
 import { karteMontieren, karteEntfernen, markerHervorheben } from './karte.js';
 import { startseite, projektUebersicht, popupHtml, gefilterteProjekte } from './ansichten/projekte.js';
@@ -11,6 +13,12 @@ import { bestand, pass } from './ansichten/bauteile.js';
 import { entscheidungsListe, entscheidungsSeite } from './ansichten/entscheidung.js';
 import { erfassung, leererEntwurf } from './ansichten/erfassung.js';
 import { radar, leereMeldung } from './ansichten/radar.js';
+import { uebersicht } from './ansichten/uebersicht.js';
+import { katalog } from './ansichten/katalog.js';
+import { bedarfe, bedarfDetail, bedarfNeuPlatzhalter } from './ansichten/bedarfe.js';
+import { abgleichListeSeite, abgleichSeite } from './ansichten/abgleich.js';
+import { vorgaenge } from './ansichten/vorgaenge.js';
+import { projektNeuPlatzhalter } from './ansichten/folgt.js';
 
 const app = document.getElementById('app');
 const speicher = (() => { try { const s = window.localStorage; s.setItem('cf-test', '1'); s.removeItem('cf-test'); return s; } catch { return null; } })();
@@ -18,16 +26,11 @@ let R = null; let geo = null; let geoFehler = '';
 let p = ladePersistenz(speicher);
 let db = baueDaten(p);
 
-const ui = {
-  at: PROJEKTZEITEN[0].at,
-  start: { region: 'dortmund', art: '', nurAngebote: false, osm: false, ansicht: null },
-  gebaeude: {},
-  bestand: { q: '', gruppe: '', status: '', etage: '', offen: false, mobil: false },
-  erfassung: leererEntwurf(),
-  radar: { status: '', notiz: {}, bezirk: {}, verwerfen: {}, fehler: {}, meldung: leereMeldung(), meldungFehler: {}, gespeichert: null },
-  importe: { ifc: null, ifcSim: false, scanSim: false },
-  zuletzt: null, zielWahl: null, zuordnungFehler: '', resetFrage: false, fokus: null, fokusNachRoute: null, speicherHinweis: '',
-};
+const ui = neuerUiZustand();
+// Schmale Anzeige: das Diagramm wird dafür mit einer kleineren Zeichenfläche gebaut.
+const schmalMedium = window.matchMedia ? window.matchMedia('(max-width: 640px)') : null;
+ui.schmal = Boolean(schmalMedium?.matches);
+schmalMedium?.addEventListener?.('change', (ev) => { ui.schmal = ev.matches; if (R) render(); });
 
 const toast = document.createElement('div');
 toast.className = 'toast'; toast.setAttribute('role', 'status'); toast.setAttribute('aria-live', 'polite');
@@ -52,9 +55,18 @@ function uebernehmen(aenderung) {
 const projektPerSlug = (s) => db.projekte.find((x) => slug(x.kurz) === s);
 function route() {
   let h;
-  try { h = decodeURIComponent((location.hash || '#projekte').slice(1)); } catch { return { view: 'fehlt', art: 'Seite', id: location.hash.slice(1) }; }
+  try { h = decodeURIComponent((location.hash || '#uebersicht').slice(1)); } catch { return { view: 'fehlt', art: 'Seite', id: location.hash.slice(1) }; }
   const m = (prefix) => (h.startsWith(prefix) ? h.slice(prefix.length) : null);
-  if (h === 'projekte' || h === '') return { view: 'start' };
+  if (h === 'uebersicht' || h === '') return { view: 'uebersicht' };
+  if (h === 'projekte') return { view: 'start' };
+  if (h === 'vorgaenge') return { view: 'vorgaenge' };
+  if (h === 'bauteile') return { view: 'katalog' };
+  if (h === 'bedarfe') return { view: 'bedarfe' };
+  if (h === 'bedarf-neu') return { view: 'bedarfneu' };
+  if (h === 'projekt-neu') return { view: 'projektneu' };
+  if (h === 'abgleich') return { view: 'abgleichliste' };
+  const bd = m('bedarf-'); if (bd !== null) { const d = db.bedarfe.find((x) => `${slug(x.projekt)}-${slug(x.id)}` === bd); return d ? { view: 'bedarf', d } : { view: 'fehlt', art: 'Bedarf', id: bd }; }
+  const ab = m('abgleich-'); if (ab !== null) { const x = loeseAbgleichSchluessel(db, ab); return x ? { view: 'abgleich', ...x } : { view: 'fehlt', art: 'Abgleich', id: ab }; }
   for (const [prefix, view] of [['projekt-', 'projekt'], ['gebaeude-', 'gebaeude'], ['bestand-', 'bestand'], ['entscheidungen-', 'entscheidungen']]) {
     const rest = m(prefix); if (rest !== null) { const pr = projektPerSlug(rest); return pr ? { view, p: pr } : { view: 'fehlt', art: 'Projekt', id: rest }; }
   }
@@ -80,27 +92,35 @@ function route() {
 const gehe = (hash) => { if (location.hash === hash) render(); else location.hash = hash; };
 
 // ---------- Rahmen ----------
+const BEREICH = {
+  uebersicht: 'uebersicht', vorgaenge: 'uebersicht',
+  start: 'projekte', projekt: 'projekte', gebaeude: 'projekte', bestand: 'projekte', entscheidungen: 'projekte', entscheidung: 'projekte', radar: 'projekte', projektneu: 'projekte',
+  katalog: 'bauteile', pass: 'bauteile',
+  bedarfe: 'bedarfe', bedarf: 'bedarfe', bedarfneu: 'bedarfe', abgleichliste: 'bedarfe', abgleich: 'bedarfe',
+  erfassung: 'erfassen',
+};
+const HAUPT = [['uebersicht', '#uebersicht', 'Übersicht', 'uebersicht'], ['projekte', '#projekte', 'Projekte', 'karte'], ['bauteile', '#bauteile', 'Bauteile', 'bauteil'], ['bedarfe', '#bedarfe', 'Bedarfe', 'bedarf'], ['erfassen', '#erfassung', 'Erfassen', 'kamera']];
 function rahmen(r, inhalt) {
-  const bereich = r.view === 'radar' ? 'radar' : r.view === 'erfassung' ? 'erfassung' : 'projekte';
-  const haupt = [['projekte', 'Projekte', 'karte'], ['radar', 'Radar', 'radar'], ['erfassung', 'Erfassung', 'kamera']];
-  const zeitwahl = (id) => `<label class="projektzeit" for="${id}"><span>Projektzeit <em>Simulation</em></span><select id="${id}">${PROJEKTZEITEN.map((z) => `<option value="${z.at}" ${z.at === ui.at ? 'selected' : ''}>${z.label}</option>`).join('')}</select></label>`;
+  const bereich = BEREICH[r.view] || '';
+  const navLink = ([k, h, t, i]) => `<a href="${h}" ${bereich === k ? 'aria-current="page"' : ''}>${icon(i)}<span>${t}</span></a>`;
+  const zeitwahl = (id) => `<label class="projektzeit" for="${id}"><span>Stichtag der Demo <em>(Simulation)</em></span><select id="${id}">${PROJEKTZEITEN.map((z) => `<option value="${z.at}" ${z.at === ui.at ? 'selected' : ''}>${z.label}</option>`).join('')}</select></label>`;
   const pr = r.p;
   return `
   <button type="button" class="skip" data-action="skip">Zum Inhalt springen</button>
   <div class="shell">
-    <aside class="rail" aria-label="Hauptnavigation">
-      <a class="marke" href="#projekte"><span class="marke-zeichen" aria-hidden="true">${icon('kreislauf')}</span><span><b>CircularFlow</b><small>Bauteile im Kreislauf</small></span></a>
-      <nav class="nav" aria-label="Bereiche">${haupt.map(([k, t, i]) => `<a href="#${k}" ${bereich === k ? 'aria-current="page"' : ''}>${icon(i)}<span>${t}</span></a>`).join('')}</nav>
+    <aside class="rail" aria-label="Seitenleiste">
+      <a class="marke" href="#uebersicht"><span class="marke-zeichen" aria-hidden="true">${icon('kreislauf')}</span><span><b>CircularFlow</b><small>Bauteile im Kreislauf</small></span></a>
+      <nav class="nav" aria-label="Hauptnavigation">${HAUPT.map(navLink).join('')}</nav>
       ${pr ? `<div class="kontext"><span class="label">Projekt</span><a href="#projekt-${slug(pr.kurz)}" class="kontext-titel">${pchip(pr)}<b>${esc(pr.name)}</b></a></div>` : ''}
       <div class="rail-fuss">${zeitwahl('projektzeit')}<p><span class="chip chip-sim">Beispieldaten</span> Projekte, Personen und Bauteile sind fiktiv. Eigene Erfassungen bleiben in diesem Browser.</p></div>
     </aside>
     <div class="arbeitsflaeche">
-      <header class="kopf-mobil"><a class="marke" href="#projekte"><span class="marke-zeichen" aria-hidden="true">${icon('kreislauf')}</span><b>CircularFlow</b></a>${zeitwahl('projektzeit-m')}</header>
+      <header class="kopf-mobil"><a class="marke" href="#uebersicht"><span class="marke-zeichen" aria-hidden="true">${icon('kreislauf')}</span><b>CircularFlow</b></a>${zeitwahl('projektzeit-m')}</header>
       ${ui.speicherHinweis ? `<p class="speicherhinweis" role="alert">${esc(ui.speicherHinweis)}</p>` : ''}
       <main id="inhalt" tabindex="-1">${inhalt}</main>
     </div>
   </div>
-  <nav class="tabbar" aria-label="Hauptnavigation">${haupt.map(([k, t, i]) => `<a href="#${k}" ${bereich === k ? 'aria-current="page"' : ''}>${icon(i)}<span>${t}</span></a>`).join('')}</nav>`;
+  <nav class="tabbar" aria-label="Hauptnavigation (Handy)">${HAUPT.map(navLink).join('')}</nav>`;
 }
 
 // ---------- Rendern ----------
@@ -123,7 +143,16 @@ function render() {
     else if (!r.p && ent.gespeichert) ui.erfassung = leererEntwurf();
   }
   const c = ctx();
-  const inhalt = !R ? '<p class="leise">Wird geladen …</p>'
+  const inhalt = !R ? laedt()
+    : r.view === 'uebersicht' ? uebersicht(c)
+    : r.view === 'katalog' ? katalog(c)
+    : r.view === 'bedarfe' ? bedarfe(c)
+    : r.view === 'bedarf' ? bedarfDetail(c, r.d)
+    : r.view === 'bedarfneu' ? bedarfNeuPlatzhalter()
+    : r.view === 'abgleichliste' ? abgleichListeSeite(c)
+    : r.view === 'abgleich' ? abgleichSeite(c, r.bauteil, r.bedarf)
+    : r.view === 'vorgaenge' ? vorgaenge(c)
+    : r.view === 'projektneu' ? projektNeuPlatzhalter()
     : r.view === 'start' ? startseite(c)
       : r.view === 'projekt' ? projektUebersicht(c, r.p)
         : r.view === 'gebaeude' ? gebaeudeAnsicht(c, r.p, r.raum)
@@ -137,7 +166,7 @@ function render() {
   const aktiv = document.activeElement; const sel = fokusSelektor(aktiv); const pos = aktiv?.id ? aktiv.selectionStart : null;
   if (document.getElementById('karte')) karteEntfernen(ui.start.ansicht || (ui.start.ansicht = {}));
   app.innerHTML = rahmen(r, inhalt);
-  document.title = `${{ start: 'Projekte', projekt: r.p?.name, gebaeude: `Gebäude ${r.p?.kurz}`, bestand: `Bestand ${r.p?.kurz}`, pass: `${r.b?.id} Bauteilpass`, entscheidungen: `Entscheidungen ${r.p?.kurz}`, entscheidung: `Entscheidung ${r.e?.id}`, erfassung: 'Erfassung', radar: 'Projektradar' }[r.view] || 'Nicht gefunden'} · CircularFlow`;
+  document.title = `${{ uebersicht: 'Übersicht', katalog: 'Bauteile', bedarfe: 'Bedarfe', bedarf: `Bedarf ${r.d?.id}`, bedarfneu: 'Bedarf erfassen', abgleichliste: 'Passende Paare', abgleich: `Abgleich ${r.bauteil?.id} und ${r.bedarf?.id}`, vorgaenge: 'Arbeitsliste', projektneu: 'Projekt erfassen', start: 'Projekte', projekt: r.p?.name, gebaeude: `Gebäude ${r.p?.kurz}`, bestand: `Bestand ${r.p?.kurz}`, pass: `${r.b?.id} Bauteilpass`, entscheidungen: `Entscheidungen ${r.p?.kurz}`, entscheidung: `Entscheidung ${r.e?.id}`, erfassung: 'Erfassung', radar: 'Projektradar' }[r.view] || 'Nicht gefunden'} · CircularFlow`;
   if (r.view === 'start' && R) karteAnzeigen(c);
   letzteRoute = location.hash;
   if (neu) {
@@ -174,13 +203,30 @@ app.addEventListener('click', (ev) => {
   const zeile = ev.target.closest('tr[data-href]');
   if (zeile && !ev.target.closest('a,button,input,select')) { gehe(zeile.dataset.href); return; }
   const a = ev.target.closest('[data-action]'); if (!a) return;
+  // Links mit Aktion setzen erst den Filter im ui-Objekt; die Navigation zeichnet danach selbst. Gleiche Seite: sofort neu zeichnen.
+  const zumLink = (el) => el.localName === 'a' && el.getAttribute('href') !== location.hash;
   const act = a.dataset.action; const ent = ui.erfassung;
   const k = a.dataset.entscheidung;
   switch (act) {
     case 'skip': document.getElementById('inhalt').focus(); return;
     case 'start-art': ui.start.art = a.dataset.wert; break;
     case 'etage': ui.gebaeude[a.dataset.projekt] = a.dataset.etage; if (location.hash.startsWith('#raum-')) { gehe(`#gebaeude-${slug(a.dataset.projekt)}`); return; } ui.fokus = null; break;
-    case 'bestand-reset': ui.bestand = { q: '', gruppe: '', status: '', etage: '', offen: false, mobil: false }; ui.fokus = 'f-gruppe'; break;
+    case 'bestand-reset': ui.bestand = leererBestand(); ui.fokus = 'f-gruppe'; break;
+    case 'bestand-offen': ui.bestand = { ...leererBestand(), offen: true }; if (zumLink(a)) return; break;
+    case 'bald-tage': ui.uebersicht.tage = Number(a.dataset.wert) === 30 ? 30 : 90; break;
+    case 'katalog-vorgabe': {
+      const art = a.dataset.wert; const v = art === 'bald' ? { art, tage: Number(a.dataset.tage) === 30 ? 30 : 90 } : art === 'monat' ? { art, monat: a.dataset.monat } : { art };
+      ui.katalog = { ...leererKatalog(), vorgabe: v, gruppe: a.dataset.gruppe || '' }; tooltipWeg(); if (zumLink(a)) return; break;
+    }
+    case 'katalog-vorgabe-weg': ui.katalog.vorgabe = null; ui.katalog.gruppe = ''; ui.fokus = 'kat-q'; break;
+    case 'katalog-reset': ui.katalog = leererKatalog(); ui.fokus = 'kat-q'; break;
+    case 'bedarfe-vorgabe': ui.bedarfe = { ...leereBedarfsliste(), offen: true }; if (zumLink(a)) return; break;
+    case 'bedarfe-reset': ui.bedarfe = leereBedarfsliste(); ui.fokus = 'bed-gruppe'; break;
+    case 'abgleich-filter': ui.abgleich.ergebnis = a.dataset.wert; if (zumLink(a)) return; break;
+    case 'vorgang-filter': ui.vorgaenge.status = a.dataset.wert; if (zumLink(a)) return; break;
+    // Paket C ersetzt diese Platzhalter durch die Formulare und das Anlegen der Prüfbitte.
+    case 'bedarf-ergaenzen': melde('Das Formular zum Ergänzen folgt (Paket C).'); return;
+    case 'pruefbitte-anlegen': melde(a.getAttribute('aria-disabled') === 'true' ? 'Die Prüfbitte ist gesperrt. Der Grund steht neben dem Knopf.' : 'Das Anlegen der Prüfbitte folgt (Paket C).'); return;
     case 'zuordnen': zuordnen(a.dataset.bauteil); return;
     case 'schritt': schrittVermerken(k); return;
     case 'aufmass-beispiel': aufmassBeispiel(k); return;
@@ -200,7 +246,7 @@ app.addEventListener('click', (ev) => {
     case 'reset-nein': ui.resetFrage = false; break;
     case 'reset-ja':
       loesche(speicher); p = leerePersistenz(); db = baueDaten(p);
-      Object.assign(ui, { resetFrage: false, zuletzt: null, zielWahl: null, zuordnungFehler: '', erfassung: leererEntwurf(), radar: { status: '', notiz: {}, bezirk: {}, verwerfen: {}, fehler: {}, meldung: leereMeldung(), meldungFehler: {}, gespeichert: null }, importe: { ifc: null, ifcSim: false, scanSim: false }, speicherHinweis: '' });
+      Object.assign(ui, { resetFrage: false, zuletzt: null, zielWahl: null, zuordnungFehler: '', erfassung: leererEntwurf(), radar: leereRadarFilter(), importe: { ifc: null, ifcSim: false, scanSim: false }, speicherHinweis: '' });
       melde('Eigene Erfassungen und Änderungen gelöscht.'); break;
     case 'zum-ziel': { const sel = document.getElementById('ziel-wahl'); if (sel) { sel.scrollIntoView({ block: 'center' }); sel.focus({ preventScroll: true }); } return; }
     case 'radar-pruefen': case 'radar-bestaetigen': case 'radar-verwerfen': radarAktion(act.slice(6), a.dataset.hinweis); return;
@@ -217,6 +263,8 @@ app.addEventListener('input', (ev) => {
   if (t.dataset.aufmass) { const key = t.dataset.aufmass; uebernehmen((d) => { const alt = d.ezustand[key]?.aufmass || R.emptyMeasurement(); d.ezustand[key] = { ...(d.ezustand[key] || {}), aufmass: { ...alt, [t.dataset.feld]: t.value } }; }); render(); return; }
   if (t.dataset.schaden) { schadenEingabe(t.dataset.schaden, t.value); render(); return; }
   if (t.id === 'bestand-q') { ui.bestand.q = t.value; render(); return; }
+  if (t.id === 'kat-q') { ui.katalog.q = t.value; render(); return; }
+  if (t.id === 'kat-menge') { ui.katalog.mindest = t.value; render(); return; }
   if (t.id === 'erf-menge') { ent.menge = t.value; delete ent.fehler.menge; render(); return; }
   if (t.id === 'erf-notiz') { ent.notiz = t.value; return; }
   if (t.dataset.wert && t.tagName === 'INPUT') {
@@ -231,7 +279,7 @@ app.addEventListener('input', (ev) => {
 
 app.addEventListener('change', async (ev) => {
   const t = ev.target; const ent = ui.erfassung;
-  if (t.id === 'projektzeit' || t.id === 'projektzeit-m') { ui.at = t.value; render(); melde(`Projektzeit ${PROJEKTZEITEN.find((z) => z.at === t.value).label}. Alle Ansichten zeigen diesen Stand.`); return; }
+  if (t.id === 'projektzeit' || t.id === 'projektzeit-m') { ui.at = t.value; render(); melde(`Stichtag der Demo ${PROJEKTZEITEN.find((z) => z.at === t.value).label} (Simulation). Alle Ansichten zeigen diesen Stand.`); return; }
   if (t.id === 'nur-angebote') ui.start.nurAngebote = t.checked;
   else if (t.id === 'osm') ui.start.osm = t.checked;
   else if (t.id === 'region') ui.start.region = t.value;
@@ -240,6 +288,14 @@ app.addEventListener('change', async (ev) => {
   else if (t.id === 'f-etage') ui.bestand.etage = t.value;
   else if (t.id === 'f-offen') ui.bestand.offen = t.checked;
   else if (t.id === 'f-mobil') ui.bestand.mobil = t.checked;
+  else if (t.id === 'kat-gruppe') ui.katalog.gruppe = t.value;
+  else if (t.id === 'kat-bezirk') ui.katalog.bezirk = t.value;
+  else if (t.id === 'kat-bis') ui.katalog.bis = t.value;
+  else if (t.id === 'kat-offen') ui.katalog.offen = t.checked;
+  else if (t.id === 'kat-alle') ui.katalog.alle = t.checked;
+  else if (t.id === 'bed-gruppe') ui.bedarfe.gruppe = t.value;
+  else if (t.id === 'bed-projekt') ui.bedarfe.projekt = t.value;
+  else if (t.id === 'bed-offen') ui.bedarfe.offen = t.checked;
   else if (t.id === 'ziel-wahl') { ui.zuordnungFehler = ''; ui.zielWahl = { fuer: t.dataset.bauteil, wert: t.value }; }
   else if (t.id === 'erf-projekt') { ent.projekt = t.value; ent.raum = ''; ent.verfuegbarAb = db.projekte.find((x) => x.kurz === t.value)?.rueckbauAb || ''; delete ent.fehler.ort; }
   else if (t.id === 'erf-raum') { ent.raum = t.value; delete ent.fehler.ort; }
@@ -264,6 +320,24 @@ app.addEventListener('mouseout', (ev) => { const z = ev.target.closest('[data-ho
 app.addEventListener('focusin', (ev) => { const z = ev.target.closest('[data-hover]'); if (z) markerHervorheben(z.dataset.hover, true); });
 app.addEventListener('focusout', (ev) => { const z = ev.target.closest('[data-hover]'); if (z) markerHervorheben(z.dataset.hover, false); });
 window.addEventListener('hashchange', render);
+
+// Tooltip für Diagrammsegmente: bei Maus und Tastaturfokus, Text aus data-tip.
+const tip = document.createElement('div');
+tip.className = 'tip'; tip.setAttribute('role', 'tooltip'); tip.hidden = true;
+document.body.append(tip);
+function tooltipZeigen(el) {
+  tip.textContent = el.dataset.tip; tip.hidden = false;
+  const r = el.getBoundingClientRect(); const w = tip.offsetWidth;
+  const links = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), window.innerWidth - w - 8);
+  tip.style.left = `${links}px`; tip.style.top = `${Math.max(8, r.top - tip.offsetHeight - 8)}px`;
+}
+function tooltipWeg() { tip.hidden = true; }
+app.addEventListener('mouseover', (ev) => { const z = ev.target.closest('[data-tip]'); if (z) tooltipZeigen(z); });
+app.addEventListener('mouseout', (ev) => { if (ev.target.closest('[data-tip]')) tooltipWeg(); });
+app.addEventListener('focusin', (ev) => { const z = ev.target.closest('[data-tip]'); if (z) tooltipZeigen(z); });
+app.addEventListener('focusout', (ev) => { if (ev.target.closest('[data-tip]')) tooltipWeg(); });
+document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') tooltipWeg(); });
+window.addEventListener('scroll', tooltipWeg, { passive: true });
 
 // ---------- Aktionen ----------
 function zuordnen(bkey) {

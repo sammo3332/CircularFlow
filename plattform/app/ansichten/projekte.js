@@ -1,8 +1,8 @@
 // Startseite (Karte und Projektliste), Projektübersicht und gemeinsamer Projektkopf.
 import { REGIONEN, ARTEN, GRUPPEN } from '../daten.js';
-import { esc, chip, pchip, artText, icon, leer, slug, routePass, routeRaum, routeEntscheidung, person } from '../ui.js';
-import { naechsteHandlung, lage, naechsteFrist, tonVon, offeneEntscheidungen } from '../regeln.js';
-import { zeit, datum, abstand } from '../zeit.js';
+import { esc, chip, pchip, artText, icon, leer, slug, routePass, routeRaum, routeEntscheidung, projekteReiter, seitenkopf, tonMarke } from '../ui.js';
+import { naechsteHandlung, lage, naechsteFrist, tonVon } from '../regeln.js';
+import { zeit, datum } from '../zeit.js';
 
 const HERKUNFT = { beispiel: ['Beispiel', 'sim'], radar: ['aus Radar bestätigt', 'info'], meldung: ['Projektmeldung', 'info'] };
 export const herkunftChip = (p) => chip(...(HERKUNFT[p.herkunft] || ['Beispiel', 'sim']));
@@ -21,31 +21,6 @@ export function gefilterteProjekte(ctx) {
     .filter((p) => !f.nurAngebote || angeboten(ctx, p).length > 0);
 }
 
-// ---------- Offene Entscheidungen (Startseite) ----------
-function offeneKarten(ctx) {
-  const { liste, gesamt } = offeneEntscheidungen(ctx, 2);
-  if (!liste.length) return '';
-  const karte = ({ e, l, frist }) => {
-    const p = ctx.daten.projekte.find((x) => x.kurz === e.projekt);
-    const a = frist ? abstand(frist.at, ctx.at) : null;
-    const zust = person(l.haupt.rolle);
-    const ziel = e.ziel.art === 'zieloeffnung' ? `Öffnung ${l.z.id}` : `Bedarf ${l.z.projekt} · ${l.z.id}`;
-    return `<a class="offen-karte t-rand-${tonVon(l.haupt)}" href="${routeEntscheidung(e)}" data-hover="${esc(e.projekt)}">
-      <span class="okt-kopf">${pchip(p)}<span class="mono">${esc(e.id)}</span>${l.r?.deckung?.key === 'teil' ? chip(l.r.deckung.label, 'crit') : ''}</span>
-      <span class="okt-titel">${esc(l.b.id)} ${esc(l.b.name)} → ${esc(ziel)}</span>
-      <b class="okt-schritt">${esc(l.haupt.text)}</b>
-      <span class="okt-meta">
-        <span><small>Frist</small>${frist ? `${esc(frist.name)} <span class="mono">${zeit(frist.at)}</span> <em class="${a.vorbei ? 'vorbei' : ''}">${esc(a.text)}</em>` : 'keine Frist'}</span>
-        <span><small>Zuständig</small>${esc(zust.rolle)} · ${esc(zust.name)}</span>
-      </span>
-    </a>`;
-  };
-  return `<section class="offene" aria-labelledby="h-offen">
-    <div class="block-kopf"><h2 id="h-offen">Offene Entscheidungen</h2><span class="leise">${liste.length} von ${gesamt} · dringendste zuerst, Projektzeit ${zeit(ctx.at)}</span></div>
-    <div class="offene-raster">${liste.map(karte).join('')}</div>
-  </section>`;
-}
-
 // ---------- Startseite ----------
 export function startseite(ctx) {
   const f = ctx.ui.start;
@@ -54,17 +29,12 @@ export function startseite(ctx) {
   const alle = ctx.daten.projekte.length;
   const knopf = (wert, text) => `<button type="button" class="filterchip" aria-pressed="${f.art === wert}" data-action="start-art" data-wert="${wert}">${text}</button>`;
   return `
-  <section class="seitenkopf">
-    <div>
-      <p class="eyebrow">Projekte · Region ${esc(region.name)}</p>
-      <h1>Bauteile in laufenden Projekten</h1>
-      <p class="unter">${alle} Projekte mit ${ctx.daten.bauteile.filter((b) => b.status !== 'nicht').length} erfassten Bauteilpositionen. ${chip('Beispieldaten, Lage symbolisch', 'sim')}</p>
-    </div>
-    <label class="region-wahl"><span>Region</span>
-      <select id="region">${REGIONEN.map((r) => `<option value="${r.id}" ${r.id === f.region ? 'selected' : ''} ${r.aktiv ? '' : 'disabled'}>${esc(r.name)}${r.aktiv ? '' : ' (in Vorbereitung)'}</option>`).join('')}</select>
-    </label>
-  </section>
-  ${offeneKarten(ctx)}
+  ${seitenkopf({
+    eyebrow: `Region ${region.name}`, titel: 'Projekte',
+    untertitel: `${alle} Projekte mit ${ctx.daten.bauteile.filter((b) => b.status !== 'nicht').length} erfassten Bauteilpositionen. ${chip('Beispieldaten, Lage symbolisch', 'sim')}`,
+    aktionen: `<label class="region-wahl"><span>Region</span><select id="region">${REGIONEN.map((r) => `<option value="${r.id}" ${r.id === f.region ? 'selected' : ''} ${r.aktiv ? '' : 'disabled'}>${esc(r.name)}${r.aktiv ? '' : ' (in Vorbereitung)'}</option>`).join('')}</select></label>`,
+  })}
+  ${projekteReiter('start')}
   <div class="filterleiste" role="group" aria-label="Projekte filtern">
     ${knopf('', 'Alle')}${Object.entries(ARTEN).map(([k, t]) => knopf(k, t)).join('')}
     <label class="schalter"><input type="checkbox" id="nur-angebote" ${f.nurAngebote ? 'checked' : ''}><span>nur mit angebotenen Bauteilen</span></label>
@@ -102,7 +72,7 @@ export function popupHtml(ctx, p) {
   const gruppen = [...new Set(ang.map((b) => GRUPPEN[b.gruppe].name))];
   return `<div class="popup"><p class="popup-kopf">${pchip(p)} <b>${esc(p.name)}</b></p>
     <p>${esc(artText(p.art))} · ${esc(p.phase)}<br>${esc(p.bezirk)} · Lage symbolisch</p>
-    <p>${ang.length ? `${ang.length} angebotene Bauteilpositionen: ${esc(gruppen.join(', '))}` : 'Noch keine angebotenen Bauteile.'}</p>
+    <p>${ang.length ? `${ang.length} angebotene Bauteilpositionen: ${esc(gruppen.join(', '))}` : 'Noch keine angebotenen Bauteile.'}${bedarfeVon(ctx, p).length ? `<br>${bedarfeVon(ctx, p).length} Bedarf${bedarfeVon(ctx, p).length === 1 ? '' : 'e'} gemeldet` : ''}</p>
     <a class="knopf knopf-klein" href="#projekt-${slug(p.kurz)}">Projekt öffnen</a></div>`;
 }
 
@@ -110,7 +80,7 @@ export function popupHtml(ctx, p) {
 export function projektKopf(ctx, p, aktiv) {
   const tabs = [['projekt', 'Übersicht', 'uebersicht'], ['gebaeude', 'Gebäude', 'gebaeude'], ['bestand', 'Bestand', 'liste'], ['entscheidungen', 'Entscheidungen', 'flagge']];
   return `
-  <nav class="pfad" aria-label="Pfad"><a href="#projekte">Projekte</a><span>/</span><span aria-current="page">${esc(p.name)}</span></nav>
+  <nav class="pfad" aria-label="Pfad"><a href="#projekte">Projekte</a><span aria-hidden="true">/</span><span aria-current="page">${esc(p.name)}</span></nav>
   <section class="projektkopf">
     ${pchip(p, true)}
     <div class="pk-text">
@@ -144,10 +114,10 @@ export function projektUebersicht(ctx, p) {
     </section>
     <section class="block" aria-labelledby="h-ang">
       <div class="block-kopf"><h2 id="h-ang">Angebotene Bauteile</h2>${ang.length ? `<a class="leise" href="#bestand-${slug(p.kurz)}">Ganzer Bestand</a>` : ''}</div>
-      ${ang.length ? `<ul class="flaeche kompaktliste">${ang.slice(0, 8).map((b) => { const n = naechsteHandlung(ctx, b); return `<li><a href="${routePass(b)}"><span class="mono">${esc(b.id)}</span><span><b>${esc(b.name)}</b><small>${esc(b.menge)} ${esc(GRUPPEN[b.gruppe].einheit)} · Raum ${esc(b.raum)}${b.verfuegbarAb ? ` · ab ${datum(b.verfuegbarAb + 'T00:00')}` : ''}</small></span><span class="kl-schritt"><i class="streifen t-${n.ton}"></i>${esc(n.text)}</span></a></li>`; }).join('')}${ang.length > 8 ? `<li class="mehr"><a href="#bestand-${slug(p.kurz)}">und ${ang.length - 8} weitere im Bestand</a></li>` : ''}</ul>`
+      ${ang.length ? `<ul class="flaeche kompaktliste">${ang.slice(0, 8).map((b) => { const n = naechsteHandlung(ctx, b); return `<li><a href="${routePass(b)}"><span class="mono">${esc(b.id)}</span><span><b>${esc(b.name)}</b><small>${esc(b.menge)} ${esc(GRUPPEN[b.gruppe].einheit)} · Raum ${esc(b.raum)}${b.verfuegbarAb ? ` · ab ${datum(b.verfuegbarAb + 'T00:00')}` : ''}</small></span><span class="kl-schritt">${tonMarke(n.ton)}${esc(n.text)}</span></a></li>`; }).join('')}${ang.length > 8 ? `<li class="mehr"><a href="#bestand-${slug(p.kurz)}">und ${ang.length - 8} weitere im Bestand</a></li>` : ''}</ul>`
         : leer('Keine angebotenen Bauteile.', p.art === 'neubau' ? 'Dieses Projekt sucht Bauteile, siehe Bedarfe.' : 'Bauteile entstehen über die Erfassung vor Ort.', (p.gebaeude || []).length ? `<a class="knopf" href="#erfassung">${icon('kamera')} Bauteil erfassen</a>` : '')}
       ${bed.length ? `<div class="block-kopf"><h2>Bedarfe</h2></div><ul class="flaeche kompaktliste">${bed.map((d) => `<li><span class="mono">${esc(d.id)}</span><span><b>${esc(d.titel)}</b><small>${esc(GRUPPEN[d.gruppe].name)} · ${d.bedarfM2 ? `${d.bedarfM2} m² + ${d.reserveProzent} % Reserve` : `${d.menge} ${esc(d.einheit)}`}${d.text ? ` · ${esc(d.text)}` : ''}</small></span>${bedarfBelegt(ctx, d)}</li>`).join('')}</ul>` : ''}
-      ${offen.length ? `<div class="block-kopf"><h2>Entscheidungen</h2><a class="leise" href="#entscheidungen-${slug(p.kurz)}">Alle</a></div><ul class="flaeche kompaktliste">${offen.map((e) => { const l = lage(ctx, e); return `<li><a href="${routeEntscheidung(e)}"><span class="mono">${esc(e.id)}</span><span><b>${esc(e.bauteil)} → ${esc(e.ziel.id)}</b><small>${esc(l.regelText)}</small></span><span class="kl-schritt"><i class="streifen t-${tonVon(l.haupt)}"></i>${esc(l.haupt.text)}</span></a></li>`; }).join('')}</ul>` : ''}
+      ${offen.length ? `<div class="block-kopf"><h2>Entscheidungen</h2><a class="leise" href="#entscheidungen-${slug(p.kurz)}">Alle</a></div><ul class="flaeche kompaktliste">${offen.map((e) => { const l = lage(ctx, e); return `<li><a href="${routeEntscheidung(e)}"><span class="mono">${esc(e.id)}</span><span><b>${esc(e.bauteil)} → ${esc(e.ziel.id)}</b><small>${esc(l.regelText)}</small></span><span class="kl-schritt">${tonMarke(tonVon(l.haupt))}${esc(l.haupt.text)}</span></a></li>`; }).join('')}</ul>` : ''}
     </section>
   </div>`;
 }

@@ -1,16 +1,17 @@
 // Bauteilbestand je Projekt und Bauteilpass.
 import { GRUPPEN, STATUS, WERTSTATUS, ZUSTAND } from '../daten.js';
-import { esc, chip, wertChip, statusChip, icon, leer, slug, routePass, routeRaum, routeEntscheidung, person, bauteilRef } from '../ui.js';
+import { esc, chip, wertChip, statusChip, icon, leer, slug, routePass, routeRaum, routeEntscheidung, person, bauteilRef, tonMarke, tonSymbol, routeAbgleich, ergebnisChip, pchip, gruppenChip } from '../ui.js';
 import { naechsteHandlung, offeneNachweise, bauteilStatus, entscheidungFuer, moeglicheZiele, wertText, lage } from '../regeln.js';
 import { zeit, datum, abstand } from '../zeit.js';
 import { projektKopf, raumVon } from './projekte.js';
+import { abgleichListe } from '../abgleich.js';
 
 const werteZaehlung = (b) => {
   const z = { gemessen: 0, bestaetigt: 0, vorgeschlagen: 0, fehlt: 0 };
   for (const f of GRUPPEN[b.gruppe].felder || []) z[b.werte?.[f.key]?.status || 'fehlt'] += 1;
   return z;
 };
-export const verfuegbarText = (b) => (b.status === 'nicht' ? 'nicht verfügbar' : b.ziel ? 'bleibt am Ort' : b.verfuegbarAb ? `ab ${datum(b.verfuegbarAb + 'T00:00')}` : 'offen');
+export const verfuegbarText = (b) => (b.status === 'nicht' ? 'nicht verfügbar' : b.ziel ? 'bleibt am Ort' : b.verfuegbarAb ? `ab ${datum(b.verfuegbarAb + 'T00:00')}${b.verfuegbarBis ? ` bis ${datum(b.verfuegbarBis + 'T00:00')}` : ''}` : 'offen');
 
 // ---------- Bestand ----------
 export function bestand(ctx, p) {
@@ -57,7 +58,7 @@ function zeile(ctx, p, b) {
     <td>${b.zustand ? `<span class="zustand z-${b.zustand}" title="${esc(ZUSTAND[b.zustand])}">${esc(b.zustand)}</span>` : '<span class="leise">–</span>'}</td>
     <td>${esc(verfuegbarText(b))}</td>
     <td>${statusChip(bauteilStatus(ctx, b))}</td>
-    <td><div class="bt-schritt"><i class="streifen t-${n.ton}"></i><span>${esc(n.text)}${n.frist ? `<small>${esc(n.fristName || 'Frist')} ${zeit(n.frist, false)}</small>` : ''}</span></div></td>
+    <td><div class="bt-schritt">${tonMarke(n.ton)}<span>${esc(n.text)}${n.frist ? `<small>${esc(n.fristName || 'Frist')} ${zeit(n.frist, false)}</small>` : ''}</span></div></td>
   </tr>`;
 }
 
@@ -69,8 +70,9 @@ export function pass(ctx, p, b) {
   const verlauf = [...(b.verlauf || []), ...ctx.ereignisse.filter((x) => x.bauteil === `${b.projekt}:${b.id}`)]
     .filter((v) => v.at <= ctx.at).sort((x, y) => (x.at < y.at ? 1 : -1));
   const a = n.frist ? abstand(n.frist, ctx.at) : null;
+  const paare = b.status === 'nicht' || b.ziel ? [] : abgleichListe(ctx, { bauteil: b });
   return `
-  <nav class="pfad" aria-label="Pfad"><a href="#projekte">Projekte</a><span>/</span><a href="#projekt-${slug(p.kurz)}">${esc(p.name)}</a><span>/</span><a href="#bestand-${slug(p.kurz)}">Bestand</a><span>/</span><span aria-current="page">${esc(b.id)}</span></nav>
+  <nav class="pfad" aria-label="Pfad"><a href="#bauteile">Bauteile</a><span aria-hidden="true">/</span><a href="#bestand-${slug(p.kurz)}">Bestand ${esc(p.kurz)}</a><span aria-hidden="true">/</span><span aria-current="page">${esc(b.id)}</span></nav>
   <section class="seitenkopf pass-kopf">
     <div>
       <p class="eyebrow">Bauteilpass · ${esc(g.name)} · ${esc(g.typ)}</p>
@@ -80,8 +82,8 @@ export function pass(ctx, p, b) {
   </section>
   <div class="pass-raster">
     <div class="pass-haupt">
-      <section class="flaeche handlung t-rand-${n.ton}" aria-labelledby="h-handlung">
-        <p class="label">Nächste Handlung</p>
+      <section class="flaeche handlung t-${n.ton}" aria-labelledby="h-handlung">
+        <p class="label">${tonSymbol(n.ton)}Nächste Handlung</p>
         <h2 id="h-handlung" tabindex="-1">${esc(n.text)}</h2>
         <p class="ergebnis-rolle">${n.rolle ? `${esc(person(n.rolle).rolle)} · ${esc(person(n.rolle).name)}` : ''}${n.frist ? ` · ${esc(n.fristName || 'Frist')} ${zeit(n.frist)} <span class="${a.vorbei ? 'vorbei' : ''}">(${a.text})</span>` : ''}</p>
         ${n.grund ? `<p class="ergebnis-grund">${esc(n.grund)}</p>` : ''}
@@ -100,6 +102,11 @@ export function pass(ctx, p, b) {
           <div><dt>Quelle</dt><dd>${esc(b.erfassung?.art || '')}${b.erfassung?.am ? ` am ${zeit(b.erfassung.am)}` : ''}</dd></div>
         </dl>
       </section>
+      ${b.status === 'nicht' ? '' : `<section class="flaeche" aria-labelledby="h-passend">
+        <div class="block-kopf"><h2 id="h-passend">Passende Bedarfe</h2><span class="leise">${paare.length} ${paare.length === 1 ? 'Bedarf' : 'Bedarfe'} · Vorschlag zur Prüfung, keine Freigabe</span></div>
+        ${paare.length ? `<ul class="paarliste">${paare.map((x) => `<li><a class="paar" href="${routeAbgleich(x.schluessel)}"><span class="paar-kopf">${ergebnisChip(x.gesamt)}<span class="bref">${pchip(ctx.daten.projekte.find((q) => q.kurz === x.bedarf.projekt) || { kurz: x.bedarf.projekt, farbe: '#55605b', name: '' })}<span class="mono">${esc(x.bedarf.id)}</span></span></span><b>${esc(x.bedarf.titel)}</b><small>${esc(x.gruende[0] || '')}</small></a></li>`).join('')}</ul>`
+          : `<p class="leer-zeile">${b.ziel ? `Das Bauteil hat bereits ein festes Ziel (${esc(b.ziel)}).` : e ? `Für dieses Bauteil läuft bereits der Vorgang ${esc(e.id)}.` : 'Kein offener Bedarf derselben Bauteilgruppe, für den dieses Bauteil in Frage kommt.'}</p>`}
+      </section>`}
       <section class="flaeche" aria-labelledby="h-werte">
         <div class="block-kopf"><h2 id="h-werte">Angaben</h2><span class="leise">${Object.entries(WERTSTATUS).map(([k, v]) => `${wertChip(k)}`).join(' ')}</span></div>
         <div class="tabelle-rahmen"><table class="einfach">

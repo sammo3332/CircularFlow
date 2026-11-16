@@ -1,7 +1,7 @@
 // Gebäudeansicht: schematischer 2D-Grundriss je Etage mit anklickbaren Räumen und Bauteilen.
 // Das Modell ist ein Beispielmodell. IFC- und Raumscan-Import sind getrennt als Prüfung bzw. Simulation dargestellt.
 import { GRUPPEN, STATUS } from '../daten.js';
-import { esc, chip, icon, leer, slug, routePass, routeRaum, routeEntscheidung } from '../ui.js';
+import { esc, chip, icon, leer, slug, routePass, routeRaum, routeEntscheidung, tonMarke } from '../ui.js';
 import { naechsteHandlung, bauteilStatus } from '../regeln.js';
 import { projektKopf, raumVon, bauteileImRaum } from './projekte.js';
 
@@ -65,7 +65,7 @@ function raumPanel(ctx, p, { etage, raum }) {
     <p class="leise">${raum.flaeche ? `${raum.flaeche} m² (Beispiel)` : ''}</p>
     <a class="knopf breit" href="#erfassung-${slug(p.kurz)}-${slug(raum.id)}">${icon('kamera')} Bauteil in diesem Raum erfassen</a>
     <h3>Bauteile im Raum</h3>
-    ${teile.length ? `<ul class="kompaktliste">${teile.map((b) => { const n = naechsteHandlung(ctx, b); return `<li><a href="${routePass(b)}"><span class="mono">${esc(b.id)}</span><span><b>${esc(b.name)}</b><small>${esc(STATUS[bauteilStatus(ctx, b)]?.label)}${b.raum !== raum.id ? ` · Hauptraum ${esc(b.raum)}` : ''}</small></span><span class="kl-schritt"><i class="streifen t-${n.ton}"></i>${esc(n.text)}</span></a></li>`; }).join('')}</ul>` : '<p class="leer-zeile">Noch keine Bauteile in diesem Raum erfasst.</p>'}
+    ${teile.length ? `<ul class="kompaktliste">${teile.map((b) => { const n = naechsteHandlung(ctx, b); return `<li><a href="${routePass(b)}"><span class="mono">${esc(b.id)}</span><span><b>${esc(b.name)}</b><small>${esc(STATUS[bauteilStatus(ctx, b)]?.label)}${b.raum !== raum.id ? ` · Hauptraum ${esc(b.raum)}` : ''}</small></span><span class="kl-schritt">${tonMarke(n.ton)}${esc(n.text)}</span></a></li>`; }).join('')}</ul>` : '<p class="leer-zeile">Noch keine Bauteile in diesem Raum erfasst.</p>'}
     ${oeffnungen.length ? `<h3>Zielöffnungen</h3><ul class="kompaktliste">${oeffnungen.map((z) => { const e = ctx.daten.entscheidungen.find((x) => x.ziel.art === 'zieloeffnung' && x.ziel.id === z.id && x.projekt === p.kurz); return `<li>${e ? `<a href="${routeEntscheidung(e)}">` : '<span class="kl-zeile">'}<span class="mono">${esc(z.id)}</span><span><b>Rohbauöffnung ${esc(z.id)}</b><small>Soll ${z.minMm}–${z.maxMm} mm · ${esc(z.herkunft)}</small></span>${e ? `${chip(`${e.bauteil} zugeordnet`, 'info')}</a>` : `${chip('frei', 'neutral')}</span>`}</li>`; }).join('')}</ul>` : ''}
     ${bedarfe.length ? `<h3>Bedarfe</h3><ul class="kompaktliste">${bedarfe.map((d) => `<li><span class="kl-zeile"><span class="mono">${esc(d.id)}</span><span><b>${esc(d.titel)}</b><small>${esc(d.herkunft)}</small></span></span></li>`).join('')}</ul>` : ''}
   </section>`;

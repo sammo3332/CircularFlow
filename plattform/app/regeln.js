@@ -198,7 +198,7 @@ export function naechsteFrist(l, at) { return l.fristen.filter((f) => minuten(f.
 
 // Lage mit Vorgangsstatus: Bis zum Fachergebnis gilt die bisherige Regel (Tür, Boden, Abgleich; „wartet“ nach Vorlage
 // oder Prüfbitte). Danach zeigt der Vorgang den nächsten Schritt (Vormerkung, Übergabe planen, Übergabe durchführen).
-function lageVorgang(ctx, e) {
+export function lageVorgang(ctx, e) {
   const l = lage(ctx, e); const st = vorgangStatus(ctx, e);
   const schritt = naechsterVorgangsschritt(ctx, e);
   if (schritt) {

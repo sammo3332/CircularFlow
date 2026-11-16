@@ -1,7 +1,7 @@
 // Mobile Erfassung: Ort → Foto → Bauteil → Angaben → Prüfen und Speichern.
 // Die Erkennung ist simuliert und sichtbar gekennzeichnet. Es findet keine Bildanalyse statt.
 import { GRUPPEN, ZUSTAND, WERTSTATUS } from '../daten.js';
-import { esc, chip, wertChip, icon, slug, routePass, pchip, leer } from '../ui.js';
+import { esc, chip, wertChip, icon, slug, routePass, pchip, leer, seitenkopf } from '../ui.js';
 import { pruefeErfassung, wertText } from '../regeln.js';
 import { datum } from '../zeit.js';
 import { raumVon } from './projekte.js';
@@ -16,8 +16,7 @@ export function erfassung(ctx) {
   const p = projekte.find((x) => x.kurz === ent.projekt);
   const ort = p && ent.raum ? raumVon(p, ent.raum) : null;
   return `
-  <section class="seitenkopf"><div><p class="eyebrow">Erfassung</p><h1>Bauteil erfassen</h1>
-    <p class="unter">${p ? `${pchip(p)} ${esc(p.name)}${ort ? ` · Raum ${esc(ort.raum.id)} ${esc(ort.raum.name)}` : ''}` : 'Für Handy und Tablet gebaut, funktioniert auch am Rechner.'}</p></div></section>
+  ${seitenkopf({ eyebrow: 'Erfassen', titel: 'Bauteil erfassen', untertitel: p ? `${pchip(p)} ${esc(p.name)}${ort ? ` · Raum ${esc(ort.raum.id)} ${esc(ort.raum.name)}` : ''}` : 'Für Handy und Tablet gebaut, funktioniert auch am Rechner.' })}
   <div class="erfassung">
     <ol class="schritte" aria-label="Fortschritt">${SCHRITTE.map((t, i) => `<li class="${i + 1 < ent.schritt ? 'fertig' : i + 1 === ent.schritt ? 'jetzt' : ''}" ${i + 1 === ent.schritt ? 'aria-current="step"' : ''}>${i + 1 < ent.schritt ? `<button type="button" data-action="erf-gehe" data-schritt="${i + 1}"><span class="mono">${i + 1}</span>${t}</button>` : `<span><span class="mono">${i + 1}</span>${t}</span>`}</li>`).join('')}</ol>
     <section class="flaeche erf-karte" aria-labelledby="h-erf">
@@ -128,7 +127,7 @@ function gespeichert(ctx, gs) {
   const b = ctx.daten.bauteile.find((x) => `${x.projekt}:${x.id}` === gs.key);
   const p = b && ctx.daten.projekte.find((x) => x.kurz === b.projekt);
   if (!b || !p) return leer('Erfassung nicht gefunden.', 'Die gespeicherte Erfassung ist nicht mehr vorhanden.', '<button type="button" class="knopf" data-action="erf-neu">Neues Bauteil erfassen</button>');
-  return `<section class="seitenkopf"><div><p class="eyebrow">Erfassung</p><h1>Gespeichert</h1></div></section>
+  return `${seitenkopf({ eyebrow: 'Erfassen', titel: 'Gespeichert' })}
   <section class="flaeche gespeichert" role="status" aria-labelledby="h-gesp">
     <p class="gesp-icon">${icon('haken')}</p>
     <h2 id="h-gesp" tabindex="-1">${pchip(p)} <span class="mono">${esc(b.id)}</span> ${esc(b.name)} ist im Bestand</h2>

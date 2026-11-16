@@ -3,7 +3,7 @@
 // Die Plattform nimmt keinen Kontakt auf und ruft keine Quelle automatisch ab.
 import { ARTEN, PERSONEN } from '../daten.js';
 import { RADAR_STAND } from '../radar-daten.js';
-import { esc, chip, leer, slug, artText } from '../ui.js';
+import { esc, chip, leer, slug, artText, seitenkopf, projekteReiter } from '../ui.js';
 import { PRUEFSTATUS } from '../regeln.js';
 import { datum, zeit, jetztBerlin } from '../zeit.js';
 
@@ -16,10 +16,10 @@ const tag = (d) => datum(`${d}T00:00`);
 export function radar(ctx, r) {
   const tabs = [['radar', 'Hinweise', 'hinweise'], ['radar-quellen', 'Quellen', 'quellen'], ['radar-melden', 'Projekt melden', 'melden']];
   return `
-  <section class="seitenkopf"><div><p class="eyebrow">Projektradar · Dortmund</p><h1>Projekte früh erkennen</h1>
-    <p class="unter">Hinweise aus öffentlichen Quellen und direkten Meldungen. Quellen zuletzt gesichtet am ${tag(RADAR_STAND.geprueftAm)}.</p>
-    <p class="unter">${chip('kein automatischer Abruf', 'neutral')} ${chip('keine automatische Kontaktaufnahme', 'neutral')}</p></div></section>
-  <nav class="reiter" aria-label="Bereiche des Projektradars">${tabs.map(([h, t, k]) => `<a href="#${h}" ${r.tab === k ? 'aria-current="page"' : ''}>${t}</a>`).join('')}</nav>
+  ${seitenkopf({ eyebrow: 'Projektradar · Dortmund', titel: 'Projekte früh erkennen',
+    untertitel: `Hinweise aus öffentlichen Quellen und direkten Meldungen. Quellen zuletzt gesichtet am ${tag(RADAR_STAND.geprueftAm)}. ${chip('kein automatischer Abruf', 'neutral')} ${chip('keine automatische Kontaktaufnahme', 'neutral')}` })}
+  ${projekteReiter('radar')}
+  <nav class="segment" aria-label="Bereiche des Projektradars">${tabs.map(([h, t, k]) => `<a href="#${h}" ${r.tab === k ? 'aria-current="page"' : ''}>${t}</a>`).join('')}</nav>
   ${r.tab === 'quellen' ? quellen(ctx) : r.tab === 'melden' ? melden(ctx) : hinweise(ctx, r.hinweis)}`;
 }
 

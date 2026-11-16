@@ -25,7 +25,7 @@ test('Demo 1: TW-05 → BD-22 ist „Weiter prüfen“ mit Reserve, Prüfpunkten
   assert.ok(a.pruefpunkte.some((p) => p.art === 'geschaetzt'));
   assert.equal(a.entfernung.symbolisch, true); assert.ok(a.entfernung.km > 0); assert.match(a.entfernung.text, /Lage symbolisch/);
   assert.equal(a.pruefbitteMoeglich, true); assert.equal(a.sperrgrund, null);
-  assert.equal(a.schluessel, 'kb-tw-05~sb-bd-22');
+  assert.equal(a.schluessel, 'kb-tw-05--sb-bd-22');
 });
 
 test('Demo 2: TW-01 → BD-23 ist zu spät, genaue Tageszahl, Zwischenlagerung als Prüfpunkt, Prüfbitte gesperrt', () => {
@@ -170,7 +170,7 @@ test('abgleichListe: gleiche Gruppe, ohne „nicht“ und ohne aktive Vorgänge,
   assert.ok(!ids.some((i) => i.startsWith('T-12>')), 'festes Ziel ausgenommen');
   const rang = ['weiter', 'knapp', 'fehlt', 'klaerung', 'spaet'];
   assert.deepEqual(l.map((x) => rang.indexOf(x.gesamt.key)), [...l.map((x) => rang.indexOf(x.gesamt.key))].sort((x, y) => x - y));
-  assert.deepEqual(abgleichListe(ctx, { ergebnis: 'spaet' }).map((x) => x.schluessel), ['kb-tw-05~sb-bd-23', 'lh-tw-01~sb-bd-23']);
+  assert.deepEqual(abgleichListe(ctx, { ergebnis: 'spaet' }).map((x) => x.schluessel), ['kb-tw-05--sb-bd-23', 'lh-tw-01--sb-bd-23']);
   assert.equal(abgleichListe(ctx, { bauteil: { projekt: 'KB', id: 'TW-05' } }).length, 2);
   assert.equal(abgleichListe(ctx, { bedarf: { projekt: 'SB', id: 'BD-21' } }).length, 4);
   assert.equal(abgleichListe(ctx, { ergebnis: ['weiter', 'fehlt'] }).length, l.filter((x) => ['weiter', 'fehlt'].includes(x.gesamt.key)).length);
@@ -179,11 +179,11 @@ test('abgleichListe: gleiche Gruppe, ohne „nicht“ und ohne aktive Vorgänge,
 // ---------- Schlüssel ----------
 test('Abgleich-Schlüssel: bilden und auflösen, auch mit Bindestrichen in den IDs', () => {
   const s = abgleichSchluessel(t31, bd21);
-  assert.equal(s, 'kb-t-31~sb-bd-21');
+  assert.equal(s, 'kb-t-31--sb-bd-21');
   const r = loeseAbgleichSchluessel(ctx, s);
   assert.equal(r.bauteil, t31); assert.equal(r.bedarf, bd21);
-  assert.equal(loeseAbgleichSchluessel(ctx.daten, 'LH-DB-01~LH-BD-01').bauteil.id, 'DB-01', 'Groß- und Kleinschreibung egal, Daten statt Kontext');
-  for (const schlecht of ['', 'kb-t-31', 'kb-t-31~sb-bd-99', 'xx-t-31~sb-bd-21', 'a~b~c', null]) assert.equal(loeseAbgleichSchluessel(ctx, schlecht), null, String(schlecht));
+  assert.equal(loeseAbgleichSchluessel(ctx.daten, 'LH-DB-01--LH-BD-01').bauteil.id, 'DB-01', 'Groß- und Kleinschreibung egal, Daten statt Kontext');
+  for (const schlecht of ['', 'kb-t-31', 'kb-t-31--sb-bd-99', 'xx-t-31--sb-bd-21', 'a--b--c', null]) assert.equal(loeseAbgleichSchluessel(ctx, schlecht), null, String(schlecht));
 });
 
 // ---------- Prüfbitte ----------
@@ -258,4 +258,15 @@ test('Parität: dokumentierte Abweichungen (Erweiterungen gegenüber evaluateCas
   const teil = { ...b, offerQty: '10' };
   assert.equal(evaluateCase(teil).kind, 'clarify');
   const t = ausFall(teil); assert.equal(t.gesamt.key, 'weiter'); assert.equal(t.menge.luecke, 8);
+});
+
+test('Schlüssel: nur ASCII, Doppelbindestrich als Trenner, Rundreise für alle Kombinationen', () => {
+  const ctx = kontext();
+  for (const b of ctx.daten.bauteile) for (const d of ctx.daten.bedarfe) {
+    const k = abgleichSchluessel(b, d);
+    assert.match(k, /^[a-z0-9]+(-[a-z0-9]+)*--[a-z0-9]+(-[a-z0-9]+)*$/, k);
+    assert.equal(k.split('--').length, 2, `genau ein Trenner: ${k}`);
+    const r = loeseAbgleichSchluessel(ctx, k);
+    assert.equal(`${r.bauteil.projekt}:${r.bauteil.id}|${r.bedarf.projekt}:${r.bedarf.id}`, `${b.projekt}:${b.id}|${d.projekt}:${d.id}`);
+  }
 });

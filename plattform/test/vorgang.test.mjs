@@ -199,9 +199,9 @@ test('Ungeeignet beendet den Vorgang, gibt das Bauteil frei, sperrt aber dieses 
   assert.ok(!z.includes('BD-22'), 'ungeeignetes Ziel bleibt gesperrt'); assert.ok(z.includes('BD-23'));
   // Andere Bauteile können den Bedarf wieder nutzen.
   assert.ok(moeglicheZiele(c, bauteil(c, 'LH', 'TW-01')).bedarfe.some((d) => d.id === 'BD-22'));
-  assert.equal(abgleichListe(c).some((x) => x.schluessel === 'kb-tw-05~sb-bd-22'), false);
-  assert.equal(abgleichListe(c).some((x) => x.schluessel === 'kb-tw-05~sb-bd-23'), true, 'Bauteil ist wieder frei');
-  assert.equal(abgleichListe(c).some((x) => x.schluessel === 'lh-tw-01~sb-bd-22'), true, 'Bedarf ist wieder frei');
+  assert.equal(abgleichListe(c).some((x) => x.schluessel === 'kb-tw-05--sb-bd-22'), false);
+  assert.equal(abgleichListe(c).some((x) => x.schluessel === 'kb-tw-05--sb-bd-23'), true, 'Bauteil ist wieder frei');
+  assert.equal(abgleichListe(c).some((x) => x.schluessel === 'lh-tw-01--sb-bd-22'), true, 'Bedarf ist wieder frei');
   assert.match(abgleich(c, b, bedarf(c, 'SB', 'BD-22')).sperrgrund, /ungeeignet beendet/);
 });
 
@@ -214,7 +214,7 @@ test('Abbruch braucht einen Grund, beendet den Vorgang und gibt Bauteil und Ziel
   assert.equal(vorgangStatus(c, e(c)).key, 'abgebrochen');
   assert.equal(entscheidungFuer(c, b), null);
   assert.ok(moeglicheZiele(c, b).bedarfe.some((d) => d.id === 'BD-22'), 'abgebrochenes Ziel ist wieder frei');
-  assert.equal(abgleichListe(c).some((x) => x.schluessel === 'kb-tw-05~sb-bd-22'), true);
+  assert.equal(abgleichListe(c).some((x) => x.schluessel === 'kb-tw-05--sb-bd-22'), true);
   assert.equal(offeneEntscheidungen(c).gesamt, 2);
   // Abbruch ist auch nach der Vormerkung möglich.
   const q = ablauf(); q.tu(START, 'fachergebnis', fach); q.tu(START, 'vormerkung', { menge: '5', ablauf: '2027-01-01' });
