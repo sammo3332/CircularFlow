@@ -173,6 +173,50 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--fokus); out
 .formular { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3) var(--s-4); }
 .formular-eng { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 14px; }
 .formular-aktionen, .ergebnis-aktionen { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; margin-top: 14px; }
+.feld-hinweis { margin: 0; font-size: var(--t-xs); color: var(--tinte-3); }
+.feld-fehler .einheit-feld { border-color: var(--crit); border-width: 2px; }
+.feld-breit { grid-column: 1 / -1; }
+.feldgruppe { display: grid; gap: var(--s-2); align-content: start; min-width: 0; }
+.art-wahl { display: grid; gap: 4px; font-size: var(--t-s); color: var(--tinte-2); }
+.art-hinweis { margin: 0; align-self: end; }
+.formseite { display: grid; gap: var(--s-4); max-width: 980px; }
+.hinweis-daten { background: var(--sim-bg); color: var(--sim); }
+.optionswahl { border: 0; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); }
+.optionswahl legend { font-size: var(--t-s); font-weight: 620; color: var(--tinte-2); padding: 0; margin-bottom: 5px; }
+.optionswahl .feld-meldung { grid-column: 1 / -1; }
+.optionswahl.feld-fehler .zustandschip > span { border-color: var(--crit); border-width: 2px; padding: 7px 9px; }
+/* Vorgang auf der Entscheidungsseite: Statuskette, Aktionsformulare, Checkliste */
+.vorgang { display: grid; gap: var(--s-4); }
+.vorgang-status { display: grid; gap: 6px; padding: var(--s-3) 14px; border: 1px solid var(--linie); border-left: 4px solid var(--gruen); border-radius: var(--r-l); background: var(--flaeche-2); }
+.vorgang-status:focus-visible { outline: 3px solid var(--fokus); outline-offset: 2px; }
+.vs-zeile { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.kette { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; counter-reset: none; }
+.kette li { display: flex; gap: 8px; align-items: flex-start; padding: 8px 10px; border: 1px solid var(--linie); border-radius: var(--r); background: var(--flaeche); min-width: 0; }
+.kette .k-nr { flex: 0 0 auto; display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--linie-feld); font-size: var(--t-xs); color: var(--tinte-2); }
+.kette .k-text { display: grid; gap: 1px; min-width: 0; font-size: var(--t-s); overflow-wrap: anywhere; }
+.kette .k-text small { color: var(--tinte-3); font-size: var(--t-xs); }
+.kette li.k-erledigt { background: var(--ok-bg); border-color: transparent; }
+.kette li.k-erledigt .k-nr { background: var(--ok); border-color: var(--ok); color: #fff; }
+.kette li.k-erledigt .k-text small { color: var(--ok); }
+.kette li.k-aktuell { border: 2px solid var(--gruen); padding: 7px 9px; background: var(--gruen-hell); }
+.kette li.k-aktuell .k-nr { background: var(--gruen); border-color: var(--gruen); color: #fff; }
+.kette li.k-aus { background: var(--flaeche-3); border-style: dashed; color: var(--tinte-3); }
+.kette li.k-aus .k-text b { text-decoration: line-through; }
+.kette-ende { display: flex; gap: 8px; align-items: flex-start; }
+.vorgang-aktionen { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); align-items: start; }
+.vorgangsform { display: grid; gap: var(--s-2); padding: var(--s-3) 14px; border: 1px solid var(--linie); border-radius: var(--r-l); background: var(--flaeche-2); min-width: 0; }
+.vorgangsform h3 { margin: 0; }
+.vorgangsform p { margin: 0; }
+.vorgangsform .formular-aktionen { margin-top: 4px; }
+.vorgangsform .formular-eng { margin-top: 4px; }
+.vorgangsform-abbruch { border-style: dashed; }
+.checkliste { list-style: none; margin: 0; padding: 0; display: grid; }
+.checkliste li { border-top: 1px solid var(--linie); }
+.checkliste li:first-child { border-top: 0; }
+.checkliste label { display: flex; gap: 12px; align-items: flex-start; min-height: var(--ziel); padding: 10px 0; cursor: pointer; }
+.checkliste input { width: 22px; height: 22px; margin-top: 1px; accent-color: var(--gruen); flex: 0 0 auto; }
+.checkliste label > span { display: grid; gap: 2px; font-size: var(--t-m); }
+.checkliste small { color: var(--tinte-3); font-size: var(--t-s); }
 table { width: 100%; border-collapse: collapse; }
 th { text-align: left; font-size: var(--t-xs); font-weight: 650; letter-spacing: .05em; text-transform: uppercase; color: var(--tinte-3); padding: 10px var(--s-3); border-bottom: 1px solid var(--linie); background: var(--flaeche-2); white-space: nowrap; }
 td { padding: 10px var(--s-3); border-top: 1px solid var(--linie); vertical-align: top; font-size: var(--t-m); }
@@ -641,6 +685,8 @@ legend { font-size: var(--t-s); font-weight: 620; color: var(--tinte-2); margin-
   .speicherhinweis { padding: 10px var(--s-4); }
   .ergebnis { grid-template-columns: minmax(0, 1fr); } .ergebnis-weiter { border-left: 0; border-top: 1px solid var(--linie); }
   .formular { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .kette { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .vorgang-aktionen { grid-template-columns: minmax(0, 1fr); }
   .steckbrief { grid-template-columns: minmax(0, 1fr); } .skizze { max-width: 280px; }
   .werte.zwei { grid-template-columns: minmax(0, 1fr); } .werte.zwei > div:nth-child(2) { border-top: 1px solid var(--linie); }
   .karte { height: clamp(300px, 46vh, 460px); }
@@ -667,6 +713,9 @@ legend { font-size: var(--t-s); font-weight: 620; color: var(--tinte-2); margin-
   .entscheidung-zeile { grid-template-columns: minmax(0, 1fr); } .ez-frist { justify-items: start; text-align: left; }
   .verlauf li { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   .formular, .formular-eng { grid-template-columns: minmax(0, 1fr); }
+  .optionswahl { grid-template-columns: minmax(0, 1fr); }
+  .kette { grid-template-columns: minmax(0, 1fr); }
+  .vorgang-aktionen { grid-template-columns: minmax(0, 1fr); }
   .werte > div, .werte-breit > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   .nachweise li { grid-template-columns: minmax(0, 1fr) auto; } .n-art { grid-column: 1 / -1; }
   .gruppenwahl { grid-template-columns: minmax(0, 1fr); }
@@ -702,3 +751,4 @@ legend { font-size: var(--t-s); font-weight: 620; color: var(--tinte-2); margin-
   .wertbalken { display: inline-flex; vertical-align: middle; }
 }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
+.checkliste .chip { justify-self: start; }

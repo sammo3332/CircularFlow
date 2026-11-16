@@ -1,4 +1,4 @@
-// Bedarfe: Liste und Detail (lesend). Erfassen und Ergänzen verdrahtet die Formularansicht (Paket C).
+// Bedarfe: Liste und Detail. Erfassen und Ergänzen stehen in bedarfform.js.
 import { GRUPPEN } from '../daten.js';
 import { abgleichListe } from '../abgleich.js';
 import { fehlendeZeitangaben } from '../bedarf.js';
@@ -107,9 +107,4 @@ export function bedarfDetail(ctx, d) {
         : (e ? '' : leer('Kein passendes Angebot.', 'Es gibt kein angebotenes Bauteil derselben Gruppe, das für diesen Bedarf in Frage kommt.'))}
     </section>
   </div>`;
-}
-
-export function bedarfNeuPlatzhalter() {
-  return `${seitenkopf({ pfad: [['#bedarfe', 'Bedarfe']], aktuell: 'Bedarf erfassen', titel: 'Bedarf erfassen', untertitel: 'Das Formular folgt in Paket C (internes Platzhalterbild).' })}
-  <div class="leer"><b>Formular folgt in Paket C.</b><p>Pflichtfelder: Projekt, Bauteilgruppe, Titel, Menge. Zeitangaben dürfen fehlen und werden als „Angaben fehlen“ markiert.</p><a class="knopf" href="#bedarfe">Zu den Bedarfen</a></div>`;
 }

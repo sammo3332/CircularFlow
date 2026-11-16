@@ -81,3 +81,21 @@ export function projekteReiter(aktiv) {
 // Kurzes Datum aus „YYYY-MM-DD“ ohne Zeitzone.
 export const tagText = (d) => (d ? `${String(d).slice(8, 10)}.${String(d).slice(5, 7)}.${String(d).slice(0, 4)}` : '');
 export const nichtGefunden = (art, id) => leer(`${art} „${id}“ gibt es nicht.`, 'Der Link ist veraltet oder falsch geschrieben.', '<a class="knopf" href="#projekte">Zu den Projekten</a>');
+
+// Formularbausteine: Feld mit Beschriftung, optionalem Hinweis und Fehlermeldung. Fehler hängen über aria-describedby am Feld.
+// feldAttr liefert id und die Attribute für Fehler und Hinweis; feld setzt Beschriftung und Meldungen darum.
+export function feldAttr(id, fehler = '', hinweis = '') {
+  const ids = [hinweis && `${id}-h`, fehler && `${id}-f`].filter(Boolean).join(' ');
+  return `id="${id}"${fehler ? ' aria-invalid="true"' : ''}${ids ? ` aria-describedby="${ids}"` : ''}`;
+}
+// label und hinweis sind HTML (bereits maskiert), fehler ist Text.
+export function feld({ id, label, control, fehler = '', hinweis = '', klasse = '' }) {
+  return `<div class="feld ${fehler ? 'feld-fehler' : ''} ${klasse}"><label for="${id}">${label}</label>${control}${hinweis ? `<p class="feld-hinweis" id="${id}-h">${hinweis}</p>` : ''}${fehler ? `<p class="feld-meldung" id="${id}-f">${esc(fehler)}</p>` : ''}</div>`;
+}
+export const optionen = (liste, wert, leerText = 'Bitte wählen') => `${leerText === null ? '' : `<option value="">${esc(leerText)}</option>`}${liste.map(([v, t]) => `<option value="${esc(v)}" ${v === wert ? 'selected' : ''}>${esc(t)}</option>`).join('')}`;
+// Fehlerübersicht am Formularanfang (role=alert); die Fehler am Feld bleiben die Hauptsache.
+export function fehlerUebersicht(id, fehler, felder) {
+  const n = Object.keys(fehler).length;
+  if (!n) return '';
+  return `<div class="ergebnisbox fehlerbox" id="${id}" role="alert"><p><b>${n} Angabe${n === 1 ? '' : 'n'} ${n === 1 ? 'verhindert' : 'verhindern'} das Speichern.</b></p><ul>${Object.entries(fehler).map(([k, t]) => `<li>${felder[k] ? `<b>${esc(felder[k])}:</b> ` : ''}${esc(t)}</li>`).join('')}</ul></div>`;
+}

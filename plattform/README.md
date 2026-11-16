@@ -1,6 +1,6 @@
-# CircularFlow Plattform · Fassung 1
+# CircularFlow Plattform · Fassung 2
 
-Stand 15.11.2026. Erster durchgehender Klickablauf der Arbeitsplattform für Bauteilmanagement und
+Stand 16.11.2026 (Fassung 2, Plan und Regeln: [`docs/plattform-v2.md`](../docs/plattform-v2.md)). Fassung 1 war der erste durchgehende Klickablauf der Arbeitsplattform für Bauteilmanagement und
 Wiederverwendung: Dortmund-Karte mit Projekten, Gebäude mit Etagen und Räumen, Bauteilbestand,
 Bauteilpass, mobile Erfassung, Zuordnung zu Zielöffnung oder Bedarf, nächster fachlicher Schritt,
 Projektradar und Gebäudeansicht. Plan, Entscheidungen und Recherche: [`docs/plattform-v1.md`](../docs/plattform-v1.md).
@@ -30,6 +30,27 @@ Fotoaufnahme nutzt das normale Dateifeld mit Kamera-Option und braucht dafür ke
 zuschaltbare Straßenkarte (OpenStreetMap) braucht eine Verbindung; beim Zuschalten gehen IP-Adresse
 und Herkunftsseite an openstreetmap.org.
 
+## Funktionen der Fassung 2
+
+- **Übersicht** mit Verfügbarkeit im Zeitverlauf, Fristen, passenden Paaren und Arbeitsliste (`#uebersicht`, `#vorgaenge`).
+- **Katalog** der angebotenen Bauteile mit Filtern (`#bauteile`).
+- **Bedarfe** erfassen und ergänzen (`#bedarf-neu`, `#bedarf-ergaenzen-<projekt>-<id>`); Beispielbedarfe werden als Überlagerung ergänzt.
+- **Abgleich** von Angebot und Bedarf mit Typ-, Mengen- und Zeitprüfung (`#abgleich`, `#abgleich-<paar>`), Aktion „Prüfbitte anlegen“.
+- **Vorgang** auf der Entscheidungsseite: Statuskette Zuordnung, Prüfbitte, Fachergebnis, Vormerkung, Übergabe geplant, übergeben (Abbruch und „ungeeignet“ als Ende), Checkliste „Was ist zu klären“.
+- **Projekt erfassen** mit Gebäude, Etagen und Räumen (`#projekt-neu`); eigene Projekte tragen den Chip „Eigene Eingabe“.
+
+## Demoablauf in 7 Schritten (Stichtag Mi 18.11., 14:00)
+
+1. Übersicht: Fristen der nächsten Tage, bald verfügbare Positionen, passende Paare.
+2. Projekt erfassen (`#projekt-neu`), danach unter Erfassen ein Bauteil in einem seiner Räume erfassen.
+3. Katalog: Systemtrennwände filtern, TW-05 öffnen, Bauteilakte ansehen.
+4. Rechtzeitig: TW-05 → BD-22, „Weiter prüfen“ mit Reserve und Prüfpunkten.
+5. Zu spät: TW-01 → BD-23, Prüfende nach der Bestellfrist, Prüfbitte gesperrt (Grund steht daneben).
+6. Unvollständig: T-31 → BD-21 „Angaben fehlen“; Bedarf ergänzen, das Ergebnis wechselt.
+7. Koordinieren: Prüfbitte für TW-05 → BD-22 anlegen, Fachergebnis eintragen, vormerken, Übergabe planen; die Übersicht zählt mit.
+
+Zurücksetzen: Erfassen → „In diesem Browser gespeichert“ → „Zurücksetzen“.
+
 ## Was echt ist und was simuliert
 
 | Bereich | Stand |
@@ -45,6 +66,9 @@ und Herkunftsseite an openstreetmap.org.
 | IFC-Vorprüfung | echt: zählt Geschosse, Räume, Türen im Browser. Import **simuliert** |
 | Raumscan | **simuliert** |
 | Speichern | nur `localStorage` dieses Browsers. Zurücksetzen unter Erfassung → „In diesem Browser gespeichert“ |
+| Prüfbitte, Fachergebnis, Vormerkung, Übergabe | **simuliert**: Einträge von „Sie“ in diesem Browser, nichts wird versendet. Ein Fachergebnis ist laut Eintrag und keine Fachfreigabe, eine Vormerkung ist unverbindlich |
+| Abgleich von Angebot und Bedarf | Entwurfsregel, nicht fachlich geprüft; Mindestprüfzeiten und Annahmefenster der Beispiele sind Annahmen; Lage und Entfernung symbolisch |
+| Eigene Projekte, Bedarfe, Grundrisse | Eigene Eingaben, nicht geprüft; Grundriss schematisch |
 | Zeit | Fristen der Beispielprojekte folgen der Projektzeit (Simulation, oben links). Radar-Fristen, Meldungen und Prüfschritte nutzen das echte Datum |
 
 ## Prüfen
@@ -66,6 +90,8 @@ node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform
 | `app/karte.js` | Leaflet-Karte mit Bezirken und Projektmarkern |
 | `app/ui.js`, `app/zeit.js` | Bausteine für die Oberfläche, Datum und Zeit ohne Zeitzone des Geräts |
 | `app/ansichten/` | Übersicht (mit Diagramm), Katalog, Bedarfe, Abgleich, Arbeitsliste, Projekt, Gebäude, Bestand, Pass, Entscheidung, Erfassung, Radar |
+| `app/abgleich.js`, `app/vorgang.js`, `app/bedarf.js`, `app/projektanlage.js`, `app/kennzahlen.js` | Fachkern der Fassung 2 (ohne Oberfläche) |
+| `app/ansichten/bedarfform.js`, `projektform.js`, `vorgangsteil.js` | Formulare und Vorgangsdarstellung |
 | `app/uizustand.js` | Zustand der Oberfläche (Filter, Auswahl), unabhängig vom Browser prüfbar |
 | `test/ansichten.test.mjs` | rendert alle Ansichten in Node, prüft Kachel-Zahlen gegen Ziellisten |
 | `daten/dortmund-stadtbezirke.geojson` | vereinfachte Bezirksgrenzen, Quelle in der Datei |

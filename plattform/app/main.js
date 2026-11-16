@@ -1,10 +1,13 @@
 // Einstieg: Router, Rahmen, Ereignisse. Ein gemeinsamer Datensatz für alle Ansichten.
 import { REGIONEN, PROJEKTZEITEN, GRUPPEN } from './daten.js';
-import { loeseAbgleichSchluessel } from './abgleich.js';
-import { neuerUiZustand, leererKatalog, leereBedarfsliste, leererBestand, leereRadarFilter } from './uizustand.js';
-import { ladePersistenz, speichere, loesche, baueDaten, leerePersistenz } from './zustand.js';
+import { loeseAbgleichSchluessel, abgleich, abgleichListe, pruefbitteAnlegen } from './abgleich.js';
+import { pruefeBedarf, bedarfAusEntwurf, naechsteBedarfId, bedarfAenderung } from './bedarf.js';
+import { pruefeProjekt, projektAusEntwurf } from './projektanlage.js';
+import { vorgangSchritt, checklisteSetzen } from './vorgang.js';
+import { neuerUiZustand, leererKatalog, leereBedarfsliste, leererBestand, leereRadarFilter, leeresBedarfsformular, leeresProjektformular, leeresVorgangsformular, bedarfsformularStarten } from './uizustand.js';
+import { ladePersistenz, speichere, loesche, baueDaten, leerePersistenz, anzahlEigeneAenderungen } from './zustand.js';
 import { schluessel, neueEntscheidung, bauteilAusErfassung, naechsteBauteilId, pruefeErfassung, erkennungSimulation, radarSchritt, pruefeMeldung, ifcVorpruefung, ZAHL, lage, beispielAufmassRechtzeitig } from './regeln.js';
-import { esc, icon, slug, pchip, nichtGefunden, laedt } from './ui.js';
+import { esc, icon, slug, pchip, nichtGefunden, laedt, routeBedarf, routeEntscheidung } from './ui.js';
 import { zeit, jetztBerlin } from './zeit.js';
 import { karteMontieren, karteEntfernen, markerHervorheben } from './karte.js';
 import { startseite, projektUebersicht, popupHtml, gefilterteProjekte } from './ansichten/projekte.js';
@@ -15,10 +18,12 @@ import { erfassung, leererEntwurf } from './ansichten/erfassung.js';
 import { radar, leereMeldung } from './ansichten/radar.js';
 import { uebersicht } from './ansichten/uebersicht.js';
 import { katalog } from './ansichten/katalog.js';
-import { bedarfe, bedarfDetail, bedarfNeuPlatzhalter } from './ansichten/bedarfe.js';
+import { bedarfe, bedarfDetail } from './ansichten/bedarfe.js';
+import { bedarfFormular, BEDARF_FELD_ID, BEDARF_FESTE_FELDER, erstesBedarfFeld } from './ansichten/bedarfform.js';
+import { projektFormular, PROJEKT_FELD_ID, erstesProjektFeld } from './ansichten/projektform.js';
+import { VORGANG_FELD_ID } from './ansichten/vorgangsteil.js';
 import { abgleichListeSeite, abgleichSeite } from './ansichten/abgleich.js';
 import { vorgaenge } from './ansichten/vorgaenge.js';
-import { projektNeuPlatzhalter } from './ansichten/folgt.js';
 
 const app = document.getElementById('app');
 const speicher = (() => { try { const s = window.localStorage; s.setItem('cf-test', '1'); s.removeItem('cf-test'); return s; } catch { return null; } })();
@@ -37,9 +42,7 @@ toast.className = 'toast'; toast.setAttribute('role', 'status'); toast.setAttrib
 document.body.append(toast);
 function melde(text, ms = 3600) { toast.textContent = text; clearTimeout(melde.t); melde.t = setTimeout(() => { toast.textContent = ''; }, ms); }
 
-const eigeneAenderungen = () => p.erfassungen.length + p.zuordnungen.length + p.ereignisse.length + p.meldungen.length + p.projekteAusRadar.length
-  + Object.keys(p.ezustand).length + Object.keys(p.radar).length + Object.keys(p.werte).length;
-const ctx = () => ({ R, at: ui.at, daten: db, ereignisse: p.ereignisse, ezustand: p.ezustand, ui, geo, eigeneAenderungen: eigeneAenderungen() });
+const ctx = () => ({ R, at: ui.at, daten: db, ereignisse: p.ereignisse, ezustand: p.ezustand, ui, geo, eigeneAenderungen: anzahlEigeneAenderungen(p) });
 
 function uebernehmen(aenderung) {
   aenderung(p);
@@ -63,6 +66,7 @@ function route() {
   if (h === 'bauteile') return { view: 'katalog' };
   if (h === 'bedarfe') return { view: 'bedarfe' };
   if (h === 'bedarf-neu') return { view: 'bedarfneu' };
+  const be = m('bedarf-ergaenzen-'); if (be !== null) { const d = db.bedarfe.find((x) => `${slug(x.projekt)}-${slug(x.id)}` === be); return d ? { view: 'bedarfergaenzen', d } : { view: 'fehlt', art: 'Bedarf', id: be }; }
   if (h === 'projekt-neu') return { view: 'projektneu' };
   if (h === 'abgleich') return { view: 'abgleichliste' };
   const bd = m('bedarf-'); if (bd !== null) { const d = db.bedarfe.find((x) => `${slug(x.projekt)}-${slug(x.id)}` === bd); return d ? { view: 'bedarf', d } : { view: 'fehlt', art: 'Bedarf', id: bd }; }
@@ -96,7 +100,7 @@ const BEREICH = {
   uebersicht: 'uebersicht', vorgaenge: 'uebersicht',
   start: 'projekte', projekt: 'projekte', gebaeude: 'projekte', bestand: 'projekte', entscheidungen: 'projekte', entscheidung: 'projekte', radar: 'projekte', projektneu: 'projekte',
   katalog: 'bauteile', pass: 'bauteile',
-  bedarfe: 'bedarfe', bedarf: 'bedarfe', bedarfneu: 'bedarfe', abgleichliste: 'bedarfe', abgleich: 'bedarfe',
+  bedarfe: 'bedarfe', bedarf: 'bedarfe', bedarfneu: 'bedarfe', bedarfergaenzen: 'bedarfe', abgleichliste: 'bedarfe', abgleich: 'bedarfe',
   erfassung: 'erfassen',
 };
 const HAUPT = [['uebersicht', '#uebersicht', 'Übersicht', 'uebersicht'], ['projekte', '#projekte', 'Projekte', 'karte'], ['bauteile', '#bauteile', 'Bauteile', 'bauteil'], ['bedarfe', '#bedarfe', 'Bedarfe', 'bedarf'], ['erfassen', '#erfassung', 'Erfassen', 'kamera']];
@@ -136,7 +140,14 @@ function fokusSelektor(el) {
 }
 function render() {
   const r = route(); const neu = location.hash !== letzteRoute;
-  if (neu) ui.zuordnungFehler = '';
+  if (neu) {
+    ui.zuordnungFehler = '';
+    // Entwürfe der Formulare gelten nur für die Seite, auf der sie begonnen wurden.
+    ui.vorgangForm = leeresVorgangsformular();
+    if (r.view === 'bedarfneu') bedarfsformularStarten(ui, null);
+    else if (r.view === 'bedarfergaenzen') bedarfsformularStarten(ui, r.d);
+    else if (r.view === 'projektneu') ui.projektForm = leeresProjektformular();
+  }
   if (r.view === 'erfassung' && neu) {
     const ent = ui.erfassung;
     if (r.p && (ent.gespeichert || ent.projekt !== r.p.kurz || ent.raum !== r.raum)) ui.erfassung = { ...leererEntwurf(r.p.kurz, r.raum), schritt: 2, verfuegbarAb: r.p.rueckbauAb || '' };
@@ -148,11 +159,12 @@ function render() {
     : r.view === 'katalog' ? katalog(c)
     : r.view === 'bedarfe' ? bedarfe(c)
     : r.view === 'bedarf' ? bedarfDetail(c, r.d)
-    : r.view === 'bedarfneu' ? bedarfNeuPlatzhalter()
+    : r.view === 'bedarfneu' ? bedarfFormular(c)
+    : r.view === 'bedarfergaenzen' ? bedarfFormular(c, r.d)
     : r.view === 'abgleichliste' ? abgleichListeSeite(c)
     : r.view === 'abgleich' ? abgleichSeite(c, r.bauteil, r.bedarf)
     : r.view === 'vorgaenge' ? vorgaenge(c)
-    : r.view === 'projektneu' ? projektNeuPlatzhalter()
+    : r.view === 'projektneu' ? projektFormular(c)
     : r.view === 'start' ? startseite(c)
       : r.view === 'projekt' ? projektUebersicht(c, r.p)
         : r.view === 'gebaeude' ? gebaeudeAnsicht(c, r.p, r.raum)
@@ -166,7 +178,7 @@ function render() {
   const aktiv = document.activeElement; const sel = fokusSelektor(aktiv); const pos = aktiv?.id ? aktiv.selectionStart : null;
   if (document.getElementById('karte')) karteEntfernen(ui.start.ansicht || (ui.start.ansicht = {}));
   app.innerHTML = rahmen(r, inhalt);
-  document.title = `${{ uebersicht: 'Übersicht', katalog: 'Bauteile', bedarfe: 'Bedarfe', bedarf: `Bedarf ${r.d?.id}`, bedarfneu: 'Bedarf erfassen', abgleichliste: 'Passende Paare', abgleich: `Abgleich ${r.bauteil?.id} und ${r.bedarf?.id}`, vorgaenge: 'Arbeitsliste', projektneu: 'Projekt erfassen', start: 'Projekte', projekt: r.p?.name, gebaeude: `Gebäude ${r.p?.kurz}`, bestand: `Bestand ${r.p?.kurz}`, pass: `${r.b?.id} Bauteilpass`, entscheidungen: `Entscheidungen ${r.p?.kurz}`, entscheidung: `Entscheidung ${r.e?.id}`, erfassung: 'Erfassung', radar: 'Projektradar' }[r.view] || 'Nicht gefunden'} · CircularFlow`;
+  document.title = `${{ uebersicht: 'Übersicht', katalog: 'Bauteile', bedarfe: 'Bedarfe', bedarf: `Bedarf ${r.d?.id}`, bedarfneu: 'Bedarf erfassen', bedarfergaenzen: `Bedarf ${r.d?.id} ergänzen`, abgleichliste: 'Passende Paare', abgleich: `Abgleich ${r.bauteil?.id} und ${r.bedarf?.id}`, vorgaenge: 'Arbeitsliste', projektneu: 'Projekt erfassen', start: 'Projekte', projekt: r.p?.name, gebaeude: `Gebäude ${r.p?.kurz}`, bestand: `Bestand ${r.p?.kurz}`, pass: `${r.b?.id} Bauteilpass`, entscheidungen: `Entscheidungen ${r.p?.kurz}`, entscheidung: `Entscheidung ${r.e?.id}`, erfassung: 'Erfassung', radar: 'Projektradar' }[r.view] || 'Nicht gefunden'} · CircularFlow`;
   if (r.view === 'start' && R) karteAnzeigen(c);
   letzteRoute = location.hash;
   if (neu) {
@@ -224,9 +236,9 @@ app.addEventListener('click', (ev) => {
     case 'bedarfe-reset': ui.bedarfe = leereBedarfsliste(); ui.fokus = 'bed-gruppe'; break;
     case 'abgleich-filter': ui.abgleich.ergebnis = a.dataset.wert; if (zumLink(a)) return; break;
     case 'vorgang-filter': ui.vorgaenge.status = a.dataset.wert; if (zumLink(a)) return; break;
-    // Paket C ersetzt diese Platzhalter durch die Formulare und das Anlegen der Prüfbitte.
-    case 'bedarf-ergaenzen': melde('Das Formular zum Ergänzen folgt (Paket C).'); return;
-    case 'pruefbitte-anlegen': melde(a.getAttribute('aria-disabled') === 'true' ? 'Die Prüfbitte ist gesperrt. Der Grund steht neben dem Knopf.' : 'Das Anlegen der Prüfbitte folgt (Paket C).'); return;
+    case 'bedarf-ergaenzen': gehe(`#bedarf-ergaenzen-${slug(a.dataset.projekt)}-${slug(a.dataset.bedarf)}`); return;
+    case 'pruefbitte-anlegen': pruefbitteAnlegenAktion(a.dataset.key, a.getAttribute('aria-disabled') === 'true'); return;
+    case 'zum-vorgang': { const el = document.getElementById('vorgang-status'); if (el) { el.scrollIntoView({ block: 'center' }); el.focus({ preventScroll: true }); } return; }
     case 'zuordnen': zuordnen(a.dataset.bauteil); return;
     case 'schritt': schrittVermerken(k); return;
     case 'aufmass-beispiel': aufmassBeispiel(k); return;
@@ -246,7 +258,8 @@ app.addEventListener('click', (ev) => {
     case 'reset-nein': ui.resetFrage = false; break;
     case 'reset-ja':
       loesche(speicher); p = leerePersistenz(); db = baueDaten(p);
-      Object.assign(ui, { resetFrage: false, zuletzt: null, zielWahl: null, zuordnungFehler: '', erfassung: leererEntwurf(), radar: leereRadarFilter(), importe: { ifc: null, ifcSim: false, scanSim: false }, speicherHinweis: '' });
+      Object.assign(ui, { resetFrage: false, zuletzt: null, zielWahl: null, zuordnungFehler: '', erfassung: leererEntwurf(), radar: leereRadarFilter(), importe: { ifc: null, ifcSim: false, scanSim: false }, speicherHinweis: '',
+        bedarfForm: leeresBedarfsformular(), projektForm: leeresProjektformular(), vorgangForm: leeresVorgangsformular(), bedarfe: leereBedarfsliste(), katalog: leererKatalog(), bestand: leererBestand(), vorgaenge: { status: '' }, abgleich: { ergebnis: '' } });
       melde('Eigene Erfassungen und Änderungen gelöscht.'); break;
     case 'zum-ziel': { const sel = document.getElementById('ziel-wahl'); if (sel) { sel.scrollIntoView({ block: 'center' }); sel.focus({ preventScroll: true }); } return; }
     case 'radar-pruefen': case 'radar-bestaetigen': case 'radar-verwerfen': radarAktion(act.slice(6), a.dataset.hinweis); return;
@@ -260,6 +273,7 @@ app.addEventListener('click', (ev) => {
 
 app.addEventListener('input', (ev) => {
   const t = ev.target; const ent = ui.erfassung;
+  if (t.dataset.ff) { formEingabe(t); return; }
   if (t.dataset.aufmass) { const key = t.dataset.aufmass; uebernehmen((d) => { const alt = d.ezustand[key]?.aufmass || R.emptyMeasurement(); d.ezustand[key] = { ...(d.ezustand[key] || {}), aufmass: { ...alt, [t.dataset.feld]: t.value } }; }); render(); return; }
   if (t.dataset.schaden) { schadenEingabe(t.dataset.schaden, t.value); render(); return; }
   if (t.id === 'bestand-q') { ui.bestand.q = t.value; render(); return; }
@@ -279,6 +293,8 @@ app.addEventListener('input', (ev) => {
 
 app.addEventListener('change', async (ev) => {
   const t = ev.target; const ent = ui.erfassung;
+  if (t.dataset.ff) { formEingabe(t); if (t.dataset.neuZeichnen) render(); return; }
+  if (t.dataset.checkliste) { checklisteUmschalten(t); return; }
   if (t.id === 'projektzeit' || t.id === 'projektzeit-m') { ui.at = t.value; render(); melde(`Stichtag der Demo ${PROJEKTZEITEN.find((z) => z.at === t.value).label} (Simulation). Alle Ansichten zeigen diesen Stand.`); return; }
   if (t.id === 'nur-angebote') ui.start.nurAngebote = t.checked;
   else if (t.id === 'osm') ui.start.osm = t.checked;
@@ -312,7 +328,14 @@ app.addEventListener('change', async (ev) => {
 });
 
 app.addEventListener('submit', (ev) => {
-  if (ev.target.id === 'meldeformular') { ev.preventDefault(); meldungSpeichern(); }
+  const f = ev.target;
+  if (f.id === 'meldeformular') { ev.preventDefault(); meldungSpeichern(); return; }
+  if (!f.dataset.form) return;
+  ev.preventDefault();
+  for (const el of f.elements) if (el.dataset?.ff && !el.disabled && !(el.type === 'radio' && !el.checked)) formEingabe(el); // auch Eingaben ohne Ereignis (z. B. Browser-Autofill)
+  if (f.dataset.form === 'bedarf') bedarfSpeichern();
+  else if (f.dataset.form === 'projekt') projektSpeichern();
+  else if (f.dataset.form === 'vorgang') vorgangAktion(f.dataset.entscheidung, f.dataset.aktion);
 });
 
 app.addEventListener('mouseover', (ev) => { const z = ev.target.closest('[data-hover]'); if (z) markerHervorheben(z.dataset.hover, true); });
@@ -387,6 +410,102 @@ function schadenEingabe(k, wert) {
     const gueltig = zahl !== null && zahl <= flaeche;
     d.werte[bkey] = { ...(d.werte[bkey] || {}), beschaedigt: gueltig ? { wert: zahl, status: 'gemessen', quelle: `Stichprobe vor Ort, hochgerechnet (Eingabe in Entscheidung ${e.id})` } : { wert: null, status: 'fehlt', quelle: '' } };
   });
+}
+
+// ---------- Formulare: Eingaben sammeln, mit den Fachmodulen prüfen, über uebernehmen speichern ----------
+// Jedes Feld trägt data-ff="bedarf|projekt|vorgang-<aktion>" und name="<feld>". Der Entwurf liegt im ui-Zustand, nicht im DOM.
+function formEingabe(t) {
+  const wert = t.type === 'checkbox' ? t.checked : t.value; const ff = t.dataset.ff;
+  if (ff === 'bedarf') {
+    const e = ui.bedarfForm.entwurf;
+    if (t.name.startsWith('art-')) e.geschaetzt = { ...e.geschaetzt, [t.name.slice(4)]: wert === 'geschaetzt' };
+    else { e[t.name] = wert; if (t.name === 'projekt') e.raum = ''; }
+  } else if (ff === 'projekt') ui.projektForm.entwurf[t.name] = wert;
+  else if (ff.startsWith('vorgang-')) {
+    const k = t.closest('form')?.dataset.entscheidung; const aktion = ff.slice(8);
+    if (ui.vorgangForm.k !== k) ui.vorgangForm = { ...leeresVorgangsformular(), k };
+    ui.vorgangForm.eingabe[aktion] = { ...(ui.vorgangForm.eingabe[aktion] || {}), [t.name]: wert };
+  }
+}
+
+function bedarfSpeichern() {
+  const f = ui.bedarfForm; const e = f.entwurf; const c = ctx();
+  const vorhanden = f.schluessel === 'neu' ? null : db.bedarfe.find((x) => `${x.projekt}:${x.id}` === f.schluessel);
+  const fehler = pruefeBedarf(e, c);
+  if (vorhanden) for (const k of BEDARF_FESTE_FELDER) delete fehler[k]; // Beim Ergänzen sind diese Angaben nicht änderbar
+  if (Object.keys(fehler).length) { f.fehler = fehler; ui.fokus = BEDARF_FELD_ID[erstesBedarfFeld(fehler)]; render(); return; }
+  if (vorhanden) {
+    uebernehmen((d) => { d.bedarfAenderungen[f.schluessel] = bedarfAenderung(e); });
+    const n = abgleichListe(ctx(), { bedarf: db.bedarfe.find((x) => `${x.projekt}:${x.id}` === f.schluessel) }).length;
+    gehe(routeBedarf(vorhanden)); melde(`Bedarf ${vorhanden.id} ergänzt. Die passenden Angebote sind neu berechnet (${n} ${n === 1 ? 'Angebot' : 'Angebote'}).`);
+    return;
+  }
+  const b = bedarfAusEntwurf(e, { id: naechsteBedarfId(db.bedarfe), at: ui.at });
+  const etage = e.raum ? (db.projekte.find((x) => x.kurz === e.projekt)?.gebaeude || []).flatMap((g) => g.etagen).find((et) => et.raeume.some((r) => r.id === e.raum)) : null;
+  if (etage) { b.raeume = [e.raum]; b.etage = etage.id; }
+  uebernehmen((d) => { d.bedarfe.push(b); });
+  const n = abgleichListe(ctx(), { bedarf: db.bedarfe.find((x) => x.projekt === b.projekt && x.id === b.id) }).length;
+  gehe(routeBedarf(b)); melde(`Bedarf ${b.id} gespeichert. Die passenden Angebote sind berechnet (${n} ${n === 1 ? 'Angebot' : 'Angebote'}).`);
+}
+
+function projektSpeichern() {
+  const f = ui.projektForm; const e = f.entwurf;
+  const fehler = pruefeProjekt(e, db.projekte);
+  if (Object.keys(fehler).length) { f.fehler = fehler; ui.fokus = PROJEKT_FELD_ID[erstesProjektFeld(fehler)]; render(); return; }
+  // Lage: Mitte des Bezirks aus den geladenen Grenzen, sonst Regionsmitte. Weitere eigene Projekte im selben Bezirk rücken auf einer Spirale ab.
+  const mitte = geo?.features.find((x) => x.properties.name === e.bezirk)?.properties.mitte || REGIONEN[0].mitte;
+  const n = db.projekte.filter((x) => x.herkunft === 'eigen' && x.bezirk === e.bezirk).length;
+  const winkel = n * 2.39996; const radius = n ? 0.004 * (1 + Math.floor((n - 1) / 6)) : 0;
+  const pr = projektAusEntwurf(e, { projekte: db.projekte, mitte: [mitte[0] + radius * Math.sin(winkel), mitte[1] + radius * 1.6 * Math.cos(winkel)], at: ui.at });
+  uebernehmen((d) => { d.projekteEigen.push(pr); });
+  gehe(`#projekt-${slug(pr.kurz)}`); melde(`Projekt ${pr.name} gespeichert (Eigene Eingabe, Lage symbolisch). Es steht auf Karte und Liste und ist in der Erfassung wählbar.`);
+}
+
+const VORGANG_MELDUNG = {
+  pruefbitte: 'Prüfbitte angelegt (Simulation, nichts wird versendet).',
+  fachergebnis: 'Fachergebnis eingetragen (laut Eintrag, Simulation, keine Fachfreigabe).',
+  vormerkung: 'Vormerkung eingetragen (Simulation, unverbindlich).',
+  'uebergabe-geplant': 'Übergabe geplant (Simulation, nichts wird versendet).',
+  uebergeben: 'Als übergeben eingetragen (Simulation).',
+  abbruch: 'Vorgang abgebrochen. Bauteil und Bedarf sind wieder frei.',
+};
+function vorgangAktion(k, aktion) {
+  const e = db.entscheidungen.find((x) => schluessel(x.projekt, x.id) === k);
+  if (ui.vorgangForm.k !== k) ui.vorgangForm = { ...leeresVorgangsformular(), k };
+  const vf = ui.vorgangForm;
+  const res = vorgangSchritt(ctx(), e, aktion, vf.eingabe[aktion] || {});
+  if (res.fehler) {
+    const { allgemein, ...felder } = res.fehler;
+    vf.aktion = aktion; vf.fehler = { [aktion]: felder, ...(allgemein ? { allgemein } : {}) };
+    const erstes = Object.keys(felder)[0];
+    ui.fokus = erstes ? VORGANG_FELD_ID[erstes] : 'vorgang-fehler'; render(); return;
+  }
+  uebernehmen((d) => d.ereignisse.push(res.ereignis));
+  ui.vorgangForm = leeresVorgangsformular(); ui.fokus = 'vorgang-status'; render();
+  melde(`${VORGANG_MELDUNG[aktion]}${res.ereignis.urteil === 'ungeeignet' ? ' Der Vorgang ist beendet.' : ''}`);
+}
+
+function checklisteUmschalten(t) {
+  const k = t.dataset.checkliste; const punkt = t.dataset.punkt;
+  uebernehmen((d) => {
+    const z = { ...(d.ezustand[k] || {}) }; const stand = checklisteSetzen(z.checkliste || {}, punkt, t.checked);
+    if (Object.keys(stand).length) z.checkliste = stand; else delete z.checkliste;
+    if (Object.keys(z).length) d.ezustand[k] = z; else delete d.ezustand[k];
+  });
+  render();
+}
+
+// Prüfbitte aus dem Abgleich: legt Zuordnung (neuer Vorgang) und Ereignis an und öffnet die Entscheidungsseite.
+function pruefbitteAnlegenAktion(key, gesperrt) {
+  const x = loeseAbgleichSchluessel(db, key);
+  if (!x) { melde('Dieses Paar gibt es nicht mehr.'); return; }
+  const a = abgleich(ctx(), x.bauteil, x.bedarf);
+  if (gesperrt || !a.pruefbitteMoeglich) { ui.fokus = 'pruefbitte-grund'; render(); return; }
+  const r = pruefbitteAnlegen(ctx(), a);
+  if (r.fehler) { ui.fokus = 'pruefbitte-grund'; render(); melde(r.fehler.allgemein); return; }
+  uebernehmen((d) => { d.zuordnungen.push(r.zuordnung); d.ereignisse.push(r.ereignis); });
+  ui.fokusNachRoute = 'h-entscheidung';
+  gehe(routeEntscheidung(r.zuordnung)); melde('Prüfbitte angelegt (Simulation, nichts wird versendet).');
 }
 
 // ---------- Erfassung ----------

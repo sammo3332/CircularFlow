@@ -3,11 +3,22 @@
 import { PROJEKTZEITEN } from './daten.js';
 import { leererEntwurf } from './ansichten/erfassung.js';
 import { leereMeldung } from './ansichten/radar.js';
+import { entwurfAusBedarf } from './bedarf.js';
 
 export const leererKatalog = () => ({ q: '', gruppe: '', bezirk: '', bis: '', mindest: '', offen: false, alle: false, vorgabe: null });
 export const leereBedarfsliste = () => ({ gruppe: '', projekt: '', offen: false });
 export const leererBestand = () => ({ q: '', gruppe: '', status: '', etage: '', offen: false, mobil: false });
 export const leereRadarFilter = () => ({ status: '', notiz: {}, bezirk: {}, verwerfen: {}, fehler: {}, meldung: leereMeldung(), meldungFehler: {}, gespeichert: null });
+
+// Formulare (Fassung 2): Entwurf und Fehler je Feld. Die Prüfung selbst steckt in bedarf.js, projektanlage.js und vorgang.js.
+export const leererBedarfEntwurf = (projekt = '') => ({ projekt, gruppe: '', raum: '', titel: '', menge: '', bestellfrist: '', pruefzeitTage: '', annahmeVon: '', annahmeBis: '', anforderungen: '', zustaendig: '', geschaetzt: { bestellfrist: false, pruefzeitTage: false, annahme: false } });
+export const leeresBedarfsformular = () => ({ schluessel: '', entwurf: leererBedarfEntwurf(), fehler: {} });
+// Startet das Formular neu (Route gewechselt): ohne bedarf = neuer Bedarf, sonst Ergänzung des vorhandenen.
+export const bedarfsformularStarten = (ui, bedarf = null) => {
+  ui.bedarfForm = bedarf ? { schluessel: `${bedarf.projekt}:${bedarf.id}`, entwurf: entwurfAusBedarf(bedarf), fehler: {} } : { schluessel: 'neu', entwurf: leererBedarfEntwurf(ui.bedarfe?.projekt || ''), fehler: {} };
+};
+export const leeresProjektformular = () => ({ entwurf: { name: '', zusatz: '', art: '', bezirk: '', rueckbauAb: '', entscheidungBis: '', gebaeudeName: '', etagen: '1', raeume: '4' }, fehler: {} });
+export const leeresVorgangsformular = () => ({ k: '', eingabe: {}, fehler: {}, aktion: '' });
 
 export function neuerUiZustand() {
   return {
@@ -24,6 +35,9 @@ export function neuerUiZustand() {
     bedarfe: leereBedarfsliste(),
     abgleich: { ergebnis: '' },
     vorgaenge: { status: '' },
+    bedarfForm: leeresBedarfsformular(),
+    projektForm: leeresProjektformular(),
+    vorgangForm: leeresVorgangsformular(),
     zuletzt: null, zielWahl: null, zuordnungFehler: '', resetFrage: false, fokus: null, fokusNachRoute: null, speicherHinweis: '',
   };
 }

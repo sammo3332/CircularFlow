@@ -1,10 +1,10 @@
 // Startseite (Karte und Projektliste), Projektübersicht und gemeinsamer Projektkopf.
 import { REGIONEN, ARTEN, GRUPPEN } from '../daten.js';
 import { esc, chip, pchip, artText, icon, leer, slug, routePass, routeRaum, routeEntscheidung, projekteReiter, seitenkopf, tonMarke } from '../ui.js';
-import { naechsteHandlung, lage, naechsteFrist, tonVon } from '../regeln.js';
+import { naechsteHandlung, lageVorgang, naechsteFrist, tonVon } from '../regeln.js';
 import { zeit, datum } from '../zeit.js';
 
-const HERKUNFT = { beispiel: ['Beispiel', 'sim'], radar: ['aus Radar bestätigt', 'info'], meldung: ['Projektmeldung', 'info'] };
+const HERKUNFT = { beispiel: ['Beispiel', 'sim'], radar: ['aus Radar bestätigt', 'info'], meldung: ['Projektmeldung', 'info'], eigen: ['Eigene Eingabe', 'sim'] };
 export const herkunftChip = (p) => chip(...(HERKUNFT[p.herkunft] || ['Beispiel', 'sim']));
 export const angeboten = (ctx, p) => ctx.daten.bauteile.filter((b) => b.projekt === p.kurz && b.status !== 'nicht' && !b.ziel);
 export const bedarfeVon = (ctx, p) => ctx.daten.bedarfe.filter((d) => d.projekt === p.kurz);
@@ -54,7 +54,7 @@ export function startseite(ctx) {
 
 function projektZeile(ctx, p) {
   const ang = angeboten(ctx, p); const bed = bedarfeVon(ctx, p);
-  const offen = ctx.daten.entscheidungen.filter((e) => e.projekt === p.kurz).map((e) => ({ e, l: lage(ctx, e) }));
+  const offen = ctx.daten.entscheidungen.filter((e) => e.projekt === p.kurz).map((e) => ({ e, l: lageVorgang(ctx, e) }));
   const frist = offen.map(({ l }) => naechsteFrist(l, ctx.at)).filter(Boolean).sort((a, b) => (a.at < b.at ? -1 : 1))[0];
   return `<li class="projektzeile" data-projektzeile="${esc(p.kurz)}">
     <a href="#projekt-${slug(p.kurz)}" class="pz-link" data-hover="${esc(p.kurz)}">
@@ -71,7 +71,7 @@ export function popupHtml(ctx, p) {
   const ang = angeboten(ctx, p);
   const gruppen = [...new Set(ang.map((b) => GRUPPEN[b.gruppe].name))];
   return `<div class="popup"><p class="popup-kopf">${pchip(p)} <b>${esc(p.name)}</b></p>
-    <p>${esc(artText(p.art))} · ${esc(p.phase)}<br>${esc(p.bezirk)} · Lage symbolisch</p>
+    <p>${esc(artText(p.art))} · ${esc(p.phase)}<br>${esc(p.bezirk)} · Lage symbolisch${p.herkunft === 'eigen' ? `<br>${herkunftChip(p)}` : ''}</p>
     <p>${ang.length ? `${ang.length} angebotene Bauteilpositionen: ${esc(gruppen.join(', '))}` : 'Noch keine angebotenen Bauteile.'}${bedarfeVon(ctx, p).length ? `<br>${bedarfeVon(ctx, p).length} Bedarf${bedarfeVon(ctx, p).length === 1 ? '' : 'e'} gemeldet` : ''}</p>
     <a class="knopf knopf-klein" href="#projekt-${slug(p.kurz)}">Projekt öffnen</a></div>`;
 }
@@ -117,7 +117,7 @@ export function projektUebersicht(ctx, p) {
       ${ang.length ? `<ul class="flaeche kompaktliste">${ang.slice(0, 8).map((b) => { const n = naechsteHandlung(ctx, b); return `<li><a href="${routePass(b)}"><span class="mono">${esc(b.id)}</span><span><b>${esc(b.name)}</b><small>${esc(b.menge)} ${esc(GRUPPEN[b.gruppe].einheit)} · Raum ${esc(b.raum)}${b.verfuegbarAb ? ` · ab ${datum(b.verfuegbarAb + 'T00:00')}` : ''}</small></span><span class="kl-schritt">${tonMarke(n.ton)}${esc(n.text)}</span></a></li>`; }).join('')}${ang.length > 8 ? `<li class="mehr"><a href="#bestand-${slug(p.kurz)}">und ${ang.length - 8} weitere im Bestand</a></li>` : ''}</ul>`
         : leer('Keine angebotenen Bauteile.', p.art === 'neubau' ? 'Dieses Projekt sucht Bauteile, siehe Bedarfe.' : 'Bauteile entstehen über die Erfassung vor Ort.', (p.gebaeude || []).length ? `<a class="knopf" href="#erfassung">${icon('kamera')} Bauteil erfassen</a>` : '')}
       ${bed.length ? `<div class="block-kopf"><h2>Bedarfe</h2></div><ul class="flaeche kompaktliste">${bed.map((d) => `<li><span class="mono">${esc(d.id)}</span><span><b>${esc(d.titel)}</b><small>${esc(GRUPPEN[d.gruppe].name)} · ${d.bedarfM2 ? `${d.bedarfM2} m² + ${d.reserveProzent} % Reserve` : `${d.menge} ${esc(d.einheit)}`}${d.text ? ` · ${esc(d.text)}` : ''}</small></span>${bedarfBelegt(ctx, d)}</li>`).join('')}</ul>` : ''}
-      ${offen.length ? `<div class="block-kopf"><h2>Entscheidungen</h2><a class="leise" href="#entscheidungen-${slug(p.kurz)}">Alle</a></div><ul class="flaeche kompaktliste">${offen.map((e) => { const l = lage(ctx, e); return `<li><a href="${routeEntscheidung(e)}"><span class="mono">${esc(e.id)}</span><span><b>${esc(e.bauteil)} → ${esc(e.ziel.id)}</b><small>${esc(l.regelText)}</small></span><span class="kl-schritt">${tonMarke(tonVon(l.haupt))}${esc(l.haupt.text)}</span></a></li>`; }).join('')}</ul>` : ''}
+      ${offen.length ? `<div class="block-kopf"><h2>Entscheidungen</h2><a class="leise" href="#entscheidungen-${slug(p.kurz)}">Alle</a></div><ul class="flaeche kompaktliste">${offen.map((e) => { const l = lageVorgang(ctx, e); return `<li><a href="${routeEntscheidung(e)}"><span class="mono">${esc(e.id)}</span><span><b>${esc(e.bauteil)} → ${esc(e.ziel.id)}</b><small>${esc(l.regelText)}</small></span><span class="kl-schritt">${tonMarke(tonVon(l.haupt))}${esc(l.haupt.text)}</span></a></li>`; }).join('')}</ul>` : ''}
     </section>
   </div>`;
 }

@@ -1,5 +1,4 @@
-// Abgleich: Liste aller Paare und die erklärte Prüfung eines Paares (lesend).
-// Das Anlegen der Prüfbitte verdrahtet die Formularansicht (Paket C); hier steht der Platz samt Sperrgrund.
+// Abgleich: Liste aller Paare und die erklärte Prüfung eines Paares. Der Knopf „Prüfbitte anlegen“ (oder sein Sperrgrund) steht hier; angelegt wird in main.js.
 import { GRUPPEN, ZUSTAND } from '../daten.js';
 import { abgleich, abgleichListe, ERGEBNIS, ERGEBNIS_REIHENFOLGE, HINWEIS_ABGLEICH } from '../abgleich.js';
 import { offeneNachweise } from '../regeln.js';
@@ -95,7 +94,7 @@ export function abgleichSeite(ctx, bauteil, bedarf) {
     <div class="naechster"><p class="label">Nächster Schritt · ${esc(person(a.naechsterSchritt.rolle).rolle)}</p><p><b>${esc(a.naechsterSchritt.text)}</b></p></div>
     <div class="ergebnis-aktionen">
       <button type="button" class="knopf" id="btn-pruefbitte" data-action="pruefbitte-anlegen" data-key="${esc(a.schluessel)}" ${a.pruefbitteMoeglich ? '' : 'aria-disabled="true" aria-describedby="pruefbitte-grund"'}>${icon('flagge')} Prüfbitte anlegen</button>
-      ${a.pruefbitteMoeglich ? '<span class="leise">Legt einen Vorgang an und bittet die Fachprüfung um Eignungsprüfung. Simulation, es wird nichts versendet.</span>' : `<span class="sperrgrund" id="pruefbitte-grund">${tonSymbol('warn')}<span><b>Gesperrt.</b> ${esc(a.sperrgrund)}</span></span>`}
+      ${a.pruefbitteMoeglich ? '<span class="leise">Legt einen Vorgang an und bittet die Fachprüfung um Eignungsprüfung. Simulation, es wird nichts versendet.</span>' : `<span class="sperrgrund" id="pruefbitte-grund" tabindex="-1">${tonSymbol('warn')}<span><b>Gesperrt.</b> ${esc(a.sperrgrund)}</span></span>`}
     </div>
   </section>
   <div class="zweispaltig paar">${angebotKarte(ctx, a)}${bedarfKarte(ctx, a)}</div>

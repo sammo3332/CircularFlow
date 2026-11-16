@@ -1,13 +1,14 @@
 // Wiederverwendungsentscheidung (Bauteil → Zielöffnung oder Bedarf) und Liste je Projekt.
 import { GRUPPEN, PROJEKTE } from '../daten.js';
 import { esc, chip, leer, slug, routePass, routeEntscheidung, routeRaum, person, bauteilRef, pchip, tonMarke, tonSymbol } from '../ui.js';
-import { lage, tonVon, naechsteFrist, schluessel, wertText } from '../regeln.js';
-import { zeit, abstand, minuten } from '../zeit.js';
+import { lage, lageVorgang, tonVon, naechsteFrist, schluessel, wertText } from '../regeln.js';
+import { zeit, abstand, minuten, bis } from '../zeit.js';
+import { vorgangsBereich } from './vorgangsteil.js';
 import { projektKopf, raumVon } from './projekte.js';
 
 export function entscheidungsListe(ctx, p) {
-  const liste = ctx.daten.entscheidungen.filter((e) => e.projekt === p.kurz).map((e) => ({ e, l: lage(ctx, e) }))
-    .sort((a, b) => ((a.l.haupt.wartet ? 7 : a.l.haupt.rank) - (b.l.haupt.wartet ? 7 : b.l.haupt.rank)) || ((naechsteFrist(a.l, ctx.at)?.at || '9') < (naechsteFrist(b.l, ctx.at)?.at || '9') ? -1 : 1));
+  const liste = ctx.daten.entscheidungen.filter((e) => e.projekt === p.kurz).map((e) => ({ e, l: lageVorgang(ctx, e) }))
+    .sort((a, b) => (Number(a.l.vorgang.beendet) - Number(b.l.vorgang.beendet)) || ((a.l.haupt.wartet ? 7 : a.l.haupt.rank) - (b.l.haupt.wartet ? 7 : b.l.haupt.rank)) || ((naechsteFrist(a.l, ctx.at)?.at || '9') < (naechsteFrist(b.l, ctx.at)?.at || '9') ? -1 : 1));
   return `${projektKopf(ctx, p, 'entscheidungen')}
   ${liste.length ? `<div class="entscheidungsliste">${liste.map(({ e, l }) => zeile(ctx, p, e, l)).join('')}</div>
   <p class="hinweis-zeile">Sortiert nach Handlungsdruck: Rang des nächsten Schritts, dann nächste Frist. Neue Entscheidungen entstehen im Bauteilpass über „Ziel zuordnen“.</p>`
@@ -18,30 +19,37 @@ function zeile(ctx, p, e, l) {
   const f = naechsteFrist(l, ctx.at) || l.fristen[l.fristen.length - 1];
   const a = f ? abstand(f.at, ctx.at) : null;
   return `<a class="entscheidung-zeile" href="${routeEntscheidung(e)}">
-    <span class="ez-id"><span class="mono">${esc(e.id)}</span>${chip(l.geprueft ? 'Regel geprüft' : 'Entwurf', l.geprueft ? 'ok' : 'neutral')}${l.r?.deckung?.key === 'teil' ? chip(l.r.deckung.label, 'crit') : ''}</span>
+    <span class="ez-id"><span class="mono">${esc(e.id)}</span>${chip(l.vorgang.label, l.vorgang.ton)}${chip(l.geprueft ? 'Regel geprüft' : 'Entwurf', l.geprueft ? 'ok' : 'neutral')}${l.r?.deckung?.key === 'teil' ? chip(l.r.deckung.label, 'crit') : ''}</span>
     <span class="ez-titel"><b>${esc(l.b.id)} ${esc(l.b.name)}</b><small>→ ${e.ziel.art === 'zieloeffnung' ? `Zielöffnung ${esc(l.z.id)}, Raum ${esc(l.z.raum)}` : `Bedarf ${esc(l.z.projekt)} · ${esc(l.z.id)}`}</small></span>
-    <span class="ez-schritt">${tonMarke(tonVon(l.haupt))}<span><small>Nächster Schritt · ${esc(person(l.haupt.rolle).rolle)}</small><b>${esc(l.haupt.text)}</b>${l.weiter.length ? `<small>und ${l.weiter.length} weitere offene Aufgabe${l.weiter.length > 1 ? 'n' : ''}</small>` : ''}</span></span>
+    <span class="ez-schritt">${l.vorgang.beendet ? `<span><small>Vorgang beendet</small><b>${esc(l.vorgang.label)}</b></span>` : `${tonMarke(tonVon(l.haupt))}<span><small>Nächster Schritt · ${esc(person(l.haupt.rolle).rolle)}</small><b>${esc(l.haupt.text)}</b>${l.weiter.length ? `<small>und ${l.weiter.length} weitere offene Aufgabe${l.weiter.length > 1 ? 'n' : ''}</small>` : ''}</span>`}</span>
     <span class="ez-frist">${f ? `<small>${esc(f.name)}</small><span class="mono">${zeit(f.at)}</span><small class="${a.vorbei ? 'vorbei' : ''}">${a.text}</small>` : '<small>keine Frist</small>'}</span>
   </a>`;
 }
 
 export function entscheidungsSeite(ctx, p, e) {
-  const l = lage(ctx, e); const b = l.b; const z = l.z;
-  const ton = tonVon(l.haupt);
-  const aktion = l.haupt.wartet ? null : l.haupt.rank === 6 ? (e.regel === 'einfach' ? 'Abgleich vermerken' : 'Zur Fachprüfung vorlegen')
+  // Der große Kasten zeigt den vorgangsbewussten Schritt (wie Pass, Übersicht und Arbeitsliste); die Regel von Tür oder Boden
+  // bleibt als fachliche Grundlage darunter (Befund, Aufmaßeingang, Kriterien) und wird hier nur danebengestellt.
+  const l = lageVorgang(ctx, e); const lr = lage(ctx, e); const st = l.vorgang; const b = l.b; const z = l.z;
+  const ton = st.beendet ? (st.ton === 'crit' ? 'crit' : st.ton === 'ok' ? 'ok' : 'info') : tonVon(l.haupt);
+  const nachRegel = st.nachFachergebnis || st.beendet;
+  const aktion = nachRegel || l.haupt.wartet ? null : l.haupt.rank === 6 ? (e.regel === 'einfach' ? 'Abgleich vermerken' : 'Zur Fachprüfung vorlegen')
     : l.haupt.rank === 5 ? (l.haupt.rolle === 'montage' ? (e.regel === 'tuer' ? 'Messauftrag vermerken' : 'Nachweisanforderung vermerken') : 'Aufgabe vermerken') : 'Klärung vermerken';
   const k = schluessel(e.projekt, e.id);
-  const verlauf = ctx.ereignisse.filter((x) => x.entscheidung === k && x.at <= ctx.at).sort((x, y) => (x.at < y.at ? 1 : -1));
+  const verlauf = ctx.ereignisse.map((x, i) => ({ x, i })).filter(({ x }) => x.entscheidung === k && bis(x.at, ctx.at)).sort((u, v) => (minuten(v.x.at) - minuten(u.x.at)) || (v.i - u.i)).map(({ x }) => x);
   const zielProjekt = PROJEKTE.find((x) => x.kurz === (e.ziel.projekt || e.projekt)) || ctx.daten.projekte.find((x) => x.kurz === (e.ziel.projekt || e.projekt));
   const herkunft = raumVon(p, b.raum);
   const ziel = e.ziel.art === 'zieloeffnung' ? raumVon(p, z.raum) : (zielProjekt ? raumVon(zielProjekt, z.raeume?.[0]) : null);
+  const rolle = l.haupt.rolle ? person(l.haupt.rolle) : null;
+  const titelText = st.beendet ? `Vorgang beendet: ${st.label}` : l.haupt.text;
+  const grundText = st.beendet ? 'Es sind keine weiteren Schritte möglich. Die Einträge stehen unter „Vorgang“ und im Verlauf.' : l.haupt.grund;
+  const weiter = nachRegel ? lr.weiter : l.weiter;
   return `
   <nav class="pfad" aria-label="Pfad"><a href="#projekte">Projekte</a><span aria-hidden="true">/</span><a href="#projekt-${slug(p.kurz)}">${esc(p.name)}</a><span aria-hidden="true">/</span><a href="#entscheidungen-${slug(p.kurz)}">Entscheidungen</a><span aria-hidden="true">/</span><span aria-current="page">${esc(e.id)}</span></nav>
   <section class="seitenkopf">
     <div>
       <p class="eyebrow">Wiederverwendungsentscheidung · <span class="mono">${esc(e.id)}</span></p>
-      <h1>${bauteilRef(p, b)} ${esc(b.name)} → ${e.ziel.art === 'zieloeffnung' ? `Öffnung ${esc(z.id)}` : `${zielProjekt ? pchip(zielProjekt) : ''} Bedarf ${esc(z.id)}`}</h1>
-      <p class="unter">${chip(l.regelText, l.geprueft ? 'ok' : 'neutral')} <a href="${routePass(b)}">Bauteilpass ${esc(b.id)}</a></p>
+      <h1 id="h-entscheidung" tabindex="-1">${bauteilRef(p, b)} ${esc(b.name)} → ${e.ziel.art === 'zieloeffnung' ? `Öffnung ${esc(z.id)}` : `${zielProjekt ? pchip(zielProjekt) : ''} Bedarf ${esc(z.id)}`}</h1>
+      <p class="unter">${chip(st.label, st.ton)} ${chip(l.regelText, l.geprueft ? 'ok' : 'neutral')} <a href="${routePass(b)}">Bauteilpass ${esc(b.id)}</a></p>
     </div>
   </section>
   ${l.r?.deckung ? `<section class="befund t-${l.r.deckung.ton}" id="befund-deckung" aria-labelledby="h-befund">
@@ -51,19 +59,22 @@ export function entscheidungsSeite(ctx, p, e) {
   </section>` : ''}
   <section class="ergebnis t-${ton}" aria-labelledby="h-schritt">
     <div class="ergebnis-haupt">
-      <p class="label">${tonSymbol(ton)}Nächster fachlicher Schritt</p>
-      <h2 id="h-schritt" tabindex="-1">${esc(l.haupt.text)}</h2>
-      <p class="ergebnis-rolle">${esc(person(l.haupt.rolle).rolle)} · ${esc(person(l.haupt.rolle).name)}, ${esc(person(l.haupt.rolle).stelle)}</p>
-      <p class="ergebnis-grund">${esc(l.haupt.grund)}</p>
-      ${l.vorlage && !l.haupt.wartet ? `<p class="ergebnis-grund"><b>Am ${zeit(l.vorlage.at)} zur Fachprüfung vorgelegt.</b> Die aktuelle Lage verlangt zuerst diesen Schritt.</p>` : ''}
+      <p class="label">${tonSymbol(ton)}${st.beendet ? 'Stand des Vorgangs' : 'Nächster fachlicher Schritt'}</p>
+      <h2 id="h-schritt" tabindex="-1">${esc(titelText)}</h2>
+      ${rolle && !st.beendet ? `<p class="ergebnis-rolle">${esc(rolle.rolle)} · ${esc(rolle.name)}, ${esc(rolle.stelle)}</p>` : ''}
+      <p class="ergebnis-grund">${esc(grundText)}</p>
+      ${nachRegel && !st.beendet ? `<p class="ergebnis-grund"><b>Fachliche Grundlage:</b> ${esc(l.regelText)}. Nach der Regel selbst stünde jetzt: ${esc(lr.haupt.text)}.</p>` : ''}
+      ${st.pruefbitte && !nachRegel && !st.beendet && !l.haupt.wartet ? `<p class="ergebnis-grund"><b>Am ${zeit(st.pruefbitte.at)} zur Fachprüfung vorgelegt.</b> Die aktuelle Lage verlangt zuerst diesen Schritt.</p>` : ''}
       <div class="ergebnis-aktionen">
-        ${aktion ? `<button type="button" class="knopf" id="aktion-schritt" data-action="schritt" data-entscheidung="${esc(k)}">${aktion}</button>` : '<span class="chip chip-info">Liegt der Fachprüfung vor</span>'}
+        ${aktion ? `<button type="button" class="knopf" id="aktion-schritt" data-action="schritt" data-entscheidung="${esc(k)}">${aktion}</button>`
+    : st.beendet ? '' : nachRegel ? '<button type="button" class="knopf" id="aktion-zum-vorgang" data-action="zum-vorgang">Zum Vorgang</button>' : '<span class="chip chip-info">Liegt der Fachprüfung vor</span>'}
         <span class="leise">Wird mit Projektzeit im Verlauf vermerkt. Simulation, nichts wird versendet.</span>
       </div>
     </div>
-    <div class="ergebnis-weiter"><p class="label">Weiterhin offen</p>
-      ${l.weiter.length ? `<ul>${l.weiter.map((w) => `<li><b>${esc(w.text)}</b><small>${esc(person(w.rolle).rolle)}</small></li>`).join('')}</ul>` : '<p class="leise">Nichts weiter offen.</p>'}</div>
+    <div class="ergebnis-weiter"><p class="label">Weiterhin offen${nachRegel && !st.beendet ? ' laut Regel' : ''}</p>
+      ${!st.beendet && weiter.length ? `<ul>${weiter.map((w) => `<li><b>${esc(w.text)}</b><small>${esc(person(w.rolle).rolle)}</small></li>`).join('')}</ul>` : '<p class="leise">Nichts weiter offen.</p>'}</div>
   </section>
+  ${vorgangsBereich(ctx, e, l)}
   <div class="entscheid-raster">
     <div class="entscheid-haupt">${e.regel === 'tuer' ? tuerTeil(ctx, e, l, k) : e.regel === 'boden' ? bodenTeil(ctx, e, l, k) : einfachTeil(ctx, e, l)}</div>
     <aside class="entscheid-seite">
@@ -79,7 +90,7 @@ export function entscheidungsSeite(ctx, p, e) {
         <dl class="werte">${[['Entscheidung', 'planung'], ['Aufmaß und Nachweise', 'montage'], ['Fachprüfung', 'fach']].map(([t, key]) => `<div><dt>${t}</dt><dd><b>${esc(person(key).name)}</b> · ${esc(person(key).stelle)}</dd></div>`).join('')}</dl>
       </section>
       <section class="flaeche"><h2>Verlauf</h2>
-        ${verlauf.length ? `<ol class="verlauf">${verlauf.map((v) => `<li><span class="mono">${zeit(v.at, false)}</span><p>${esc(v.text)}<small>${esc(person(v.von).rolle)} · ${esc(person(v.von).name)} · Simulation, nichts versendet</small></p></li>`).join('')}</ol>` : `<p class="leer-zeile">Angelegt ${zeit(e.angelegt)}. Noch keine Schritte vermerkt.</p>`}
+        ${verlauf.length ? `<ol class="verlauf">${verlauf.map((v) => `<li><span class="mono">${zeit(v.at, false)}</span><p>${esc(v.text)}<small>${esc(person(v.von).rolle)} · ${esc(person(v.von).name)} · ${v.sim === false ? '' : 'Simulation, '}nichts versendet</small></p></li>`).join('')}</ol>` : `<p class="leer-zeile">Angelegt ${zeit(e.angelegt)}. Noch keine Schritte vermerkt.</p>`}
       </section>
     </aside>
   </div>`;
