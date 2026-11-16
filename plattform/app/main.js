@@ -1,6 +1,6 @@
 // Einstieg: Router, Rahmen, Ereignisse. Ein gemeinsamer Datensatz für alle Ansichten.
 import { REGIONEN, PROJEKTZEITEN, GRUPPEN } from './daten.js';
-import { loeseAbgleichSchluessel, abgleich, abgleichListe, pruefbitteAnlegen, pruefbitteErlaubt } from './abgleich.js';
+import { loeseAbgleichSchluessel, abgleich, abgleichListe, pruefbitteAnlegen, pruefbitteErlaubt, zuordnungZumBedarf } from './abgleich.js';
 import { pruefeBedarf, bedarfAusEntwurf, naechsteBedarfId, bedarfAenderung } from './bedarf.js';
 import { pruefeProjekt, projektAusEntwurf } from './projektanlage.js';
 import { vorgangSchritt, checklisteSetzen } from './vorgang.js';
@@ -371,6 +371,10 @@ function zuordnen(bkey) {
   // Nur Ziele, die die Fachregel noch anbietet (ein übergebenes Bauteil und belegte Ziele nicht).
   const frei = moeglicheZiele(ctx(), b); const liste = art === 'zieloeffnung' ? frei.oeffnungen : frei.bedarfe;
   if (!liste.some((z) => z.projekt === projekt && z.id === id)) { ui.zuordnungFehler = 'Dieses Ziel ist für das Bauteil nicht mehr möglich.'; ui.fokus = 'ziel-wahl'; render(); return; }
+  if (art === 'bedarf') {
+    const z = zuordnungZumBedarf(ctx(), b, liste.find((x) => x.projekt === projekt && x.id === id));
+    if (!z.moeglich) { ui.zuordnungFehler = z.grund; ui.fokus = 'ziel-wahl'; render(); return; }
+  }
   const e = neueEntscheidung(ctx(), b, { art, projekt, id });
   uebernehmen((d) => {
     d.zuordnungen.push(e);

@@ -1,8 +1,8 @@
 // Startseite (Karte und Projektliste), Projektübersicht und gemeinsamer Projektkopf.
 import { REGIONEN, ARTEN, GRUPPEN } from '../daten.js';
-import { esc, chip, pchip, artText, icon, leer, slug, routePass, routeRaum, routeEntscheidung, projekteReiter, seitenkopf, tonMarke } from '../ui.js';
-import { naechsteHandlung, lageVorgang, naechsteFrist, tonVon } from '../regeln.js';
-import { zeit, datum } from '../zeit.js';
+import { esc, chip, pchip, artText, icon, leer, slug, routePass, routeRaum, routeEntscheidung, projekteReiter, seitenkopf, tonMarke, person } from '../ui.js';
+import { naechsteHandlung, lageVorgang, naechsteFrist, tonVon, offeneEntscheidungen } from '../regeln.js';
+import { zeit, datum, abstand } from '../zeit.js';
 import { bedarfVorgang, bedarfBelegtArt } from '../vorgang.js';
 
 const HERKUNFT = { beispiel: ['Beispiel', 'sim'], radar: ['aus Radar bestätigt', 'info'], meldung: ['Projektmeldung', 'info'], eigen: ['Eigene Eingabe', 'sim'] };
@@ -22,6 +22,33 @@ export function gefilterteProjekte(ctx) {
     .filter((p) => !f.nurAngebote || angeboten(ctx, p).length > 0);
 }
 
+// ---------- Offene Entscheidungen auf der Kartenseite (seit Fassung 1.1) ----------
+// Die zwei dringendsten laufenden Vorgänge mit Frist und Zuständigkeit; ein Klick öffnet die Entscheidung.
+function offeneKarten(ctx) {
+  const { liste, gesamt } = offeneEntscheidungen(ctx, 2);
+  if (!liste.length) return '';
+  const karte = ({ e, l, frist }) => {
+    const p = ctx.daten.projekte.find((x) => x.kurz === e.projekt);
+    const a = frist ? abstand(frist.at, ctx.at) : null;
+    const zust = person(l.haupt.rolle);
+    const ziel = e.ziel.art === 'zieloeffnung' ? `Öffnung ${l.z?.id ?? e.ziel.id}` : `Bedarf ${l.z?.projekt ?? e.projekt} · ${l.z?.id ?? e.ziel.id}`;
+    const ton = tonVon(l.haupt);
+    return `<a class="offen-karte" href="${routeEntscheidung(e)}" data-hover="${esc(e.projekt)}">
+      <span class="okt-kopf">${p ? pchip(p) : ''}<span class="mono">${esc(e.id)}</span>${l.r?.deckung?.key === 'teil' ? chip(l.r.deckung.label, 'crit') : ''}</span>
+      <span class="okt-titel">${esc(l.b.id)} ${esc(l.b.name)} → ${esc(ziel)}</span>
+      <b class="okt-schritt">${tonMarke(ton)}<span>${esc(l.haupt.text)}</span></b>
+      <span class="okt-meta">
+        <span><small>Frist</small>${frist ? `${esc(frist.name)} <span class="mono">${zeit(frist.at)}</span> <em class="${a.vorbei ? 'vorbei' : ''}">${esc(a.text)}</em>` : 'keine Frist'}</span>
+        <span><small>Zuständig</small>${zust.name ? `${esc(zust.rolle)} · ${esc(zust.name)}` : 'noch nicht festgelegt'}</span>
+      </span>
+    </a>`;
+  };
+  return `<section class="offene" aria-labelledby="h-offen">
+    <div class="block-kopf"><h2 id="h-offen">Offene Entscheidungen</h2><span class="leise">${liste.length} von ${gesamt} · dringendste zuerst, Projektzeit ${zeit(ctx.at)} · alle in der <a href="#vorgaenge">Arbeitsliste</a></span></div>
+    <div class="offene-raster">${liste.map(karte).join('')}</div>
+  </section>`;
+}
+
 // ---------- Startseite ----------
 export function startseite(ctx) {
   const f = ctx.ui.start;
@@ -36,6 +63,7 @@ export function startseite(ctx) {
     aktionen: `<label class="region-wahl"><span>Region</span><select id="region">${REGIONEN.map((r) => `<option value="${r.id}" ${r.id === f.region ? 'selected' : ''} ${r.aktiv ? '' : 'disabled'}>${esc(r.name)}${r.aktiv ? '' : ' (in Vorbereitung)'}</option>`).join('')}</select></label>`,
   })}
   ${projekteReiter('start')}
+  ${offeneKarten(ctx)}
   <div class="filterleiste" role="group" aria-label="Projekte filtern">
     ${knopf('', 'Alle')}${Object.entries(ARTEN).map(([k, t]) => knopf(k, t)).join('')}
     <label class="schalter"><input type="checkbox" id="nur-angebote" ${f.nurAngebote ? 'checked' : ''}><span>nur mit angebotenen Bauteilen</span></label>

@@ -322,3 +322,11 @@ export function pruefbitteAnlegen(ctx, a) {
   const r = pruefbitteEreignis(mit, zuordnung, schnappschuss(a));
   return r.fehler ? r : { zuordnung, ereignis: r.ereignis };
 }
+
+// Zuordnung im Bauteilpass zu einem Bedarf: nicht möglich, wenn der Abgleich sicher „zu spät“ oder
+// „Klärung nötig“ ergibt. „Angaben fehlen“ bleibt möglich, weil sich der Bedarf ergänzen lässt.
+export function zuordnungZumBedarf(ctx, bauteil, bedarf) {
+  const ergebnis = abgleich(ctx, bauteil, bedarf);
+  const gesperrt = ergebnis.gesamt.key === 'spaet' || ergebnis.gesamt.key === 'klaerung';
+  return { moeglich: !gesperrt, ergebnis, grund: gesperrt ? `Der Abgleich ergibt „${ergebnis.gesamt.label}“. Details im Abgleich.` : '' };
+}

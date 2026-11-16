@@ -6,7 +6,7 @@ import * as R from '../../prototype/dist/door-rules.mjs';
 import { kontext, kleinKontext, bauteil, bedarf, entscheidung, START } from './_hilfe.mjs';
 import { leerePersistenz, ladePersistenz, SPEICHERSCHLUESSEL } from '../app/zustand.js';
 import { neuerUiZustand } from '../app/uizustand.js';
-import { abgleich, abgleichListe, pruefbitteAnlegen, pruefbitteErlaubt, reserveText } from '../app/abgleich.js';
+import { abgleich, abgleichListe, pruefbitteAnlegen, pruefbitteErlaubt, reserveText, zuordnungZumBedarf } from '../app/abgleich.js';
 import { vorgangSchritt, vorgangStatus, bedarfBelegt, uebergebenerVorgang } from '../app/vorgang.js';
 import { moeglicheZiele, neueEntscheidung, schluessel, beispielAufmassRechtzeitig } from '../app/regeln.js';
 import { kennzahlen } from '../app/kennzahlen.js';
@@ -15,6 +15,7 @@ import { PROJEKTE, PROJEKTZEITEN } from '../app/daten.js';
 import { entscheidungsSeite } from '../app/ansichten/entscheidung.js';
 import { abgleichSeite, abgleichListeSeite } from '../app/ansichten/abgleich.js';
 import { pass } from '../app/ansichten/bauteile.js';
+import { startseite } from '../app/ansichten/projekte.js';
 import { projektUebersicht } from '../app/ansichten/projekte.js';
 import { bedarfe as bedarfeSeite } from '../app/ansichten/bedarfe.js';
 import { uebersicht } from '../app/ansichten/uebersicht.js';
@@ -223,4 +224,24 @@ test('Befund 15: Rückdatierte Einträge werden abgelehnt', () => {
   for (const at of ['2026-11-19T10:00', '2026-11-20T08:00']) { const c2 = a.ctx(at); assert.ok(vorgangSchritt(c2, entscheidung(c2, 'KB', 'E-01'), 'vormerkung', { menge: '5', ablauf: '2027-03-01' }).ereignis, at); }
   // Ereignisse anderer Vorgänge zählen nicht
   const k = kontext(); assert.ok(vorgangSchritt(k, entscheidung(k, 'LH', 'E-01'), 'abbruch', { grund: 'x' }).ereignis);
+});
+
+test('Nachprüfung: Im Pass ist ein Bedarf mit „zu spät“ nicht zuordenbar, „Angaben fehlen“ schon', () => {
+  const c = mitUi();
+  const tw01 = bauteil(c, 'LH', 'TW-01');
+  assert.equal(zuordnungZumBedarf(c, tw01, bedarf(c, 'SB', 'BD-23')).moeglich, false);
+  assert.equal(zuordnungZumBedarf(c, bauteil(c, 'KB', 'T-31'), bedarf(c, 'SB', 'BD-21')).moeglich, true);
+  const p = PROJEKTE.find((x) => x.kurz === 'LH');
+  const html = pass(c, p, tw01);
+  assert.match(html, /<option value="bedarf\|SB\|BD-23"\s+disabled>[^<]*Für diese Entscheidung zu spät/);
+});
+
+test('Nachprüfung: Die Kartenseite zeigt wieder zwei offene Entscheidungen mit Frist und Zuständigkeit (Fassung 1.1)', () => {
+  const html = startseite(mitUi());
+  const karten = html.match(/<a class="offen-karte" href="#entscheidung-[a-z0-9-]+"/g) || [];
+  assert.equal(karten.length, 2);
+  const abschnitt = html.slice(html.indexOf('class="offene"'), html.indexOf('class="filterleiste"'));
+  assert.equal((abschnitt.match(/<small>Frist<\/small>/g) || []).length, 2);
+  assert.equal((abschnitt.match(/<small>Zuständig<\/small>/g) || []).length, 2);
+  assert.ok(html.indexOf('class="offene"') < html.indexOf('id="karte"'), 'Karten stehen vor der Karte');
 });

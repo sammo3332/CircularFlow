@@ -299,6 +299,20 @@ tfoot th, tfoot td { border-top: 2px solid var(--linie-2); background: var(--fla
 .fz-text small { display: flex; align-items: center; gap: 6px; }
 .fz-zeit { white-space: nowrap; color: var(--tinte-2); }
 
+/* Offene Entscheidungen auf der Kartenseite (seit Fassung 1.1): ganze Karte klickbar, Zustand über Symbol und Text */
+.offene { display: grid; gap: var(--s-3); margin-bottom: var(--s-4); }
+.offene-raster { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
+.offen-karte { display: grid; gap: 6px; align-content: start; min-width: 0; padding: var(--s-4) 18px; background: var(--flaeche); border: 1px solid var(--linie); border-radius: var(--r-l); color: var(--tinte); text-decoration: none; }
+.offen-karte:hover { border-color: var(--gruen); }
+.okt-kopf { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
+.okt-titel { color: var(--tinte-2); font-size: var(--t-s); overflow-wrap: anywhere; }
+.okt-schritt { display: flex; align-items: flex-start; gap: 6px; font-size: var(--t-l); line-height: 1.35; }
+.okt-schritt .tsym { width: 18px; height: 18px; margin-top: 2px; }
+.offen-karte:hover .okt-schritt span { color: var(--gruen); text-decoration: underline; }
+.okt-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); margin-top: 4px; padding-top: var(--s-2); border-top: 1px solid var(--linie); font-size: var(--t-s); }
+.okt-meta em { font-style: normal; color: var(--tinte-2); }
+.okt-meta em.vorbei { color: var(--crit); font-weight: 600; }
+
 /* Diagramm */
 .diagramm { margin: 0; display: grid; gap: var(--s-3); }
 .dg-svg { width: 100%; height: auto; max-width: 760px; display: block; overflow: visible; }
@@ -706,6 +720,7 @@ legend { font-size: var(--t-s); font-weight: 620; color: var(--tinte-2); margin-
   .fz-zeit { white-space: normal; }
 }
 @media (max-width: 640px) {
+  .offene-raster, .okt-meta { grid-template-columns: minmax(0, 1fr); }
   .pz-link { grid-template-columns: 44px minmax(0, 1fr); gap: 8px var(--s-3); padding: var(--s-3) 14px; }
   .pz-meta, .pz-zahlen, .pz-frist { grid-column: 2; grid-row: auto; justify-items: start; text-align: left; }
   .pz-zahlen { grid-auto-flow: column; justify-content: start; gap: var(--s-3); }

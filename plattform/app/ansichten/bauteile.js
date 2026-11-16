@@ -4,7 +4,7 @@ import { esc, chip, wertChip, statusChip, icon, leer, slug, routePass, routeRaum
 import { naechsteHandlung, offeneNachweise, bauteilStatus, entscheidungFuer, moeglicheZiele, wertText, lage } from '../regeln.js';
 import { zeit, datum, abstand } from '../zeit.js';
 import { projektKopf, raumVon } from './projekte.js';
-import { abgleichListe } from '../abgleich.js';
+import { abgleichListe, zuordnungZumBedarf } from '../abgleich.js';
 import { uebergebenerVorgang } from '../vorgang.js';
 
 const werteZaehlung = (b) => {
@@ -162,13 +162,13 @@ function zuordnung(ctx, p, b, e) {
   const fehler = ctx.ui.zuordnungFehler;
   const key = `${b.projekt}:${b.id}`;
   const gewaehlt = ctx.ui.zielWahl?.fuer === key ? ctx.ui.zielWahl.wert : '';
-  const opt = (wert, text) => `<option value="${esc(wert)}" ${wert === gewaehlt ? 'selected' : ''}>${text}</option>`;
+  const opt = (wert, text, gesperrt = false) => `<option value="${esc(wert)}" ${wert === gewaehlt && !gesperrt ? 'selected' : ''} ${gesperrt ? 'disabled' : ''}>${text}</option>`;
   return `<section class="flaeche zuordnung" id="zuordnung" aria-labelledby="h-zu">
     <h2 id="h-zu">Ziel zuordnen</h2>
     <p class="leise">Ein Bauteil geht an eine Zielöffnung im Projekt oder an einen Bedarf in der Region. Daraus entsteht eine Entscheidung mit Fristen und nächstem Schritt.</p>
     ${oeffnungen.length || bedarfe.length ? `<div class="feld"><label for="ziel-wahl">Ziel</label><select id="ziel-wahl" data-bauteil="${esc(key)}" ${fehler ? 'aria-invalid="true" aria-describedby="ziel-fehler"' : ''}><option value="">Bitte wählen</option>
       ${oeffnungen.length ? `<optgroup label="Zielöffnungen im Projekt ${esc(p.kurz)}">${oeffnungen.map((z) => opt(`zieloeffnung|${z.projekt}|${z.id}`, `${esc(z.id)} · Raum ${esc(z.raum)} · Soll ${z.minMm}–${z.maxMm} mm`)).join('')}</optgroup>` : ''}
-      ${bedarfe.length ? `<optgroup label="Bedarfe">${bedarfe.map((d) => opt(`bedarf|${d.projekt}|${d.id}`, `${esc(d.projekt)} · ${esc(d.id)} · ${esc(d.titel)}`)).join('')}</optgroup>` : ''}
+      ${bedarfe.length ? `<optgroup label="Bedarfe">${bedarfe.map((d) => { const z = zuordnungZumBedarf(ctx, b, d); return opt(`bedarf|${d.projekt}|${d.id}`, `${esc(d.projekt)} · ${esc(d.id)} · ${esc(d.titel)} · Abgleich: ${esc(z.ergebnis.gesamt.label)}`, !z.moeglich); }).join('')}</optgroup>` : ''}
     </select>${fehler ? `<p class="feld-meldung" id="ziel-fehler">${esc(fehler)}</p>` : ''}</div>
     <button type="button" class="knopf" id="btn-zuordnen" data-action="zuordnen" data-bauteil="${esc(b.projekt)}:${esc(b.id)}">Zuordnen und Entscheidung anlegen</button>`
     : '<p class="leer-zeile">Kein freies Ziel dieser Bauteilgruppe vorhanden.</p>'}
