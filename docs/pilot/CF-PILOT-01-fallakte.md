@@ -4,7 +4,7 @@ Fiktiver, quellenbasierter Pilotfall mit Fallakte und Simulation des Ablaufs.
 
 | | |
 |---|---|
-| Dokumentversion | 1.0 vom 16.11.2026 |
+| Dokumentversion | 1.1 vom 16.11.2026. Fassung 1.0 steht in `1f6656f`, danach sind die Befunde der unabhängigen Prüfung eingearbeitet. |
 | Branch | `codex/plattform-v1` |
 | Ausgangscommit | `daa40a9` (Fassung 2, festgehaltener Pitch-Stand). Der Anwendungscode ist seit `2121b92` unverändert. |
 | Maßgeblich | Produktbrief v0.2 (`docs/produktbrief.md`). Diese Fallakte ist eine Simulation. Sie erweitert den Produktumfang nicht. |
@@ -50,8 +50,10 @@ Zwei Befunde aus der Nachrechnung:
    Die Übersicht zeigt die Bestellfrist unter „Zeitkritisch (7 Tage)“ aber erst ab 13.02.2027. Das ist acht Tage
    nach dem letzten möglichen Prüfbeginn.
 2. **Nach einer Vormerkung von 5 Stück ist die sechste Tür unsichtbar.** Der Bedarf gilt dann als belegt. Er fehlt in
-   der Paarliste, bei den offenen Bedarfen und unter „Zeitkritisch“. Der Abgleich zeigt weiter „gedeckt (6 von 6)“.
-   Dass eine Tür neu bestellt werden muss, steht nur in der Notiz zum Fachergebnis.
+   der Paarliste, bei den offenen Bedarfen und unter „Zeitkritisch“. Ein zweites Türangebot wäre am Tag der
+   Vormerkung noch prüfbar, die Prüfbitte dafür ist aber gesperrt. Die Menge gilt weiter als „gedeckt“, weil der
+   Fachkern die Menge des Bauteils zählt und nicht die Vormerkung. Dass eine Tür neu bestellt werden muss, steht nur
+   in der Notiz zum Fachergebnis.
 
 **Kleinste sinnvolle Erweiterung (Vorschlag, nicht umgesetzt):** die Frist „Prüfbitte spätestens“ (Bestellfrist minus
 Mindestprüfzeit) für Bedarfe mit prüfbarem Angebot, siehe Abschnitt 9.
@@ -78,6 +80,7 @@ Alle Annahmen sind reversibel. Ein reales Projekt ersetzt sie durch eigene Werte
 | A14 | Sechs Angebotstüren | gleichartig, als eine Position mit Menge 6 (LH · T-13, Raum 1.04) |
 | A15 | Rollen | Planung, Bauleitung, Montagebetrieb und Fachprüfung sind die fiktiven Rollen der App. Der Eigentümer kommt dazu, er ist nicht in der App. |
 | A16 | Stichtag | Die Oberfläche zeigt Mi 18.11.2026, 14:00. Die Zeitpunkte 2027 rechnet die Nachrechnung mit demselben Fachkern. |
+| A17 | Zählweise | Alle Fristen zählen in Kalendertagen, wie im Fachkern. Wochenenden und Feiertage sind nicht berücksichtigt. |
 
 „Erreicht die Planung“ heißt hier: Die zuständige Planung öffnet das Paar im Abgleich. Fassung 2 benachrichtigt
 niemanden.
@@ -86,7 +89,7 @@ niemanden.
 
 | Gruppe | Anzahl | Raum | Ziel | In Fassung 2 |
 |---|---|---|---|---|
-| Interne Verwendung | 4 | 1.02 (Beispiel) | Zielöffnungen im selben Gebäude | Eine Tür ist beispielhaft erfasst und der Öffnung B-04 zugeordnet (Entscheidung E-04). Frei sind nur B-04 und B-07, denn B-02 gehört zum Türbeispiel E-01. Für zwei der vier Türen gibt es also kein Ziel, und neue Zielöffnungen lassen sich nicht anlegen. |
+| Interne Verwendung | 4 | 1.02 (Beispiel) | Zielöffnungen im selben Gebäude | Eine Tür ist beispielhaft erfasst und der Öffnung B-04 zugeordnet, mit einer eigenen Entscheidung. Frei sind nur B-04 und B-07, denn B-02 gehört zum Türbeispiel E-01. Für zwei der vier Türen gibt es also kein Ziel, und neue Zielöffnungen lassen sich nicht anlegen. |
 | Offener Zustand oder Nachweis | 2 | 1.06 | offen | erfasst mit Menge 2, Zustand C und der Notiz „Zarge verzogen, Kennzeichnung unklar“. Der Pass nennt die offenen Nachweise. |
 | Vorläufiges Angebot | 6 | 1.04 | Bedarf UAK · BD-24 | erfasst als LH · T-13, Menge 6 |
 
@@ -96,7 +99,12 @@ Die Pilotdaten liegen in der Demo neben den Beispieldaten. Übersicht und Paarli
 
 Stand je Schritt: **bedienbar** heißt, die Oberfläche von Fassung 2 kann es. **Simuliert** heißt, die App zeigt es nur
 als Simulation oder Eintrag. **Fehlt** heißt, Fassung 2 hat dafür nichts. Feldnamen und Knöpfe stehen in **Fettdruck**
-so, wie sie auf dem Bildschirm stehen.
+wie auf dem Bildschirm, ohne Zusätze wie „(Pflicht)“.
+
+Die Nummern der Entscheidungen hängen von der Reihenfolge ab, denn die App zählt sie in Haus Lindenhof fortlaufend.
+In einem frischen Profil sind E-01 und E-02 schon belegt. Im Browserlauf kam die Prüfbitte (Schritt 7) vor der
+internen Zuordnung (Schritt 5). Deshalb wurde die Prüfbitte E-03 und die interne Zuordnung E-04. Wer in der
+Reihenfolge dieser Akte klickt, bekommt die Nummern umgekehrt.
 
 ### Schritt 1 · Abstimmung mit Eigentümer und Bauleitung
 
@@ -204,6 +212,9 @@ heißt in Fassung 2 nur: Eine Person hat den Wert eingetragen oder übernommen. 
   - **Bedienbar:** der Pass.
   - **Fehlt:** Die Menge lässt sich nach dem Speichern nicht ändern (wichtig für Variante 3). Es gibt keine
     Dokumente am Pass.
+  - **Passt nicht zum Pilot:** Als „Nächste Handlung“ nennt der Pass die Frist aus den Beispieldaten von LH,
+    „Entscheidung vor Ausbau Di 24.11., 12:00“. Sie lässt sich nicht ändern, weil vorhandene Projekte nicht
+    bearbeitbar sind (Schritt 1).
 
 ### Schritt 5 · Interne Verwendung und externe Vermittlung
 
@@ -219,8 +230,8 @@ heißt in Fassung 2 nur: Eine Person hat den Wert eingetragen oder übernommen. 
   2. **Innentür**, Menge 1, Verfügbar ab 01.03.2027.
   3. **Weiter**, Türblattbreite 860 und Türblatthöhe 1985 eintippen, **Weiter**, **Speichern**.
   4. **Bauteilpass öffnen**, **Ziel zuordnen**, „Öffnung B-04“ wählen, **Zuordnen und Entscheidung anlegen**.
-  5. **Entscheidung E-04 öffnen**. Nächster Schritt: „Rohbauöffnung B-04 an der Messstelle laut P-04 messen oder
-     ein verwertbares Aufmaß nachreichen“.
+  5. **Entscheidung E-04 öffnen** (die Nummer hängt von der Reihenfolge ab, siehe oben). Nächster Schritt:
+     „Rohbauöffnung B-04 an der Messstelle laut P-04 messen oder ein verwertbares Aufmaß nachreichen“.
 - **Klickpfad extern:** Bauteilpass LH · T-13, unter „Bedarfe derselben Gruppe“ die Zeile UAK · BD-24. Sie führt
   zur Abgleichseite (Schritt 6).
 - **Stand:**
@@ -275,8 +286,9 @@ heißt in Fassung 2 nur: Eine Person hat den Wert eingetragen oder übernommen. 
 - **Vor Ort oder außerhalb:**
   - Probeausbau einer Mustertür: zerstörungsfrei möglich? Zustand danach?
   - Prüfung von Zustand, Maßen, Beschlägen und Zarge.
-  - Anforderungen am Zielort klären: Eine Innentür ohne Anforderungen braucht laut Concular keinen Nachweis, mit
-    Brand- oder Schallschutz schon (Abschnitt 6).
+  - Anforderungen am Zielort klären. Concular nennt Innentüren als Beispiel, für das kein Nachweis notwendig ist.
+    Ob eine Tür am Zielort Brand- oder Schallschutz leisten muss, sagt die Quelle nicht. Dann gälte nach eigener
+    Ableitung der Weg über einen Nachweis (Abschnitt 6).
 - **Kostenvergleich** außerhalb der App, mit gleichem Leistungsumfang auf beiden Seiten:
   - Wiederverwendung: Ausbau, Schutz, Transport, Zwischenlager, Aufarbeitung, Anpassung, Einbau, Abnahme,
     Gewährleistung.
@@ -286,7 +298,8 @@ heißt in Fassung 2 nur: Eine Person hat den Wert eingetragen oder übernommen. 
 - **Auslöser für Schritt 8:** Das Fachergebnis ist eingetragen, und die Planung entscheidet sich vor der
   Bestellfrist für die Wiederverwendung.
 - **Klickpfad:**
-  1. Auf der Abgleichseite **Prüfbitte anlegen**. Ergebnis: Vorgang E-03 im Status „Prüfbitte gestellt“.
+  1. Auf der Abgleichseite **Prüfbitte anlegen**. Ergebnis: ein Vorgang (im Browserlauf E-03) im Status „Prüfbitte
+     gestellt“.
   2. Formular **Fachergebnis eintragen**: Ergebnis „bedingt geeignet“ (Variante 3) oder „geeignet“ (Variante 1),
      **Name der Fachperson** (z. B. „Fachplanung Türen (Beispiel)“), **Notiz** (bei „bedingt“ Pflicht, z. B.
      „Probeausbau: eine Tür beschädigt, 5 von 6 verwendbar“).
@@ -313,7 +326,7 @@ heißt in Fassung 2 nur: Eine Person hat den Wert eingetragen oder übernommen. 
 - **Auslöser:** Mit dem Eintrag der Übergabe endet der Vorgang in der App. Der Einbau folgt außerhalb.
 - **Klickpfad:**
   1. Auf der Entscheidungsseite Formular **Vormerken**: **Menge in Stk** 5 (Variante 3) oder 6 (Variante 1),
-     **Vormerkung gilt bis (Pflicht)** 12.03.2027, Knopf **Vormerken**. Ergebnis: „Vorgemerkt (Simulation)“.
+     **Vormerkung gilt bis** 12.03.2027, Knopf **Vormerken**. Ergebnis: „Vorgemerkt (Simulation)“.
   2. Formular **Übergabe planen**: **Termin** 08.03.2027, **Ort der Übergabe** „Anlieferung Umbau am Kanal, 1. OG“,
      **Zuständige Rolle** Bauleitung, Knopf **Übergabe planen**. Ergebnis: „Übergabe geplant am 08.03.2027“.
   3. Formular **Als übergeben eintragen**: **Übergabedatum** 08.03.2027, Knopf **Als übergeben eintragen**. Die
@@ -328,7 +341,9 @@ heißt in Fassung 2 nur: Eine Person hat den Wert eingetragen oder übernommen. 
 ## 5. Drei Varianten mit denselben Basisdaten
 
 Quelle der Werte: Nachrechnung mit dem unveränderten Fachkern (Abschnitt 10). Die Oberfläche lässt als Stichtag nur
-18. bis 20.11.2026 zu.
+18. bis 20.11.2026 zu. Neben den Beispieldaten enthält die Nachrechnung nur das Angebot LH · T-13 und den Bedarf
+UAK · BD-24. Die interne Tür und die zwei Türen mit Zustand C sind nur im Browserlauf erfasst. Fristen zählen in
+Kalendertagen (A17).
 
 **Wann die Prüfbitte noch möglich ist.** Die Planung reagiert am jeweiligen Tag um 16:00.
 
@@ -339,7 +354,7 @@ Quelle der Werte: Nachrechnung mit dem unveränderten Fachkern (Abschnitt 10). D
 | ab 06.02.2027 | Für diese Entscheidung zu spät | „Prüfende 20.02.2027 liegt 1 Tag nach der Bestellfrist 19.02.2027.“ |
 
 Die Bestellfrist von BD-24 steht unter „Zeitkritisch (7 Tage)“ erst ab 13.02.2027 (09:00). Das gilt, solange kein
-Vorgang läuft.
+Vorgang läuft. Der 13.02.2027 ist ein Samstag, im Büro fällt die Warnung also frühestens am Montag, 15.02., auf.
 
 | Zeitpunkt | Variante 1 · rechtzeitig | Variante 2 · nach der Ersatzbestellung | Variante 3 · Probeausbau, 5 von 6 |
 |---|---|---|---|
@@ -389,9 +404,14 @@ Vorgang läuft.
 - **Vormerkung am 04.02.:** „Vormerkung (Simulation, unverbindlich): 5 Stk bis 12.03.2027.“
 - **Stand am 15.02.2027,** vier Tage vor der Bestellfrist:
   - Vorgang „Vorgemerkt (Simulation)“, nächster Schritt „Übergabe planen“.
-  - Menge im Abgleich: „gedeckt“ (Angebot 6, Bedarf 6).
+  - Menge im Abgleich: „gedeckt“ (Angebot 6, Bedarf 6). Der Fachkern zählt die Menge des Bauteils, nicht die
+    Vormerkung.
   - BD-24 gilt als belegt. Er zählt nicht als offener Bedarf und steht nicht unter „Zeitkritisch“.
-  - Vor der Prüfbitte gab es 5 Paare für BD-24, nach der Vormerkung 0.
+  - Vor der Prüfbitte hatte BD-24 fünf Paare: T-13 und vier Türangebote aus den Beispieldaten (KB · T-31,
+    LH · T-03, LH · T-05, SL · T-41). Nach der Vormerkung sind es 0.
+  - Ein zweites Angebot für die sechste Tür, etwa KB · T-31 aus den Beispieldaten, wäre am Tag der Vormerkung
+    (04.02.) zeitlich noch „Weiter prüfen“. Die Prüfbitte ist aber gesperrt: „Der Bedarf gehört bereits zum laufenden
+    Vorgang E-03.“
 - **Übergabe:** geplant und eingetragen am 08.03.2027 mit 5 Stk.
 - **Befund:** Die sechste Tür muss bis 19.02. neu bestellt werden. Das steht nur in der Notiz. Fassung 2 kann eine
   Teilmenge vormerken. Die Restmenge des Bedarfs verfolgt sie nicht.
@@ -416,10 +436,14 @@ abgerufen, in Text umgewandelt und gelesen. Zitate sind wörtlich. Die Seitenang
   projektinternen Vermittlung (in-situ): „Kein Eigentumswechsel“, „keine Transportemissionen“. Es folgen die
   portfolio-interne Vermittlung, dann die externe Vermittlung „B2B, Direktvertrieb“ mit „Eigentumswechsel“ und
   „Wenige, bekannte Abnehmer“, zuletzt B2C.
-- **Nachweise:** Im Entscheidungsbaum (Abb. 2.3, PDF-Seite 15) steht „Beispiel Innentür – Kein Nachweis notwendig“.
-  Bei Sicherheits- oder Schutzanforderungen (§ 17 Abs. 1 MBO) braucht es Nachweis, Produktprüfung oder
-  Verwendbarkeitsnachweis. Innentüren sind nach MVV TB 2023/1 als „D 2.2.2.3 Innentüren einschließlich Zubehör“ unter
-  den Bauprodukten mit untergeordneter Rolle genannt (PDF-Seite 14).
+- **Nachweise:** Ob ein neuer Verwendbarkeitsnachweis nötig ist, „entscheidet die Bedeutung des Bauprodukts innerhalb
+  des Gebäudes und seine Auswirkungen auf die bauordnungsrechtlichen Anforderungen“ (Kapitel 2.3.1, PDF-Seite 14).
+  - Als Beispiel für Bauprodukte mit untergeordneter Rolle im Bauwerk nennt der Text nach MVV TB 2023/1 „D 2.2.2.3
+    Innentüren einschließlich Zubehör“ (PDF-Seite 14).
+  - Im Entscheidungsbaum (Abb. 2.3, PDF-Seite 15) steht die Innentür als Beispiel beim Ausgang „Kein Nachweis
+    notwendig“. Das ist sinngemäß aus der Abbildung, deren Wörter im Text einzeln stehen.
+  - Bei Sicherheits- oder Schutzanforderungen (§ 17 Abs. 1 MBO) führt der Baum zu Nachweis, Produktprüfung oder
+    Verwendbarkeitsnachweis.
 - **Prüfung und Haftung:** Das Wiederverwendungspotenzial wird im Rahmen der Bestandserfassung nach DIN SPEC 91484
   geprüft, mit „gutachterliche[r] Aussage“. Beim Einkauf „stellen die Inverkehrbringenden (Bauteilbörse, Marktplatz)
   die Gebrauchstauglichkeit sicher und haften für die Rechtskonformität“ (PDF-Seite 15).
@@ -457,8 +481,9 @@ abgerufen, in Text umgewandelt und gelesen. Zitate sind wörtlich. Die Seitenang
   etwa sechs Wochen. Madaster empfiehlt mindestens vier bis fünf Monate. Variante 2 ist deshalb kein Randfall.
 - „Erst intern, dann extern“ stützen Concular (Hierarchie) und Madaster (Sichtbarkeit je Kreis). Fassung 2 bildet die
   Reihenfolge nicht ab.
-- Bei Innentüren ohne Anforderungen ist der Nachweisaufwand laut Concular gering. Mit Brand- oder Schallschutz gilt das
-  nicht. Bevor Variante 1 gilt, muss die Fachprüfung die Anforderungen am Zielort bestätigen.
+- Für Innentüren nennt Concular keinen Nachweisbedarf. Dass Brand- oder Schallschutz am Zielort das ändert, ist eine
+  eigene Ableitung aus dem Entscheidungsbaum, keine Aussage der Quelle über Türen. Bevor Variante 1 gilt, muss die
+  Fachprüfung die Anforderungen am Zielort bestätigen.
 
 **Was ein reales Projekt bestätigen müsste**
 
@@ -479,7 +504,7 @@ abgerufen, in Text umgewandelt und gelesen. Zitate sind wörtlich. Die Seitenang
 | 1 Abstimmung | Projekt erfassen | – | Zustimmung, Vereinbarung, Projektdaten bearbeiten, Personen je Projekt |
 | 2 Unterlagen | IFC-Vorprüfung | IFC-Import | Ablage für Unterlagen, Excel- oder CSV-Import |
 | 3 Begehung | Erfassung, manuelles Aufmaß, Wertstatus | Bilderkennung, Raumscan | Einzelnummern je Tür in einer Position |
-| 4 Bauteilpass | Pass mit Angaben, offenen Nachweisen, Paaren | – | Menge nachträglich ändern, Dokumente am Pass |
+| 4 Bauteilpass | Pass mit Angaben, offenen Nachweisen, Paaren | – | Menge nachträglich ändern, Dokumente am Pass, eine Frist passend zum Pilot (der Pass nennt die Frist von LH aus den Beispieldaten) |
 | 5 Intern und extern | Zuordnung zu zwei freien Zielöffnungen, Abgleich | – | „erst intern, dann extern“, Sichtbarkeit, neue Zielöffnungen |
 | 6 Abgleich | Bedarf, Fristen, Abgleich, Zeitkritisch | – | Benachrichtigung, Frist „Prüfbitte spätestens“ |
 | 7 Fachprüfung | Prüfbitte, Checkliste | Fachergebnis (laut Eintrag) | Kostenvergleich (bewusst), Prüfunterlagen |
@@ -538,7 +563,7 @@ bereithalten.
 - **Ausgeschlossen:** Versand, E-Mail, Änderungen an den Abgleichregeln, Pitch-Stand.
 - **Akzeptanz (Vorschlag):**
   - Mit den Pilotdaten steht „Prüfbitte spätestens 05.02.2027 · BD-24“ ab 30.01.2027 unter „Zeitkritisch“, nach
-    derselben Sieben-Tage-Regel wie die Bestellfrist.
+    derselben Sieben-Tage-Regel wie die Bestellfrist. Der 30.01. ist ein Samstag, Arbeitstage zählt die Regel nicht.
   - Ab 06.02.2027 ist das Paar „zu spät“, und der Eintrag verschwindet.
   - Ein Test im Fachkern deckt beides ab. Die bestehenden 190 Tests bleiben grün.
 - **Aufwand:** klein. Eine Funktion im Fachkern, ein Eintrag in `kennzahlen.js`, eine Zeile in der Anzeige, Tests.
@@ -556,13 +581,19 @@ bereithalten.
 ## 10. Prüfungen
 
 **Codezustand:** Ausgangscommit `daa40a9`. `git diff --name-only daa40a9 -- plattform prototype` ergibt keine Datei.
-Neu sind nur die Dateien unter `docs/pilot/`.
+Alle Prüfungen liefen also mit dem Anwendungscode von `daa40a9`, der seit `2121b92` unverändert ist. Neu sind nur die
+Dateien unter `docs/pilot/`. Fassung 1.0 dieser Akte steht in `1f6656f`.
 
 | Prüfung | Befehl | Ergebnis |
 |---|---|---|
-| Nachrechnung | `node docs/pilot/cf-pilot-01-simulation.mjs` | „Alle erwarteten Ergebnisse eingetreten.“ Exit-Code 0. Das Skript bricht ab, wenn ein erwarteter Wert abweicht. |
+| Nachrechnung | `node docs/pilot/cf-pilot-01-simulation.mjs` | „Alle erwarteten Ergebnisse eingetreten.“ Exit-Code 0, auch nach den Korrekturen von Fassung 1.1. Das Skript bricht ab, wenn ein erwarteter Wert abweicht. |
 | Bestehende Tests | `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs` | 190 von 190 bestanden |
-| Klickpfade im Browser | Playwright-Skript in Chromium, 1440 × 900, lokaler Server (`python3 -m http.server`), Stichtag Mi 18.11.2026, 14:00, zwei frische Kontexte | 30 von 30 bestanden, ohne Fehler in Konsole und Netz |
+| Klickpfade im Browser | Playwright-Skript in Chromium, 1440 × 900, lokaler Server (`python3 -m http.server`), Stichtag Mi 18.11.2026, 14:00, zwei frische Kontexte | 30 von 30 bestanden, ohne Fehler in Konsole und Netz. Zweimal ausgeführt, vor und nach dem Schreiben der Akte. |
+| Unabhängige Prüfung | Agent cf-review, nur lesend, auf Fassung 1.0 | kein blockierender und kein hoher Befund. Die 3 mittleren und 4 geringen Punkte sind in Fassung 1.1 eingearbeitet. |
+
+Die unabhängige Prüfung hat die Zitate aus der Mitteilung des BLB NRW und aus den Madaster-Unterlagen zu IFC, Excel
+und Action Plan nicht gegen den Text gelesen. Diese Zitate wurden beim Schreiben mit dem abgerufenen Text verglichen,
+aber nicht unabhängig geprüft.
 
 Was das Browserskript prüft:
 
@@ -584,7 +615,7 @@ nicht im Repository.
 
 ## 11. Übergabe
 
-- **Stand:** 16.11.2026, Dokumentversion 1.0, Branch `codex/plattform-v1`, Ausgangscommit `daa40a9`.
+- **Stand:** 16.11.2026, Dokumentversion 1.1, Branch `codex/plattform-v1`, Ausgangscommit `daa40a9`.
 - **Gelesene Quellen und Prüfweg:** siehe Abschnitt 6. Abgerufen am 16.11.2026 mit `curl` über den Proxy der
   Arbeitsumgebung, nur die Hosts concular.de, www.blb.nrw.de, docs.madaster.com und madaster.com.
 - **Ergebnis:** Fassung 2 bildet den Pilot bis „Übergabe geplant“ bedienbar ab. Zwei Lücken sind belegt:

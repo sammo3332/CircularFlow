@@ -1,5 +1,7 @@
 // CF-PILOT-01 · Nachrechnung der drei Varianten mit dem unveränderten Fachkern von Fassung 2 (Code 2121b92, Stand daa40a9).
-// Fiktiver Pilotfall „Zwölf Bürotüren vor dem Umbau“. Alle Daten, Daten und Rollen sind Simulationsannahmen.
+// Fiktiver Pilotfall „Zwölf Bürotüren vor dem Umbau“. Alle Namen, Daten, Mengen und Rollen sind Simulationsannahmen.
+// Neben den Beispieldaten enthält die Nachrechnung nur das Angebot LH · T-13 (6 Stk) und den Bedarf UAK · BD-24.
+// Die interne Tür und die zwei Türen mit Zustand C sind nur im Browserlauf erfasst. Fristen zählen in Kalendertagen.
 // Das Skript liest nur Module aus plattform/app und prototype/dist, ändert keinen Anwendungscode und speichert nichts.
 // Es setzt die Projektzeit (ctx.at) auf Tage im Jahr 2027. Die Oberfläche lässt dagegen nur 18.–20.11.2026 zu.
 // Aufruf vom Repository-Root: node docs/pilot/cf-pilot-01-simulation.mjs
@@ -173,11 +175,19 @@ function variante2() {
 function variante3() {
   const { p, angebot, bedarf } = ausgangsstand();
   const ctx0 = ctxBei(p, A.planungV1);
-  const paareVorher = abgleichListe(ctx0, { bedarf: finde(ctx0.daten.bedarfe, bedarf.projekt, bedarf.id) }).length;
+  const listeVorher = abgleichListe(ctx0, { bedarf: finde(ctx0.daten.bedarfe, bedarf.projekt, bedarf.id) });
+  const paareVorher = `${listeVorher.length} (${listeVorher.map((x) => `${x.bauteil.projekt} ${x.bauteil.id}`).join(', ')})`;
   const { vorgang } = pruefbitte(p, A.planungV1, angebot, bedarf);
   schritt(p, A.fachergebnis, vorgang, 'fachergebnis', { urteil: 'bedingt', person: 'Fachplanung (Beispiel)', notiz: 'Probeausbau am 02.02.2027: eine Tür beim Ausbau beschädigt, 5 von 6 verwendbar. Eine Tür neu bestellen.' });
   schritt(p, A.vormerkung, vorgang, 'vormerkung', { menge: '5', ablauf: A.annahmeBis });
-  // Was zeigt der Fachkern nach der Teil-Vormerkung, eine Woche vor der Bestellfrist?
+  // Ein zweites Türangebot aus den Beispieldaten (KB · T-31) wäre am Tag der Vormerkung zeitlich noch prüfbar,
+  // ist für BD-24 aber gesperrt, weil der Bedarf zum laufenden Vorgang gehört.
+  const ctxV = ctxBei(p, '2027-02-04T11:00');
+  const zweites = abgleich(ctxV, finde(ctxV.daten.bauteile, 'KB', 'T-31'), finde(ctxV.daten.bedarfe, bedarf.projekt, bedarf.id));
+  assert.equal(zweites.gesamt.key, 'weiter');
+  assert.equal(zweites.pruefbitteMoeglich, false);
+  assert.match(zweites.sperrgrund, /Der Bedarf gehört bereits zum laufenden Vorgang/);
+  // Was zeigt der Fachkern nach der Teil-Vormerkung, vier Tage vor der Bestellfrist?
   const ctx = ctxBei(p, '2027-02-15T09:00');
   const st = vorgangStatus(ctx, vorgang);
   const a = abgleich(ctx, finde(ctx.daten.bauteile, angebot.projekt, angebot.id), finde(ctx.daten.bedarfe, bedarf.projekt, bedarf.id), { ausser: vorgang });
@@ -189,6 +199,7 @@ function variante3() {
     bestellfristZeitkritisch: k.zeitkritisch.eintraege.some((f) => f.art === 'bedarf' && f.id === bedarf.id),
     bedarfOffenGezaehlt: k.bedarfeOffen.eintraege.some((d) => d.projekt === bedarf.projekt && d.id === bedarf.id),
     paareVorher, paareNachher: abgleichListe(ctx, { bedarf: finde(ctx.daten.bedarfe, bedarf.projekt, bedarf.id) }).length,
+    zweitesAngebot: `KB T-31 → ${bedarf.id} am 04.02.2027: ${zweites.gesamt.label}, Prüfbitte gesperrt: ${zweites.sperrgrund}`,
   };
   assert.equal(st.key, 'vorgemerkt');
   assert.equal(a.menge.status, 'gedeckt');
@@ -225,5 +236,6 @@ zeile('  Stand am 15.02.2027: ', v3.befund.status, ', Vormerkung ', v3.befund.vo
 zeile('  Menge im Abgleich: ', v3.befund.mengeImAbgleich);
 zeile('  Bedarf belegt: ', v3.befund.bedarfBelegt ? 'ja' : 'nein', ' · als offener Bedarf gezählt: ', v3.befund.bedarfOffenGezaehlt ? 'ja' : 'nein', ' · Bestellfrist unter Zeitkritisch: ', v3.befund.bestellfristZeitkritisch ? 'ja' : 'nein');
 zeile('  Paare für ', basis.bedarf.id, ' vor der Prüfbitte: ', v3.befund.paareVorher, ', nach der Vormerkung: ', v3.befund.paareNachher);
+zeile('  Zweites Angebot: ', v3.befund.zweitesAngebot);
 zeile('  Verlauf:'); for (const z of v3.verlauf) zeile('    ', z);
 zeile('\nAlle erwarteten Ergebnisse eingetreten.');
