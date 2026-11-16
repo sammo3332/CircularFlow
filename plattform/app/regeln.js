@@ -2,6 +2,7 @@
 // Die geprüfte Türregel (prototype/dist/door-rules.mjs) wird als Modul R übergeben und nicht verändert.
 import { GRUPPEN, PERSONEN } from './daten.js';
 import { minuten, bis, istDatum, zeit, ausMinuten } from './zeit.js';
+import { vorgangStatus, naechsterVorgangsschritt, aktiverVorgang, uebergebenerVorgang } from './vorgang.js';
 
 export const schluessel = (projekt, id) => `${projekt}:${id}`;
 export const rolleKey = (role) => Object.keys(PERSONEN).find((k) => PERSONEN[k].rolle === role) || 'planung';
@@ -195,11 +196,26 @@ export function lage(ctx, e) {
 export const tonVon = (h) => (h.wartet ? 'info' : h.rank <= 2 ? 'crit' : h.rank <= 4 ? 'warn' : h.rank === 5 ? 'info' : 'ok');
 export function naechsteFrist(l, at) { return l.fristen.filter((f) => minuten(f.at) >= minuten(at)).sort((x, y) => minuten(x.at) - minuten(y.at))[0] || null; }
 
+// Lage mit Vorgangsstatus: Bis zum Fachergebnis gilt die bisherige Regel (Tür, Boden, Abgleich; „wartet“ nach Vorlage
+// oder Prüfbitte). Danach zeigt der Vorgang den nächsten Schritt (Vormerkung, Übergabe planen, Übergabe durchführen).
+function lageVorgang(ctx, e) {
+  const l = lage(ctx, e); const st = vorgangStatus(ctx, e);
+  const schritt = naechsterVorgangsschritt(ctx, e);
+  if (schritt) {
+    const fristen = schritt.frist ? [{ name: schritt.fristName, at: schritt.frist, rolle: schritt.rolle || 'planung', status: schritt.ton === 'crit' || schritt.rank <= 4 ? 'überfällig oder abgelaufen' : 'offen', ton: schritt.ton === 'crit' || schritt.rank <= 4 ? 'crit' : 'ok' }] : [];
+    return { ...l, vorgang: st, haupt: { rank: schritt.rank, text: schritt.text, rolle: schritt.rolle, grund: schritt.grund }, weiter: [], fristen };
+  }
+  if (st.key === 'pruefbitte' && l.haupt.rank === 6 && !l.haupt.wartet) {
+    return { ...l, vorgang: st, haupt: { rank: 6, wartet: true, text: 'Rückmeldung der Fachprüfung abwarten', rolle: 'fach', grund: `Die Prüfbitte liegt seit ${zeit(st.pruefbitte.at)} der Fachprüfung vor. Weitere technische Anforderungen bleiben offen.` } };
+  }
+  return { ...l, vorgang: st };
+}
+
 // Offene Entscheidungen nach Handlungsdruck: wartende zuletzt, dann Rang des nächsten Schritts, dann nächste Frist.
-// Ohne kommende Frist gilt die zuletzt verstrichene, damit Überfälliges sichtbar bleibt.
+// Ohne kommende Frist gilt die zuletzt verstrichene, damit Überfälliges sichtbar bleibt. Beendete Vorgänge zählen nicht.
 export function offeneEntscheidungen(ctx, anzahl = 2) {
-  const alle = ctx.daten.entscheidungen.map((e) => {
-    const l = lage(ctx, e);
+  const alle = ctx.daten.entscheidungen.filter((e) => vorgangStatus(ctx, e).aktiv).map((e) => {
+    const l = lageVorgang(ctx, e);
     const frist = naechsteFrist(l, ctx.at) || [...l.fristen].sort((x, y) => minuten(x.at) - minuten(y.at)).pop() || null;
     return { e, l, frist };
   });
@@ -207,12 +223,17 @@ export function offeneEntscheidungen(ctx, anzahl = 2) {
   alle.sort((a, b) => (Number(Boolean(a.l.haupt.wartet)) - Number(Boolean(b.l.haupt.wartet))) || (a.l.haupt.rank - b.l.haupt.rank) || (kommend(a) - kommend(b)));
   return { liste: alle.slice(0, anzahl), gesamt: alle.length };
 }
-export const entscheidungFuer = (ctx, b) => ctx.daten.entscheidungen.find((e) => e.projekt === b.projekt && e.bauteil === b.id) || null;
+// Der aktive Vorgang des Bauteils; beendete Vorgänge (übergeben, ungeeignet, abgebrochen) geben es frei.
+export const entscheidungFuer = (ctx, b) => aktiverVorgang(ctx, b.projekt, b.id);
 
 export function bauteilStatus(ctx, b) {
   const e = entscheidungFuer(ctx, b);
-  if (e && vorlageVon(ctx, e) && lageRegel(ctx, e).haupt.rank === 6) return 'fachpruefung';
-  if (e && (b.status === 'erfasst' || b.status === 'bewertung')) return 'entscheidung';
+  if (e) {
+    const st = vorgangStatus(ctx, e);
+    if (st.key === 'vorgemerkt' || st.key === 'uebergabe') return 'vorgemerkt';
+    if (lageVorgang(ctx, e).haupt.wartet) return 'fachpruefung';
+    if (b.status === 'erfasst' || b.status === 'bewertung') return 'entscheidung';
+  } else if (uebergebenerVorgang(ctx, b.projekt, b.id)) return 'uebergeben';
   return b.status;
 }
 
@@ -223,9 +244,11 @@ export function naechsteHandlung(ctx, b) {
   if (b.status === 'vorgemerkt') return { text: b.ziel ? 'Keine Handlung nötig' : 'Ausbau und Einlagerung planen', rolle: b.ziel ? null : 'bauleitung', grund: b.ziel ? `Bauteil ${b.ziel}.` : '', ton: 'ok', frist: null };
   const e = entscheidungFuer(ctx, b);
   if (e) {
-    const l = lage(ctx, e); const f = naechsteFrist(l, ctx.at);
+    const l = lageVorgang(ctx, e); const f = naechsteFrist(l, ctx.at);
     return { text: l.haupt.text, rolle: l.haupt.rolle, grund: l.haupt.grund, ton: tonVon(l.haupt), frist: f ? f.at : null, fristName: f ? f.name : '', entscheidung: e, wartet: l.haupt.wartet };
   }
+  const fertig = uebergebenerVorgang(ctx, b.projekt, b.id);
+  if (fertig) { const s = naechsterVorgangsschritt(ctx, fertig); return { text: s.text, rolle: null, grund: s.grund, ton: 'ok', frist: null, fristName: '', entscheidung: fertig }; }
   if (b.naechste) return { ...b.naechste, ton: 'warn', frist: p?.entscheidungBis || null, fristName: 'Entscheidung vor Ausbau' };
   const g = GRUPPEN[b.gruppe];
   const text = g.zuordnung === 'zieloeffnung' ? 'Zielöffnung oder Bedarf zuordnen' : 'Bedarf zuordnen';
@@ -257,7 +280,12 @@ export function offeneNachweise(ctx, b) {
 
 // Mögliche Ziele für ein Bauteil: Zielöffnungen im Projekt (Türen) und Bedarfe derselben Gruppe in der Region.
 export function moeglicheZiele(ctx, b) {
-  const belegt = new Set(ctx.daten.entscheidungen.map((e) => `${e.ziel.art}:${e.ziel.projekt || e.projekt}:${e.ziel.id}`));
+  // Nur aktive Vorgänge belegen ein Ziel. Ein für dieses Bauteil mit „ungeeignet“ beendetes Ziel bleibt gesperrt.
+  const belegt = new Set();
+  for (const e of ctx.daten.entscheidungen) {
+    const st = vorgangStatus(ctx, e); const k = `${e.ziel.art}:${e.ziel.projekt || e.projekt}:${e.ziel.id}`;
+    if (st.aktiv || (st.key === 'ungeeignet' && e.projekt === b.projekt && e.bauteil === b.id)) belegt.add(k);
+  }
   const offen = (art, p, id) => !belegt.has(`${art}:${p}:${id}`);
   const oeffnungen = GRUPPEN[b.gruppe].zuordnung === 'zieloeffnung'
     ? ctx.daten.zieloeffnungen.filter((z) => z.projekt === b.projekt && offen('zieloeffnung', z.projekt, z.id)) : [];

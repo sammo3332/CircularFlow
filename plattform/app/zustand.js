@@ -1,10 +1,11 @@
 // Datenstand der Plattform: Beispieldaten aus dem Code plus eigene Änderungen aus dem Browser.
 // Eigene Änderungen liegen nur in diesem Browser (localStorage) und lassen sich zurücksetzen.
 import { PROJEKTE, BAUTEILE, ZIELOEFFNUNGEN, BEDARFE, ENTSCHEIDUNGEN, GRUPPEN } from './daten.js';
+import { ergaenzeBedarf } from './bedarf.js';
 import { QUELLEN, HINWEISE } from './radar-daten.js';
 
 export const SPEICHERSCHLUESSEL = 'circularflow-plattform-v1';
-export const leerePersistenz = () => ({ version: 1, erfassungen: [], zuordnungen: [], ereignisse: [], ezustand: {}, radar: {}, meldungen: [], projekteAusRadar: [], werte: {} });
+export const leerePersistenz = () => ({ version: 1, erfassungen: [], zuordnungen: [], ereignisse: [], ezustand: {}, radar: {}, meldungen: [], projekteAusRadar: [], werte: {}, bedarfe: [], bedarfAenderungen: {}, projekteEigen: [] });
 const klon = (x) => JSON.parse(JSON.stringify(x));
 
 export function ladePersistenz(speicher) {
@@ -24,6 +25,10 @@ export function ladePersistenz(speicher) {
     leer.ereignisse = leer.ereignisse.filter(objekt);
     leer.meldungen = leer.meldungen.filter((m) => objekt(m) && m.id && m.status);
     leer.projekteAusRadar = leer.projekteAusRadar.filter((x) => objekt(x) && x.kurz && Array.isArray(x.lage));
+    // Neue Schlüssel (Fassung 2): ältere Stände ohne sie laden unverändert; beschädigte Einträge entfallen.
+    leer.bedarfe = leer.bedarfe.filter((x) => objekt(x) && x.projekt && x.id && GRUPPEN[x.gruppe] && typeof x.titel === 'string');
+    leer.projekteEigen = leer.projekteEigen.filter((x) => objekt(x) && x.kurz && x.id && typeof x.name === 'string' && Array.isArray(x.lage) && x.lage.length === 2 && x.lage.every(Number.isFinite) && Array.isArray(x.gebaeude));
+    leer.bedarfAenderungen = Object.fromEntries(Object.entries(leer.bedarfAenderungen).filter(([k, v]) => /^[^:]+:[^:]+$/.test(k) && objekt(v) && !Array.isArray(v)));
     return leer;
   } catch { return leerePersistenz(); }
 }
@@ -59,12 +64,20 @@ export function baueDaten(p) {
   }
   const hinweise = [...klon(HINWEISE), ...klon(p.meldungen)].map((h) => (p.radar[h.id] ? { ...h, ...p.radar[h.id] } : h));
   return {
-    projekte: [...klon(PROJEKTE), ...klon(p.projekteAusRadar)],
+    projekte: [...klon(PROJEKTE), ...klon(p.projekteAusRadar), ...klon(p.projekteEigen || [])],
     bauteile,
     zieloeffnungen: klon(ZIELOEFFNUNGEN),
-    bedarfe: klon(BEDARFE),
+    // Beispielbedarfe und eigene Bedarfe; Ergänzungen (Zeitangaben usw.) liegen als Überlagerung darüber.
+    bedarfe: [...klon(BEDARFE), ...klon(p.bedarfe || [])].map((d) => ergaenzeBedarf(d, (p.bedarfAenderungen || {})[`${d.projekt}:${d.id}`])),
     entscheidungen: [...klon(ENTSCHEIDUNGEN), ...klon(p.zuordnungen)],
     hinweise,
     quellen: QUELLEN,
   };
+}
+
+// Zahl aller eigenen Änderungen in diesem Browser (für Hinweis und Zurücksetzen).
+export function anzahlEigeneAenderungen(p) {
+  const n = (x) => (Array.isArray(x) ? x.length : x && typeof x === 'object' ? Object.keys(x).length : 0);
+  return ['erfassungen', 'zuordnungen', 'ereignisse', 'meldungen', 'projekteAusRadar', 'ezustand', 'radar', 'werte', 'bedarfe', 'bedarfAenderungen', 'projekteEigen']
+    .reduce((s, k) => s + n(p?.[k]), 0);
 }

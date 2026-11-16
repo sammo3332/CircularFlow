@@ -29,6 +29,9 @@ export const PERSONEN = {
   browser: { rolle: 'Eigene Eingabe', name: 'Sie', stelle: 'in diesem Browser' },
 };
 
+// Die zwölf Dortmunder Stadtbezirke (wie im Projektradar). Für Bezirkswahl und Projektanlage ohne Ansicht nutzbar.
+export const BEZIRKE = ['Aplerbeck', 'Brackel', 'Eving', 'Hombruch', 'Hörde', 'Huckarde', 'Innenstadt-Nord', 'Innenstadt-Ost', 'Innenstadt-West', 'Lütgendortmund', 'Mengede', 'Scharnhorst'];
+
 export const ARTEN = { umbau: 'Umbau', sanierung: 'Sanierung', rueckbau: 'Rückbau', neubau: 'Neubau' };
 
 export const STATUS = {
@@ -38,6 +41,7 @@ export const STATUS = {
   fachpruefung: { label: 'Fachprüfung angefragt', ton: 'info' },
   vorgemerkt: { label: 'Zur Wiederverwendung vorgemerkt', ton: 'ok' },
   nicht: { label: 'Nicht wiederverwendbar', ton: 'crit' },
+  uebergeben: { label: 'Übergeben (Simulation)', ton: 'ok' },
 };
 
 // Status je Angabe. Die Türregel wertet Maße nur als „gemessen“, die Bodenregel (Entwurf) auch „bestätigt“; Vorschläge zählen nie.
@@ -154,8 +158,10 @@ export const ZIELOEFFNUNGEN = [
 export const BEDARFE = [
   { projekt: 'LH', id: 'BD-01', gruppe: 'boden', titel: 'Doppelboden Technikzone 3.OG', raeume: ['3.04', '3.05', '3.06'], etage: '3.OG', bedarfM2: 72, reserveProzent: 10, raster: '600 × 600 mm', aufbauhoeheMm: 150, punktlastKn: 3, fristen: { nachweis: '2026-11-19T10:00', ersatz: '2026-11-20T12:00' }, nachweisWerte: { verstellVonMm: 110, verstellBisMm: 180, quelle: 'Herstellerangabe (fiktiv)' }, herkunft: 'fiktives Raumbuch 3.OG · Simulationsannahme' },
   { projekt: 'LH', id: 'BD-02', gruppe: 'boden', titel: 'Doppelboden Archiv 2.07', raeume: ['2.07'], etage: '2.OG', bedarfM2: 52, reserveProzent: 10, raster: '600 × 600 mm', aufbauhoeheMm: 120, punktlastKn: 4, fristen: { nachweis: '2026-11-23T10:00', ersatz: '2026-11-26T12:00' }, nachweisWerte: { verstellVonMm: 110, verstellBisMm: 180, quelle: 'Herstellerangabe (fiktiv)' }, herkunft: 'fiktives Raumbuch 2.OG · Simulationsannahme' },
-  { projekt: 'SB', id: 'BD-21', gruppe: 'tuer', titel: 'Innentüren Büroeinheiten', raeume: ['1.01', '1.02'], etage: '1.OG', menge: 12, einheit: 'Stk', text: 'Türblatt etwa 860 × 1985 mm, ohne Schutzanforderung', herkunft: 'fiktive Vorplanung' },
-  { projekt: 'SB', id: 'BD-22', gruppe: 'wand', titel: 'Systemtrennwände Gewerbe', raeume: ['E.01'], etage: 'EG', menge: 60, einheit: 'lfm', text: 'Raumhöhe etwa 2,75 m', herkunft: 'fiktive Vorplanung' },
+  { projekt: 'SB', id: 'BD-21', gruppe: 'tuer', titel: 'Innentüren Büroeinheiten', raeume: ['1.01', '1.02'], etage: '1.OG', menge: 12, einheit: 'Stk', text: 'Türblatt etwa 860 × 1985 mm, ohne Schutzanforderung', angelegt: '2026-11-10', herkunft: 'fiktive Vorplanung · Beispiel, Zeitangaben fehlen absichtlich' },
+  // BD-22 und BD-23: Zeitangaben sind BEISPIELANNAHMEN (Mindestprüfzeit und Annahmefenster geschätzt), keine echten Werte.
+  { projekt: 'SB', id: 'BD-22', gruppe: 'wand', titel: 'Systemtrennwände Gewerbe', raeume: ['E.01'], etage: 'EG', menge: 60, einheit: 'lfm', text: 'Raumhöhe etwa 2,75 m', bestellfrist: '2027-03-31', pruefzeitTage: 10, annahmeVon: '2027-02-01', annahmeBis: '2027-03-31', anforderungen: 'Schallschutz am Zielort noch zu klären', zustaendig: 'planung', angelegt: '2026-11-10', belegt: { bestellfrist: 'belegt', pruefzeitTage: 'geschaetzt', annahme: 'geschaetzt' }, herkunft: 'fiktive Vorplanung · Beispiel' },
+  { projekt: 'SB', id: 'BD-23', gruppe: 'wand', titel: 'Systemtrennwände Büroeinheit 1.02', raeume: ['1.02'], etage: '1.OG', menge: 30, einheit: 'lfm', text: 'Raumhöhe etwa 2,75 m', bestellfrist: '2026-11-27', pruefzeitTage: 14, annahmeVon: '2027-01-11', annahmeBis: '2027-02-26', anforderungen: '', zustaendig: 'bauleitung', angelegt: '2026-11-12', belegt: { bestellfrist: 'belegt', pruefzeitTage: 'belegt', annahme: 'belegt' }, herkunft: 'fiktive Vorplanung · Beispiel' },
 ];
 
 const begehung = 'Begehung 12.11.2026';
@@ -236,7 +242,7 @@ export const BAUTEILE = [
     projekt: 'LH', id: 'TW-01', gruppe: 'wand', name: 'Systemtrennwand, Vollwandelemente', menge: 42, etage: '1.OG', raum: '1.01', plan: [50, 27],
     werte: { hoehe: w(2750, 'gemessen', begehung) },
     zustand: 'B', zustandText: 'einzelne Dellen, Dichtungen spröde', hersteller: 'unbekannt', baujahr: 'unbekannt',
-    status: 'bewertung', verfuegbarAb: '2026-11-25', erfassung: { art: 'Begehung', am: '2026-11-12T12:05', von: 'bauleitung' },
+    status: 'bewertung', verfuegbarAb: '2026-11-25', verfuegbarBis: '2027-03-31', erfassung: { art: 'Begehung', am: '2026-11-12T12:05', von: 'bauleitung' },
     rueckbau: [['Verbindung', 'Klemmprofile, demontierbar'], ['Schadstoffverdacht', 'nicht bekannt, nicht untersucht']],
     nachweise: [{ titel: 'Fotodokumentation Begehung', art: 'Foto', datum: '2026-11-12T12:05', von: 'bauleitung', stand: 'liegt vor', ton: 'ok' }],
     offen: [{ text: 'Schallschutzanforderung am Zielort klären', rolle: 'planung' }, { text: 'Systemhersteller ermitteln', rolle: 'montage' }],
