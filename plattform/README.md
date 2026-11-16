@@ -35,9 +35,10 @@ und Herkunftsseite an openstreetmap.org.
 - **Übersicht** mit Verfügbarkeit im Zeitverlauf, Fristen, passenden Paaren und Arbeitsliste (`#uebersicht`, `#vorgaenge`).
 - **Katalog** der angebotenen Bauteile mit Filtern (`#bauteile`).
 - **Bedarfe** erfassen und ergänzen (`#bedarf-neu`, `#bedarf-ergaenzen-<projekt>-<id>`); Beispielbedarfe werden als Überlagerung ergänzt.
-- **Abgleich** von Angebot und Bedarf mit Typ-, Mengen- und Zeitprüfung (`#abgleich`, `#abgleich-<paar>`), Aktion „Prüfbitte anlegen“.
+- **Abgleich** von Angebot und Bedarf mit Typ-, Mengen- und Zeitprüfung (`#abgleich`, `#abgleich-<paar>`), Aktion „Prüfbitte anlegen“. Im Bauteilpass sind Bedarfe mit „zu spät“ oder „Klärung nötig“ nicht zuordenbar.
 - **Vorgang** auf der Entscheidungsseite: Statuskette Zuordnung, Prüfbitte, Fachergebnis, Vormerkung, Übergabe geplant, übergeben (Abbruch und „ungeeignet“ als Ende), Checkliste „Was ist zu klären“.
 - **Projekt erfassen** mit Gebäude, Etagen und Räumen (`#projekt-neu`); eigene Projekte tragen den Chip „Eigene Eingabe“.
+- **Kartenseite** (`#projekte`) mit den zwei dringendsten offenen Entscheidungen samt Frist und Zuständigkeit (seit Fassung 1.1), Reiter Radar und Projekt erfassen.
 
 ## Demoablauf in 7 Schritten (Stichtag Mi 18.11., 14:00)
 
@@ -98,4 +99,5 @@ node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform
 | `vendor/leaflet/` | Leaflet 1.9.4 mit Lizenz (BSD-2-Clause) |
 | `fonts/` | Archivo und JetBrains Mono, SIL Open Font License 1.1 |
 | `test/regeln.test.mjs` | Regeltests für `app/regeln.js` |
+| `test/abgleich.test.mjs`, `vorgang`, `kennzahlen`, `bedarf`, `projektanlage`, `zustand`, `befunde` | Tests des Fachkerns der Fassung 2 und der Review-Befunde; `_hilfe.mjs` baut den Prüfkontext |
 | `bauen-artifact.mjs` | erzeugt die Fassung für eine Veröffentlichung als claude.ai-Seite |

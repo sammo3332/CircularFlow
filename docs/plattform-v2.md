@@ -3,7 +3,7 @@
 **Fassung 2.0 (Plan) · 16.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `b82bba5`**
 (Fassung 1.1, veröffentlicht als Version 8, lokal als Tag `plattform-v1.1-ausgang` gesichert; Branch auf GitHub.)
 
-Auftrag von Houssam (16.11.2026, abends, eigenständige Arbeit über Nacht): Oberfläche modernisieren und die
+Auftrag von Houssam (16.11.2026, nachts, eigenständige Arbeit über Nacht): Oberfläche modernisieren und die
 Plattform fachlich und technisch weiterentwickeln, damit sie bei der Jury (INNOSPRINT-Pitch 20.11.2026)
 verständlich, überzeugend und zuverlässig wirkt. Wenige, vollständig funktionierende Verbesserungen.
 Die fachliche Bewertung stammt von Agent 1 (cf-planung, 16.11.2026); offene Teamfragen hat der Koordinator
@@ -172,3 +172,153 @@ auf derselben Codefassung.
 8. Radar wird Reiter unter Projekte; die Route `#radar` bleibt.
 9. Horizonte: 90 Tage „Bald verfügbar“ (umschaltbar 30), 7 Tage „Zeitkritisch“.
 10. Wand bleibt nicht selbst erfassbar.
+
+## 9. Umsetzungsstand und Übergabe · 16.11.2026
+
+**Codestand:** Branch `codex/plattform-v1` (auf GitHub). Endstand der Anwendung `584e377`, Ausgangscommit der
+Fassung 2 `b82bba5`. Commits: `5d65085` Plan, `3f049ee` Fachkern (Paket A), `918b95f` Oberfläche (Paket B),
+`d4156ca` Formulare und Vorgang (Paket C), `f1d4be6` Review-Befunde, `0d0923d` Routen im Plan, `d106bdc`,
+`c128429` und `584e377` Korrekturen aus Nachprüfung, Endprüfung und Review der Schluss-Commits.
+
+### Umgesetzt
+
+Alle Pakete P1 bis P6 aus Abschnitt 2; die Schnittregel musste nicht angewendet werden.
+
+| Paket | Ergebnis | Warum |
+|---|---|---|
+| P1 Fachkern | `abgleich.js`, `vorgang.js`, `kennzahlen.js`, `bedarf.js`, `projektanlage.js` als reine Funktionen mit Tests; Zeitregel wie `evaluateCase` (Paritätstest CF-DEMO-01 bis -03) | Jede Zahl und jedes Ergebnis der Oberfläche ist ohne Browser nachprüfbar |
+| P2 Bedarfe | Liste, Detail, Erfassen, Ergänzen (Beispielbedarfe als Überlagerung) | „Welches Projekt könnte es brauchen?“ braucht erfasste Bedarfe |
+| P3 Katalog und Abgleich | Katalog mit Filtern; Abgleichsliste und Abgleichseite mit Typ, Menge, Zeit, Entfernung, Prüfpunkten und nächstem Schritt; Prüfbitte nur, wenn der Abgleich sie erlaubt | Kern der Jury-Frage: passt es rechtzeitig, und was ist noch zu prüfen |
+| P4 Vorgang | Prüfbitte, Fachergebnis (laut Eintrag, Simulation, keine Fachfreigabe), Vormerkung (Simulation, unverbindlich), Übergabe geplant, übergeben, Abbruch; Checkliste „Was ist zu klären“; Arbeitsliste | Zeigt den Weg vom Vorschlag zur Übergabe, ohne eine Freigabe vorzutäuschen |
+| P5 Übersicht und Navigation | Startseite Übersicht mit Kernfrage, Zeitkritisch, fünf Kacheln mit Klickziel und Verfügbarkeit im Zeitverlauf mit Tabelle; Navigation Übersicht · Projekte · Bauteile · Bedarfe · Erfassen | Die Jury sieht auf einen Blick, was wann frei wird und was drängt |
+| P6 Projekt erfassen | Formular mit Gebäude, Etagen und Räumen, schematischer Grundriss, Chip „Eigene Eingabe“ | Demo-Schritt „Projekt erfassen“ |
+
+Nach der unabhängigen Prüfung durch cf-review wurden 15 Befunde behoben (`f1d4be6`, Nachprüfung: 15 von 15).
+Danach folgten fünf Korrekturen:
+- Der Bauteilpass sperrt Bedarfe, für die der Abgleich „zu spät“ oder „Klärung nötig“ ergibt. Vorher entstand ein
+  Vorgang, der Bauteil und Bedarf bis zum Abbruch band.
+- Die zwei offenen Entscheidungen mit Frist und Zuständigkeit aus Fassung 1.1 stehen wieder auf der Kartenseite
+  (`#projekte`). Sie waren beim Umbau der Oberfläche entfallen.
+- Die Ziffern der Statuskette sind im Dunkelmodus lesbar.
+- Die Hauptnavigation „Bauteile“ hebt eine Katalogvorgabe aus der Übersicht auf.
+- Der Bauteilpass nennt gesperrte Bedarfe direkt unter dem Auswahlfeld, mit Link zum Abgleich. Ist kein Ziel
+  wählbar, entfallen Auswahlfeld und Knopf.
+
+### Ausprobieren
+
+Server vom Repository-Root starten (`python3 -m http.server 8000`), `http://localhost:8000/plattform/` öffnen und den
+Demoablauf in 7 Schritten aus `plattform/README.md` durchgehen. Direkte Einstiege:
+- `#abgleich-kb-tw-05--sb-bd-22`: rechtzeitig
+- `#abgleich-lh-tw-01--sb-bd-23`: zu spät
+- `#abgleich-kb-t-31--sb-bd-21`: Angaben fehlen
+- `#projekte`: Karte mit offenen Entscheidungen
+- `#entscheidung-lh-e-01`: Türdemo
+- `#entscheidung-lh-e-02`: Doppelboden
+
+Zurücksetzen über Erfassen → „In diesem Browser gespeichert“ → „Zurücksetzen“.
+
+### Prüfungen
+
+Alle Browserläufe nutzten Chromium ohne Fenster über Playwright mit Sprache de-DE und Zeitzone Europe/Berlin. Die
+Skripte liegen außerhalb des Repositorys.
+
+**Agent 4 (cf-test) auf `d106bdc`.** Der Arbeitsbaum war vor und nach der Prüfung unverändert.
+
+| Bereich | Ergebnis |
+|---|---|
+| Regel- und Ansichtstests: `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs` | 176 von 176 |
+| Jury-Ablauf in 7 Schritten, Desktop 1440 × 900 | 55 von 55. Jede Kachelzahl entspricht der Zahl der Einträge im Klickziel. Reserve 58 Tage, ca. 7,9 km. Prüfende 02.12.2026, 5 Tage nach der Bestellfrist. Wechsel von „Angaben fehlen“ zu „Weiter prüfen“ nach dem Ergänzen |
+| Neu in `d106bdc` | BD-23 im Pass von TW-01 gesperrt, BD-21 im Pass von T-31 wählbar, zwei Entscheidungskarten auf `#projekte` |
+| Regression Fassung 1.1 (Doppelboden 7 m², Türdemo, offene Entscheidungen) | 26 von 26 |
+| Radar, IFC-Vorprüfung mit eigener kleiner IFC-Datei (2 Geschosse, 2 Räume, 3 Türen), Erfassung ohne Foto | bestanden |
+| Handy 390 × 844 (Emulation), 13 Routen | kein Querscrollen, untere Leiste bedienbar |
+| Dunkelmodus, Kontrast aller sichtbaren Texte auf 8 Ansichten | ein Verstoß: Ziffern der Statuskette |
+| Tastatur | Fokus sichtbar, Enter auf einer Kachel navigiert, Fokus nach Navigation im Inhalt |
+| Speichern, Neuladen, Zurücksetzen, kaputter Speicherwert | bestanden |
+| Unbekannte Route, Filter ohne Treffer | bestanden |
+| Konsole und Netz | keine Fehler, keine Anfrage an fremde Hosts |
+| Vorschau-Build (`node plattform/bauen-artifact.mjs <Ordner>`), lokal ausgeliefert | Übersicht, Türregel und E-01 funktionieren |
+
+Befunde: einer mittel und drei gering.
+- Mittel: Kontrast der Ziffern in der Statuskette im Dunkelmodus.
+- Gering: Eine Katalogvorgabe aus der Übersicht blieb haften und verbarg TW-05 in Schritt 3.
+- Gering: Eine Element-ID stand im Prüfauftrag, gibt es aber in der App nicht.
+- Gering: Leeres Absenden des Projektformulars per Enter wurde nicht gesondert geprüft.
+
+**cf-review auf `c128429`** (nur lesend, die zwei Schluss-Commits): kein blockierender und kein hoher Befund.
+- Mittel: Der Grund für gesperrte Bedarfe stand erst nach dem Klick auf „Zuordnen“ da. Behoben in `584e377`.
+- Gering: Strg-Klick auf „Bauteile“ leerte die Vorgabe im aktuellen Tab. Behoben in `584e377`.
+- Gering, offen: Ein nach Stichtagswechsel gesperrtes, noch gemerktes Ziel zeigt beim Klick den Abgleich-Fehler
+  statt „Bitte ein Ziel wählen“ (unschädlich).
+- Gering, offen: Der Test deckt die Fehlermeldung in `main.js` und den Fall „Klärung nötig“ nicht eigens ab.
+
+**Koordinator auf `584e377`, nach allen Korrekturen, mit denselben Skripten:**
+- Regel- und Ansichtstests: 177 von 177
+- Jury-Ablauf: 55 von 55
+- Regression Fassung 1.1: 26 von 26
+- Dunkelmodus: 0 Verstöße auf 8 Ansichten
+- Handy: 13 Routen ohne Querscrollen, untere Leiste bedienbar
+- Vorschau-Build: 4 von 4
+- Nachprüfung der Befunde: 13 von 13
+  - Kontrast der Ziffern im Dunkelmodus 10,43:1 und 8,84:1, im Hellmodus 6,48:1 und 8,73:1.
+  - „Bauteile“ in der Navigation hebt die Vorgabe auf, auch auf derselben Seite und am Handy.
+  - Schritt 3 zeigt TW-05.
+  - Ein leeres Projektformular per Enter setzt den Fokus auf den Namen.
+- Hinweis im Bauteilpass: 12 von 12 (Desktop und Handy, Link öffnet den Abgleich mit Grund, Strg-Klick lässt die
+  Vorgabe stehen)
+- Keine Skriptfehler und keine Anfragen an fremde Hosts in allen Läufen
+
+Zwei Tastaturprüfungen im Skript von Agent 4 bleiben rot. Das Skript erkennt Fokusrahmen an Pseudo-Elementen und
+SVG-Konturen nicht. Eine eigene Messung der berechneten Stile bestätigt den sichtbaren Fokus an Kachel,
+Diagrammsegment und Monatslink (3 von 3), ein Screenshot zeigt ihn. Die neue Sperre im Pass betrifft bei allen vier
+Projektzeiten nur die zwei Paare zu BD-23.
+
+**Nicht geprüft:**
+- Straßenkarte (Anfragen nach außen)
+- Fotoaufnahme mit Kamera
+- Raumscan (simuliert)
+- Echte Geräte, Safari und Firefox, Bildschirmleser
+- Tab-Reihenfolge außerhalb der Übersicht
+- Kontrast von SVG-Text und Karteninhalt
+- Kontrast im Hellmodus außer der Statuskette
+- Fachliche Richtigkeit von Abgleich und Vorgang
+
+Alles läuft als Simulation mit Beispieldaten.
+
+### Grenzen und bekannte Punkte
+
+- Abgleich, Mindestprüfzeiten (10 und 14 Tage) und Annahmefenster der Beispiele sind Entwurfsregel und Annahmen,
+  fachlich nicht geprüft. Lage und Entfernung sind symbolisch.
+- Nach einer Prüfbitte lässt sich ein Fachergebnis unabhängig vom Regelergebnis eintragen. Es ist als „laut
+  Eintrag“ gekennzeichnet.
+- „Übergeben“ ist im Demo-Zeitraum nicht erreichbar. Die Annahmefenster liegen 2027, ein Übergabedatum darf nicht nach
+  dem Stichtag liegen, und die Projektzeit lässt sich nur zwischen 18. und 20.11.2026 wählen. Die Logik ist durch
+  Tests abgedeckt.
+- Die Sperre gegen rückdatierte Einträge gilt für die neuen Vorgangsschritte, nicht für die älteren Knöpfe
+  „Zur Fachprüfung vorlegen“ und „Aufgabe vermerken“ der Fassung 1.
+- Im Bauteilpass bleibt die Zuordnung zu einem Bedarf mit „Angaben fehlen“ erlaubt. Der Bedarf lässt sich
+  ergänzen, und der Doppelbodenfall der Fassung 1.1 braucht diesen Weg. Der entstehende Vorgang bindet Bauteil und
+  Bedarf bis zum Abbruch. „Zu spät“ und „Klärung nötig“ (Widerspruch in den Angaben) sind gesperrt, wie bei der
+  Prüfbitte.
+- Eigene Bedarfe, deren Kennung schon ein Beispielbedarf trägt, werden beim Laden verworfen (gewollt).
+- Die Gruppenfarbe „Sonstige“ ist bewusst grau und unterschreitet die Farbsättigung, die das Palettenprüfskript
+  verlangt. Die Gruppe ist zusätzlich über Legende, Text und Tabelle erkennbar.
+- Die Startseite ist jetzt die Übersicht, die Karte liegt unter „Projekte“. Alle alten Links funktionieren weiter.
+- Git-Tags lassen sich über den Git-Proxy nicht pushen (HTTP 403). `plattform-v1-veroeffentlicht` (`f499936`) und
+  `plattform-v1.1-ausgang` (`b82bba5`) bestehen nur lokal. Der Branch ist gepusht.
+- Die bereits geteilte Seite der Fassung 1.1 wurde nicht aktualisiert, weil öffentliche Veröffentlichungen
+  ausgeschlossen waren. Fassung 2 (Stand `584e377`) liegt stattdessen als neue, private und nicht geteilte Seite
+  „CircularFlow Fassung 2“ im claude.ai-Konto. Sie entstand mit `node plattform/bauen-artifact.mjs` und weicht nur
+  im Seitentitel ab. Geprüft sind der lokal ausgelieferte Build (4 von 4) und die Liste der 35 hochgeladenen Dateien.
+  Die veröffentlichte Seite selbst wurde nicht im Browser geöffnet.
+- Nicht geändert: Produktbrief v0.2, CF-UMBAU-01 Revision 2, `prototype/dist/*`, `docs/entscheidungen.md`,
+  `AGENTS.md`, `CLAUDE.md`.
+
+### Entscheidungen, die eine Rückmeldung brauchen
+
+1. Die zehn Entscheidungen des Koordinators in Abschnitt 8, besonders „Vormerkung“ statt „Reservierung“, die
+   Prüfzeiten als Annahmen und den Doppelboden nur im eigenen Projekt.
+2. Die Übersicht als Startseite statt der Karte.
+3. Soll ein Fachergebnis nur möglich sein, wenn der Abgleich die Prüfbitte erlaubt hat?
+4. Soll die geteilte Seite auf Fassung 2 aktualisiert werden? Dafür ist eine ausdrückliche Freigabe nötig.
+5. Soll Fassung 2 den Produktbrief v0.2 fortschreiben, oder bleibt sie ein Demo-Entwurf?
