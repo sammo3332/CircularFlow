@@ -30,7 +30,7 @@ const A = {
   bestellfrist: '2027-02-19', // Ersatzbestellung muss entschieden sein
   verfuegbarAb: '2027-03-05', // Ende des Ausbaus 01.–05.03.2027
   annahmeVon: '2027-03-08', annahmeBis: '2027-03-12',
-  pruefzeitTage: '14',
+  pruefzeitTage: '14', // Simulationsannahme, bis das Team einen konkreten Praxisfall besprochen hat
 };
 
 const geo = JSON.parse(readFileSync(new URL('../../plattform/daten/dortmund-stadtbezirke.geojson', import.meta.url), 'utf8'));

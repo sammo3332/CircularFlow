@@ -4,12 +4,13 @@ Fiktiver, quellenbasierter Pilotfall mit Fallakte und Simulation des Ablaufs.
 
 | | |
 |---|---|
-| Dokumentversion | 1.1 vom 16.11.2026. Fassung 1.0 steht in `1f6656f`, danach sind die Befunde der unabhängigen Prüfung eingearbeitet. |
+| Dokumentversion | 1.2 vom 16.11.2026: Innentüren und Nachweise präzisiert, Vorgaben des Teams vom 16.11.2026 eingetragen. Fassung 1.0 steht in `1f6656f`, Fassung 1.1 (Befunde der unabhängigen Prüfung) in `9e595a4`. |
 | Branch | `codex/plattform-v1` |
 | Ausgangscommit | `daa40a9` (Fassung 2, festgehaltener Pitch-Stand). Der Anwendungscode ist seit `2121b92` unverändert. |
 | Maßgeblich | Produktbrief v0.2 (`docs/produktbrief.md`). Diese Fallakte ist eine Simulation. Sie erweitert den Produktumfang nicht. |
 | Unverändert | Anwendungscode (`plattform/`, `prototype/`), Pitch-Stand (`docs/pitch-ablauf.md`), Freigabe der Vorschau |
-| Dateien | diese Fallakte und die Nachrechnung [`cf-pilot-01-simulation.mjs`](cf-pilot-01-simulation.mjs) |
+| Pitch-Stand | bleibt festgehalten: Vorschau Version 2 (Versions-ID `1794826502-00b9`), Code `2121b92` |
+| Dateien | diese Fallakte, die Nachrechnung [`cf-pilot-01-simulation.mjs`](cf-pilot-01-simulation.mjs) und der Plan für die Zeit nach dem Pitch [`../plan-restmenge.md`](../plan-restmenge.md) |
 
 Alle Namen, Daten, Mengen und Rollen sind Simulationsannahmen. Es wurde niemand kontaktiert. Es gibt keine Kosten- oder
 CO₂-Zahlen.
@@ -55,8 +56,14 @@ Zwei Befunde aus der Nachrechnung:
    Fachkern die Menge des Bauteils zählt und nicht die Vormerkung. Dass eine Tür neu bestellt werden muss, steht nur
    in der Notiz zum Fachergebnis.
 
-**Kleinste sinnvolle Erweiterung (Vorschlag, nicht umgesetzt):** die Frist „Prüfbitte spätestens“ (Bestellfrist minus
-Mindestprüfzeit) für Bedarfe mit prüfbarem Angebot, siehe Abschnitt 9.
+**Nach dem Pitch (Vorgabe des Teams vom 16.11.2026):**
+
+1. Zuerst die sichtbare Restmenge: „6 benötigt, 5 unverbindlich vorgemerkt, 1 offen“. Die Bestellfrist für die offene
+   Tür bleibt sichtbar.
+2. Als nächster Schritt der zweite Vorgang für die Restmenge.
+
+Der Plan steht in [`docs/plan-restmenge.md`](../plan-restmenge.md). Umgesetzt ist nichts davon. Die Frist „Prüfbitte
+spätestens“ bleibt ein späterer Kandidat (Abschnitt 9).
 
 ## 2. Annahmen
 
@@ -68,7 +75,7 @@ Alle Annahmen sind reversibel. Ein reales Projekt ersetzt sie durch eigene Werte
 | A2 | Bedarfsprojekt | „Umbau am Kanal“ (UAK), Umbau, Stadtbezirk Innenstadt-Nord, Lage symbolisch (Bezirksmitte) |
 | A3 | Bedarf | BD-24 „Bürotüren 1. OG“, 6 Stk, angelegt 11.01.2027, zuständig Planung |
 | A4 | Ersatzbestellung | Bestellfrist 19.02.2027 (Vorgabe des Auftrags) |
-| A5 | Mindestprüfzeit | 14 Tage (eigene Annahme, nicht belegt) |
+| A5 | Mindestprüfzeit | 14 Tage. Simulationsannahme, nicht belegt. Sie bleibt so gekennzeichnet, bis das Team einen konkreten Praxisfall besprochen hat. |
 | A6 | Ausbau und Verfügbarkeit | Ausbau 01.–05.03.2027 (Vorgabe), „verfügbar ab“ 05.03.2027 |
 | A7 | Annahmefenster | 08.–12.03.2027 (Vorgabe) |
 | A8 | Begehung und Erfassung | 19.01.2027, 15:00. Ab dann ist das Angebot bekannt. |
@@ -76,7 +83,7 @@ Alle Annahmen sind reversibel. Ein reales Projekt ersetzt sie durch eigene Werte
 | A10 | Probeausbau einer Mustertür (V3) | 02.02.2027; Fachergebnis am Prüfende 03.02.2027 |
 | A11 | Vormerkung und Übergabeplanung | 04.02.2027; Übergabe am 08.03.2027, erster Tag des Annahmefensters |
 | A12 | Zwischenlagerung | 05.–08.03.2027 (3 Tage), Ort offen |
-| A13 | Schutzanforderungen am Zielort | keine Brand- oder Schallschutzanforderung. Gilt das nicht, braucht es Nachweise (Abschnitt 6). |
+| A13 | Schutzanforderungen | Am Zielort gilt keine Brand-, Rauch- oder Schallschutzanforderung. Die Türen in LH tragen keine Kennzeichnung; das ist eine Beobachtung, kein Nachweis. Was gilt, wenn das nicht stimmt, steht in Abschnitt 6 unter „Innentüren und Nachweise“. |
 | A14 | Sechs Angebotstüren | gleichartig, als eine Position mit Menge 6 (LH · T-13, Raum 1.04) |
 | A15 | Rollen | Planung, Bauleitung, Montagebetrieb und Fachprüfung sind die fiktiven Rollen der App. Der Eigentümer kommt dazu, er ist nicht in der App. |
 | A16 | Stichtag | Die Oberfläche zeigt Mi 18.11.2026, 14:00. Die Zeitpunkte 2027 rechnet die Nachrechnung mit demselben Fachkern. |
@@ -236,10 +243,9 @@ heißt in Fassung 2 nur: Eine Person hat den Wert eingetragen oder übernommen. 
   zur Abgleichseite (Schritt 6).
 - **Stand:**
   - **Bedienbar:** interne Zuordnung (zwei freie Zielöffnungen) und externer Abgleich.
-  - **Fehlt:**
-    - die Regel „erst intern, dann extern“, denn der Abgleich zeigt alle Bedarfe sofort,
-    - eine Sichtbarkeit je Kreis (Projekt, Eigentümer, alle),
-    - neue Zielöffnungen.
+  - **Fehlt:** eine Sichtbarkeit je Kreis (Projekt, Eigentümer, alle) und neue Zielöffnungen.
+  - **Empfehlung, keine Regel:** „Erst intern, dann extern“ bleibt eine Empfehlung an die Beteiligten (Vorgabe vom
+    16.11.2026). Die App erzwingt die Reihenfolge nicht, der Abgleich zeigt alle Bedarfe sofort.
   - Es wird nichts versendet.
 
 ### Schritt 6 · Bedarf und Fristen abgleichen
@@ -286,9 +292,12 @@ heißt in Fassung 2 nur: Eine Person hat den Wert eingetragen oder übernommen. 
 - **Vor Ort oder außerhalb:**
   - Probeausbau einer Mustertür: zerstörungsfrei möglich? Zustand danach?
   - Prüfung von Zustand, Maßen, Beschlägen und Zarge.
-  - Anforderungen am Zielort klären. Concular nennt Innentüren als Beispiel, für das kein Nachweis notwendig ist.
-    Ob eine Tür am Zielort Brand- oder Schallschutz leisten muss, sagt die Quelle nicht. Dann gälte nach eigener
-    Ableitung der Weg über einen Nachweis (Abschnitt 6).
+  - Anforderungen am Zielort mit Brandschutzkonzept und Fachplanung klären:
+    - Ohne Schutzanforderung ist für Innentüren laut Concular kein Verwendbarkeitsnachweis erforderlich.
+    - Mit Brandschutzanforderung braucht es laut Concular derzeit eine Zustimmung im Einzelfall.
+    - Einzelheiten und Grenzen stehen in Abschnitt 6 unter „Innentüren und Nachweise“.
+  - Zustand, Funktion und Passung prüft die Fachprüfung in jedem Fall. Kein Verwendbarkeitsnachweis heißt nicht
+    ungeprüft.
 - **Kostenvergleich** außerhalb der App, mit gleichem Leistungsumfang auf beiden Seiten:
   - Wiederverwendung: Ausbau, Schutz, Transport, Zwischenlager, Aufarbeitung, Anpassung, Einbau, Abnahme,
     Gewährleistung.
@@ -429,6 +438,7 @@ abgerufen, in Text umgewandelt und gelesen. Zitate sind wörtlich. Die Seitenang
 | **Madaster, „Match“** (Dokumentation, deutsch), <https://docs.madaster.com/de/de/knowledge-base/industrial-reuse.html>, „Zuletzt bearbeitet: 9. September 2026“ | veröffentlichte Herstellerangabe (Hilfeseite, nicht selbst bedient) | Siehe die Liste unter der Tabelle. | Auf der Seite fehlen: Bestellfrist oder Prüfzeit auf der Suchseite, Fachprüfung, Teilmengen nach einer Prüfung und Einbau. Wie gut das Matching in der Praxis trifft, ist nicht belegt. |
 | **Madaster, „Vorbereiten einer IFC-Quelldatei“** („Zuletzt bearbeitet: 27. Oktober 2026“) und **„Madaster BIM – IFC import process“** (PDF, erstellt 08.11.2022), <https://docs.madaster.com/files/en/Madaster%20BIM%20-%20IFC%20import%20process.pdf> | veröffentlichte Herstellerangabe | „Verwenden Sie vorzugsweise das Exportformat IFC 4, alternativ IFC 2x3.“ Allen Elementen ein Material und eine Klassifizierung zuweisen (z. B. DIN 276), Basismengen exportieren. Der Import liest zuerst die Daten und verknüpft dann die Elemente über Madaster-Eigenschaften oder Suchkriterien („Matching“) mit Materialien und Produkten der Datenbanken. Die Suchkriterien laufen in fester Reihenfolge, von „Equals“ (Groß- und Kleinschreibung beachtet) bis „Ends with“. Mengen kommen aus IfcElementQuantity (z. B. NetVolume, NetArea). | „Matching“ meint dort Material gegen Datenbank, nicht Angebot gegen Bedarf. Ein Bestandsgebäude ohne Modell braucht erst ein Modell oder die Excel-Vorlage. Ob es für Haus Lindenhof ein IFC-Modell gibt, ist offen. |
 | **Madaster, „Vorbereiten einer Excel-Quelldatei“** („Zuletzt bearbeitet: 22. September 2026“) und **„Madaster Action Plan“** (PDF, Version 4.0, 12.01.2022), <https://docs.madaster.com/files/be/en/Madaster%20-%20Action%20Plan.pdf> | veröffentlichte Herstellerangabe | Das Excel-Template ist die Alternative, wenn es kein BIM-Modell gibt. Es gibt ein Tabellenblatt „Rückbau“ für Elemente, die entfernt werden. Ohne die Angabe „Material/Produkt“ kann die Plattform ein Element nicht mit ihren Datenbanken verknüpfen, und eine Klassifizierung ist erforderlich. IFC- und Excel-Quelldateien werden beim Import automatisch geprüft, auf Vollständigkeit von Materialbeschreibung, Klassifizierungscode und Geometrie (Action Plan). | Wie aufwendig das Ausfüllen für zwölf Türen ist, belegen die Quellen nicht. |
+| **Concular, Seite „Leitfaden zur Wiederverwendung von Brandschutztüren“**, <https://concular.de/leitfaden-brandschutztueren/>, ohne Datum | veröffentlichte Herstellerangabe (der Anbieter verkauft selbst Türen und Leistungen) | Siehe „Innentüren und Nachweise“. | Den Leitfaden selbst (PDF) haben wir nicht gelesen, nur die Seite dazu. Die Kosten- und CO₂-Angaben der Seite werden nicht übernommen. Das Verfahren in Nordrhein-Westfalen nennt die Seite nicht. |
 
 **Belegt in der Handlungsempfehlung von Concular**, jeweils als Empfehlung des Herausgebers:
 
@@ -436,14 +446,7 @@ abgerufen, in Text umgewandelt und gelesen. Zitate sind wörtlich. Die Seitenang
   projektinternen Vermittlung (in-situ): „Kein Eigentumswechsel“, „keine Transportemissionen“. Es folgen die
   portfolio-interne Vermittlung, dann die externe Vermittlung „B2B, Direktvertrieb“ mit „Eigentumswechsel“ und
   „Wenige, bekannte Abnehmer“, zuletzt B2C.
-- **Nachweise:** Ob ein neuer Verwendbarkeitsnachweis nötig ist, „entscheidet die Bedeutung des Bauprodukts innerhalb
-  des Gebäudes und seine Auswirkungen auf die bauordnungsrechtlichen Anforderungen“ (Kapitel 2.3.1, PDF-Seite 14).
-  - Als Beispiel für Bauprodukte mit untergeordneter Rolle im Bauwerk nennt der Text nach MVV TB 2023/1 „D 2.2.2.3
-    Innentüren einschließlich Zubehör“ (PDF-Seite 14).
-  - Im Entscheidungsbaum (Abb. 2.3, PDF-Seite 15) steht die Innentür als Beispiel beim Ausgang „Kein Nachweis
-    notwendig“. Das ist sinngemäß aus der Abbildung, deren Wörter im Text einzeln stehen.
-  - Bei Sicherheits- oder Schutzanforderungen (§ 17 Abs. 1 MBO) führt der Baum zu Nachweis, Produktprüfung oder
-    Verwendbarkeitsnachweis.
+- **Nachweise:** siehe unten „Innentüren und Nachweise“.
 - **Prüfung und Haftung:** Das Wiederverwendungspotenzial wird im Rahmen der Bestandserfassung nach DIN SPEC 91484
   geprüft, mit „gutachterliche[r] Aussage“. Beim Einkauf „stellen die Inverkehrbringenden (Bauteilbörse, Marktplatz)
   die Gebrauchstauglichkeit sicher und haften für die Rechtskonformität“ (PDF-Seite 15).
@@ -475,21 +478,50 @@ abgerufen, in Text umgewandelt und gelesen. Zitate sind wörtlich. Die Seitenang
   Verkauf, Logistik und Zwischenlagerung werden direkt von den beteiligten Parteien organisiert.“
 - **Vorlauf:** „Für Rückbauprojekte wird ein Vorlauf von mindestens vier bis fünf Monaten empfohlen.“
 
+**Innentüren und Nachweise**
+
+Ob eine gebrauchte Tür einen neuen Verwendbarkeitsnachweis braucht, hängt laut Concular an ihrer Rolle im Gebäude:
+„Inwiefern ein neuer Verwendbarkeitsnachweis notwendig ist, entscheidet die Bedeutung des Bauprodukts innerhalb des
+Gebäudes und seine Auswirkungen auf die bauordnungsrechtlichen Anforderungen“ (Handlungsempfehlung, Kapitel 2.3.1,
+PDF-Seite 14). Daraus ergeben sich drei Fälle. Alle Angaben sind veröffentlichte Herstellerangaben, und die
+Handlungsempfehlung „stellt keine Rechtsberatung dar“.
+
+| Fall | Was die Quelle sagt | Was das für den Pilot heißt |
+|---|---|---|
+| Innentür ohne Schutzanforderung | „Ferner ist ein Verwendbarkeitsnachweis auch nicht erforderlich, wenn das Bauprodukt eine untergeordnete Bedeutung für die Bauwerkssicherheit hat.“ Als Beispiel nennt der Text nach MVV TB 2023/1 „D 2.2.2.3 Innentüren einschließlich Zubehör“ (PDF-Seite 14; der Satz ist im PDF über zwei Spalten umbrochen). Im Entscheidungsbaum steht die Innentür als Beispiel beim Ausgang „Kein Nachweis notwendig“ (Abb. 2.3, PDF-Seite 15, sinngemäß, weil die Wörter der Abbildung im Text einzeln stehen). | Gilt für die sechs Angebotstüren nur, wenn Annahme A13 stimmt. Die Fachplanung bestätigt das am Zielort. Zustand, Funktion und Passung prüft die Fachprüfung trotzdem: Die Prüfung gehört zur Bestandserfassung nach DIN SPEC 91484, und Inverkehrbringende stellen die Gebrauchstauglichkeit sicher (PDF-Seite 15). |
+| Brandschutztür (z. B. T30) | Brandschutz gehört zu den Schutzzielen, für die sicherheitsrelevante Bauprodukte sorgen (PDF-Seite 14). „Zur Verwendung von sicherheitsrelevanten wiedergewonnenen Bauprodukten ist in der Regel ein neuer Verwendbarkeitsnachweis“ zu beantragen, genannt sind abZ, abP und ZiE (PDF-Seite 15). Laut Conculars Seite zum Leitfaden für Brandschutztüren verliert eine Tür beim Ausbau „in der Regel ihren Verwendbarkeitsnachweis und ihr Ü-Zeichen bzw. ihre CE-Kennzeichnung“. Eine Zustimmung im Einzelfall braucht es „Derzeit ja, für Innen- wie für Außentüren.“ Und: „Eine PÜZ-Stelle begutachtet, je Modell wird eine Tür brandgeprüft. Die oberste Bauaufsicht erteilt die ZiE.“ | Nicht Teil des Pilots (A13). Wäre eine der Türen eine Brandschutztür, oder bräuchte der Zielort eine, trüge die Simulation nicht. Wie lange Brandprüfung und Zustimmung dauern, nennen die gelesenen Quellen nicht. Dass 14 Tage Prüfzeit dafür reichen, ist nicht belegt. |
+| Tür mit Schallschutzanforderung | Schallschutz steht unter den Schutzzielen (PDF-Seite 14). An anderer Stelle nennt der Text Schallschutz eine Komfortanforderung, die „zukünftig im Gebäudetyp-E gemeinsam mit den Planenden vereinbart und reduziert werden“ kann (PDF-Seite 15). Das ist ein Ausblick, kein geltendes Recht. | Ob eine Schallschutzanforderung an eine Bürotür einen Nachweis auslöst, beantworten die Quellen nicht eindeutig. Das klärt die Fachplanung. |
+
+Offen bleibt:
+
+- **MVV TB:** Den Wortlaut der MVV TB haben wir nicht gelesen. Ob der Eintrag D 2.2.2.3 Ausnahmen nennt, ist offen.
+- **Zarge:** Ob „Zubehör“ die Zarge umfasst, sagt die Handlungsempfehlung nicht.
+- **Andere Bundesländer:** Für Baden-Württemberg nennt die Seite Einzelheiten, etwa eine Zustimmung für mehrere
+  vergleichbare Fälle. Wie Nordrhein-Westfalen verfährt, sagen die gelesenen Quellen nicht.
+- **Ausbau als Änderung:** Ob schon der Ausbau eine wesentliche Änderung ist, nennt die Seite selbst
+  „Auslegungssache“.
+- **Rauchschutztüren** erwähnt die Seite nur als Angebot im eigenen Shop, ohne eigenes Verfahren.
+- **In der App:** „keine Kennzeichnung gefunden“ ist eine Beobachtung vor Ort mit dem Status „bestätigt“. Sie beweist
+  nicht, dass eine Tür keine Brand- oder Rauchschutztür ist. Fassung 2 speichert keine Nachweise. Das Fachergebnis
+  ist ein Eintrag, kein Nachweis.
+
 **Was die Quellen für den Pilot bedeuten**
 
 - Der Vorlauf im Pilot ist kurz. Vom bekannten Angebot (19.01.2027) bis zum Ausbau (01.03.2027) sind es 41 Tage, also
   etwa sechs Wochen. Madaster empfiehlt mindestens vier bis fünf Monate. Variante 2 ist deshalb kein Randfall.
-- „Erst intern, dann extern“ stützen Concular (Hierarchie) und Madaster (Sichtbarkeit je Kreis). Fassung 2 bildet die
-  Reihenfolge nicht ab.
-- Für Innentüren nennt Concular keinen Nachweisbedarf. Dass Brand- oder Schallschutz am Zielort das ändert, ist eine
-  eigene Ableitung aus dem Entscheidungsbaum, keine Aussage der Quelle über Türen. Bevor Variante 1 gilt, muss die
-  Fachprüfung die Anforderungen am Zielort bestätigen.
+- „Erst intern, dann extern“ stützen Concular (Hierarchie) und Madaster (Sichtbarkeit je Kreis). Die Reihenfolge
+  bleibt eine Empfehlung an die Beteiligten, keine Regel der App (Vorgabe vom 16.11.2026).
+- Für Innentüren ohne Schutzanforderung ist laut Concular kein Verwendbarkeitsnachweis erforderlich. Für
+  Brandschutztüren braucht es laut Concular derzeit eine Zustimmung im Einzelfall. Bevor Variante 1 gilt, bestätigt
+  die Fachplanung die Anforderungen am Zielort, und die Fachprüfung bestätigt Zustand und Passung.
 
 **Was ein reales Projekt bestätigen müsste**
 
 1. Zustimmung des Eigentümers, Übergabevereinbarung, Eigentumsübergang und Haftung.
 2. Die tatsächliche Bestellfrist und Lieferzeit der Ersatztüren, und ob 14 Tage Prüfzeit reichen.
-3. Anforderungen am Zielort: Brandschutz, Schallschutz, Barrierefreiheit.
+3. Anforderungen am Zielort laut Brandschutzkonzept und Fachplanung: Brand-, Rauch- und Schallschutz,
+   Barrierefreiheit. Dazu, ob Türen in LH eine Zulassung oder Kennzeichnung haben. Bei Brandschutztüren außerdem
+   Verfahren und Dauer einer Zustimmung im Einzelfall in Nordrhein-Westfalen.
 4. Maße der Öffnungen am Zielort, Wandstärke und Anschlag je Öffnung.
 5. Ob der Ausbau zerstörungsfrei gelingt (Probeausbau) und wie viele Türen ausfallen.
 6. Zwischenlager, Versicherung, Transport und der Termin im Annahmefenster.
@@ -505,10 +537,10 @@ abgerufen, in Text umgewandelt und gelesen. Zitate sind wörtlich. Die Seitenang
 | 2 Unterlagen | IFC-Vorprüfung | IFC-Import | Ablage für Unterlagen, Excel- oder CSV-Import |
 | 3 Begehung | Erfassung, manuelles Aufmaß, Wertstatus | Bilderkennung, Raumscan | Einzelnummern je Tür in einer Position |
 | 4 Bauteilpass | Pass mit Angaben, offenen Nachweisen, Paaren | – | Menge nachträglich ändern, Dokumente am Pass, eine Frist passend zum Pilot (der Pass nennt die Frist von LH aus den Beispieldaten) |
-| 5 Intern und extern | Zuordnung zu zwei freien Zielöffnungen, Abgleich | – | „erst intern, dann extern“, Sichtbarkeit, neue Zielöffnungen |
+| 5 Intern und extern | Zuordnung zu zwei freien Zielöffnungen, Abgleich | – | Sichtbarkeit je Kreis, neue Zielöffnungen. „Erst intern, dann extern“ bleibt eine Empfehlung, keine Regel der App. |
 | 6 Abgleich | Bedarf, Fristen, Abgleich, Zeitkritisch | – | Benachrichtigung, Frist „Prüfbitte spätestens“ |
 | 7 Fachprüfung | Prüfbitte, Checkliste | Fachergebnis (laut Eintrag) | Kostenvergleich (bewusst), Prüfunterlagen |
-| 8 Übergabe | Vormerkung, Übergabe geplant | „übergeben“ (nur Nachrechnung) | Einbau, Protokoll, Lager und Transport, Restmenge nach Teil-Vormerkung |
+| 8 Übergabe | Vormerkung, Übergabe geplant | „übergeben“ (nur Nachrechnung) | Einbau, Protokoll, Lager und Transport, Restmenge nach Teil-Vormerkung (geplant, siehe `docs/plan-restmenge.md`) |
 
 ## 8. Kurze Demo: die zwei stärksten Momente
 
@@ -548,35 +580,31 @@ bereithalten.
 - „Es wird nichts versendet.“
 - „Ob 14 Tage Prüfzeit reichen, muss ein reales Projekt bestätigen.“
 
-## 9. Kleinste sinnvolle Erweiterung (Vorschlag, nicht umgesetzt)
+## 9. Erweiterungen nach dem Pitch (geplant, nicht umgesetzt)
 
-**Empfehlung: Frist „Prüfbitte spätestens“.**
+**Reihenfolge laut Auftrag vom 16.11.2026**
 
-- **Problem:** Variante 2 zeigt es. Die Prüfbitte ist nur bis Bestellfrist minus Mindestprüfzeit möglich, im Pilot bis
-  05.02.2027. Die Übersicht warnt erst sieben Tage vor der Bestellfrist, also ab 13.02.2027.
-- **Verhalten:**
-  - Gilt für einen Bedarf ohne laufenden Vorgang, der mindestens ein prüfbares Paar hat („Weiter prüfen“ oder
-    „Knapp“).
-  - Unter „Zeitkritisch (7 Tage)“ steht dann „Prüfbitte spätestens“ mit Datum (Bestellfrist minus Mindestprüfzeit),
-    Bedarf und zuständiger Rolle. Die Bedarfsseite zeigt dieselbe Angabe.
-  - Es braucht keine neuen Eingaben und keine Benachrichtigung.
-- **Ausgeschlossen:** Versand, E-Mail, Änderungen an den Abgleichregeln, Pitch-Stand.
-- **Akzeptanz (Vorschlag):**
-  - Mit den Pilotdaten steht „Prüfbitte spätestens 05.02.2027 · BD-24“ ab 30.01.2027 unter „Zeitkritisch“, nach
-    derselben Sieben-Tage-Regel wie die Bestellfrist. Der 30.01. ist ein Samstag, Arbeitstage zählt die Regel nicht.
-  - Ab 06.02.2027 ist das Paar „zu spät“, und der Eintrag verschwindet.
-  - Ein Test im Fachkern deckt beides ab. Die bestehenden 190 Tests bleiben grün.
-- **Aufwand:** klein. Eine Funktion im Fachkern, ein Eintrag in `kennzahlen.js`, eine Zeile in der Anzeige, Tests.
-- **Zeitpunkt:** erst nach dem Pitch. Die neue Frist kann die Übersicht der geprüften Vorschau verändern.
-- **Freigabe:** Der Produktbrief v0.2 nennt diese Frist nicht. Das Team entscheidet.
+1. **Sichtbare Restmenge.** Nach einer Teil-Vormerkung zeigt die App „6 benötigt, 5 unverbindlich vorgemerkt,
+   1 offen“. Die Bestellfrist für die offene Tür bleibt sichtbar: auf der Bedarfsseite, auf der Entscheidungsseite
+   und unter „Zeitkritisch“.
+2. **Zweiter Vorgang für die Restmenge** als nächster Schritt. Für die offene Menge lässt sich ein weiteres Angebot
+   abgleichen und prüfen. Die Vormerkung ist auf die offene Menge begrenzt.
 
-**Alternativen, falls das Team anders gewichtet:**
+Den Plan mit Verhalten, Ausschluss, Akzeptanzkriterien und den betroffenen Stellen im Code enthält
+[`docs/plan-restmenge.md`](../plan-restmenge.md). Beides kommt erst nach dem Pitch und erst, wenn das Team den Umfang
+freigegeben hat.
 
-1. **Restmenge nach Teil-Vormerkung** (Variante 3): Der Bedarf bleibt mit „Es fehlen 1 Stk“ offen, die Bestellfrist
-   bleibt sichtbar, und weitere Angebote lassen sich abgleichen. Das ist größer, weil es die Belegung des Bedarfs in
-   Paarliste, Übersicht und Sperren berührt.
-2. **Einbau dokumentieren** (Schritt 8): ein Schritt nach „übergeben“ mit Datum, Ort und Foto. Er ist wichtig für den
-   Nachweis, aber nicht zeitkritisch.
+**Weitere Kandidaten (nicht priorisiert)**
+
+- **Frist „Prüfbitte spätestens“** (Variante 2):
+  - Die Frist ist Bestellfrist minus Mindestprüfzeit. Sie gilt für Bedarfe ohne laufenden Vorgang mit mindestens
+    einem prüfbaren Paar.
+  - Mit den Pilotdaten stünde „Prüfbitte spätestens 05.02.2027 · BD-24“ ab Samstag, 30.01.2027 unter
+    „Zeitkritisch“. Das folgt derselben Sieben-Tage-Regel wie die Bestellfrist.
+  - Ab 06.02.2027 ist das Paar „zu spät“.
+  - Der Aufwand ist klein. Der Produktbrief v0.2 nennt diese Frist nicht.
+- **Einbau dokumentieren** (Schritt 8): ein Schritt nach „übergeben“ mit Datum, Ort und Foto. Er ist wichtig für den
+  Nachweis, aber nicht zeitkritisch.
 
 ## 10. Prüfungen
 
@@ -586,7 +614,7 @@ Dateien unter `docs/pilot/`. Fassung 1.0 dieser Akte steht in `1f6656f`.
 
 | Prüfung | Befehl | Ergebnis |
 |---|---|---|
-| Nachrechnung | `node docs/pilot/cf-pilot-01-simulation.mjs` | „Alle erwarteten Ergebnisse eingetreten.“ Exit-Code 0, auch nach den Korrekturen von Fassung 1.1. Das Skript bricht ab, wenn ein erwarteter Wert abweicht. |
+| Nachrechnung | `node docs/pilot/cf-pilot-01-simulation.mjs` | „Alle erwarteten Ergebnisse eingetreten.“ Exit-Code 0, erneut ausgeführt für Fassung 1.1 und 1.2. Das Skript bricht ab, wenn ein erwarteter Wert abweicht. |
 | Bestehende Tests | `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs` | 190 von 190 bestanden |
 | Klickpfade im Browser | Playwright-Skript in Chromium, 1440 × 900, lokaler Server (`python3 -m http.server`), Stichtag Mi 18.11.2026, 14:00, zwei frische Kontexte | 30 von 30 bestanden, ohne Fehler in Konsole und Netz. Zweimal ausgeführt, vor und nach dem Schreiben der Akte. |
 | Unabhängige Prüfung | Agent cf-review, nur lesend, auf Fassung 1.0 | kein blockierender und kein hoher Befund. Die 3 mittleren und 4 geringen Punkte sind in Fassung 1.1 eingearbeitet. |
@@ -594,6 +622,9 @@ Dateien unter `docs/pilot/`. Fassung 1.0 dieser Akte steht in `1f6656f`.
 Die unabhängige Prüfung hat die Zitate aus der Mitteilung des BLB NRW und aus den Madaster-Unterlagen zu IFC, Excel
 und Action Plan nicht gegen den Text gelesen. Diese Zitate wurden beim Schreiben mit dem abgerufenen Text verglichen,
 aber nicht unabhängig geprüft.
+
+Für Fassung 1.2 haben sich nur Dokumente geändert. Nachrechnung und Tests liefen erneut. Den Browserlauf haben wir
+nicht wiederholt, weil der Anwendungscode gleich geblieben ist.
 
 Was das Browserskript prüft:
 
@@ -615,17 +646,30 @@ nicht im Repository.
 
 ## 11. Übergabe
 
-- **Stand:** 16.11.2026, Dokumentversion 1.1, Branch `codex/plattform-v1`, Ausgangscommit `daa40a9`.
+- **Stand:** 16.11.2026, Dokumentversion 1.2, Branch `codex/plattform-v1`, Ausgangscommit `daa40a9`.
 - **Gelesene Quellen und Prüfweg:** siehe Abschnitt 6. Abgerufen am 16.11.2026 mit `curl` über den Proxy der
-  Arbeitsumgebung, nur die Hosts concular.de, www.blb.nrw.de, docs.madaster.com und madaster.com.
-- **Ergebnis:** Fassung 2 bildet den Pilot bis „Übergabe geplant“ bedienbar ab. Zwei Lücken sind belegt:
-  - der fehlende späteste Prüfbeginn (Variante 2),
-  - die unsichtbare Restmenge nach einer Teil-Vormerkung (Variante 3).
-- **Änderungen an bisherigen Entscheidungen:** keine. Pitch-Stand, Anwendungscode und Freigabe sind unverändert.
+  Arbeitsumgebung, nur die Hosts concular.de, www.blb.nrw.de, docs.madaster.com und madaster.com. Für Fassung 1.2 kam
+  Conculars Seite zum Leitfaden für Brandschutztüren dazu.
+- **Ergebnis:**
+  - Fassung 2 bildet den Pilot bis „Übergabe geplant“ bedienbar ab.
+  - Zwei Lücken sind belegt: der fehlende späteste Prüfbeginn (Variante 2) und die unsichtbare Restmenge nach einer
+    Teil-Vormerkung (Variante 3).
+  - Die Aussage zu Innentüren und Nachweisen ist in Abschnitt 6 nach drei Fällen getrennt.
+- **Auftrag vom 16.11.2026, hier als Arbeitsstand:**
+  1. Der Pitch-Stand bleibt festgehalten.
+  2. Nach dem Pitch kommt zuerst die sichtbare Restmenge, als nächster Schritt der zweite Vorgang für die Restmenge.
+  3. „Erst intern, dann extern“ bleibt eine Empfehlung.
+  4. Die 14 Tage bleiben Simulationsannahme, bis ein konkreter Praxisfall besprochen ist.
+  5. Für jetzt genügt die Dokumentation.
+
+  Dieses Repository führt keine eigene Entscheidungsliste (`docs/entscheidungen.md`). Ins maßgebliche Protokoll
+  `00_START_HIER/ENTSCHEIDUNGEN.md` trägt das Team die Punkte mit Aufgabe und Commit ein.
+- **Änderungen an bisherigen Entscheidungen:** Die Empfehlung aus Fassung 1.0, zuerst „Prüfbitte spätestens“
+  umzusetzen, ist durch den Auftrag abgelöst. Sie bleibt als späterer Kandidat erhalten. Pitch-Stand, Anwendungscode
+  und Freigabe sind unverändert.
 - **Offene Fragen an das Team:**
-  1. Soll „Prüfbitte spätestens“ nach dem Pitch umgesetzt werden, oder zuerst die Restmenge?
-  2. Gilt die Reihenfolge „erst intern, dann extern“ als Produktregel?
-  3. Gibt es einen realen Partner, der Bestellfrist, Lieferzeit und Prüfzeit für Innentüren nennen kann?
+  1. Gibt es einen realen Partner, der Bestellfrist, Lieferzeit und Prüfzeit für Innentüren nennen kann?
+  2. Die offenen Punkte im Plan zur Restmenge (`docs/plan-restmenge.md`, Abschnitt 8).
 - **Nächster Prüfauftrag (genau einer):** Mit einer Planerin oder einem Planer aus einem realen Umbauprojekt prüfen,
   wie viele Tage vor der Ersatzbestellung ein Angebot vorliegen muss. Abschlusskriterium: eine dokumentierte Angabe
   mit Quelle, die die Annahme A5 (14 Tage) bestätigt oder ersetzt. Vorgeschlagene Zuständigkeit: Team CircularFlow.
