@@ -1,7 +1,7 @@
 // Reine Fachfunktionen der Plattform: kein DOM, kein Speicher, keine Systemuhr.
 // Die geprüfte Türregel (prototype/dist/door-rules.mjs) wird als Modul R übergeben und nicht verändert.
 import { GRUPPEN, PERSONEN } from './daten.js';
-import { minuten, bis, istDatum, zeit } from './zeit.js';
+import { minuten, bis, istDatum, zeit, ausMinuten } from './zeit.js';
 
 export const schluessel = (projekt, id) => `${projekt}:${id}`;
 export const rolleKey = (role) => Object.keys(PERSONEN).find((k) => PERSONEN[k].rolle === role) || 'planung';
@@ -35,6 +35,22 @@ export function anforderungTuer(R, z) {
 }
 export const fristenTuer = (z) => ({ measureDeadline: z.measureDeadline, replaceDeadline: z.replaceDeadline });
 
+// Türdemo: Beispielaufmaß, das rechtzeitig vor der Aufmaßfrist eingeht, und die Projektzeit, ab der es sichtbar ist.
+// B-02 nutzt das geprüfte Beispiel aus Rev. 2 (Eingang 18.11., 15:00). Andere Öffnungen: Eingang zur Projektzeit,
+// liegt diese nach der Frist, eine Stunde vor der Frist. Die Projektzeit springt nur vor, nie zurück.
+export function beispielAufmassRechtzeitig(R, z, at, zeiten = []) {
+  const req = anforderungTuer(R, z);
+  let aufmass;
+  if (req === R.REQUIREMENT) aufmass = { ...R.SAMPLE_MEASUREMENT };
+  else {
+    const eingang = minuten(at) <= minuten(z.measureDeadline) ? at : ausMinuten(minuten(z.measureDeadline) - 60);
+    aufmass = { valueText: String(Math.round((z.minMm + z.maxMm) / 2)), unit: 'mm', reference: req.reference, status: 'gemessen', source: 'fiktive Aufmaßnotiz', measuredOn: eingang.slice(0, 10), receivedAt: eingang };
+  }
+  const ab = minuten(aufmass.receivedAt);
+  const neueZeit = minuten(at) >= ab ? at : (zeiten.find((x) => minuten(x.at) >= ab)?.at ?? aufmass.receivedAt);
+  return { aufmass, at: neueZeit };
+}
+
 // ---------- Doppelboden je Bedarf (Entwurfsregel, nicht geprüft) ----------
 // rasterIst zählt nur, wenn der Wert gemessen oder bestätigt ist; ein bloßer Vorschlag kommt als rasterVorschlag.
 export function bewerteBoden({ bedarf, flaecheM2, rasterIst, rasterVorschlag = '', beschaedigtRoh, hoeheAm, lastAm, at }) {
@@ -48,14 +64,24 @@ export function bewerteBoden({ bedarf, flaecheM2, rasterIst, rasterVorschlag = '
   const last = bis(lastAm, at) ? lastAm : null;
   const nw = bedarf.nachweisWerte;
   const sollMenge = `${zahlText(bedarfM2)} m² (${bedarf.bedarfM2} m² + ${bedarf.reserveProzent} % Reserve)`;
+  // Deckung: Auch ohne jeden Schaden ist höchstens die erfasste Fläche verwendbar. Reicht schon sie nicht,
+  // ist der Bedarf sicher nicht vollständig gedeckt, unabhängig von der noch offenen Schadfläche.
+  const hoechstens = verwendbar ?? flaecheM2;
+  const fehlt = Math.max(0, hundertstel(bedarfM2) - hundertstel(hoechstens)) / 100;
+  const deckung = hundertstel(hoechstens) < hundertstel(bedarfM2)
+    ? { key: 'teil', label: 'Bedarf nicht vollständig gedeckt', ton: 'crit', hoechstens, fehlt, schadenOffen: verwendbar === null,
+      text: `${verwendbar === null ? 'Höchstens' : 'Verwendbar sind'} ${zahlText(hoechstens)} m², Bedarf ${sollMenge}. Es fehlen ${verwendbar === null ? 'mindestens ' : ''}${zahlText(fehlt)} m².${verwendbar === null ? ' Die beschädigte Fläche ist noch unbekannt und kann die Lücke nur vergrößern.' : ''}` }
+    : verwendbar === null
+      ? { key: 'offen', label: 'Deckung offen', ton: 'warn', hoechstens, fehlt: 0, schadenOffen: true, text: `Erfasst sind ${zahlText(flaecheM2)} m², Bedarf ${sollMenge}. Ob es reicht, hängt von der beschädigten Fläche ab.` }
+      : { key: 'voll', label: 'Bedarf gedeckt', ton: 'ok', hoechstens, fehlt: 0, schadenOffen: false, text: `Verwendbar sind ${zahlText(verwendbar)} m², Bedarf ${sollMenge}. Überschuss ${zahlText((hundertstel(verwendbar) - hundertstel(bedarfM2)) / 100)} m².` };
   const k = (key, name, soll, ist, befund, ton, weg) => ({ key, name, soll, ist, befund, ton, weg });
   const kriterien = [
     rasterIst === bedarf.raster ? k('raster', 'Rastermaß', bedarf.raster, `${rasterIst}`, 'erfüllt', 'ok', 'Regel (Entwurf)')
       : rasterIst ? k('raster', 'Rastermaß', bedarf.raster, rasterIst, 'verfehlt', 'crit', 'Regel (Entwurf)')
         : k('raster', 'Rastermaß', bedarf.raster, rasterVorschlag ? `${rasterVorschlag} (nur vorgeschlagen)` : 'fehlt', rasterVorschlag ? 'offen: Vorschlag prüfen' : 'offen: Angabe fehlt', 'warn', 'Regel (Entwurf)'),
-    verwendbar === null ? k('menge', 'Menge', sollMenge, 'beschädigte Fläche fehlt oder ist ungültig', 'offen: Angabe prüfen', 'warn', 'Regel (Entwurf)')
-      : hundertstel(verwendbar) >= hundertstel(bedarfM2) ? k('menge', 'Menge', sollMenge, `${zahlText(verwendbar)} m² verwendbar`, `erfüllt, ${zahlText((hundertstel(verwendbar) - hundertstel(bedarfM2)) / 100)} m² Überschuss`, 'ok', 'Regel (Entwurf)')
-        : k('menge', 'Menge', sollMenge, `${zahlText(verwendbar)} m² verwendbar`, `verfehlt, ${zahlText((hundertstel(bedarfM2) - hundertstel(verwendbar)) / 100)} m² fehlen`, 'crit', 'Regel (Entwurf)'),
+    deckung.key === 'teil' ? k('menge', 'Menge', sollMenge, verwendbar === null ? `höchstens ${zahlText(flaecheM2)} m², beschädigte Fläche unbekannt` : `${zahlText(verwendbar)} m² verwendbar`, `Bedarf nicht vollständig gedeckt, ${verwendbar === null ? 'mindestens ' : ''}${zahlText(fehlt)} m² fehlen`, 'crit', 'Regel (Entwurf)')
+      : deckung.key === 'offen' ? k('menge', 'Menge', sollMenge, 'beschädigte Fläche fehlt oder ist ungültig', 'offen: Angabe prüfen', 'warn', 'Regel (Entwurf)')
+        : k('menge', 'Menge', sollMenge, `${zahlText(verwendbar)} m² verwendbar`, `erfüllt, ${zahlText((hundertstel(verwendbar) - hundertstel(bedarfM2)) / 100)} m² Überschuss`, 'ok', 'Regel (Entwurf)'),
     !hoehe ? k('hoehe', 'Aufbauhöhe', `${bedarf.aufbauhoeheMm} mm`, 'Verstellbereich der Stützen unbekannt', 'offen: Nachweis fehlt', 'warn', 'Nachweis')
       : bedarf.aufbauhoeheMm >= nw.verstellVonMm && bedarf.aufbauhoeheMm <= nw.verstellBisMm ? k('hoehe', 'Aufbauhöhe', `${bedarf.aufbauhoeheMm} mm`, `Verstellbereich ${nw.verstellVonMm} bis ${nw.verstellBisMm} mm (${nw.quelle})`, 'im Verstellbereich', 'ok', 'Nachweis')
         : k('hoehe', 'Aufbauhöhe', `${bedarf.aufbauhoeheMm} mm`, `Verstellbereich ${nw.verstellVonMm} bis ${nw.verstellBisMm} mm (${nw.quelle})`, 'außerhalb des Verstellbereichs', 'crit', 'Nachweis'),
@@ -77,14 +103,17 @@ export function bewerteBoden({ bedarf, flaecheM2, rasterIst, rasterVorschlag = '
   const add = (rank, text, rolle, grund) => aufgaben.push({ rank, text, rolle, grund });
   if (!ersatzOffen) add(1, 'Bestellstatus klären', 'planung', 'Erst feststellen, ob ein neuer Doppelboden bereits bestellt wurde und welche Optionen noch offenstehen.');
   if (widerspruch) add(2, 'Termine klären', 'planung', 'Die Nachweisfrist liegt nach der Ersatzentscheidung.');
-  if (ersatzOffen && verfehlt.length) add(3, 'Anpassung fachlich klären oder Ersatzweg vorbereiten', 'planung', `Verfehlt: ${verfehlt.map((x) => x.name).join(', ')}. Die Ersatzentscheidung steht noch aus.`);
+  // Reicht die Menge sicher nicht, ist das der erste fachliche Punkt: Teilmenge oder weitere Quelle.
+  if (deckung.key === 'teil') add(3, 'Teilmenge einplanen oder weitere Quelle suchen', 'planung', `Die erfassten ${zahlText(hoechstens)} m² decken den Bedarf nur zum Teil. Entweder als Teilmenge einplanen und den Rest anders beschaffen oder eine weitere Quelle für ${deckung.schadenOffen ? 'mindestens ' : ''}${zahlText(fehlt)} m² suchen.`);
+  const andere = verfehlt.filter((x) => x.key !== 'menge');
+  if (ersatzOffen && andere.length) add(3, 'Anpassung fachlich klären oder Ersatzweg vorbereiten', 'planung', `Verfehlt: ${andere.map((x) => x.name).join(', ')}. Die Ersatzentscheidung steht noch aus.`);
   if (ersatzOffen && (nachweis.key === 'overdue' || nachweis.key === 'late')) add(4, 'Prüfvorlauf klären', 'planung', 'Die Nachweise sind überfällig oder verspätet eingegangen, die Ersatzentscheidung steht noch aus.');
   if (!nachweiseDa) add(5, 'Herstellerangaben zu Stützenhöhe und Tragfähigkeit beschaffen oder Probeausbau veranlassen', 'montage', 'Ohne Nachweise bleiben Aufbauhöhe und Tragfähigkeit offen.');
   if (verwendbar === null) add(5, 'Beschädigte Fläche aus der Stichprobe prüfen und gültig angeben', 'bauleitung', 'Ohne gültige Angabe bleibt die verwendbare Menge offen.');
   if (!rasterIst) add(5, rasterVorschlag ? 'Rastermaß vor Ort prüfen und bestätigen' : 'Rastermaß vor Ort feststellen', 'bauleitung', 'Ein vorgeschlagenes oder fehlendes Rastermaß zählt nicht.');
   if (nachweiseDa && nachweis.key === 'onTime' && ersatzOffen && pruefbarErfuellt && !widerspruch) add(6, 'Variante zur fachlichen Prüfung vorlegen', 'planung', 'Rastermaß, Menge und Aufbauhöhe passen, die Nachweise liegen rechtzeitig vor. Weitere technische Anforderungen bleiben offen.');
   aufgaben.sort((a, b) => a.rank - b.rank);
-  return { kriterien, nachweis, ersatz, verwendbar, bedarfM2, beschaedigtGueltig, beschaedigtFehler, haupt: aufgaben[0], weiter: aufgaben.slice(1), widerspruch, hoehe, last };
+  return { kriterien, deckung, nachweis, ersatz, verwendbar, bedarfM2, beschaedigtGueltig, beschaedigtFehler, haupt: aufgaben[0], weiter: aufgaben.slice(1), widerspruch, hoehe, last };
 }
 export const zahlText = (n) => Number(n).toLocaleString('de-DE', { maximumFractionDigits: 2 });
 
@@ -166,6 +195,18 @@ export function lage(ctx, e) {
 export const tonVon = (h) => (h.wartet ? 'info' : h.rank <= 2 ? 'crit' : h.rank <= 4 ? 'warn' : h.rank === 5 ? 'info' : 'ok');
 export function naechsteFrist(l, at) { return l.fristen.filter((f) => minuten(f.at) >= minuten(at)).sort((x, y) => minuten(x.at) - minuten(y.at))[0] || null; }
 
+// Offene Entscheidungen nach Handlungsdruck: wartende zuletzt, dann Rang des nächsten Schritts, dann nächste Frist.
+// Ohne kommende Frist gilt die zuletzt verstrichene, damit Überfälliges sichtbar bleibt.
+export function offeneEntscheidungen(ctx, anzahl = 2) {
+  const alle = ctx.daten.entscheidungen.map((e) => {
+    const l = lage(ctx, e);
+    const frist = naechsteFrist(l, ctx.at) || [...l.fristen].sort((x, y) => minuten(x.at) - minuten(y.at)).pop() || null;
+    return { e, l, frist };
+  });
+  const kommend = (x) => (x.frist && minuten(x.frist.at) >= minuten(ctx.at) ? minuten(x.frist.at) : Number.MAX_SAFE_INTEGER);
+  alle.sort((a, b) => (Number(Boolean(a.l.haupt.wartet)) - Number(Boolean(b.l.haupt.wartet))) || (a.l.haupt.rank - b.l.haupt.rank) || (kommend(a) - kommend(b)));
+  return { liste: alle.slice(0, anzahl), gesamt: alle.length };
+}
 export const entscheidungFuer = (ctx, b) => ctx.daten.entscheidungen.find((e) => e.projekt === b.projekt && e.bauteil === b.id) || null;
 
 export function bauteilStatus(ctx, b) {

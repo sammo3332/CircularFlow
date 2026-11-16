@@ -2,7 +2,7 @@
 import { GRUPPEN, PROJEKTE } from '../daten.js';
 import { esc, chip, leer, slug, routePass, routeEntscheidung, routeRaum, person, bauteilRef, pchip } from '../ui.js';
 import { lage, tonVon, naechsteFrist, schluessel, wertText } from '../regeln.js';
-import { zeit, abstand } from '../zeit.js';
+import { zeit, abstand, minuten } from '../zeit.js';
 import { projektKopf, raumVon } from './projekte.js';
 
 export function entscheidungsListe(ctx, p) {
@@ -18,7 +18,7 @@ function zeile(ctx, p, e, l) {
   const f = naechsteFrist(l, ctx.at) || l.fristen[l.fristen.length - 1];
   const a = f ? abstand(f.at, ctx.at) : null;
   return `<a class="entscheidung-zeile" href="${routeEntscheidung(e)}">
-    <span class="ez-id"><span class="mono">${esc(e.id)}</span>${chip(l.geprueft ? 'Regel geprüft' : 'Entwurf', l.geprueft ? 'ok' : 'neutral')}</span>
+    <span class="ez-id"><span class="mono">${esc(e.id)}</span>${chip(l.geprueft ? 'Regel geprüft' : 'Entwurf', l.geprueft ? 'ok' : 'neutral')}${l.r?.deckung?.key === 'teil' ? chip(l.r.deckung.label, 'crit') : ''}</span>
     <span class="ez-titel"><b>${esc(l.b.id)} ${esc(l.b.name)}</b><small>→ ${e.ziel.art === 'zieloeffnung' ? `Zielöffnung ${esc(l.z.id)}, Raum ${esc(l.z.raum)}` : `Bedarf ${esc(l.z.projekt)} · ${esc(l.z.id)}`}</small></span>
     <span class="ez-schritt"><i class="streifen t-${tonVon(l.haupt)}"></i><span><small>Nächster Schritt · ${esc(person(l.haupt.rolle).rolle)}</small><b>${esc(l.haupt.text)}</b>${l.weiter.length ? `<small>und ${l.weiter.length} weitere offene Aufgabe${l.weiter.length > 1 ? 'n' : ''}</small>` : ''}</span></span>
     <span class="ez-frist">${f ? `<small>${esc(f.name)}</small><span class="mono">${zeit(f.at)}</span><small class="${a.vorbei ? 'vorbei' : ''}">${a.text}</small>` : '<small>keine Frist</small>'}</span>
@@ -44,6 +44,11 @@ export function entscheidungsSeite(ctx, p, e) {
       <p class="unter">${chip(l.regelText, l.geprueft ? 'ok' : 'neutral')} <a href="${routePass(b)}">Bauteilpass ${esc(b.id)}</a></p>
     </div>
   </section>
+  ${l.r?.deckung ? `<section class="befund t-rand-${l.r.deckung.ton}" id="befund-deckung" aria-labelledby="h-befund">
+    <p class="label">Befund Menge · Regel im Entwurf</p>
+    <h2 id="h-befund">${esc(l.r.deckung.label)}</h2>
+    <p>${esc(l.r.deckung.text)}</p>
+  </section>` : ''}
   <section class="ergebnis t-rand-${ton}" aria-labelledby="h-schritt">
     <div class="ergebnis-haupt">
       <p class="label">Nächster fachlicher Schritt</p>
@@ -80,6 +85,27 @@ export function entscheidungsSeite(ctx, p, e) {
   </div>`;
 }
 
+// Aufmaßeingang der Zielöffnung: Stand laut geprüfter Türregel, dazu ein Klick für einen rechtzeitigen Beispieleingang.
+function eingangKarte(ctx, l, k) {
+  const r = l.r; const ms = r.measureStatus; const frist = l.z.measureDeadline;
+  const m = ctx.ezustand[k]?.aufmass;
+  const titel = { onTime: 'Aufmaß rechtzeitig eingegangen', late: 'Aufmaß verspätet eingegangen', pending: 'Aufmaß ausstehend', overdue: 'Aufmaß überfällig' }[ms.key];
+  const ton = { onTime: 'ok', late: 'crit', pending: 'warn', overdue: 'crit' }[ms.key];
+  const eingang = r.receipt.state === 'received' ? `Eingang ${zeit(m.receivedAt)}`
+    : r.receipt.state === 'notYet' ? `Eingang ${zeit(m.receivedAt)} liegt nach der Projektzeit ${zeit(ctx.at)}`
+      : m?.valueText ? 'Aufmaß erfasst, aber noch nicht verwertbar' : 'noch kein Eingang';
+  const vorher = ms.key === 'onTime' ? ` · ${Math.round((minuten(frist) - minuten(m.receivedAt)) / 60 * 10) / 10} Std. vor der Frist` : '';
+  const knopf = ms.key === 'onTime' || ms.key === 'late' ? ''
+    : `<div class="ergebnis-aktionen"><button type="button" class="knopf" id="btn-aufmass-beispiel" data-action="aufmass-beispiel" data-entscheidung="${esc(k)}">Rechtzeitigen Eingang zeigen</button>
+      <span class="leise">Beispiel, Simulation: setzt ein gemessenes Aufmaß mit Eingang vor der Frist${l.req.target === 'B-02' ? ' (890 mm, Eingang Mi 18.11., 15:00)' : ''} und stellt die Projektzeit, falls nötig, auf den Eingang vor.</span></div>`;
+  return `<section class="befund t-rand-${ton}" id="aufmass-eingang" tabindex="-1" aria-labelledby="h-eingang">
+    <p class="label">Aufmaßeingang · Rohbauöffnung ${esc(l.z.id)}</p>
+    <h2 id="h-eingang">${titel}</h2>
+    <p>${esc(eingang)} · Aufmaßfrist ${zeit(frist)}${vorher}</p>
+    ${knopf}
+  </section>`;
+}
+
 function tuerTeil(ctx, e, l, k) {
   const { R } = ctx; const r = l.r; const req = l.req; const m = ctx.ezustand[k]?.aufmass || R.emptyMeasurement();
   const fe = r.fieldErrors || {};
@@ -88,7 +114,7 @@ function tuerTeil(ctx, e, l, k) {
   const optionen = [req.reference, 'lichte Breite', 'Türblattmaß', R.NOT_GIVEN];
   const opts = (liste, wert) => liste.map((o) => `<option ${o === wert ? 'selected' : ''}>${esc(o)}</option>`).join('');
   const d = (name) => `data-aufmass="${esc(k)}" data-feld="${name}"`;
-  return `<section class="flaeche"><div class="block-kopf"><h2>Anforderungen am Zielort</h2><span class="leise">Quelle: ${esc(req.origin)}</span></div>
+  return `${eingangKarte(ctx, l, k)}<section class="flaeche"><div class="block-kopf"><h2>Anforderungen am Zielort</h2><span class="leise">Quelle: ${esc(req.origin)}</span></div>
     <div class="tabelle-rahmen"><table class="einfach anforderungen"><thead><tr><th scope="col">Kriterium</th><th scope="col">Soll</th><th scope="col">Ist</th><th scope="col">Befund</th><th scope="col">Prüfweg</th></tr></thead><tbody>
       <tr><td><b>Breite Rohbauöffnung ${esc(l.z.id)}</b><small>${esc(req.measuringPoint)}</small></td><td class="mono nw">${req.minMm}–${req.maxMm} mm</td><td class="mono">${esc(r.istText)}</td><td>${chip(r.width.text, befundTon)}</td><td>Regel</td></tr>
       ${R.OTHER_CHECKS.map((c) => `<tr><td><b>${esc(c)}</b></td><td>laut Fachprüfung</td><td>nicht bewertet</td><td>${chip('offen', 'neutral')}</td><td>Fachprüfung</td></tr>`).join('')}
@@ -105,9 +131,8 @@ function tuerTeil(ctx, e, l, k) {
       ${feld('t-eingang', 'Eingang bei der Planung', `<input id="t-eingang" type="datetime-local" ${d('receivedAt')} value="${esc(m.receivedAt)}">`, 'receivedAt')}
     </div>
     <div class="formular-aktionen">
-      <button type="button" class="knopf-zweit" id="btn-aufmass-beispiel" data-action="aufmass-beispiel" data-entscheidung="${esc(k)}">Beispielaufmaß einsetzen</button>
       <button type="button" class="knopf-leise" id="btn-aufmass-leeren" data-action="aufmass-leeren" data-entscheidung="${esc(k)}">Aufmaß leeren</button>
-      <span class="leise">Beispiel: ${req.target === 'B-02' ? '890' : String(Math.round((req.minMm + req.maxMm) / 2))} mm, gemessen, Eingang ${req.target === 'B-02' ? '18.11. 15:00' : 'zur Projektzeit'}.</span>
+      <span class="leise">Ein rechtzeitiges Beispielaufmaß setzt der Knopf oben unter „Aufmaßeingang“.</span>
     </div></section>`;
 }
 
@@ -127,8 +152,10 @@ function massskala(r, req, m) {
 
 function bodenTeil(ctx, e, l, k) {
   const r = l.r; const z = l.z; const b = l.b; const zs = ctx.ezustand[k] || {};
-  const quote = Math.max(0, Math.min(1, (r.verwendbar ?? 0) / b.menge));
-  const bedarfAnteil = Math.min(1, r.bedarfM2 / b.menge);
+  const skala = Math.max(b.menge, r.bedarfM2);
+  const quote = Math.max(0, Math.min(1, (r.verwendbar ?? 0) / skala));
+  const erfasstAnteil = Math.min(1, b.menge / skala);
+  const bedarfAnteil = Math.min(1, r.bedarfM2 / skala);
   const roh = zs.beschaedigtRoh ?? String(b.werte?.beschaedigt?.wert ?? '');
   const knopf = (key, titel, am) => (am
     ? `<div class="nachweis-zeile"><span><b>${titel}</b><small>eingegangen ${zeit(am)}</small></span><button type="button" class="knopf-leise" id="btn-${key}" data-action="boden-nachweis" data-entscheidung="${esc(k)}" data-key="${key}">Eingang zurücknehmen</button></div>`
@@ -137,8 +164,8 @@ function bodenTeil(ctx, e, l, k) {
     <div class="tabelle-rahmen"><table class="einfach anforderungen"><thead><tr><th scope="col">Kriterium</th><th scope="col">Soll</th><th scope="col">Ist</th><th scope="col">Befund</th><th scope="col">Prüfweg</th></tr></thead>
       <tbody>${r.kriterien.map((x) => `<tr><td><b>${esc(x.name)}</b></td><td class="zahlen">${esc(x.soll)}</td><td>${esc(x.ist)}</td><td>${chip(x.befund, x.ton)}</td><td>${esc(x.weg)}</td></tr>`).join('')}</tbody></table></div>
     <div class="mengen"><div class="mengen-balken" role="img" aria-label="Menge: ${b.menge} Quadratmeter erfasst, ${r.verwendbar === null ? 'verwendbare Menge unbekannt' : `${r.verwendbar} verwendbar`}, Bedarf mit Reserve ${r.bedarfM2}">
-      <i class="mb-verwendbar ${r.kriterien[1].ton === 'crit' ? 't-crit' : ''}" style="width:${quote * 100}%"></i><span class="mb-bedarf" style="left:${bedarfAnteil * 100}%"></span></div>
-      <p class="skala-legende"><span><i class="mb-i-v"></i>verwendbar ${r.verwendbar === null ? '–' : `<b class="mono">${String(r.verwendbar).replace('.', ',')} m²</b>`} von <span class="mono">${b.menge} m²</span></span><span><i class="mb-i-b"></i>Bedarf mit Reserve <b class="mono">${String(r.bedarfM2).replace('.', ',')} m²</b></span></p></div>
+      <i class="mb-erfasst" style="width:${erfasstAnteil * 100}%"></i><i class="mb-verwendbar ${r.kriterien[1].ton === 'crit' ? 't-crit' : ''}" style="width:${quote * 100}%"></i><span class="mb-bedarf" style="left:${bedarfAnteil * 100}%"></span></div>
+      <p class="skala-legende"><span><i class="mb-i-e"></i>erfasst <span class="mono">${String(b.menge).replace('.', ',')} m²</span></span><span><i class="mb-i-v"></i>verwendbar ${r.verwendbar === null ? 'unbekannt' : `<b class="mono">${String(r.verwendbar).replace('.', ',')} m²</b>`}</span><span><i class="mb-i-b"></i>Bedarf mit Reserve <b class="mono">${String(r.bedarfM2).replace('.', ',')} m²</b></span></p></div>
     <p class="klein">Der Befund bewertet Rastermaß, Menge (Grenze eingeschlossen) und die Aufbauhöhe laut Nachweis. Über die Eignung entscheiden die zuständigen Fachleute.</p></section>
   <section class="flaeche"><div class="block-kopf"><h2>Bestand und Nachweise</h2><span class="leise">Eingabe</span></div>
     <div class="formular"><div class="feld ${r.beschaedigtGueltig ? '' : 'feld-fehler'}"><label for="b-schaden">Beschädigte Fläche in m² (Stichprobe, hochgerechnet)</label>

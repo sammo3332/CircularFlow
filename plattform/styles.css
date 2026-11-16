@@ -327,6 +327,24 @@ summary { cursor: pointer; padding: 4px 0; list-style-position: inside; }
 .ez-schritt { display: flex; gap: 12px; align-items: stretch; }
 .ez-frist { display: grid; justify-items: end; text-align: right; }
 .ergebnis { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); border: 1px solid var(--linie); border-radius: var(--r); background: var(--flaeche); overflow: hidden; }
+/* Offene Entscheidungen auf der Startseite */
+.offene { display: grid; gap: 10px; }
+.offene-raster { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.offen-karte { display: grid; gap: 6px; align-content: start; padding: 14px 16px; border: 1px solid var(--linie); border-left: 5px solid var(--t, var(--linie-2)); border-radius: var(--r); background: var(--flaeche); color: inherit; text-decoration: none; }
+.offen-karte:hover { border-color: var(--gruen); border-left-color: var(--t, var(--gruen)); }
+.offen-karte:hover .okt-schritt { color: var(--gruen); }
+.offen-karte:focus-visible { outline: 3px solid var(--gruen); outline-offset: 2px; }
+.okt-kopf { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; }
+.okt-titel { font-size: 13.5px; color: var(--tinte-2); }
+.okt-schritt { font-size: 16px; line-height: 1.3; color: var(--tinte); }
+.okt-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 16px; padding-top: 8px; border-top: 1px solid var(--linie); font-size: 13.5px; }
+.okt-meta small { display: block; font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--tinte-3); }
+.okt-meta em { font-style: normal; color: var(--tinte-3); } .okt-meta em.vorbei { color: var(--crit); }
+/* Befund vor dem nächsten Schritt: farbiger Rand links nach Ton */
+.befund { display: grid; gap: 4px; padding: 14px 18px; border: 1px solid var(--linie); border-left: 5px solid var(--t, var(--linie-2)); border-radius: var(--r); background: var(--tb, var(--flaeche)); }
+.befund h2 { margin: 0; font-size: 19px; color: var(--t, var(--tinte)); }
+.befund p { margin: 0; }
+.befund .label { color: var(--tinte-2); }
 .ergebnis-haupt { padding: 18px 20px; display: grid; gap: 6px; background: var(--tb, var(--flaeche)); }
 .ergebnis-haupt h2 { font-size: clamp(19px, 2vw, 25px); line-height: 1.2; font-weight: 700; font-stretch: 90%; max-width: 36ch; }
 .ergebnis-weiter { padding: 18px 20px; border-left: 1px solid var(--linie); }
@@ -342,10 +360,11 @@ summary { cursor: pointer; padding: 4px 0; list-style-position: inside; }
 .sk-soll-i { background: var(--ok-bg); border: 1px solid var(--ok); }
 .mengen { margin-top: 16px; }
 .mengen-balken { position: relative; height: 18px; border-radius: 4px; background: var(--flaeche-2); border: 1px solid var(--linie-2); }
+.mb-erfasst { position: absolute; inset: 0 auto 0 0; background: var(--linie); }
 .mb-verwendbar { position: absolute; inset: 0 auto 0 0; background: var(--ok-bg); border-right: 2px solid var(--ok); }
 .mb-verwendbar.t-crit { background: var(--crit-bg); border-right-color: var(--crit); }
 .mb-bedarf { position: absolute; top: -5px; bottom: -5px; width: 2px; background: var(--tinte); }
-.mb-i-v { background: var(--ok-bg); border: 1px solid var(--ok); } .mb-i-b { background: var(--tinte); width: 3px !important; }
+.mb-i-e { background: var(--linie); } .mb-i-v { background: var(--ok-bg); border: 1px solid var(--ok); } .mb-i-b { background: var(--tinte); width: 3px !important; }
 .nachweis-zeile { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 0; border-top: 1px solid var(--linie); margin-top: 12px; }
 .nachweis-zeile + .nachweis-zeile { margin-top: 0; }
 .fristen-kompakt { list-style: none; margin: 0; padding: 0; display: grid; }
@@ -498,6 +517,7 @@ legend { font-size: 12.5px; font-weight: 600; color: var(--tinte-2); margin-bott
   .schritte li.jetzt > span { font-size: 12.5px; gap: 6px; }
   .pruefraster { grid-template-columns: minmax(0, 1fr); } .pr-foto { max-width: 220px; }
   .quellenliste { grid-template-columns: minmax(0, 1fr); }
+  .offene-raster, .okt-meta { grid-template-columns: minmax(0, 1fr); }
   .quelle-werte > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   .hinweis-quelle > div:first-child { grid-column: 1 / -1; }
   .rn-name { display: none; }

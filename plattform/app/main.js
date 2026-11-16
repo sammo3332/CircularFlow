@@ -1,7 +1,7 @@
 // Einstieg: Router, Rahmen, Ereignisse. Ein gemeinsamer Datensatz für alle Ansichten.
 import { REGIONEN, PROJEKTZEITEN, GRUPPEN } from './daten.js';
 import { ladePersistenz, speichere, loesche, baueDaten, leerePersistenz } from './zustand.js';
-import { schluessel, neueEntscheidung, bauteilAusErfassung, naechsteBauteilId, pruefeErfassung, erkennungSimulation, radarSchritt, pruefeMeldung, ifcVorpruefung, ZAHL, lage, anforderungTuer } from './regeln.js';
+import { schluessel, neueEntscheidung, bauteilAusErfassung, naechsteBauteilId, pruefeErfassung, erkennungSimulation, radarSchritt, pruefeMeldung, ifcVorpruefung, ZAHL, lage, beispielAufmassRechtzeitig } from './regeln.js';
 import { esc, icon, slug, pchip, nichtGefunden } from './ui.js';
 import { zeit, jetztBerlin } from './zeit.js';
 import { karteMontieren, karteEntfernen, markerHervorheben } from './karte.js';
@@ -292,12 +292,14 @@ function schrittVermerken(k) {
 }
 
 function aufmassBeispiel(k) {
+  // Ein Klick: Beispielaufmaß mit Eingang vor der Aufmaßfrist setzen und die Projektzeit bei Bedarf bis zum Eingang vorstellen.
   const e = db.entscheidungen.find((x) => schluessel(x.projekt, x.id) === k);
   const z = db.zieloeffnungen.find((x) => x.projekt === (e.ziel.projekt || e.projekt) && x.id === e.ziel.id);
-  const beispiel = z.geprueft ? { ...R.SAMPLE_MEASUREMENT } : { valueText: String(Math.round((z.minMm + z.maxMm) / 2)), unit: 'mm', reference: anforderungTuer(R, z).reference, status: 'gemessen', source: 'fiktive Aufmaßnotiz', measuredOn: ui.at.slice(0, 10), receivedAt: ui.at };
-  uebernehmen((d) => { d.ezustand[k] = { ...(d.ezustand[k] || {}), aufmass: beispiel }; });
-  render();
-  melde(beispiel.receivedAt <= ui.at ? 'Beispielaufmaß eingesetzt.' : `Beispielaufmaß eingesetzt. Es wirkt ab Projektzeit ${zeit(beispiel.receivedAt)}.`);
+  const { aufmass, at } = beispielAufmassRechtzeitig(R, z, ui.at, PROJEKTZEITEN);
+  uebernehmen((d) => { d.ezustand[k] = { ...(d.ezustand[k] || {}), aufmass }; });
+  const zeitGestellt = at !== ui.at; ui.at = at;
+  ui.fokus = 'aufmass-eingang'; render();
+  melde(`Beispielaufmaß ${aufmass.valueText} mm eingegangen ${zeit(aufmass.receivedAt)}, vor der Aufmaßfrist ${zeit(z.measureDeadline)}.${zeitGestellt ? ` Projektzeit auf ${zeit(at)} gestellt.` : ''}`);
 }
 
 function schadenEingabe(k, wert) {

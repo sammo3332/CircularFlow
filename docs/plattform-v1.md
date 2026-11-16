@@ -167,3 +167,23 @@ Vor einem automatischen Abruf zu klären: Nutzungsvorbehalt von dortmund.de gege
 robots.txt als Vorbehalt gegen Text- und Data-Mining (§ 44b UrhG); fehlende Lizenz der Vergabeplattformen; Datenschutz
 (nur Organisationen speichern); UWG § 7 bei späterer Kontaktaufnahme durch Nutzende; bei Direktmeldungen Berechtigung,
 Rechte an Fotos und Umgang mit Schadstoffangaben.
+
+## 9. Änderung 1.1 · 16.11.2026
+
+Ausgangspunkt: veröffentlichte Fassung (claude.ai-Seite Version 7) = Commit `f499936` auf `codex/plattform-v1`,
+lokal als Tag `plattform-v1-veroeffentlicht` markiert, Branch auf GitHub gesichert.
+
+- **Nutzerproblem:** Bei einem kleinen Doppelbodenbestand (7 m²) gegenüber einem großen Bedarf (57,2 m² mit Reserve)
+  zeigte die Entscheidung zuerst fehlende Nachweise, obwohl die Menge sicher nicht reicht. Offene Entscheidungen waren
+  von der Startseite aus nicht direkt erreichbar. Der rechtzeitige Aufmaßeingang in der Türdemo war nur über mehrere
+  Schritte (Beispielaufmaß und Projektzeit) zu sehen.
+- **Gewünschtes Verhalten:** Die Bodenentscheidung zeigt zuerst „Bedarf nicht vollständig gedeckt“, sobald selbst die
+  ganze erfasste Fläche den Bedarf nicht deckt, auch bei unbekannter Schadfläche. Nächster Schritt: „Teilmenge einplanen
+  oder weitere Quelle suchen“. Die Kartenstartseite zeigt die zwei dringendsten offenen Entscheidungen mit Frist und
+  Zuständigkeit, direkt anklickbar. Ein Klick in der Türentscheidung zeigt einen rechtzeitigen Aufmaßeingang.
+- **Ausgeschlossen:** Radar, Raumscan und IFC bleiben im bisherigen Umfang. Keine Änderung an der geprüften Türregel.
+- **Akzeptanzkriterien:** (1) 7 m² Doppelboden gegen Bedarf BD-02 (57,2 m²): Befund „Bedarf nicht vollständig gedeckt“
+  steht vor dem nächsten Schritt, der nächste Schritt lautet „Teilmenge einplanen oder weitere Quelle suchen“, auch ohne
+  Angabe zur Schadfläche. (2) Startseite: zwei offene Entscheidungen mit Frist und Zuständigkeit, Klick öffnet die
+  Entscheidung. (3) Türdemo E-01: ein Klick zeigt „rechtzeitig eingegangen“ mit Eingangszeit vor der Aufmaßfrist.
+  (4) Regeltests und Browserprüfung beider Fälle ausgeführt.

@@ -6,7 +6,7 @@ import * as R from '../../prototype/dist/door-rules.mjs';
 import {
   wertAusEingabe, wertText, anforderungTuer, bewerteBoden, bewerteEinfach, lage, bauteilStatus, naechsteHandlung,
   offeneNachweise, moeglicheZiele, neueEntscheidung, erkennungSimulation, naechsteBauteilId, pruefeErfassung,
-  bauteilAusErfassung, radarSchritt, pruefeMeldung, ifcVorpruefung, schluessel,
+  bauteilAusErfassung, radarSchritt, pruefeMeldung, ifcVorpruefung, schluessel, offeneEntscheidungen, beispielAufmassRechtzeitig,
 } from '../app/regeln.js';
 import { GRUPPEN, PROJEKTZEITEN, BEDARFE, ZIELOEFFNUNGEN } from '../app/daten.js';
 import { QUELLEN, HINWEISE } from '../app/radar-daten.js';
@@ -328,4 +328,74 @@ test('Zeit: echte Berliner Uhrzeit für den Radar, mit Sommerzeit und Jahreswech
   assert.equal(jetztBerlin(new Date('2026-03-29T01:30:00Z')), '2026-03-29T03:30');
   assert.equal(jetztBerlin(new Date('2026-12-31T23:30:00Z')), '2027-01-01T00:30');
   assert.match(jetztBerlin(), /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/);
+});
+
+// ---------- Änderung 1.1 ----------
+const BD02 = BEDARFE.find((b) => b.id === 'BD-02');
+
+test('Boden 1.1: 7 m² gegen 57,2 m² Bedarf ist sicher nicht gedeckt, auch ohne Angabe zur Schadfläche', () => {
+  const r = bewerteBoden({ bedarf: BD02, flaecheM2: 7, rasterIst: '', beschaedigtRoh: '', hoeheAm: null, lastAm: null, at: START });
+  assert.equal(r.bedarfM2, 57.2);
+  assert.equal(r.deckung.key, 'teil');
+  assert.equal(r.deckung.label, 'Bedarf nicht vollständig gedeckt');
+  assert.equal(r.deckung.fehlt, 50.2);
+  assert.equal(r.haupt.text, 'Teilmenge einplanen oder weitere Quelle suchen');
+  assert.equal(r.haupt.rank, 3);
+  const menge = r.kriterien.find((k) => k.key === 'menge');
+  assert.equal(menge.ton, 'crit'); assert.match(menge.befund, /mindestens 50,2 m² fehlen/);
+  assert.ok(r.weiter.some((w) => w.text.startsWith('Beschädigte Fläche')), 'Schadfläche bleibt als weitere Aufgabe');
+});
+
+test('Boden 1.1: reicht die erfasste Fläche, bleibt die Deckung bei unbekannter Schadfläche offen', () => {
+  const r = bewerteBoden({ bedarf: BD02, flaecheM2: 60, rasterIst: '600 × 600 mm', beschaedigtRoh: '', hoeheAm: null, lastAm: null, at: START });
+  assert.equal(r.deckung.key, 'offen');
+  assert.notEqual(r.haupt.text, 'Teilmenge einplanen oder weitere Quelle suchen');
+  assert.equal(bewerteBoden({ bedarf: BD02, flaecheM2: 60, rasterIst: '600 × 600 mm', beschaedigtRoh: '2,8', hoeheAm: null, lastAm: null, at: START }).deckung.key, 'voll', '57,2 m² genau gedeckt');
+  assert.equal(bewerteBoden({ bedarf: BD02, flaecheM2: 60, rasterIst: '600 × 600 mm', beschaedigtRoh: '2,81', hoeheAm: null, lastAm: null, at: START }).deckung.key, 'teil');
+});
+
+test('Boden 1.1: mobil erfasste 7 m², zugeordnet zu BD-02, zeigen in Entscheidung und Pass zuerst die Teilmenge', () => {
+  const p = leerePersistenz();
+  p.erfassungen.push(bauteilAusErfassung({ projekt: 'LH', raum: '2.07', gruppe: 'boden', menge: '7', werte: {}, foto: null }, { id: 'DB-02', at: START, etage: '2.OG' }));
+  let ctx = kontext(p);
+  const e = neueEntscheidung(ctx, bauteil(ctx, 'LH', 'DB-02'), { art: 'bedarf', id: 'BD-02', projekt: 'LH' });
+  assert.equal(e.regel, 'boden');
+  p.zuordnungen.push(e); ctx = kontext(p);
+  const l = lage(ctx, e);
+  assert.equal(l.r.deckung.label, 'Bedarf nicht vollständig gedeckt');
+  assert.equal(l.haupt.text, 'Teilmenge einplanen oder weitere Quelle suchen');
+  assert.equal(naechsteHandlung(ctx, bauteil(ctx, 'LH', 'DB-02')).text, 'Teilmenge einplanen oder weitere Quelle suchen');
+});
+
+test('Startseite 1.1: zwei offene Entscheidungen, dringendste zuerst, mit Frist und Zuständigkeit', () => {
+  const ctx = kontext();
+  const { liste, gesamt } = offeneEntscheidungen(ctx, 2);
+  assert.equal(gesamt, 2);
+  assert.deepEqual(liste.map((x) => x.e.id), ['E-01', 'E-02']);
+  assert.equal(liste[0].frist.name, 'Aufmaßfrist'); assert.equal(liste[0].frist.at, '2026-11-18T16:00');
+  assert.equal(liste[0].l.haupt.rolle, 'montage');
+  // Eine neue Entscheidung mit Rang 3 (Teilmenge) rückt nach vorn.
+  const p = leerePersistenz();
+  p.erfassungen.push(bauteilAusErfassung({ projekt: 'LH', raum: '2.07', gruppe: 'boden', menge: '7', werte: {}, foto: null }, { id: 'DB-02', at: START, etage: '2.OG' }));
+  p.zuordnungen.push({ projekt: 'LH', id: 'E-03', bauteil: 'DB-02', ziel: { art: 'bedarf', id: 'BD-02', projekt: 'LH' }, regel: 'boden', angelegt: START });
+  const neu = offeneEntscheidungen(kontext(p), 2);
+  assert.equal(neu.gesamt, 3); assert.equal(neu.liste[0].e.id, 'E-03');
+});
+
+test('Türdemo 1.1: ein Klick liefert einen rechtzeitigen Aufmaßeingang und, falls nötig, die passende Projektzeit', () => {
+  const b02 = ZIELOEFFNUNGEN.find((x) => x.id === 'B-02');
+  const b04 = ZIELOEFFNUNGEN.find((x) => x.id === 'B-04');
+  const pruefe = (z, at) => {
+    const { aufmass, at: neu } = beispielAufmassRechtzeitig(R, z, at, PROJEKTZEITEN);
+    const r = R.evaluateDoor({ requirement: anforderungTuer(R, z), measurement: aufmass, deadlines: { measureDeadline: z.measureDeadline, replaceDeadline: z.replaceDeadline }, at: neu });
+    return { neu, aufmass, r };
+  };
+  const a = pruefe(b02, START);
+  assert.equal(a.neu, '2026-11-18T15:30', 'Projektzeit springt auf den ersten Zeitpunkt nach dem Eingang');
+  assert.equal(a.r.measureStatus.key, 'onTime'); assert.equal(a.r.usable, true);
+  assert.equal(pruefe(b02, '2026-11-19T09:00').neu, '2026-11-19T09:00', 'spätere Projektzeit bleibt');
+  const c = pruefe(b04, '2026-11-20T09:00');
+  assert.equal(c.aufmass.receivedAt, '2026-11-19T15:00', 'nach der Frist: Eingang eine Stunde vor der Frist');
+  assert.equal(c.r.measureStatus.key, 'onTime');
+  assert.equal(pruefe(b04, START).r.measureStatus.key, 'onTime');
 });

@@ -26,6 +26,8 @@ export function abstand(ziel, jetzt) {
   if (diff === 0) return { text: 'genau jetzt', vorbei: false };
   return diff > 0 ? { text: `noch ${text}`, vorbei: false } : { text: `seit ${text} vorbei`, vorbei: true };
 }
+// Umkehrung von minuten(): Minutenzahl zurück in die Wanduhrzeit „YYYY-MM-DDTHH:mm“.
+export const ausMinuten = (n) => new Date(n * 60000).toISOString().slice(0, 16);
 export const bis = (s, at) => Boolean(s) && minuten(s) <= minuten(at);
 
 // Echte Uhrzeit in Berlin als Wanduhrzeit „YYYY-MM-DDTHH:mm“, unabhängig von der Zeitzone des Geräts.

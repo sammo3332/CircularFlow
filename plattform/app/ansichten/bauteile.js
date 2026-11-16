@@ -137,7 +137,7 @@ function zuordnung(ctx, p, b, e) {
     return `<section class="flaeche verknuepft" id="zuordnung" aria-labelledby="h-zu">
       <h2 id="h-zu">Zuordnung</h2>
       <p>${e.ziel.art === 'zieloeffnung' ? `Zielöffnung <b>${esc(z.id)}</b> in Raum ${esc(z.raum)}, Soll ${z.minMm}–${z.maxMm} mm` : `Bedarf <b>${esc((e.ziel.projekt || e.projekt))} · ${esc(z.id)}</b>: ${esc(z.titel)}`}</p>
-      <p>${chip(l.regelText, l.geprueft ? 'ok' : 'neutral')}</p>
+      <p>${chip(l.regelText, l.geprueft ? 'ok' : 'neutral')}${l.r?.deckung ? ` ${chip(l.r.deckung.label, l.r.deckung.ton)}` : ''}</p>
       <a class="knopf" href="${routeEntscheidung(e)}">Entscheidung ${esc(e.id)} öffnen</a>
     </section>`;
   }
