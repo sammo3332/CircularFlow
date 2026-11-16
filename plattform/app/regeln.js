@@ -212,7 +212,7 @@ export function lageVorgang(ctx, e) {
   }
   // Vor dem Fachergebnis gehört die Bestellfrist des Bedarfs zu den Fristen des Vorgangs: Prüfung und Vormerkung müssen davor liegen.
   const d = e.ziel?.art === 'bedarf' ? l.z : null;
-  const bf = d?.bestellfrist && !st.beendet ? tagesende(d.bestellfrist) : null;
+  const bf = d?.bestellfrist && istDatum(d.bestellfrist) && !st.beendet ? tagesende(d.bestellfrist) : null;
   const fristen = bf ? [...l.fristen, { name: 'Bestellfrist', at: bf, rolle: d.zustaendig || 'planung', status: minuten(bf) < jetzt ? 'verstrichen' : 'offen', ton: minuten(bf) < jetzt ? 'crit' : 'warn' }] : l.fristen;
   if (st.key === 'pruefbitte' && l.haupt.rank === 6 && !l.haupt.wartet) {
     return { ...l, fristen, vorgang: st, haupt: { rank: 6, wartet: true, text: 'Rückmeldung der Fachprüfung abwarten', rolle: 'fach', grund: `Die Prüfbitte liegt seit ${zeit(st.pruefbitte.at)} der Fachprüfung vor. Weitere technische Anforderungen bleiben offen.` } };
@@ -228,7 +228,9 @@ export function lageVorgang(ctx, e) {
 function gesperrterSchritt(pb, d) {
   const grund = String(pb.grund || '').replace(/^Keine Prüfbitte möglich: /, '');
   const rolle = d.zustaendig || 'planung';
-  if (pb.ergebnis === 'spaet') return { rank: 2, text: 'Zu spät für eine Prüfbitte: Ersatz planen oder Vorgang abbrechen', rolle, grund: `Die Regel ist erfüllt, für eine Prüfbitte ist es aber zu spät. ${grund}` };
+  // Überschrift nach dem Grund: Nur wenn Zeit- oder Typangaben des Paares sperren, passt „ergänzen“ oder „zu spät“.
+  if (pb.sperrArt !== 'zeit' && pb.sperrArt !== 'typ') return { rank: 4, text: 'Prüfbitte noch nicht möglich', rolle, grund: pb.grund };
+  if (pb.ergebnis === 'spaet') return { rank: 2, text: 'Für eine Prüfbitte zu spät, Ersatz planen oder Vorgang abbrechen', rolle, grund: `Die Regel ist erfüllt, für eine Prüfbitte ist es aber zu spät. ${grund}` };
   if (pb.ergebnis === 'fehlt') return { rank: 4, text: 'Fehlende Angaben zum Bedarf ergänzen', rolle, grund: `Die Regel ist erfüllt, die Prüfbitte ist aber noch gesperrt. ${grund} Nach dem Ergänzen ist sie möglich.` };
   if (pb.ergebnis === 'klaerung') return { rank: 4, text: 'Widersprüchliche Angaben zum Bedarf klären', rolle, grund: `Die Regel ist erfüllt, die Prüfbitte ist aber noch gesperrt. ${grund}` };
   return { rank: 4, text: 'Prüfbitte noch nicht möglich', rolle, grund: pb.grund };
@@ -236,10 +238,37 @@ function gesperrterSchritt(pb, d) {
 
 // Offene Entscheidungen nach Handlungsdruck: wartende zuletzt, dann Rang des nächsten Schritts, dann nächste Frist.
 // Ohne kommende Frist gilt die zuletzt verstrichene, damit Überfälliges sichtbar bleibt. Beendete Vorgänge zählen nicht.
+// Knopf im Hauptkasten der Entscheidung („… vermerken“, „Zur Fachprüfung vorlegen“) als reine Funktion.
+// Die Vorlage zählt wie eine Prüfbitte und braucht dieselbe Freigabe (pruefbitteErlaubt); sonst wird es ein Vermerk.
+// Liefert { ereignis, vorlage } oder { fehler }.
+export function vermerkSchritt(ctx, e) {
+  if (!e) return { fehler: 'Diesen Vorgang gibt es nicht mehr.' };
+  const st = vorgangStatus(ctx, e);
+  if (st.beendet || st.nachFachergebnis) return { fehler: 'Die nächsten Schritte stehen unter „Vorgang“.' };
+  const k = schluessel(e.projekt, e.id);
+  const spaeter = (ctx.ereignisse || []).filter((x) => x && x.entscheidung === k && x.at && minuten(x.at) > minuten(ctx.at)).sort((a, b) => minuten(b.at) - minuten(a.at))[0];
+  if (spaeter) return { fehler: `Es gibt Einträge nach diesem Stichtag. Stichtag auf ${zeit(spaeter.at)} oder später stellen.` };
+  const l = lageVorgang(ctx, e);
+  if (l.haupt.wartet) return { fehler: 'Die Variante liegt der Fachprüfung bereits vor.' };
+  const vorlage = l.haupt.rank === 6 && e.regel !== 'einfach' && pruefbitteErlaubt(ctx, e).erlaubt;
+  const rolle = { montage: 'Montagebetrieb', fach: 'Fachprüfung', bauleitung: 'Bauleitung' }[l.haupt.rolle] || 'Planung';
+  const text = vorlage ? `Variante ${e.id} zur Fachprüfung vorgelegt (an L. Brandt, fiktiv).` : `Aufgabe für ${rolle} vermerkt: ${l.haupt.text}.`;
+  if ((ctx.ereignisse || []).some((x) => x && x.entscheidung === k && x.at === ctx.at && x.text === text)) return { fehler: 'Zu dieser Projektzeit bereits vermerkt.' };
+  return { vorlage, ereignis: { at: ctx.at, von: 'browser', bauteil: schluessel(e.projekt, e.bauteil), entscheidung: k, art: vorlage ? 'vorlage' : 'aufgabe', sim: true, text } };
+}
+
+// Frist zum Anzeigen in Listen und Karten: eine verstrichene, nicht erfüllte Frist zuerst (sonst verdeckt sie die nächste),
+// dann die nächste kommende, sonst die zuletzt verstrichene.
+export function angezeigteFrist(l, at) {
+  const jetzt = minuten(at);
+  const verstrichen = l.fristen.filter((f) => f.at && f.ton === 'crit' && minuten(f.at) < jetzt).sort((x, y) => minuten(x.at) - minuten(y.at))[0];
+  return verstrichen || naechsteFrist(l, at) || [...l.fristen].sort((x, y) => minuten(x.at) - minuten(y.at)).pop() || null;
+}
+
 export function offeneEntscheidungen(ctx, anzahl = 2) {
   const alle = ctx.daten.entscheidungen.filter((e) => vorgangStatus(ctx, e).aktiv).map((e) => {
     const l = lageVorgang(ctx, e);
-    const frist = naechsteFrist(l, ctx.at) || [...l.fristen].sort((x, y) => minuten(x.at) - minuten(y.at)).pop() || null;
+    const frist = angezeigteFrist(l, ctx.at);
     return { e, l, frist };
   });
   const kommend = (x) => (x.frist && minuten(x.frist.at) >= minuten(ctx.at) ? minuten(x.frist.at) : Number.MAX_SAFE_INTEGER);

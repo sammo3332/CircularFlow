@@ -1,6 +1,6 @@
 // Arbeitsliste: alle Vorgänge (Entscheidungen) mit abgeleitetem Status, nächstem Schritt, Zuständigkeit und Frist (lesend).
 import { VORGANG_STATUS, vorgangStatus } from '../vorgang.js';
-import { lageVorgang, naechsteFrist } from '../regeln.js';
+import { lageVorgang, angezeigteFrist } from '../regeln.js';
 import { esc, chip, leer, pchip, seitenkopf, person, routeEntscheidung, routeBedarf } from '../ui.js';
 import { zeit, abstand } from '../zeit.js';
 
@@ -13,7 +13,7 @@ export function vorgangsZeilen(ctx) {
 function zeile(ctx, { e, st }) {
   const p = ctx.daten.projekte.find((x) => x.kurz === e.projekt);
   const l = lageVorgang(ctx, e);
-  const frist = st.beendet ? null : naechsteFrist(l, ctx.at) || [...l.fristen].sort((x, y) => (x.at < y.at ? -1 : 1)).pop() || null;
+  const frist = st.beendet ? null : angezeigteFrist(l, ctx.at);
   const a = frist ? abstand(frist.at, ctx.at) : null;
   const zust = l.haupt.rolle ? person(l.haupt.rolle) : null;
   const ziel = e.ziel.art === 'zieloeffnung' ? `Öffnung ${e.ziel.id}` : `Bedarf ${e.ziel.projekt || e.projekt} · ${e.ziel.id}`;

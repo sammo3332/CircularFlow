@@ -11,7 +11,10 @@ import { neuerUiZustand } from '../app/uizustand.js';
 import { PROJEKTZEITEN, PROJEKTE } from '../app/daten.js';
 import { vorgangSchritt, vorgangStatus } from '../app/vorgang.js';
 import { abgleich, pruefbitteAnlegen, pruefbitteErlaubt, lueckeText } from '../app/abgleich.js';
-import { lageVorgang, schluessel, neueEntscheidung, bauteilAusErfassung } from '../app/regeln.js';
+import { lageVorgang, schluessel, neueEntscheidung, bauteilAusErfassung, vermerkSchritt, offeneEntscheidungen, beispielAufmassRechtzeitig } from '../app/regeln.js';
+import * as R from '../../prototype/dist/door-rules.mjs';
+import { vorgaenge } from '../app/ansichten/vorgaenge.js';
+import { startseite } from '../app/ansichten/projekte.js';
 import { bedarfAusEntwurf } from '../app/bedarf.js';
 import { kennzahlen } from '../app/kennzahlen.js';
 import { entscheidungsSeite } from '../app/ansichten/entscheidung.js';
@@ -112,7 +115,7 @@ test('Fristablauf: Bestellfrist läuft während der Prüfbitte ab; sichtbar, und
   assert.deepEqual([bf.status, bf.ton], ['verstrichen', 'crit']);
   assert.ok(kennzahlen(c).zeitkritisch.eintraege.some((f) => f.ref?.id === e.id && f.name === 'Bestellfrist' && f.ueberfaellig), 'überfällig nach Ablauf');
   const html = seite(c, e);
-  assert.match(html, /id="frist-verstrichen"[^>]*>.*Bestellfrist.*Einträge bleiben möglich/s);
+  assert.match(flach(html), /Frist verstrichen: Bestellfrist Do 19\.11\., 23:59\. Der Vorgang bleibt offen\. Weiter möglich: Fachergebnis, Abbruch\./);
   assert.deepEqual(formIds(html), ['fachergebnis', 'abbruch']);
   assert.match(schritt(p, NACH_FRIST, e, 'fachergebnis', FACH).text, /Eingetragen nach Ablauf der Bestellfrist \(19\.11\.2026\)/);
   // Nach dem Fachergebnis bleibt die Bestellfrist „verstrichen“ (nicht „offen“); Vormerkung und Abbruch bleiben möglich.
@@ -127,7 +130,7 @@ test('Fristablauf: Bestellfrist läuft während der Prüfbitte ab; sichtbar, und
 test('Fristablauf: E-01 nach der Aufmaßfrist nennt die Frist und lässt Vermerk und Abbruch zu', () => {
   const c = mitUi(leerePersistenz(), '2026-11-19T09:00'); const e = entscheidung(c, 'LH', 'E-01');
   const html = seite(c, e);
-  assert.match(html, /id="frist-verstrichen"[^>]*>.*Aufmaßfrist/s);
+  assert.match(flach(html), /Frist verstrichen: Aufmaßfrist Mi 18\.11\., 16:00\. Der Vorgang bleibt offen\. Weiter möglich: Vermerk, Abbruch\./);
   assert.match(html, /id="aktion-schritt"/); assert.ok(formIds(html).includes('abbruch'));
   assert.ok(vorgangSchritt(c, e, 'abbruch', { grund: 'Aufmaß nicht rechtzeitig, Ersatz bestellt' }).ereignis);
 });
@@ -168,4 +171,72 @@ test('Doppelboden 7 m² gegen 57,2 m²: mindestens 50,2 m² fehlen an jeder Stel
   assert.match(flach(html), /Bedarf nicht vollständig gedeckt.*Höchstens 7 m², Bedarf 57,2 m².*Es fehlen mindestens 50,2 m²/);
   assert.match(html, /<input id="b-schaden"[^>]*value=""/);
   assert.match(flach(html), /Teilmenge einplanen oder weitere Quelle suchen/);
+});
+
+// ---------- Nachträge aus dem Review (1063421) ----------
+test('Prüfbitte-Sperre: Überschrift folgt dem Grund (zu spät nach Fristablauf, Bedarf belegt)', () => {
+  // Im Pass zugeordnet, nicht vorgelegt: Nach Ablauf der Bestellfrist ist es für eine Prüfbitte zu spät.
+  const p = leerePersistenz(); eigenerBedarf(p);
+  const e = neueEntscheidung(kontext(p), bauteil(kontext(p), 'LH', 'TW-01'), { art: 'bedarf', projekt: 'SB', id: 'BD-90' }); p.zuordnungen.push(e);
+  let c = mitUi(p, NACH_FRIST);
+  const l = lageVorgang(c, entscheidung(c, e.projekt, e.id));
+  assert.deepEqual([l.haupt.rank, l.haupt.text], [2, 'Für eine Prüfbitte zu spät, Ersatz planen oder Vorgang abbrechen']);
+  let html = seite(c, entscheidung(c, e.projekt, e.id));
+  assert.doesNotMatch(html, /id="aktion-bedarf-ergaenzen"/);
+  assert.match(flach(html), /Frist verstrichen: Bestellfrist .*Weiter möglich: Vermerk, Abbruch\./);
+  // Bedarf schon von einem anderen Vorgang belegt: neutrale Überschrift, kein Link zum Ergänzen.
+  const p2 = leerePersistenz(); p2.ezustand[schluessel('LH', 'E-02')] = { hoeheAm: START, lastAm: START };
+  p2.erfassungen.push(bauteilAusErfassung({ projekt: 'LH', raum: '2.07', gruppe: 'boden', menge: '7', werte: {}, foto: null }, { id: 'DB-02', at: START, etage: '2.OG' }));
+  p2.zuordnungen.push(neueEntscheidung(kontext(p2), bauteil(kontext(p2), 'LH', 'DB-02'), { art: 'bedarf', projekt: 'LH', id: 'BD-01' }));
+  c = mitUi(p2); const e2 = entscheidung(c, 'LH', 'E-02');
+  const l2 = lageVorgang(c, e2);
+  assert.equal(l2.haupt.text, 'Prüfbitte noch nicht möglich'); assert.match(l2.haupt.grund, /gehört bereits zum laufenden Vorgang/);
+  html = seite(c, e2); assert.doesNotMatch(html, /id="aktion-bedarf-ergaenzen"/); assert.doesNotMatch(html, /Zur Fachprüfung vorlegen/);
+});
+
+test('„Zur Fachprüfung vorlegen“: Vorlage nur mit Freigabe der Prüfbitte, sonst Vermerk; keine Rückdatierung', () => {
+  const p = leerePersistenz(); p.ezustand[schluessel('LH', 'E-02')] = { hoeheAm: START, lastAm: START };
+  let c = kontext(p); const e = entscheidung(c, 'LH', 'E-02');
+  let r = vermerkSchritt(c, e);
+  assert.deepEqual([r.vorlage, r.ereignis.art, r.ereignis.text], [false, 'aufgabe', 'Aufgabe für Planung vermerkt: Fehlende Angaben zum Bedarf ergänzen.']);
+  p.ereignisse.push(r.ereignis);
+  assert.equal(vorgangStatus(kontext(p), e).key, 'offen');
+  assert.equal(vermerkSchritt(kontext(p), e).fehler, 'Zu dieser Projektzeit bereits vermerkt.');
+  // Nach dem Ergänzen von BD-01: Vorlage, danach Status „Prüfbitte gestellt“ und das Fachergebnis wird möglich.
+  p.bedarfAenderungen = { 'LH:BD-01': { pruefzeitTage: 1, annahmeVon: '2026-11-01', annahmeBis: '2027-12-31' } };
+  r = vermerkSchritt(kontext(p, '2026-11-18T15:30'), e);
+  assert.deepEqual([r.vorlage, r.ereignis.art], [true, 'vorlage']); p.ereignisse.push(r.ereignis);
+  c = kontext(p, '2026-11-18T15:30');
+  assert.equal(vorgangStatus(c, e).key, 'pruefbitte'); assert.ok(vorgangSchritt(c, e, 'fachergebnis', FACH).ereignis);
+  // Ein früherer Stichtag als vorhandene Einträge: abgelehnt.
+  assert.match(vermerkSchritt(kontext(p, START), e).fehler, /Einträge nach diesem Stichtag/);
+  // Tür E-01: Vermerk für den Montagebetrieb, nach rechtzeitigem Aufmaß (Rang 6) die Vorlage.
+  const p3 = leerePersistenz(); const c3 = kontext(p3); const e1 = entscheidung(c3, 'LH', 'E-01');
+  assert.match(vermerkSchritt(c3, e1).ereignis.text, /^Aufgabe für Montagebetrieb vermerkt: Rohbauöffnung B-02/);
+  const z = c3.daten.zieloeffnungen.find((x) => x.id === e1.ziel.id && x.projekt === e1.projekt);
+  const { aufmass, at } = beispielAufmassRechtzeitig(R, z, START, PROJEKTZEITEN);
+  p3.ezustand[schluessel('LH', 'E-01')] = { aufmass };
+  assert.equal(vermerkSchritt(kontext(p3, at), entscheidung(kontext(p3, at), 'LH', 'E-01')).ereignis.art, 'vorlage');
+});
+
+test('Zeitkritisch: Die Bestellfrist eines laufenden Vorgangs erscheint genau einmal', () => {
+  const p = leerePersistenz(); eigenerBedarf(p);
+  const e = mitPruefbitte(p, ['LH', 'TW-01'], ['SB', 'BD-90']);
+  for (const at of [START, NACH_FRIST]) {
+    const eintraege = kennzahlen(kontext(p, at)).zeitkritisch.eintraege.filter((f) => f.name === 'Bestellfrist' && (f.ref?.id === e.id || f.ref?.id === 'BD-90'));
+    assert.equal(eintraege.length, 1, at); assert.equal(eintraege[0].art, 'entscheidung');
+  }
+});
+
+test('Arbeitsliste und Karten: Eine verstrichene, nicht erfüllte Frist steht vor der nächsten', () => {
+  const c = mitUi(leerePersistenz(), '2026-11-19T09:00');
+  const e1 = offeneEntscheidungen(c, 5).liste.find((x) => x.e.id === 'E-01' && x.e.projekt === 'LH');
+  assert.equal(e1.frist.name, 'Aufmaßfrist');
+  assert.match(vorgaenge(c), /<span class="mono">Mi 18\.11\., 16:00<\/span><small class="vorbei">Aufmaßfrist · /);
+  assert.match(startseite(c), /Aufmaßfrist <span class="mono">Mi 18\.11\., 16:00<\/span> <em class="vorbei">/);
+});
+
+test('Doppelboden nach Ablauf der Ersatzentscheidung: Einträge vermerken, dass sie danach kamen', () => {
+  const c = kontext(leerePersistenz(), '2026-11-20T13:00'); const e = entscheidung(c, 'LH', 'E-02');
+  assert.match(vorgangSchritt(c, e, 'abbruch', { grund: 'Ersatz bestellt' }).ereignis.text, /Eingetragen nach Ablauf der Ersatzentscheidung \(Fr 20\.11\., 12:00\)\./);
 });

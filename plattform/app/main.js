@@ -3,12 +3,12 @@ import { REGIONEN, PROJEKTZEITEN, GRUPPEN } from './daten.js';
 import { loeseAbgleichSchluessel, abgleich, abgleichListe, pruefbitteAnlegen, pruefbitteErlaubt, zuordnungZumBedarf } from './abgleich.js';
 import { pruefeBedarf, bedarfAusEntwurf, naechsteBedarfId, bedarfAenderung } from './bedarf.js';
 import { pruefeProjekt, projektAusEntwurf } from './projektanlage.js';
-import { vorgangSchritt, vorgangStatus, checklisteSetzen } from './vorgang.js';
+import { vorgangSchritt, checklisteSetzen } from './vorgang.js';
 import { neuerUiZustand, leererKatalog, leereBedarfsliste, leererBestand, leereRadarFilter, leeresBedarfsformular, leeresProjektformular, leeresVorgangsformular, bedarfsformularStarten } from './uizustand.js';
 import { ladePersistenz, speichere, loesche, baueDaten, leerePersistenz, anzahlEigeneAenderungen } from './zustand.js';
-import { schluessel, moeglicheZiele, neueEntscheidung, bauteilAusErfassung, naechsteBauteilId, pruefeErfassung, erkennungSimulation, radarSchritt, pruefeMeldung, ifcVorpruefung, ZAHL, lage, lageVorgang, beispielAufmassRechtzeitig } from './regeln.js';
+import { schluessel, moeglicheZiele, neueEntscheidung, bauteilAusErfassung, naechsteBauteilId, pruefeErfassung, erkennungSimulation, radarSchritt, pruefeMeldung, ifcVorpruefung, ZAHL, lage, vermerkSchritt, beispielAufmassRechtzeitig } from './regeln.js';
 import { esc, icon, slug, pchip, nichtGefunden, laedt, routeBedarf, routeEntscheidung } from './ui.js';
-import { zeit, jetztBerlin, minuten } from './zeit.js';
+import { zeit, jetztBerlin } from './zeit.js';
 import { karteMontieren, karteEntfernen, markerHervorheben } from './karte.js';
 import { startseite, projektUebersicht, popupHtml, gefilterteProjekte } from './ansichten/projekte.js';
 import { gebaeudeAnsicht } from './ansichten/gebaeude.js';
@@ -386,21 +386,13 @@ function zuordnen(bkey) {
   render(); melde(`Entscheidung ${e.id} angelegt. Der nächste Schritt steht oben im Pass.`);
 }
 
+// Knopf im Hauptkasten: Regeln in regeln.vermerkSchritt (Vorlage nur mit Freigabe der Prüfbitte, keine Rückdatierung).
 function schrittVermerken(k) {
   const e = db.entscheidungen.find((x) => schluessel(x.projekt, x.id) === k);
-  const c = ctx(); const st = vorgangStatus(c, e);
-  if (st.beendet || st.nachFachergebnis) return;
-  // Wie bei den Vorgangsschritten: kein Eintrag vor einem schon vorhandenen späteren Eintrag dieses Vorgangs.
-  const spaeter = p.ereignisse.filter((x) => x.entscheidung === k && x.at && minuten(x.at) > minuten(ui.at)).sort((a, b) => minuten(b.at) - minuten(a.at))[0];
-  if (spaeter) { melde(`Es gibt Einträge nach diesem Stichtag. Stichtag auf ${zeit(spaeter.at)} oder später stellen.`); return; }
-  // Derselbe Schritt wie überall (lageVorgang). „Zur Fachprüfung vorlegen“ zählt wie eine Prüfbitte und braucht dieselbe Freigabe.
-  const l = lageVorgang(c, e); if (l.haupt.wartet) return;
-  const fach = l.haupt.rank === 6 && e.regel !== 'einfach' && pruefbitteErlaubt(c, e).erlaubt;
-  const rolle = { montage: 'Montagebetrieb', fach: 'Fachprüfung', bauleitung: 'Bauleitung' }[l.haupt.rolle] || 'Planung';
-  const text = fach ? `Variante ${e.id} zur Fachprüfung vorgelegt (an L. Brandt, fiktiv).` : `${l.haupt.text}: als Aufgabe für ${rolle} vermerkt.`;
-  if (p.ereignisse.some((x) => x.entscheidung === k && x.at === ui.at && x.text === text)) { melde('Zu dieser Projektzeit bereits vermerkt.'); return; }
-  uebernehmen((d) => d.ereignisse.push({ at: ui.at, von: 'browser', bauteil: schluessel(e.projekt, e.bauteil), entscheidung: k, art: fach ? 'vorlage' : 'aufgabe', sim: true, text }));
-  ui.fokus = 'h-schritt'; render(); melde(fach ? 'Zur Fachprüfung vorgelegt. Status des Bauteils aktualisiert.' : 'Im Verlauf vermerkt.');
+  const r = vermerkSchritt(ctx(), e);
+  if (r.fehler) { melde(r.fehler); return; }
+  uebernehmen((d) => d.ereignisse.push(r.ereignis));
+  ui.fokus = 'h-schritt'; render(); melde(r.vorlage ? 'Zur Fachprüfung vorgelegt. Status des Bauteils aktualisiert.' : 'Im Verlauf vermerkt.');
 }
 
 function aufmassBeispiel(k) {

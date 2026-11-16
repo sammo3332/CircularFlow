@@ -236,7 +236,7 @@ export function abgleich(ctx, bauteil, bedarf, opt = {}) {
     schluessel: abgleichSchluessel(bauteil, bedarf), stand: ctx.at, bauteil, bedarf,
     typ, menge, zeit: { ...zeit, gruende }, entfernung: entfernung(ctx, bauteil, bedarf),
     pruefpunkte, naechsterSchritt: naechster, gesamt, fehlend, gruende, hinweis: HINWEIS_ABGLEICH,
-    pruefbitteMoeglich: sperrgrund === null, sperrgrund, vorgang: sp.vorgang || null,
+    pruefbitteMoeglich: sperrgrund === null, sperrgrund, sperrart: sp.art || null, vorgang: sp.vorgang || null,
   };
 }
 
@@ -246,15 +246,16 @@ function sperre(ctx, bauteil, bedarf, typ, key, gruende, ausser = null) {
   const aktivV = aktiverVorgang(ctx, bauteil.projekt, bauteil.id);
   const aktiv = gleichV(aktivV) ? null : aktivV;
   const belegtV = bedarfVorgang(ctx, bedarf.projekt, bedarf.id, ausser);
-  const aus = (grund, vorgang = null) => ({ grund, vorgang });
-  if (!typ.ok) return aus(`${ERGEBNIS.klaerung.label}: ${typ.text}`);
-  if (bauteil.status === 'nicht') return aus('Das Bauteil ist als nicht wiederverwendbar eingestuft.');
-  if (bauteil.ziel) return aus(`Das Bauteil hat bereits ein festes Ziel (${bauteil.ziel}).`);
+  // art: woran die Sperre liegt (typ, bauteil, vorgang oder zeit, also Zeit- und Mengenangaben des Paares).
+  const aus = (grund, vorgang = null, art = 'vorgang') => ({ grund, vorgang, art: grund ? art : null });
+  if (!typ.ok) return aus(`${ERGEBNIS.klaerung.label}: ${typ.text}`, null, 'typ');
+  if (bauteil.status === 'nicht') return aus('Das Bauteil ist als nicht wiederverwendbar eingestuft.', null, 'bauteil');
+  if (bauteil.ziel) return aus(`Das Bauteil hat bereits ein festes Ziel (${bauteil.ziel}).`, null, 'bauteil');
   if (aktiv) return aus(`Für dieses Bauteil läuft bereits der Vorgang ${aktiv.id}.`, aktiv);
   if (uebergebenerVorgang(ctx, bauteil.projekt, bauteil.id)) return aus('Das Bauteil wurde bereits übergeben.');
   if (belegtV) return vorgangStatus(ctx, belegtV).key === 'uebergeben' ? aus(`Der Bedarf ist bereits durch eine Übergabe gedeckt (Vorgang ${belegtV.id}).`, belegtV) : aus(`Der Bedarf gehört bereits zum laufenden Vorgang ${belegtV.id}.`, belegtV);
   if (zielUngeeignet(ctx, bauteil.projekt, bauteil.id, { art: 'bedarf', id: bedarf.id, projekt: bedarf.projekt })) return aus('Dieses Bauteil wurde für diesen Bedarf bereits als ungeeignet beendet.');
-  if (!['weiter', 'knapp'].includes(key)) return aus(`${ERGEBNIS[key].label}: ${gruende[0] || ''}`.trim());
+  if (!['weiter', 'knapp'].includes(key)) return aus(`${ERGEBNIS[key].label}: ${gruende[0] || ''}`.trim(), null, 'zeit');
   return aus(null);
 }
 
@@ -274,7 +275,7 @@ export function pruefbitteErlaubt(ctx, e) {
     const d = ctx.daten.bedarfe.find((x) => x.projekt === (e.ziel.projekt || e.projekt) && x.id === e.ziel.id);
     if (!d) return { erlaubt: false, grund: 'Der Bedarf gibt es nicht mehr.' };
     const a = abgleich(ctx, b, d, { ausser: e });
-    return a.pruefbitteMoeglich ? { erlaubt: true, grund: null, ergebnis: a.gesamt.key } : { erlaubt: false, grund: `Keine Prüfbitte möglich: ${a.sperrgrund}`, ergebnis: a.gesamt.key };
+    return a.pruefbitteMoeglich ? { erlaubt: true, grund: null, ergebnis: a.gesamt.key } : { erlaubt: false, grund: `Keine Prüfbitte möglich: ${a.sperrgrund}`, ergebnis: a.gesamt.key, sperrArt: a.sperrart };
   }
   const l = lage(ctx, e);
   if (l.haupt.rank === 6 && !l.haupt.wartet) return { erlaubt: true, grund: null };

@@ -117,9 +117,13 @@ export function vorgangSchritt(ctx, e, aktion, eingabe = {}) {
   if (!st.erlaubt.includes(aktion)) return { fehler: { allgemein: st.beendet ? `Der Vorgang ist beendet (${st.label}). Es sind keine weiteren Schritte möglich.` : `Dieser Schritt ist im Status „${st.label}“ nicht möglich.` } };
   const tag = stichtag(ctx); const b = bauteilZu(ctx, e); const d = bedarfZu(ctx, e);
   const fehler = {};
-  // Nach Ablauf der Bestellfrist bleibt der Vorgang dokumentierbar; der Eintrag hält fest, dass er danach kam.
-  const nachFrist = d?.bestellfrist && minuten(ctx.at) > minuten(tagesende(d.bestellfrist)) ? ` Eingetragen nach Ablauf der Bestellfrist (${datum(d.bestellfrist)}).` : '';
+  // Nach Ablauf der Bestellfrist (beim Doppelboden: Ersatzentscheidung) bleibt der Vorgang dokumentierbar; der Eintrag hält fest, dass er danach kam.
+  const bfrist = d?.bestellfrist && istDatum(d.bestellfrist) ? { at: tagesende(d.bestellfrist), text: `der Bestellfrist (${datum(d.bestellfrist)})` }
+    : d?.fristen?.ersatz ? { at: d.fristen.ersatz, text: `der Ersatzentscheidung (${zeit(d.fristen.ersatz)})` } : null;
+  const nachFrist = bfrist && minuten(ctx.at) > minuten(bfrist.at) ? ` Eingetragen nach Ablauf ${bfrist.text}.` : '';
   const einheit = einheitVon(b);
+  // Die Freigabe der Prüfbitte (Abgleich oder Türregel) prüfen die Aufrufer: pruefbitteAnlegen, main.vorgangAktion und
+  // regeln.vermerkSchritt über abgleich.pruefbitteErlaubt. Dieses Modul kennt den Abgleich nicht (keine Importe von dort).
   if (aktion === 'pruefbitte') {
     return { ereignis: ereignis(ctx, e, 'pruefbitte', { schnappschuss: eingabe.schnappschuss || null }, 'Prüfbitte an die Fachprüfung angelegt (Simulation).') };
   }

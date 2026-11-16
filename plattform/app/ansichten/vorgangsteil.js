@@ -30,6 +30,12 @@ export function kette(st) {
 }
 
 const person = (k) => PERSONEN[k] || { rolle: '', name: '' };
+// Was sich nach einer verstrichenen Frist noch eintragen lässt (Vermerk über den Knopf im Hauptkasten, Schritte des Vorgangs).
+const AKTION_NAME = { pruefbitte: 'Prüfbitte', fachergebnis: 'Fachergebnis', vormerkung: 'Vormerkung', 'uebergabe-geplant': 'Übergabe planen', uebergeben: 'Übergabe eintragen', abbruch: 'Abbruch' };
+const moeglich = (ctx, e, st, l) => [
+  ...(!st.nachFachergebnis && !l.haupt.wartet ? ['Vermerk'] : []),
+  ...st.erlaubt.filter((a) => a !== 'pruefbitte' || pruefbitteErlaubt(ctx, e).erlaubt).map((a) => AKTION_NAME[a]),
+];
 
 function formular(ctx, k, aktion, titel, intro, felder, knopf, klasse = '') {
   const vf = ctx.ui.vorgangForm; const fe = (vf.k === k && vf.fehler[aktion]) || {};
@@ -107,7 +113,7 @@ export function vorgangsBereich(ctx, e, l) {
     </div>
     <ol class="kette" aria-label="Stationen des Vorgangs">${ks.map((s, i) => `<li class="k-${s.zustand === 'entfällt' ? 'aus' : s.zustand}" ${s.zustand === 'aktuell' ? 'aria-current="step"' : ''}><span class="k-nr mono" aria-hidden="true">${i + 1}</span><span class="k-text"><b>${s.name}</b><small>${s.zustand === 'erledigt' ? `erledigt${s.text ? ` · ${esc(s.text)}` : ''}` : s.zustand === 'aktuell' ? `jetzt${s.text ? ` · ${esc(s.text)}` : ''}` : s.zustand === 'entfällt' ? 'entfällt' : 'offen'}</small></span></li>`).join('')}</ol>
     ${st.beendet ? `<p class="kette-ende hinweisbox">${tonSymbol(st.ton === 'crit' ? 'crit' : st.ton === 'ok' ? 'ok' : 'info')} <b>Der Vorgang ist beendet: ${esc(st.label)}.</b> ${st.key === 'ungeeignet' ? `Das Fachergebnis lautet „ungeeignet“ (${esc(HINWEIS_FACH)}); das Bauteil ist für andere Ziele wieder frei.${st.fachergebnis?.notiz ? ` Grund: ${esc(st.fachergebnis.notiz)}` : ''}` : st.key === 'abgebrochen' ? `Grund: ${esc(st.abbruch.grund)}. Bauteil und Bedarf sind wieder frei.` : 'Es sind keine weiteren Schritte möglich.'}</p>` : ''}
-    ${verstrichen.length ? `<p class="hinweisbox hinweisbox-warn" id="frist-verstrichen">${tonSymbol('warn')} <span><b>${verstrichen.length === 1 ? 'Frist verstrichen' : 'Fristen verstrichen'}:</b> ${verstrichen.map((f) => `${esc(f.name)} ${esc(zeit(f.at))}`).join(' · ')}. Der Vorgang bleibt offen: Einträge bleiben möglich und stehen mit Datum im Verlauf.</span></p>` : ''}
+    ${verstrichen.length ? `<p class="hinweisbox hinweisbox-warn" id="frist-verstrichen">${tonSymbol('warn')} <span><b>${verstrichen.length === 1 ? 'Frist verstrichen' : 'Fristen verstrichen'}:</b> ${verstrichen.map((f) => `${esc(f.name)} ${esc(zeit(f.at))}`).join(' · ')}. Der Vorgang bleibt offen. Weiter möglich: ${esc(moeglich(ctx, e, st, l).join(', '))}. Jeder Eintrag steht mit Datum im Verlauf.</span></p>` : ''}
     ${sn ? `<p class="klein">Grundlage der Prüfbitte: Abgleich „${esc(sn.gesamt?.label || '')}“ <a href="${routeAbgleich(sn.schluessel)}">${esc(sn.bauteil?.id || '')} und ${esc(sn.bedarf?.id || '')}</a> (Stand ${esc(zeit(sn.stand || st.pruefbitte.at))}. Vorschlag zur Prüfung, keine fachliche Freigabe.</p>` : ''}
     ${allg ? `<p class="feld-meldung" id="vorgang-fehler" tabindex="-1" role="alert">${esc(allg)}</p>` : ''}
     ${fs.length ? `<div class="vorgang-aktionen">${fs.join('')}</div>` : ''}
