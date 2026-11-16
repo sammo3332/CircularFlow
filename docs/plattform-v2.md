@@ -129,7 +129,9 @@ Ein Vorgang mit dem Status „übergeben“ belegt seinen Bedarf: Der Bedarf zä
 
 Übersicht · Projekte (Karte, Liste; Reiter Radar und Projekt erfassen) · Bauteile (Katalog) · Bedarfe · Erfassen.
 Neue Routen: `#uebersicht` (Start; leerer Hash), `#vorgaenge`, `#bauteile`, `#bedarfe`, `#bedarf-<p>-<id>`,
-`#bedarf-neu`, `#abgleich-<p>-<bauteil>~<p>-<bedarf>`, `#projekt-neu`. Alle bisherigen Routen bleiben gültig.
+`#bedarf-neu`, `#bedarf-ergaenzen-<p>-<id>`, `#abgleich` (Liste), `#abgleich-<p>-<bauteil>--<p>-<bedarf>`, `#projekt-neu`.
+Der Trenner im Abgleich-Schlüssel ist `--`, weil claude.ai-Seiten nur Buchstaben, Ziffern und Bindestriche im Hash
+durchreichen. Alle bisherigen Routen bleiben gültig.
 Filter als Teil des Hashs, soweit claude.ai das erlaubt (dort nur `#name`); sonst Filter im Seitenzustand.
 
 ## 6. Demoablauf für die Jury (Beispieldaten, Projektzeit Mi 18.11., 14:00)
