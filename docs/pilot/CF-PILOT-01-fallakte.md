@@ -4,7 +4,7 @@ Fiktiver, quellenbasierter Pilotfall mit Fallakte und Simulation des Ablaufs.
 
 | | |
 |---|---|
-| Dokumentversion | 1.2 vom 16.11.2026: Innentüren und Nachweise präzisiert, Vorgaben des Teams vom 16.11.2026 eingetragen. Fassung 1.0 steht in `1f6656f`, Fassung 1.1 (Befunde der unabhängigen Prüfung) in `9e595a4`. |
+| Dokumentversion | 1.3 vom 16.11.2026: Befunde der zweiten unabhängigen Prüfung eingearbeitet. Fassung 1.0 steht in `1f6656f`, Fassung 1.1 (Befunde der ersten Prüfung) in `9e595a4`, Fassung 1.2 (Innentüren und Nachweise, Vorgaben des Teams vom 16.11.2026) in `d46e294`. |
 | Branch | `codex/plattform-v1` |
 | Ausgangscommit | `daa40a9` (Fassung 2, festgehaltener Pitch-Stand). Der Anwendungscode ist seit `2121b92` unverändert. |
 | Maßgeblich | Produktbrief v0.2 (`docs/produktbrief.md`). Diese Fallakte ist eine Simulation. Sie erweitert den Produktumfang nicht. |
@@ -488,8 +488,8 @@ Handlungsempfehlung „stellt keine Rechtsberatung dar“.
 
 | Fall | Was die Quelle sagt | Was das für den Pilot heißt |
 |---|---|---|
-| Innentür ohne Schutzanforderung | „Ferner ist ein Verwendbarkeitsnachweis auch nicht erforderlich, wenn das Bauprodukt eine untergeordnete Bedeutung für die Bauwerkssicherheit hat.“ Als Beispiel nennt der Text nach MVV TB 2023/1 „D 2.2.2.3 Innentüren einschließlich Zubehör“ (PDF-Seite 14; der Satz ist im PDF über zwei Spalten umbrochen). Im Entscheidungsbaum steht die Innentür als Beispiel beim Ausgang „Kein Nachweis notwendig“ (Abb. 2.3, PDF-Seite 15, sinngemäß, weil die Wörter der Abbildung im Text einzeln stehen). | Gilt für die sechs Angebotstüren nur, wenn Annahme A13 stimmt. Die Fachplanung bestätigt das am Zielort. Zustand, Funktion und Passung prüft die Fachprüfung trotzdem: Die Prüfung gehört zur Bestandserfassung nach DIN SPEC 91484, und Inverkehrbringende stellen die Gebrauchstauglichkeit sicher (PDF-Seite 15). |
-| Brandschutztür (z. B. T30) | Brandschutz gehört zu den Schutzzielen, für die sicherheitsrelevante Bauprodukte sorgen (PDF-Seite 14). „Zur Verwendung von sicherheitsrelevanten wiedergewonnenen Bauprodukten ist in der Regel ein neuer Verwendbarkeitsnachweis“ zu beantragen, genannt sind abZ, abP und ZiE (PDF-Seite 15). Laut Conculars Seite zum Leitfaden für Brandschutztüren verliert eine Tür beim Ausbau „in der Regel ihren Verwendbarkeitsnachweis und ihr Ü-Zeichen bzw. ihre CE-Kennzeichnung“. Eine Zustimmung im Einzelfall braucht es „Derzeit ja, für Innen- wie für Außentüren.“ Und: „Eine PÜZ-Stelle begutachtet, je Modell wird eine Tür brandgeprüft. Die oberste Bauaufsicht erteilt die ZiE.“ | Nicht Teil des Pilots (A13). Wäre eine der Türen eine Brandschutztür, oder bräuchte der Zielort eine, trüge die Simulation nicht. Wie lange Brandprüfung und Zustimmung dauern, nennen die gelesenen Quellen nicht. Dass 14 Tage Prüfzeit dafür reichen, ist nicht belegt. |
+| Innentür ohne Schutzanforderung | „Ferner ist ein Verwendbarkeitsnachweis auch nicht erforderlich, wenn das Bauprodukt eine untergeordnete Bedeutung für die Bauwerkssicherheit hat.“ Als Beispiel nennt der Text nach MVV TB 2023/1 „D 2.2.2.3 Innentüren einschließlich Zubehör“ (PDF-Seite 14; der Satz ist im PDF über zwei Spalten umbrochen). Im Entscheidungsbaum steht die Innentür als Beispiel beim Ausgang „Kein Nachweis notwendig“ (Abb. 2.3, PDF-Seite 15, sinngemäß, weil die Wörter der Abbildung im Text einzeln stehen). | Gilt für die sechs Angebotstüren nur, wenn Annahme A13 stimmt. Die Fachplanung bestätigt das am Zielort. Zustand, Funktion und Passung prüft die Fachprüfung trotzdem, denn die Prüfung gehört zur Bestandserfassung nach DIN SPEC 91484 (PDF-Seite 15). Für eingekaufte Bauprodukte nennt die Quelle die Inverkehrbringenden als verantwortlich für die Gebrauchstauglichkeit. Wer diese Rolle bei einer Vermittlung zwischen zwei Projekten übernimmt, ist eine Übertragung auf den Pilot und offen. Das regelt die Übergabevereinbarung. |
+| Brandschutztür (z. B. T30) | Brandschutz gehört zu den Schutzzielen, für die sicherheitsrelevante Bauprodukte sorgen (PDF-Seite 14). „Zur Verwendung von sicherheitsrelevanten wiedergewonnenen Bauprodukten ist in der Regel ein neuer Verwendbarkeitsnachweis“ zu beantragen, genannt sind abZ, abP und ZiE (PDF-Seite 15). Laut Conculars Seite zum Leitfaden für Brandschutztüren verliert eine Tür beim Ausbau „in der Regel ihren Verwendbarkeitsnachweis und ihr Ü-Zeichen bzw. ihre CE-Kennzeichnung“. Auf die Frage, ob es eine Zustimmung im Einzelfall braucht, antwortet die Seite: „Derzeit ja, für Innen- wie für Außentüren. Nach der neuen EU-Bauproduktenverordnung kann die CE-Kennzeichnung beim Wiedereinbau im selben Bauwerk unter Umständen erhalten bleiben – das hängt von der jeweiligen harmonisierten Spezifikation ab.“ Zum Verfahren: „Eine PÜZ-Stelle begutachtet, je Modell wird eine Tür brandgeprüft. Die oberste Bauaufsicht erteilt die ZiE.“ | Nicht Teil des Pilots (A13). Wäre eine der Türen eine Brandschutztür, oder bräuchte der Zielort eine, trüge die Simulation nicht. Wie lange Brandprüfung und Zustimmung dauern, nennen die gelesenen Quellen nicht. Dass 14 Tage Prüfzeit dafür reichen, ist nicht belegt. Die sechs Angebotstüren gehen in ein anderes Gebäude. Der Zusatz zum Wiedereinbau „im selben Bauwerk“ beträfe höchstens die vier Türen für die interne Verwendung, und nur, wenn sie Brandschutztüren wären. |
 | Tür mit Schallschutzanforderung | Schallschutz steht unter den Schutzzielen (PDF-Seite 14). An anderer Stelle nennt der Text Schallschutz eine Komfortanforderung, die „zukünftig im Gebäudetyp-E gemeinsam mit den Planenden vereinbart und reduziert werden“ kann (PDF-Seite 15). Das ist ein Ausblick, kein geltendes Recht. | Ob eine Schallschutzanforderung an eine Bürotür einen Nachweis auslöst, beantworten die Quellen nicht eindeutig. Das klärt die Fachplanung. |
 
 Offen bleibt:
@@ -508,7 +508,9 @@ Offen bleibt:
 **Was die Quellen für den Pilot bedeuten**
 
 - Der Vorlauf im Pilot ist kurz. Vom bekannten Angebot (19.01.2027) bis zum Ausbau (01.03.2027) sind es 41 Tage, also
-  etwa sechs Wochen. Madaster empfiehlt mindestens vier bis fünf Monate. Variante 2 ist deshalb kein Randfall.
+  etwa sechs Wochen. Für Rückbauprojekte empfiehlt Madaster mindestens vier bis fünf Monate Vorlauf. Der Pilot ist
+  ein Ausbau vor einem Umbau, die Empfehlung dient hier nur als Vergleich. Sie zeigt trotzdem, wie knapp sechs Wochen
+  sind. Variante 2 ist deshalb kein Randfall.
 - „Erst intern, dann extern“ stützen Concular (Hierarchie) und Madaster (Sichtbarkeit je Kreis). Die Reihenfolge
   bleibt eine Empfehlung an die Beteiligten, keine Regel der App (Vorgabe vom 16.11.2026).
 - Für Innentüren ohne Schutzanforderung ist laut Concular kein Verwendbarkeitsnachweis erforderlich. Für
@@ -618,13 +620,14 @@ Dateien unter `docs/pilot/`. Fassung 1.0 dieser Akte steht in `1f6656f`.
 | Bestehende Tests | `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs` | 190 von 190 bestanden |
 | Klickpfade im Browser | Playwright-Skript in Chromium, 1440 × 900, lokaler Server (`python3 -m http.server`), Stichtag Mi 18.11.2026, 14:00, zwei frische Kontexte | 30 von 30 bestanden, ohne Fehler in Konsole und Netz. Zweimal ausgeführt, vor und nach dem Schreiben der Akte. |
 | Unabhängige Prüfung | Agent cf-review, nur lesend, auf Fassung 1.0 | kein blockierender und kein hoher Befund. Die 3 mittleren und 4 geringen Punkte sind in Fassung 1.1 eingearbeitet. |
+| Zweite unabhängige Prüfung | Agent cf-review, nur lesend, auf Fassung 1.2 und Plan 1.0 (`d46e294`) | kein blockierender Befund. Die 2 hohen Befunde betrafen den Plan: Es fehlten betroffene Stellen, und die Bestellfrist konnte unter „Zeitkritisch“ doppelt erscheinen. Dazu kamen 5 mittlere und 5 geringe Punkte. Alle sind in Fallakte 1.3 und Plan 1.1 eingearbeitet. |
 
 Die unabhängige Prüfung hat die Zitate aus der Mitteilung des BLB NRW und aus den Madaster-Unterlagen zu IFC, Excel
 und Action Plan nicht gegen den Text gelesen. Diese Zitate wurden beim Schreiben mit dem abgerufenen Text verglichen,
 aber nicht unabhängig geprüft.
 
-Für Fassung 1.2 haben sich nur Dokumente geändert. Nachrechnung und Tests liefen erneut. Den Browserlauf haben wir
-nicht wiederholt, weil der Anwendungscode gleich geblieben ist.
+Für die Fassungen 1.2 und 1.3 haben sich nur Dokumente geändert. Nachrechnung und Tests liefen erneut. Den
+Browserlauf haben wir nicht wiederholt, weil der Anwendungscode gleich geblieben ist.
 
 Was das Browserskript prüft:
 
@@ -646,7 +649,7 @@ nicht im Repository.
 
 ## 11. Übergabe
 
-- **Stand:** 16.11.2026, Dokumentversion 1.2, Branch `codex/plattform-v1`, Ausgangscommit `daa40a9`.
+- **Stand:** 16.11.2026, Dokumentversion 1.3, Branch `codex/plattform-v1`, Ausgangscommit `daa40a9`.
 - **Gelesene Quellen und Prüfweg:** siehe Abschnitt 6. Abgerufen am 16.11.2026 mit `curl` über den Proxy der
   Arbeitsumgebung, nur die Hosts concular.de, www.blb.nrw.de, docs.madaster.com und madaster.com. Für Fassung 1.2 kam
   Conculars Seite zum Leitfaden für Brandschutztüren dazu.
@@ -669,7 +672,7 @@ nicht im Repository.
   und Freigabe sind unverändert.
 - **Offene Fragen an das Team:**
   1. Gibt es einen realen Partner, der Bestellfrist, Lieferzeit und Prüfzeit für Innentüren nennen kann?
-  2. Die offenen Punkte im Plan zur Restmenge (`docs/plan-restmenge.md`, Abschnitt 8).
+  2. Die offenen Fragen F1 bis F6 im Plan zur Restmenge (`docs/plan-restmenge.md`, Abschnitt 8).
 - **Nächster Prüfauftrag (genau einer):** Mit einer Planerin oder einem Planer aus einem realen Umbauprojekt prüfen,
   wie viele Tage vor der Ersatzbestellung ein Angebot vorliegen muss. Abschlusskriterium: eine dokumentierte Angabe
   mit Quelle, die die Annahme A5 (14 Tage) bestätigt oder ersetzt. Vorgeschlagene Zuständigkeit: Team CircularFlow.
