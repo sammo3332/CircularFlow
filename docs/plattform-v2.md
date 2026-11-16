@@ -442,3 +442,43 @@ Neu zu entscheiden:
 2. Vorschlagswerte im Vormerkformular (Menge, „gilt bis“ gleich Ende des Annahmefensters), damit die Vormerkung im
    Pitch ohne Datumseingabe auskommt. Nicht umgesetzt.
 3. Soll die Vorschau bis zur Generalprobe wieder privat sein?
+
+## 11. Festgehaltener Pitch-Stand · 16.11.2026
+
+**Entscheidungen von Houssam (16.11.2026):**
+- Die Prüfbitte zum Doppelboden setzt weiterhin vollständige Bedarfsangaben voraus, also Mindestprüfzeit und
+  Annahmefenster.
+- Das Vormerkformular bekommt keine Vorschlagswerte.
+- Die Freigabe der Vorschau bleibt unverändert. Über die öffentliche Freigabe entscheidet das Team nach der
+  Generalprobe.
+- Geprobt wird auf dem Vortragsrechner in einem frischen Browserprofil. Gestartet wird nur, wenn die Übersicht
+  8 Paare, davon 2 prüfbar, und 2 Vorgänge zeigt.
+- Der Hauptablauf endet bei „Vormerkung anlegen“.
+
+**Festgehalten:**
+
+| Was | Stand |
+|---|---|
+| Code | `2121b92`, danach nur Dokumentation |
+| Vorschau | „CircularFlow Fassung 2“, Version 2, Versions-ID `1794826502-00b9`, gebaut aus `2121b92`. Nur der Seitentitel weicht vom Build ab. Die Freigabe ist unverändert: Derzeit gilt „Jeder mit dem Link“, eingestellt nicht von Claude |
+| Pitch-Ablauf | `docs/pitch-ablauf.md` in dem Commit, der diesen Abschnitt enthält |
+| Branch | `codex/plattform-v1` auf GitHub. Tags lassen sich über den Git-Proxy nicht pushen (HTTP 403), daher steht der Stand hier |
+
+Bis zum Pitch ändern sich Code, Vorschau und Freigabe nur mit ausdrücklicher Zustimmung. Was die Probe ergibt, wird
+als Befund notiert und nicht stillschweigend behoben.
+
+**Prüfung des festgehaltenen Stands:** Die Dateien der Version 2 wurden lokal ausgeliefert und mit Chromium über
+Playwright geprüft (de-DE, Europe/Berlin), jeweils in einem neuen Browserkontext ohne gespeicherte Daten.
+- Skript `pitch-haupt.cjs` (Arbeitsordner außerhalb des Repositorys), in 1280 × 720, 1440 × 900 und 390 × 844:
+  - Die Startbedingung ist erfüllt: „8 Paare davon 2 prüfbar“ und „2 Vorgänge“ bei Stichtag Mi 18.11., 14:00.
+  - Der Hauptablauf braucht ab der Übersicht 7 Klicks bis „Vormerkung anlegen“.
+  - Es gibt kein seitliches Scrollen.
+  - Ergebnis: 24 von 24, ohne Konsolenfehler und ohne Anfragen nach außen.
+- `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs`: 190 von 190.
+
+**Nicht geprüft:**
+- der Vortragsrechner und sein Browser,
+- die Vorschau auf claude.ai selbst (kein Browserzugang von hier).
+
+Beides deckt die Probe auf dem Vortragsrechner ab.
+
