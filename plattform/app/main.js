@@ -106,7 +106,7 @@ const BEREICH = {
 const HAUPT = [['uebersicht', '#uebersicht', 'Übersicht', 'uebersicht'], ['projekte', '#projekte', 'Projekte', 'karte'], ['bauteile', '#bauteile', 'Bauteile', 'bauteil'], ['bedarfe', '#bedarfe', 'Bedarfe', 'bedarf'], ['erfassen', '#erfassung', 'Erfassen', 'kamera']];
 function rahmen(r, inhalt) {
   const bereich = BEREICH[r.view] || '';
-  const navLink = ([k, h, t, i]) => `<a href="${h}" ${bereich === k ? 'aria-current="page"' : ''}>${icon(i)}<span>${t}</span></a>`;
+  const navLink = ([k, h, t, i]) => `<a href="${h}" data-action="nav" data-ziel="${k}" ${bereich === k ? 'aria-current="page"' : ''}>${icon(i)}<span>${t}</span></a>`;
   const zeitwahl = (id) => `<label class="projektzeit" for="${id}"><span>Stichtag der Demo <em>(Simulation)</em></span><select id="${id}">${PROJEKTZEITEN.map((z) => `<option value="${z.at}" ${z.at === ui.at ? 'selected' : ''}>${z.label}</option>`).join('')}</select></label>`;
   const pr = r.p;
   return `
@@ -231,6 +231,8 @@ app.addEventListener('click', (ev) => {
       ui.katalog = { ...leererKatalog(), vorgabe: v, gruppe: a.dataset.gruppe || '' }; tooltipWeg(); if (zumLink(a)) return; break;
     }
     case 'katalog-vorgabe-weg': ui.katalog.vorgabe = null; ui.katalog.gruppe = ''; ui.fokus = 'kat-q'; break;
+    // Hauptnavigation „Bauteile“ öffnet den ganzen Katalog: eine Vorgabe aus der Übersicht (Kachel, Diagramm) entfällt.
+    case 'nav': if (a.dataset.ziel !== 'bauteile' || !ui.katalog.vorgabe) return; ui.katalog.vorgabe = null; ui.katalog.gruppe = ''; if (zumLink(a)) return; break;
     case 'katalog-reset': ui.katalog = leererKatalog(); ui.fokus = 'kat-q'; break;
     case 'bedarfe-vorgabe': ui.bedarfe = { ...leereBedarfsliste(), offen: true }; if (zumLink(a)) return; break;
     case 'bedarfe-reset': ui.bedarfe = leereBedarfsliste(); ui.fokus = 'bed-gruppe'; break;

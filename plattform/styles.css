@@ -196,10 +196,10 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--fokus); out
 .kette .k-text { display: grid; gap: 1px; min-width: 0; font-size: var(--t-s); overflow-wrap: anywhere; }
 .kette .k-text small { color: var(--tinte-3); font-size: var(--t-xs); }
 .kette li.k-erledigt { background: var(--ok-bg); border-color: transparent; }
-.kette li.k-erledigt .k-nr { background: var(--ok); border-color: var(--ok); color: #fff; }
+.kette li.k-erledigt .k-nr { background: var(--ok); border-color: var(--ok); color: var(--gruen-tinte); }
 .kette li.k-erledigt .k-text small { color: var(--ok); }
 .kette li.k-aktuell { border: 2px solid var(--gruen); padding: 7px 9px; background: var(--gruen-hell); }
-.kette li.k-aktuell .k-nr { background: var(--gruen); border-color: var(--gruen); color: #fff; }
+.kette li.k-aktuell .k-nr { background: var(--gruen); border-color: var(--gruen); color: var(--gruen-tinte); }
 .kette li.k-aus { background: var(--flaeche-3); border-style: dashed; color: var(--tinte-3); }
 .kette li.k-aus .k-text b { text-decoration: line-through; }
 .kette-ende { display: flex; gap: 8px; align-items: flex-start; }
