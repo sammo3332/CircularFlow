@@ -32,7 +32,7 @@ const TXT = {
   p6a: "Heute läuft unser Prototyp im Browser, mit Beispieldaten. Nutzen soll ihn zuerst die Projektleitung im Planungsbüro. Als erstes Angebot planen wir einen Kurzcheck für eine Bauteilgruppe. Wer dafür bezahlt, klären wir im Pilot. Ich habe an der TU Dortmund Informatik studiert, bin jetzt im Master und entwickle den Prototyp.",
   p6r: "Bei Rückfragen: Als Budgetverantwortliche kommen infrage: die Bauherrschaft, die den Umbau beauftragt; die Bestandsorganisation, die Gebäude im Bestand verwaltet; oder die Büroleitung eines Planungsbüros, wie im Steckbrief angenommen, etwa mit einer Projektlizenz. Bestätigt ist davon nichts. Wer zahlt und zu welchem Preis, klären wir im Pilot.",
   p6b: "Feyrouz: Ich studiere ebenfalls Informatik an der TU Dortmund und kenne mich in Datenanalyse und IT-Sicherheit aus. Uns fehlt Fachwissen aus Bau und Rückbau. Dafür suchen wir Partner aus der Branche.",
-  p7: "Zwei Aussagen aus dem Sprint zeigen, dass Zeit eine Rolle spielt. Das Umweltamt sagt, bei Bauentscheidungen zählen meist Zeit und Kosten. Concular nennt zeitliche Unterschiede zwischen Angebot und Nachfrage. Als Nächstes wollen wir an einem echten Umbau prüfen, ob unsere Karte einer Projektleitung hilft, die Fachprüfung rechtzeitig anzustoßen. Dafür brauchen wir unter anderem die tatsächliche Prüfzeit. Unsere Bitte: Bringen Sie uns mit einem Dortmunder Umbauprojekt in Kontakt. Danke.",
+  p7: "Diesen Kurzcheck wollen wir mit einer Projektleitung an einem echten Dortmunder Umbau erproben. Dabei prüfen wir, ob unsere Entscheidungskarte hilft, die Fachprüfung rechtzeitig anzustoßen. Dafür klären wir auch die benötigte Prüfzeit. Bringen Sie uns mit einem passenden Umbauprojekt in Kontakt.",
   ek3a: "Das ist unsere Vorschau mit Beispieldaten, hier mit Systemtrennwänden statt Türen.",
   ek3spaet: "Spätfall: Waren K1 und K2 schon live gesprochen, nur den K3-Satz sprechen.",
   ek3weiter: "Danach immer „weiter ›“ zu Folie 6. Wer doch direkt „zurück zum Vortrag“ geht, sagt vorher: „Was das für Dortmund bringen kann, erklärt Feyrouz.“",
@@ -240,20 +240,20 @@ function folien() {
     id: "P7", abschnitt: "Schluss", layout: "P5SCHLUSS", titel: "Wir suchen einen echten Umbaufall in Dortmund",
     fussPt: FUSS, fussFarbe: FUSS_DUNKEL, fuss: "Stadt Dortmund, Umweltamt, 13.11.2026, Folie 11; Concular, Workshop im INNOSPRINT, Folie 49",
     zeichne: (s) => {
-      T(s, "Im Sprint gelernt", { x: LM, y: 1.75, w: CW, h: 0.4, fontSize: 22, bold: true, color: COL.gruenHell });
+      T(s, "Im Sprint gelernt", { x: LM, y: 1.6, w: CW, h: 0.4, fontSize: 22, bold: true, color: COL.gruenHell });
       T(s, [
         { text: "Umweltamt: „Bei Bauentscheidungen zählen meist Zeit und Kosten.“", options: { breakLine: true } },
         { text: "Concular: „Zeitliche Unterschiede in Nachfrage und Angebot“", options: {} },
-      ], { x: LM, y: 2.2, w: CW, h: 0.85, fontSize: 20, color: COL.weiss, paraSpaceAfter: 6 });
-      T(s, "Nächster Test an einem echten Umbau", { x: LM, y: 3.15, w: CW, h: 0.4, fontSize: 22, bold: true, color: COL.gruenHell });
+      ], { x: LM, y: 2.05, w: CW, h: 0.85, fontSize: 20, color: COL.weiss, paraSpaceAfter: 6 });
+      T(s, "Kurzcheck an einem echten Dortmunder Umbau erproben", { x: LM, y: 3.05, w: CW, h: 0.4, fontSize: 22, bold: true, color: COL.gruenHell });
       T(s, [
-        { text: "Hilft die Karte einer Projektleitung, die Fachprüfung rechtzeitig anzustoßen?", options: { breakLine: true } },
-        { text: "Die Karte zeigt, was bis zur Frist fehlt, wer es liefert und was als Nächstes zu tun ist.", options: { breakLine: true } },
-        { text: "Dafür nötige Angaben, unter anderem: tatsächliche Prüfzeit · Bestellfrist · Bauteil frei ab", options: {} },
-      ], { x: LM, y: 3.6, w: CW, h: 1.4, fontSize: 20, color: COL.weiss, paraSpaceAfter: 6 });
-      T(s, "Unsere Bitte: Bringen Sie uns mit einem Dortmunder Umbauprojekt in Kontakt.", { x: LM, y: 5.1, w: CW, h: 1.3, fontSize: 32, bold: true, color: COL.weiss, valign: "middle" });
+        { text: "Mit einer Projektleitung prüfen: Hilft die Entscheidungskarte, die Fachprüfung rechtzeitig anzustoßen?", options: { breakLine: true } },
+        { text: "Sie zeigt, was bis zur Frist fehlt, wer es liefert und was als Nächstes zu tun ist.", options: { breakLine: true } },
+        { text: "Dafür klären wir auch die benötigte Prüfzeit.", options: {} },
+      ], { x: LM, y: 3.5, w: CW, h: 2.0, fontSize: 20, color: COL.weiss, paraSpaceAfter: 6 });
+      T(s, "Unsere Bitte: Bringen Sie uns mit einem Dortmunder Umbauprojekt in Kontakt.", { x: LM, y: 5.4, w: CW, h: 1.1, fontSize: 32, bold: true, color: COL.weiss, valign: "middle" });
     },
-    notiz: { spricht: "Feyrouz", absaetze: [TXT.p7], zeit: ZEIT(37, "4:35") },
+    notiz: { spricht: "Feyrouz", absaetze: [TXT.p7], zeit: ZEIT(21, "4:19") },
   });
 
   // ---------- Anhang ----------

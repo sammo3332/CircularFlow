@@ -34,14 +34,14 @@ teamintern 18.11.2026, 12:00 Uhr. Plattform, Vorschau, Freigabe und `docs/pitch-
 | 4 | Live: Ein Paar ist fünf Tage zu spät, ein anderes kann weiter geprüft werden | Houssam | 64 s | 2:37 |
 | 7 | In einem Dortmunder Pilot wollen wir messen, was wirklich wiederverwendet wird | Feyrouz | 33 s | 3:10 |
 | 8 | Der Prototyp läuft. Als Erstes wollen wir einen Kurzcheck testen | Houssam, dann Feyrouz | 48 s | 3:58 |
-| 9 | Wir suchen einen echten Umbaufall in Dortmund | Feyrouz | 37 s | **4:35** |
+| 9 | Wir suchen einen echten Umbaufall in Dortmund | Feyrouz | 21 s | **4:19** |
 
-- **Länge:** Der Standard-Sprechtext hat 461 Wörter. Feyrouz spricht 272, Houssam 189 und bedient die Demo.
+- **Länge:** Der Standard-Sprechtext hat 433 Wörter. Feyrouz spricht 244, Houssam 189 und bedient die Demo.
 - **Tempo:**
-  - Bei ruhigem Tempo (etwa 1,8 Wörter je Sekunde) dauert der Vortrag 4:35. Darin stecken 18 Sekunden für
+  - Bei ruhigem Tempo (etwa 1,8 Wörter je Sekunde) dauert der Vortrag 4:19. Darin stecken 18 Sekunden für
     Sprecherwechsel, Umschalten und Klicks.
-  - Bei zügigem Tempo (2,3 Wörter je Sekunde) dauert er etwa 3:40.
-  - Bis zur Grenze von 5:00 bleiben 25 Sekunden.
+  - Bei zügigem Tempo (2,3 Wörter je Sekunde) dauert er etwa 3:25.
+  - Bis zur Grenze von 5:00 bleiben 41 Sekunden.
   - Alle Zeiten sind aus Wortzahlen gerechnet. Die Probe mit Stoppuhr steht aus.
 - **Wechsel:**
   - vor Folie 3: „Wie CircularFlow prüft, ob die Zeit reicht, zeigt Houssam.“
@@ -73,8 +73,8 @@ teamintern 18.11.2026, 12:00 Uhr. Plattform, Vorschau, Freigabe und `docs/pitch-
   prüfen ›“ (zu Folie 6).
   - Steht K3 um 2:10 nicht da oder hakt die Vorschau: zurück und beide Bildschirmfotos zeigen. Auf Folie 5 führt
     „weiter ›“ zu Folie 6. Waren K1 und K2 schon gesprochen, auf Folie 5 nur den K3-Satz sprechen.
-  - Zeit im Spätfall: Mit nur dem K3-Satz endet der Vortrag bei etwa 4:45. Wer auf Folie 5 auch Einleitung und K2
-    spricht, kommt auf knapp 5:00. Die Regiezeilen werden nicht gesprochen.
+  - Zeit im Spätfall: Mit nur dem K3-Satz endet der Vortrag bei etwa 4:27. Wer auf Folie 5 auch Einleitung und K2
+    spricht, kommt auf etwa 4:39. Die Regiezeilen werden nicht gesprochen.
   - Ist K4 um 2:25 nicht erreicht: zurück und direkt „Bildschirmfoto: weiter prüfen ›“.
   - Im Vortrag geht es von Folie 5 immer mit „weiter ›“ zu Folie 6. Dort steht der Übergabesatz, und „zurück zum
     Vortrag“ führt zu Folie 7.
@@ -120,8 +120,8 @@ Nichts aus dieser Liste ließ sich hier prüfen. Bitte bis zum 20.11. erledigen,
   Folie 7.
 - [ ] **Demo mit Stoppuhr:** Folie 4 hat 64 Sekunden (1:33 bis 2:37). Kontrollpunkte sind 2:10 (K3 steht) und 2:25
   (K4 erreicht). Das Zeichen gibt Feyrouz (Vorschlag aus Plan 0.2). Den Spätfall einmal proben: Ausfall um 2:10, auf
-  Folie 5 nur K3. Ziel: Ende etwa 4:45.
-- [ ] **Gesamter Vortrag mit Stoppuhr** in ruhigem Tempo: Ziel 4:35, Grenze 5:00. Die Übergabesätze üben.
+  Folie 5 nur K3. Ziel: Ende etwa 4:27.
+- [ ] **Gesamter Vortrag mit Stoppuhr** in ruhigem Tempo: gerechnet 4:19, Grenze 5:00. Die Übergabesätze üben.
 - [ ] **Beamer:**
   - Sind die Zeitleiste auf Folie 2 und die Farben Grün, Gelb und Rot gut zu erkennen?
   - Sind die Bildschirmfotos auf Folie 5 und 6 lesbar? Der Kleintext darin ist klein, die Aussage steht in der
@@ -321,7 +321,7 @@ Ergebnisse der Endprüfung auf `1eb08a2`:
 | Kriterium | Stand | Beleg |
 |---|---|---|
 | PPTX und PDF nach Plan 0.2 mit den Anpassungen vom 17.11. | erfüllt auf Dateiebene; nicht in PowerPoint geöffnet | Abschnitte 1 und 7 |
-| Standard-Sprechtext mit rund 450 Wörtern | 461 Wörter | Endprüfung, Notizen |
+| Standard-Sprechtext mit rund 450 Wörtern | 433 Wörter (am 17.11. vom Team weiter gekürzt) | Endprüfung, Notizen |
 | Erste drei Folien vereinfacht | erfüllt; Folie 3 etwas wortreicher als geplant | Sichtprüfung |
 | Folie 2 mit „Spätestens am 5. Februar die Prüfung anfragen“, 14 Tage als Annahme sichtbar | erfüllt | Endprüfung |
 | Standarddemo zeigt „fünf Tage zu spät“ und „Weiter prüfen“ | erfüllt; im lokalen Nachbau durchgeklickt, nicht auf dem Vortragsrechner | Abschnitt 7 |
@@ -331,7 +331,7 @@ Ergebnisse der Endprüfung auf `1eb08a2`:
 | Schluss mit der Bitte um Kontakt zu einem Dortmunder Umbauprojekt | erfüllt (Folie 9) | Folientext und Notiz |
 | Bestätigtes Praxisfeedback, falls rechtzeitig | keines vorhanden (Stand 17.11., 23:10 Uhr) | Abschnitt 5 |
 | Visuell geprüft: lesbar, nichts abgeschnitten, Zahlen und Quellen richtig, Ersatzfolien vollständig | erfüllt bei 144 dpi; Beamer nicht geprüft | Sichtprüfung |
-| Timing aus Wortzahlen nachgerechnet | erfüllt (4:35); Stoppuhrprobe steht aus | Abschnitt 2 |
+| Timing aus Wortzahlen nachgerechnet | erfüllt (4:19); Stoppuhrprobe steht aus | Abschnitt 2 |
 | Plattform, Vorschau, Freigabe und Pitch-Ablauf unverändert, nichts eingereicht | erfüllt | `git diff` |
 
 ## 10. Frühere Langfassungen A, B und C
@@ -346,8 +346,8 @@ Bildschirmfotos, Zeitleiste und Anhang. Die frühere README mit allen Einzelheit
   - Voraussetzung ist eine Gesprächsnotiz mit Datum, Rolle und Aussage. Name, Zitat und Foto nur, wenn die Person
     zugestimmt hat.
   - Nur das verwenden, was dokumentiert ist, und es als Einzelaussage kennzeichnen.
-  - Auf Folie 9 einen Satz ersetzen, nicht ergänzen. Sonst wird die Zeit knapp. Ein Kandidat ist „Dafür brauchen wir
-    unter anderem die tatsächliche Prüfzeit.“, wenn das Gespräch etwas zur Prüfzeit sagt.
+  - Auf Folie 9 einen Satz ersetzen, nicht ergänzen. Sonst wird die Zeit knapp. Ein Kandidat ist „Dafür klären wir
+    auch die benötigte Prüfzeit.“, wenn das Gespräch etwas zur Prüfzeit sagt.
   - Danach PDF und Sprechtext neu erzeugen und den geänderten Satz einmal laut mit Stoppuhr sprechen.
 - **Kleine Textänderungen** kann das Team direkt in PowerPoint machen. Danach das PDF aus PowerPoint neu exportieren,
   mit „Ausgeblendete Folien einschließen“. Der Generator und das Sprechtext-PDF ändern sich dabei nicht mit.

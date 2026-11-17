@@ -163,7 +163,9 @@ function pruefe(pdf, folien, meta) {
 }
 
 // ---------- Pitch 5 Minuten: Sprechtext mit Deckblatt "Ablauf auf einen Blick" ----------
-const ZEITEN_SATZ = "Zeiten bei ruhigem Tempo (etwa 1,8 Wörter je Sekunde) einschließlich Sprecherwechsel, Umschalten und Klicks. Bei zügigem Tempo (2,3 Wörter je Sekunde) dauert der Vortrag etwa 3:40. Probe mit Stoppuhr steht aus.";
+// Zeit bei zügigem Tempo aus der Wortzahl: Wörter / 2,3 + 18 s, auf 5 s gerundet
+const zuegigZeit = (woerter) => { const sek = Math.round((woerter / 2.3 + 18) / 5) * 5; return `etwa ${Math.floor(sek / 60)}:${String(sek % 60).padStart(2, "0")}`; };
+const zeitenSatz = (woerter) => `Zeiten bei ruhigem Tempo (etwa 1,8 Wörter je Sekunde) einschließlich Sprecherwechsel, Umschalten und Klicks. Bei zügigem Tempo (2,3 Wörter je Sekunde) dauert der Vortrag ${zuegigZeit(woerter)}. Probe mit Stoppuhr steht aus.`;
 const istRegie = (a) => /^(Klick:|Bei Zeitdruck:|Bei Rückfragen:|Zeitfenster:)/.test(a);
 
 function htmlFuerP5(d, folien, inhalt, bilder, summe) {
@@ -192,7 +194,7 @@ ${zeilen}</table>
 <ol class="klickpfad">${klick.replace(/^Klick:\s*/, "").split(" · ").map((k) => `<li>${esc(k.replace(/\.$/, ""))}</li>`).join("")}</ol>
 <h3>Regel bei Zeitdruck</h3>
 ${zeitdruck.map((z) => `<div class="kasten m5"><p><b>Bei Zeitdruck:</b>${esc(z.slice(14))}</p></div>`).join("")}
-<div class="hinweis">${esc(ZEITEN_SATZ)}</div></section>`);
+<div class="hinweis">${esc(zeitenSatz(summe.woerter))}</div></section>`);
   folien.forEach((f, i) => {
     const m = inhalt[i];
     const ausg = f.versteckt ? ` · <span class="aus">ausgeblendet: ${m.abschnitt === "Demo" ? "Ersatzfolie" : "Anhang"}</span>` : "";
