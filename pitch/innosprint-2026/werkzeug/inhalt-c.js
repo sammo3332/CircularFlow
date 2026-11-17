@@ -6,6 +6,10 @@ const { COL, LM, CW, T, karte, zeit4, bildAusschnitt, bildGroesse, papier } = B;
 const MADASTER = "Madaster: Die Dokumentation (Stand 09.09.2026) nennt keine Bestellfrist und keine Prüfzeit auf der Suchseite. Die Funktion selbst haben wir nicht bedient.";
 const FUSS_ABGRENZUNG = "Concular Exchange: laut Anbieter, Stand 08.11.2026, nicht erneut geprüft. Madaster Match: laut Dokumentation, zuletzt bearbeitet 09.09.2026. Quelle: Produktbrief v0.2; Lösungsansatz des Teams; Rechercheplan des Teams; Fallakte CF-PILOT-01 §6";
 
+const C5_KURZ = "So sieht die Prüfung in unserer Vorschau aus, hier als zwei große Ausschnitte von Bildschirmfotos mit Beispieldaten. Ein Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe. Links ein Paar, das zu spät ist: Die Prüfung wäre fünf Tage nach der Bestellfrist fertig, die Prüfbitte ist gesperrt, der Grund steht daneben. Rechts ein Paar, das passt: weiter prüfen. Das ist ein Vorschlag zur Prüfung, keine Freigabe. Der Nutzen, den wir erwarten: Die Planung sieht früh, was frei wird, bekommt die Zeitprüfung mit Begründung in Tagen und sieht den nächsten Schritt. Das ist eine Hypothese.";
+const C6_KURZ = "Wer hat das Problem? Unsere Hypothese: Planung und Bauleitung auf der Bedarfsseite, dazu Eigentümer und Einrichtungen, die ausbauen lassen. Das ist eine Rollenannahme, kein Praxisbefund.";
+const C9_KURZ = "Unsere Bitte: Wenn Sie in Planung, Bauleitung oder bei einem Eigentümer einen Fall kennen, bei dem Türen, Wände oder Böden vor einem Umbau frei wurden, sprechen Sie uns nach dem Pitch an. Schlusssatz (Houssam): Danke.";
+
 function folien() {
   const f = [];
 
@@ -44,8 +48,8 @@ function folien() {
     },
     notiz: {
       spricht: "Feyrouz",
-      text: "Zwei Fristen könnten über die Weitergabe eines Bauteils entscheiden. Wer ein Bauteil braucht, muss bis zu einem festen Tag Ersatz bestellen. Concular empfiehlt für Rückbauprojekte der öffentlichen Hand, eine Frist zu vereinbaren. Bis zu dieser Frist können Bauprodukte verkauft werden, in der Regel bis kurz vor der Ausschreibung des Rückbaus. Die Empfehlung betrifft Rückbau, unser Fall ist ein Umbau. In Dortmund wurde bei der Universitätsbibliothek erst ausgebaut und dann abgebrochen, das schreibt der BLB NRW. Ob und wo es knapp wird, wissen wir nicht. Unsere Vermutung: Das Wissen darüber kommt oft spät.",
-      min5: "entfällt.", min3: "entfällt.",
+      text: "Zwei Fristen könnten über die Weitergabe eines Bauteils entscheiden. Wer ein Bauteil braucht, muss bis zu einem festen Tag Ersatz bestellen. Concular empfiehlt für Rückbauprojekte der öffentlichen Hand, eine Frist zu vereinbaren. Bis zu dieser Frist können Bauprodukte verkauft werden, in der Regel bis kurz vor der Ausschreibung des Rückbaus. Das ist eine Angabe des Anbieters Concular. Die Empfehlung betrifft Rückbau, unser Fall ist ein Umbau. In Dortmund erfolgt laut BLB NRW der Rückbau der Universitätsbibliothek erst, nachdem alle demontierbaren Baustoffe ausgebaut wurden. Ob und wo es knapp wird, wissen wir nicht. Unsere Vermutung: Das Wissen darüber kommt oft spät.",
+      min5: { art: "weg" }, min3: { art: "weg" },
     },
   });
 
@@ -68,7 +72,8 @@ function folien() {
     },
     notiz: {
       spricht: "Feyrouz",
-      text: "Statt Bauchgefühl wollen wir vier Zeitpunkte getrennt erfassen. Erstens: Wann wurde das Angebot auf der abgebenden Seite bekannt? Zweitens: Wann erreichte es die zuständige Person? Drittens: Bis wann musste diese Person entscheiden? Viertens: Wann war die Übergabe möglich? Bleibt zwischen dem zweiten und dritten Zeitpunkt weniger Zeit, als eine Prüfung braucht, kommt das Angebot zu spät. Dafür muss vor der Bestellung eine Fachperson prüfen, ob das Bauteil passt. Die Bitte dazu heißt bei uns Prüfbitte. Wir nehmen an, die Prüfung dauert mindestens 14 Tage, das ist die Mindestprüfzeit. Das ist unsere Arbeitsannahme.",
+      text: "Wir wollen vier Zeitpunkte getrennt erfassen. Erstens: Wann wurde das Angebot auf der abgebenden Seite bekannt? Zweitens: Wann erreichte es die zuständige Person? Drittens: Bis wann musste diese Person entscheiden? Viertens: Wann war die Übergabe möglich? Bleibt zwischen dem zweiten und dritten Zeitpunkt weniger Zeit, als eine Prüfung braucht, kommt das Angebot zu spät. Dafür muss vor der Bestellung eine Fachperson prüfen, ob das Bauteil passt. Die Bitte dazu heißt bei uns Prüfbitte. Wir nehmen an, die Prüfung dauert mindestens 14 Tage, das ist die Mindestprüfzeit. Das ist unsere Arbeitsannahme.",
+      min5: { art: "voll" }, min3: { art: "zuerst", text: "Bis zu einem festen Tag, der Bestellfrist, muss Ersatz bestellt werden." },
     },
   });
 
@@ -94,8 +99,8 @@ function folien() {
     },
     notiz: {
       spricht: "Feyrouz",
-      text: "Unser fiktiver Fall mit zwölf Türen aus Haus Lindenhof zeigt das. In Variante eins würde das Angebot am 19. Januar bekannt und erreichte die Planung am 20. Januar. Entscheiden müsste sie bis zum 19. Februar, die Übergabe ginge am 8. März. In Variante zwei erreichte es sie erst am 22. Februar. Dann wäre die Ersatzbestellung raus, und für diesen Bedarf gäbe es keine Übergabe. Mit 14 Tagen Prüfzeit wäre der letzte Tag der 5. Februar. Alles ist simuliert.",
-      min5: "bleibt.", min3: "entfällt.",
+      text: "Unser fiktiver Fall mit zwölf Türen aus Haus Lindenhof zeigt das. Das Projekt Umbau am Kanal braucht sechs Türen. In Variante eins würde das Angebot am 19. Januar bekannt und erreichte die Planung am 20. Januar. Entscheiden müsste sie bis zum 19. Februar, die Übergabe ginge am 8. März. In Variante zwei erreichte es sie erst am 22. Februar. Dann wäre die Ersatzbestellung raus, und für diesen Bedarf gäbe es keine Übergabe. Mit angenommenen 14 Tagen Mindestprüfzeit wäre der letzte Tag für die Prüfbitte der 5. Februar. Alles ist simuliert.",
+      min5: { art: "voll" }, min3: { art: "weg" },
     },
   });
 
@@ -125,7 +130,8 @@ function folien() {
     },
     notiz: {
       spricht: "Houssam",
-      text: "So sieht die Prüfung in unserer Vorschau aus, hier als zwei große Ausschnitte von Bildschirmfotos mit Beispieldaten. Ein Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe. Links ein Paar, das zu spät ist: Prüfende fünf Tage nach der Bestellfrist, die Prüfbitte ist gesperrt, der Grund steht daneben. Rechts ein Paar, das passt: weiter prüfen. Prüfbar heißt: Die Zeit reicht noch. Darunter die Statuskette bis zum nächsten Schritt: Vormerkung anlegen. Eine Vormerkung ist eine unverbindliche Reservierung. Das ist ein Vorschlag zur Prüfung, keine Freigabe. Das Fachergebnis ist ein Eintrag in der Simulation. Die Vorschau zeigen wir auf Nachfrage gern im Anschluss.",
+      text: "So sieht die Prüfung in unserer Vorschau aus, hier als zwei große Ausschnitte von Bildschirmfotos mit Beispieldaten. Ein Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe. Links ein Paar, das zu spät ist: Die Prüfung wäre fünf Tage nach der Bestellfrist fertig, die Prüfbitte ist gesperrt, der Grund steht daneben. Rechts ein Paar, das passt: weiter prüfen. Prüfbar heißt: Die Zeit reicht noch. Darunter die Statuskette bis zum nächsten Schritt: Vormerkung anlegen. Eine Vormerkung ist eine unverbindliche Reservierung. Das ist ein Vorschlag zur Prüfung, keine Freigabe. Das Fachergebnis ist ein Eintrag in der Simulation. Der Nutzen, den wir erwarten: Die Planung sieht früh, was frei wird, bekommt die Zeitprüfung mit Begründung in Tagen und sieht den nächsten Schritt. Das ist eine Hypothese. Die Vorschau zeigen wir auf Nachfrage gern im Anschluss.",
+      min3: { art: "kurz", text: C5_KURZ },
     },
   });
 
@@ -151,13 +157,13 @@ function folien() {
       ], { x: 5.98, y: 2.9, w: 6.5, h: 3.2, fontSize: 16, paraSpaceAfter: 8 });
     },
     notiz: {
-      spricht: "Feyrouz",
+      spricht: "Houssam",
       text: "Wer hat das Problem? Unsere Hypothese: Planung und Bauleitung auf der Bedarfsseite, dazu Eigentümer und Einrichtungen, die ausbauen lassen. Das ist eine Rollenannahme, kein Praxisbefund. Andere Plattformen vermitteln Angebot und Gesuch, Concular Exchange laut Anbieter, Madaster Match laut Dokumentation. Da gibt es eine Überschneidung. Unsere Frage dazu: Reicht die Zeit bis zur Bestellentscheidung für eine fachliche Prüfung? Ob andere Plattformen das abbilden, haben wir nicht geprüft. Bei Madaster nennt die Dokumentation, Stand 9. September 2026, keine Bestellfrist und keine Prüfzeit auf der Suchseite. Die Funktion selbst haben wir nicht bedient. Ob das im Alltag fehlt, ist offen.",
-      min5: "bleibt.", min3: "entfällt.",
+      min5: { art: "voll" }, min3: { art: "kurz", text: C6_KURZ },
     },
   });
 
-  f.push(G.geschaeftsmodell({ id: "C7", abschnitt: "Nutzen und Test" }));
+  f.push(G.geschaeftsmodell({ id: "C7", abschnitt: "Nutzen und Test", spricht: "Houssam" }));
 
   f.push({
     id: "C8", abschnitt: "Nutzen und Test", layout: "INHALT", titel: "Der Praxistest in Dortmund ist klein und hat ein beobachtbares Signal",
@@ -202,6 +208,7 @@ function folien() {
     notiz: {
       spricht: "Feyrouz",
       text: "Unsere Bitte: Wenn Sie in Planung, Bauleitung oder bei einem Eigentümer einen Fall kennen, bei dem Türen, Wände oder Böden vor einem Umbau frei wurden, sprechen Sie uns nach dem Pitch an. Wir können die vier Fragen gemeinsam durchgehen. Für den nächsten Schritt suchen wir einen echten Fall. Wir haben bisher eine Simulation und eine klare Frage. Schlusssatz (Houssam): Danke.",
+      min3: { art: "kurz", text: C9_KURZ },
     },
   });
 

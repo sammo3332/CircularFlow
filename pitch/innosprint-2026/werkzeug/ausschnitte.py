@@ -19,8 +19,11 @@ AUS = os.path.join(BILDER, "ausschnitte")
 os.makedirs(AUS, exist_ok=True)
 
 DEFS = {
-    # Zeitkritisch und die drei Kacheln (9 Positionen, 8 Paare, 2 Vorgänge); ohne linke Navigationsleiste
-    "e1-uebersicht.jpg": dict(src="k1-uebersicht.jpg", f=1.08, box=(370, 175, 1965, 935),
+    # Zeitkritisch und die drei Kacheln (9 Positionen, 8 Paare, 2 Vorgänge); ohne linke Navigationsleiste.
+    # Unterkante 954 (Originalpixel 1030, vorher 935/1010): schließt die letzten Textzeilen der Kacheln ein
+    # ("Im Katalog ansehen", "Arbeitsliste öffnen") und endet vor der Chipzeile der mittleren Kachel (Oberkante 1031).
+    # Die Kartenunterkanten liegen im Bildschirmfoto selbst nicht mehr im Bild.
+    "e1-uebersicht.jpg": dict(src="k1-uebersicht.jpg", f=1.08, box=(370, 175, 1965, 954),
         hl=[[398, 203, 650, 247], [402, 755, 562, 827], [933, 748, 1188, 818], [1466, 748, 1608, 818]]),
     # Filterchips und Tabelle (drei Zeilen)
     "e2-paarliste.jpg": dict(src="k2-paarliste.jpg", f=1.08, box=(375, 335, 1965, 898),
@@ -31,7 +34,8 @@ DEFS = {
     # Ergebniskasten mit Grund (weiter prüfen)
     "e4-weiter-pruefen.jpg": dict(src="k4-weiter-pruefen.jpg", f=1.08, box=(375, 100, 1535, 775),
         hl=[[402, 492, 1050, 530]]),
-    # Statuskette und Formular Fachergebnis
+    # Statuskette und Formular Fachergebnis. Unterkante bleibt 885: Text und Schaltfläche sind ganz sichtbar; die Karten
+    # enden erst bei 903 (rechts) und 1188 (links), das wäre mehr als 5 Prozent höher (R6 nicht übernommen).
     "e5-vorgang.jpg": dict(src="k5-vorgang.jpg", f=1.0, box=(20, 95, 1680, 885),
         hl=[[29, 236, 1670, 346]]),
     # Kasten Nächster fachlicher Schritt und Status

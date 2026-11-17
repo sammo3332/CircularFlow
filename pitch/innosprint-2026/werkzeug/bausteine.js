@@ -272,14 +272,61 @@ function neuesDeck(titel) {
 }
 
 const woerter = (s) => s.split(/\s+/).filter(Boolean).length;
+// Schätzregel: 2,3 Wörter je Sekunde, je Folie auf 5 s gerundet (mindestens 5 s)
+const sekunden = (text) => Math.max(5, Math.round(woerter(text) / 2.3 / 5) * 5);
+
+// Kürzungsstufe einer Folie, strukturiert abgelegt in notiz.min5 bzw. notiz.min3:
+//   { art: "voll" }                    Folie bleibt unverändert (Zeile "bleibt.")
+//   { art: "weg", text }               Folie entfällt oder wird ohne Kommentar gezeigt (0 s); text = Zeile
+//   { art: "kurz", text, dauer? }      Kurzfassung statt Volltext; Dauer aus der Wortzahl, falls nicht gesetzt
+//   { art: "zusatz"|"zuerst", text }   Volltext plus Zusatz am Ende bzw. am Anfang
+//   { art: "bild", dauer }             als sichtbare Bildfolie, feste Dauer
+// Fehlt eine der beiden Stufen, gilt "voll"; fehlen beide, steht keine Zeile in der Notiz.
+function stufeAus(n, key, voll) {
+  let st = n[key];
+  if (!st) st = { art: "voll" };
+  switch (st.art) {
+    case "voll": return { zeile: "bleibt.", sek: voll, benannt: !!n[key] };
+    case "weg": return { zeile: st.text || "entfällt.", sek: 0, benannt: true };
+    case "kurz": {
+      const d = st.dauer != null ? st.dauer : sekunden(st.text);
+      return { zeile: `Kurzfassung sprechen (etwa ${d} Sekunden): ${st.text}`, sek: d, benannt: true };
+    }
+    case "zusatz": case "zuerst": {
+      const d = st.dauer != null ? st.dauer : sekunden(st.text);
+      const wo = st.art === "zusatz" ? "am Ende zusätzlich sagen" : "zuerst sagen";
+      return { zeile: `${wo} (etwa ${d} Sekunden): ${st.text}`, sek: voll + d, benannt: true };
+    }
+    case "bild":
+      return { zeile: `als sichtbare Bildfolie zeigen (Kopie der Demo-Folie, sichtbar gestellt, etwa ${st.dauer} Sekunden).`, sek: st.dauer, benannt: true };
+    default: throw new Error("Unbekannte Stufe: " + st.art);
+  }
+}
+function notizDaten(n) {
+  const voll = n.dauer != null ? n.dauer : sekunden(n.text);
+  const s5 = stufeAus(n, "min5", voll), s3 = stufeAus(n, "min3", voll);
+  const zeigen = !!(n.min5 || n.min3);
+  return { voll, s5, s3, zeigen };
+}
 function notizText(n) {
-  const dauer = n.dauer != null ? n.dauer : Math.max(5, Math.round(woerter(n.text) / 2.3 / 5) * 5);
+  const d = notizDaten(n);
   const teile = [`Spricht: ${n.spricht}`, "", n.text];
   if (n.klick) teile.push("", n.klick);
-  if (n.min5) teile.push("", `Bei 5 Minuten: ${n.min5}`);
-  if (n.min3) teile.push("", `Bei 3 Minuten: ${n.min3}`);
-  teile.push("", `Dauer: etwa ${dauer} Sekunden`);
-  return { text: teile.join("\n"), dauer };
+  if (d.zeigen) teile.push("", `Bei 5 Minuten: ${d.s5.zeile}`, "", `Bei 3 Minuten: ${d.s3.zeile}`);
+  teile.push("", `Dauer: etwa ${d.voll} Sekunden`);
+  return { text: teile.join("\n"), dauer: d.voll };
+}
+// Summen je Fassung aus denselben Daten wie die Notizen. Folien mit notiz.ausSumme (Anhang-Demo in C) zählen nicht.
+function summen(folien) {
+  const r = { voll: 0, min5: 0, min3: 0, anteil: {} };
+  for (const f of folien) {
+    if (f.notiz.ausSumme) continue;
+    const d = notizDaten(f.notiz);
+    r.voll += d.voll; r.min5 += d.s5.sek; r.min3 += d.s3.sek;
+    const p = f.notiz.spricht;
+    if (d.voll > 0) r.anteil[p] = (r.anteil[p] || 0) + d.voll;
+  }
+  return r;
 }
 
 // Baut ein Deck aus einer Liste von Folien-Beschreibungen
@@ -316,5 +363,5 @@ async function baue(pres, folien, datei) {
 
 module.exports = {
   COL, FONT, LM, CW, TOP, THEME, CHIPS, T, chip, chipZeile, karte, kette, zeit4, zeitleisteFall, fx,
-  bildPassend, bildGroesse, bildAusschnitt, ausschnittRahmen, ketteZeile, papier, neuesDeck, baue, woerter, getP: () => P,
+  bildPassend, bildGroesse, bildAusschnitt, ausschnittRahmen, ketteZeile, papier, neuesDeck, baue, woerter, sekunden, summen, notizDaten, getP: () => P,
 };

@@ -4,6 +4,8 @@ const G = require("./inhalt-gemeinsam");
 const { COL, LM, CW, T, karte, kette, zeitleisteFall } = B;
 
 const A5_KURZ = "Der Nutzen, den wir erwarten: Die Planung sieht früh, was frei wird, bekommt die Zeitprüfung mit Begründung in Tagen und sieht den nächsten Schritt. Das ist eine Hypothese. Andere Plattformen vermitteln Angebot und Gesuch. Unsere Frage ist, ob die Zeit für eine Prüfung reicht. Ob andere Plattformen das abbilden, haben wir nicht geprüft.";
+const A3_KURZ = "Das Angebot wird am 19. Januar bekannt. Mit 14 Tagen Mindestprüfzeit ist der letzte Tag für die Prüfbitte der 5. Februar, nicht der 19. Ab dem 6. Februar lautet das Ergebnis: für diese Entscheidung zu spät. In Variante 1 erreicht das Angebot die Planung am 20. Januar, rechtzeitig. In Variante 2 erst am 22. Februar, dann ist der Ersatz schon bestellt. Alle Zeitpunkte sind nachgerechnet, nicht erlebt. Die 14 Tage sind eine Annahme.";
+const A4_KURZ = "Jetzt zeigen wir die Zeitprüfung live in der Vorschau. Die Türen aus unserem Fall liegen dort nicht, wir nehmen die Beispieldaten der Vorschau. Die Zeitprüfung ist dieselbe. Ein Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe.";
 const MADASTER = "Madaster: Die Dokumentation (Stand 09.09.2026) nennt keine Bestellfrist und keine Prüfzeit auf der Suchseite. Die Funktion selbst haben wir nicht bedient.";
 const FUSS_ABGRENZUNG = "Concular Exchange: laut Anbieter, Stand 08.11.2026, nicht erneut geprüft. Madaster Match: laut Dokumentation, zuletzt bearbeitet 09.09.2026. Quelle: Rechercheplan des Teams; Fallakte CF-PILOT-01 §6";
 
@@ -76,6 +78,7 @@ function folien() {
     notiz: {
       spricht: "Feyrouz",
       text: "Das Angebot wird am 19. Januar bekannt. Mit 14 Tagen Mindestprüfzeit ist der letzte Tag für die Prüfbitte der 5. Februar, nicht der 19. Ab dem 6. Februar lautet das Ergebnis: für diese Entscheidung zu spät. Zeitkritisch ist die Liste der Fristen der nächsten sieben Tage in der Übersicht. Die Bestellfrist erschiene dort erst ab dem 13. Februar, einem Samstag, ohne Benachrichtigung. Das ist eine Lücke in unserer Plattform. In Variante 1 erreicht das Angebot die Planung am 20. Januar, rechtzeitig. In Variante 2 erst am 22. Februar, dann ist der Ersatz schon bestellt. Alle Zeitpunkte sind nachgerechnet, nicht erlebt. Die 14 Tage sind eine Annahme.",
+      min5: { art: "kurz", text: A3_KURZ }, min3: { art: "kurz", text: A3_KURZ },
     },
   });
 
@@ -84,7 +87,7 @@ function folien() {
     zeile1: "Live-Demo · Fassung 2 · 6 Schritte · Beispieldaten",
     zeile3: "Der Türfall liegt nicht im Demo-Profil. Die Beispiele der Vorschau sind Systemtrennwände, nicht Türen.", fuss: "Quelle: Pitch-Ablauf; Doku Fassung 2 §11", spricht: "Houssam",
     text: "Jetzt zeigen wir die Zeitprüfung live in der Vorschau. Die Türen aus unserem Fall liegen dort nicht, wir nehmen die Beispieldaten der Vorschau. Die Zeitprüfung ist dieselbe. Die Beispiele der Vorschau sind Systemtrennwände, nicht Türen. Der Stichtag der Demo ist ein gewählter Zeitpunkt in der Simulation, nicht das heutige Datum. Es wird nichts versendet und niemand kontaktiert.",
-    min5: "Demo nur mit K1, K3 und K4 zeigen.", min3: "entfällt, samt E1 bis E6.",
+    min5: { art: "kurz", text: A4_KURZ }, min3: { art: "weg", text: "entfällt, samt Demo und E1 bis E6." },
   }));
   f.push(...G.eFolien("A", "Demo", "A5"));
 
@@ -113,7 +116,7 @@ function folien() {
     notiz: {
       spricht: "Houssam",
       text: "Was bringt das? Wir erwarten: Die Planung sieht früh, was frei wird, bekommt die Zeitprüfung mit Begründung in Tagen und sieht den nächsten Schritt. Das ist eine Hypothese. Andere Plattformen vermitteln Angebot und Gesuch, Concular Exchange laut Anbieter, Madaster Match laut Dokumentation. Da gibt es eine Überschneidung. Unsere Frage dazu: Reicht die Zeit bis zur Bestellentscheidung für eine fachliche Prüfung? Ob andere Plattformen das abbilden, haben wir nicht geprüft. Bei Madaster nennt die Dokumentation, Stand 9. September 2026, keine Bestellfrist und keine Prüfzeit auf der Suchseite. Die Funktion selbst haben wir nicht bedient.",
-      min5: "Kurzfassung sprechen: " + A5_KURZ, min3: "Kurzfassung sprechen (Text wie bei 5 Minuten).",
+      min5: { art: "kurz", text: A5_KURZ }, min3: { art: "kurz", text: A5_KURZ },
     },
   });
 

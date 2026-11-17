@@ -4,6 +4,7 @@
 const path = require("path");
 const fs = require("fs");
 const B = require("./bausteine");
+const { nachbearbeite } = require("./nachbearbeiten");
 
 const DECKS = {
   A: { datei: "CircularFlow_INNOSPRINT2026_Fassung-A_Umbaufall.pptx", ordner: "empfohlen-zur-abgabe", mod: "./inhalt-a", titel: "CircularFlow INNOSPRINT 2026 · Fassung A · Umbaufall" },
@@ -24,10 +25,12 @@ const DECKS = {
     const folien = require(d.mod).folien();
     const datei = path.join(ziel, d.datei);
     const r = await B.baue(pres, folien, datei);
+    const nb = await nachbearbeite(datei); // R3/R12: Notizen als Absätze, Sprache Deutsch
     const sichtbar = folien.filter((f) => !f.versteckt).length;
-    console.log(`${k}: ${datei} (${folien.length} Folien, ${sichtbar} sichtbar, ${folien.length - sichtbar} versteckt)`);
+    console.log(`${k}: ${datei} (${folien.length} Folien, ${sichtbar} sichtbar, ${folien.length - sichtbar} versteckt; ${nb.notizen} Notizen in Absätze zerlegt)`);
     console.log("   Linknummern:", Object.entries(r.nr).map(([a, b]) => `${a}=${b}`).join(" "));
-    console.log("   Sprechdauer sichtbar (s):", r.dauern.filter((_, i) => !folien[i].versteckt).reduce((a, b) => a + b, 0),
-      "· Demo E (s):", r.dauern.filter((_, i) => /^E\d/.test(folien[i].id)).reduce((a, b) => a + b, 0));
+    const sm = B.summen(folien), mmss = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    console.log(`   Summen (s): voll ${sm.voll} (${mmss(sm.voll)}) · etwa 5 Minuten ${sm.min5} (${mmss(sm.min5)}) · etwa 3 Minuten ${sm.min3} (${mmss(sm.min3)})`);
+    console.log("   Sprechanteil voll (s):", Object.entries(sm.anteil).sort((a, b) => b[1] - a[1]).map(([p, v]) => `${p} ${v}`).join(", "));
   }
 })().catch((e) => { console.error(e); process.exit(1); });

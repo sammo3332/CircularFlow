@@ -3,6 +3,9 @@ const B = require("./bausteine");
 const G = require("./inhalt-gemeinsam");
 const { COL, LM, CW, T, karte, kette, zeitleisteFall, bildPassend, bildGroesse, papier } = B;
 
+const B2_KURZ = "Wir nehmen an, eine Prüfung dauert mindestens 14 Tage. Das nennen wir Mindestprüfzeit. Die Beispiele der Vorschau sind Systemtrennwände. Ein Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe.";
+const B1_ZUSATZ = "Wir nehmen an, eine Prüfung dauert mindestens 14 Tage. Das nennen wir Mindestprüfzeit. Ein Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe.";
+const B5_KURZ = "Für wen? Unsere Hypothese: Planung und Bauleitung auf der Bedarfsseite, dazu Eigentümer, die ausbauen lassen. Der Nutzen, den wir erwarten: früh sehen, was frei wird, die Zeit mit Begründung prüfen und den nächsten Schritt kennen. Andere Plattformen vermitteln Angebot und Gesuch, Concular Exchange laut Anbieter, Madaster Match laut Dokumentation. Unsere Frage dazu: Reicht die Zeit bis zur Bestellentscheidung für eine fachliche Prüfung? Ob andere Plattformen das abbilden, haben wir nicht geprüft.";
 const MADASTER = "Madaster: Die Dokumentation (Stand 09.09.2026) nennt keine Bestellfrist und keine Prüfzeit auf der Suchseite. Die Funktion selbst haben wir nicht bedient.";
 const FUSS_ABGRENZUNG = "Concular Exchange: laut Anbieter, Stand 08.11.2026, nicht erneut geprüft. Madaster Match: laut Dokumentation, zuletzt bearbeitet 09.09.2026. Quelle: Produktbrief v0.2; Lösungsansatz des Teams; Rechercheplan des Teams; Fallakte CF-PILOT-01 §6";
 const BILDUNTERSCHRIFT = "Bildschirmfoto aus einem eigenen Profil mit den fiktiven Pilotdaten, nicht aus der Live-Demo";
@@ -20,17 +23,18 @@ function folien() {
     notiz: {
       spricht: "Houssam",
       text: "Bauteile aus einem Umbau oder Rückbau könnten anderswo gebraucht werden. Erfährt die Planung zu spät von einem Angebot, wird neu bestellt, und passende Bauteile können entsorgt werden. Die Frage, die wir uns stellen: Reicht die Zeit bis zur Bestellentscheidung, damit eine Fachperson noch prüfen kann? Eine Prüfbitte ist die Bitte an eine Fachperson, die Eignung zu prüfen. Wir sind Houssam und Feyrouz, ein studentisches Team, und das ist CircularFlow. Statt lange zu erklären, zeigen wir es gleich. Alle Daten in der Vorschau sind Beispieldaten.",
+      min3: { art: "zusatz", text: B1_ZUSATZ },
     },
   });
 
   f.push(G.demoAnkuendigung({
     id: "B2", abschnitt: "Demo", titel: "Wir starten in der Übersicht der Vorschau",
     zeile1: "Live-Demo · 6 Schritte · Beispieldaten",
-    zeile3: "Die Zeitprüfung ist dieselbe. Die Beispiele der Vorschau sind Systemtrennwände, nicht Türen.",
+    zeile3: "Die Beispiele der Vorschau sind Systemtrennwände.",
     fuss: "Quelle: Pitch-Ablauf", spricht: "Houssam",
-    text: "Wir starten in der Übersicht der Vorschau und gehen sechs Schritte. Wir nehmen an, eine Prüfung dauert mindestens 14 Tage. Das nennen wir Mindestprüfzeit. Am Ende steht kein Verkaufsabschluss, sondern der nächste menschliche Schritt. Die Zeitprüfung ist dieselbe. Die Beispiele der Vorschau sind Systemtrennwände, nicht Türen. Der Stichtag der Demo ist ein gewählter Zeitpunkt in der Simulation, nicht das heutige Datum. Es wird nichts versendet.",
-    min5: "Demo nur mit K1, K3 und K4 zeigen.",
-    min3: "entfällt samt Demo; stattdessen E3 und E4 als zwei sichtbare Bildfolien zeigen (Kopien der Demo-Folien, sichtbar gestellt, je etwa 25 Sekunden).",
+    text: "Wir starten in der Übersicht der Vorschau und gehen sechs Schritte. Wir nehmen an, eine Prüfung dauert mindestens 14 Tage. Das nennen wir Mindestprüfzeit. Am Ende steht kein Verkaufsabschluss, sondern der nächste menschliche Schritt. Die Beispiele der Vorschau sind Systemtrennwände. Der Stichtag der Demo ist ein gewählter Zeitpunkt in der Simulation, nicht das heutige Datum. Es wird nichts versendet.",
+    min5: { art: "kurz", text: B2_KURZ },
+    min3: { art: "weg", text: "entfällt samt Demo; stattdessen E3 und E4 als zwei sichtbare Bildfolien zeigen (Kopien der Demo-Folien, sichtbar gestellt, je etwa 30 Sekunden)." },
   }));
   f.push(...G.eFolien("B", "Demo", "B3"));
 
@@ -56,8 +60,8 @@ function folien() {
     },
     notiz: {
       spricht: "Feyrouz",
-      text: "Warum die Zeit so wichtig ist, zeigt unser fiktiver Fall. Zwölf Türen aus Haus Lindenhof, sechs für den Umbau am Kanal. Das Angebot wird am 19. Januar bekannt, die Bestellfrist ist der 19. Februar. Mit 14 Tagen Prüfzeit ist der letzte Tag für die Prüfbitte der 5. Februar. Die Zeitpunkte sind mit derselben Rechenregel der Vorschau nachgerechnet. Zeitkritisch ist die Liste der Fristen der nächsten sieben Tage in der Übersicht. In Variante 1 erreicht das Angebot die Planung am 20. Januar, rechtzeitig. In Variante 2 erst am 22. Februar. Die 14 Tage sind eine Annahme, die ein echter Fall bestätigen müsste.",
-      min5: "bleibt.", min3: "entfällt.",
+      text: "Warum die Zeit so wichtig ist, zeigt unser fiktiver Fall. Unser Fall spielt mit Türen, nicht mit Systemtrennwänden. Die Zeitprüfung ist dieselbe. Zwölf Türen aus Haus Lindenhof, sechs für den Umbau am Kanal. Das Angebot wird am 19. Januar bekannt, die Bestellfrist ist der 19. Februar. Mit 14 Tagen Prüfzeit ist der letzte Tag für die Prüfbitte der 5. Februar. Die Zeitpunkte sind mit derselben Rechenregel der Vorschau nachgerechnet. Zeitkritisch ist die Liste der Fristen der nächsten sieben Tage in der Übersicht. In Variante 1 erreicht das Angebot die Planung am 20. Januar, rechtzeitig. In Variante 2 erst am 22. Februar. Die 14 Tage sind eine Annahme, die ein echter Fall bestätigen müsste.",
+      min5: { art: "voll" }, min3: { art: "weg" },
     },
   });
 
@@ -93,7 +97,7 @@ function folien() {
     notiz: {
       spricht: "Houssam",
       text: "Noch ein Beispiel aus unserem fiktiven Türfall. Die Plattform trennt gemessen, bestätigt und vorgeschlagen. Die Türblattbreite von 860 Millimetern ist gemessen. Die Höhe ist bestätigt, aber nicht gemessen. Das Material ist nur vorgeschlagen. Ein simulierter Raumscan liefert 884 Millimeter, ebenfalls nur vorgeschlagen. Für die Türregel zählt nur, was gemessen ist. Fachlich bestätigt gibt es als Status nicht. Das Fachergebnis ist ein Eintrag.",
-      min5: "entfällt.", min3: "entfällt.",
+      min5: { art: "weg" }, min3: { art: "weg" },
     },
   });
 
@@ -118,6 +122,7 @@ function folien() {
     notiz: {
       spricht: "Feyrouz",
       text: "Für wen? Unsere Hypothese: Planung und Bauleitung auf der Bedarfsseite, dazu Eigentümer, die ausbauen lassen. Der Nutzen, den wir erwarten: früh sehen, was frei wird, die Zeit mit Begründung prüfen und den nächsten Schritt kennen. Andere Plattformen vermitteln Angebot und Gesuch, Concular Exchange laut Anbieter, Madaster Match laut Dokumentation. Da gibt es eine Überschneidung. Unsere Frage dazu: Reicht die Zeit bis zur Bestellentscheidung für eine fachliche Prüfung? Ob andere Plattformen das abbilden, haben wir nicht geprüft. Bei Madaster nennt die Dokumentation, Stand 9. September 2026, keine Bestellfrist und keine Prüfzeit auf der Suchseite. Die Funktion selbst haben wir nicht bedient.",
+      min3: { art: "kurz", text: B5_KURZ },
     },
   });
 
@@ -132,7 +137,7 @@ function folien() {
     },
     notiz: {
       spricht: "Houssam",
-      text: "CircularFlow macht aus einem Treffer einen prüfbaren nächsten Schritt: mit Zeitprüfung, mit Status je Wert und ohne vorgetäuschte Freigabe. Heute ist das Simulation mit Beispieldaten. Fachleute prüfen, wir bereiten die Entscheidung vor. Als Nächstes brauchen wir einen echten Fall. Danke.",
+      text: "CircularFlow macht aus einem Paar einen prüfbaren nächsten Schritt: mit Zeitprüfung, mit Status je Wert und ohne vorgetäuschte Freigabe. Heute ist das Simulation mit Beispieldaten. Fachleute prüfen, wir bereiten die Entscheidung vor. Als Nächstes brauchen wir einen echten Fall. Danke.",
     },
   });
 

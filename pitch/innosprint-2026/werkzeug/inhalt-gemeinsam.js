@@ -12,7 +12,7 @@ const E_DEF = [
     unter: "K1 · Übersicht",
     hinweis: "Ausschnitt: Zeitkritisch und die Kacheln. Rahmen: Positionen, Paare, Vorgänge.",
     alt: "Ausschnitt der Übersicht: Zeitkritisch mit 4 Fristen, 9 Positionen in 90 Tagen, 8 Paare davon 2 prüfbar, 2 Vorgänge (Beispieldaten)",
-    text: "Das ist die Übersicht der Vorschau. Alle Daten sind Beispieldaten. Der Stichtag der Demo ist ein gewählter Zeitpunkt in der Simulation: Mittwoch, 18. November, 14 Uhr. Zeitkritisch zeigt die Fristen der nächsten sieben Tage. Darunter: neun Positionen werden in den nächsten 90 Tagen verfügbar, ohne festes Ziel. Ein Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe. Wir haben acht Paare, davon zwei prüfbar, und zwei Vorgänge. Ein Vorgang entsteht mit der Prüfbitte. Weiter unten zeigt die Übersicht die Verfügbarkeit je Monat. Zahlen zu Kosten, CO₂ oder Abfall zeigt sie bewusst nicht, weil Daten fehlen.",
+    text: "Das ist die Übersicht der Vorschau. Alle Daten sind Beispieldaten. Der Stichtag der Demo ist ein gewählter Zeitpunkt in der Simulation: Mittwoch, 18. November, 14 Uhr. Zeitkritisch zeigt die Fristen der nächsten sieben Tage. Darunter: neun Positionen werden in den nächsten 90 Tagen verfügbar, ohne festes Ziel. Ein Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe. Wir haben acht Paare, davon zwei prüfbar, und zwei Vorgänge. Prüfbar heißt: Die Zeit reicht noch. Ein Vorgang entsteht mit der Prüfbitte. Weiter unten zeigt die Übersicht die Verfügbarkeit je Monat. Zahlen zu Kosten, CO₂ oder Abfall zeigt sie bewusst nicht, weil Daten fehlen.",
     klick: "Klick: Startseite Übersicht. Optional nach unten scrollen zur Verfügbarkeit je Monat.",
   },
   {
@@ -48,7 +48,7 @@ const E_DEF = [
     unter: "K5 · Vorgang zu TW-05 → BD-22",
     hinweis: "Rahmen: die Statuskette, aktuell „Prüfbitte gestellt“. Darunter das Formular „Fachergebnis eintragen“.",
     alt: "Ausschnitt des Vorgangs: Status Prüfbitte gestellt, Statuskette mit sechs Schritten, Formular Fachergebnis eintragen (Beispieldaten, Simulation)",
-    text: "Mit „Prüfbitte anlegen“ entsteht ein Vorgang. Die Kette zeigt sechs Schritte, von der Zuordnung bis zur Übergabe. Jetzt trägt jemand das Fachergebnis ein: geeignet, mit dem Namen einer Fachperson, hier ein Beispiel. Das ist ein Eintrag in der Simulation. Geprüft hat hier niemand, und es wird nichts versendet und niemand kontaktiert.",
+    text: "Mit „Prüfbitte anlegen“ entsteht ein Vorgang. Die Kette zeigt sechs Schritte, von der Zuordnung bis zur Übergabe. Als Nächstes trägt jemand das Fachergebnis ein: geeignet, mit dem Namen einer Fachperson, hier ein Beispiel. Das ist ein Eintrag in der Simulation. Geprüft hat hier niemand, und es wird nichts versendet und niemand kontaktiert.",
     klick: "Klick: Prüfbitte anlegen.",
   },
   {
@@ -62,13 +62,19 @@ const E_DEF = [
   },
 ];
 
-// Kürzungen je Fassung ("A", "B", "C")
+// Kürzungen je Fassung ("A", "B", "C"); Stufen strukturiert (Schema siehe bausteine.js, stufeAus)
 function kuerzung(modus, k) {
-  const bleibt5 = [1, 3, 4].includes(k);
-  if (modus === "C") return { min5: "entfällt (nur auf Nachfrage in der Fragerunde).", min3: "entfällt." };
-  const min5 = bleibt5 ? "bleibt." : "entfällt.";
-  let min3 = "entfällt.";
-  if (modus === "B" && (k === 3 || k === 4)) min3 = "als sichtbare Bildfolie zeigen (Kopie der Demo-Folie, sichtbar gestellt, etwa 25 Sekunden).";
+  if (modus === "C") {
+    const w = { art: "weg", text: "entfällt (nur auf Nachfrage in der Fragerunde)." };
+    return { min5: w, min3: w, ausSumme: true };
+  }
+  const weg = { art: "weg", text: "entfällt." };
+  let min5 = weg, min3 = weg;
+  if (k === 1 || k === 2) min5 = { art: "weg", text: "ohne Kommentar durchklicken (Weg zu K3)." };
+  if (k === 3 || k === 4) {
+    min5 = { art: "voll" };
+    if (modus === "B") min3 = { art: "bild", dauer: 30 };
+  }
   return { min5, min3 };
 }
 
@@ -106,13 +112,13 @@ function eFolien(modus, abschnitt, zurueckId) {
           link("zurück zum Vortrag", zurueckId, "Zurück zum Vortrag", { x: 9.2, y: y + 0.38, w: 3.53, h: 0.35, align: "right" });
         }
       },
-      notiz: { spricht: e.spricht, text: e.text, klick: e.klick, min5: kz.min5, min3: kz.min3, dauer: e.dauer },
+      notiz: { spricht: e.spricht, text: e.text, klick: e.klick, min5: kz.min5, min3: kz.min3, dauer: e.dauer, ausSumme: !!kz.ausSumme },
     };
   });
 }
 
 // ---------- Demo-Ankündigung (A4 / B2) ----------
-function demoAnkuendigung({ id, abschnitt, titel, zeile1, zeile3, spricht, text, min5, min3, fuss }) {
+function demoAnkuendigung({ id, abschnitt, titel, zeile1, zeile3, spricht, text, min5, min3, fuss }) { // min5/min3: Stufen (Schema siehe bausteine.js)
   return {
     id, abschnitt, layout: "INHALT", titel, chips: ["beispiel", "simulation"], fuss,
     zeichne: (s, ctx) => {
@@ -136,7 +142,9 @@ function demoAnkuendigung({ id, abschnitt, titel, zeile1, zeile3, spricht, text,
 }
 
 // ---------- G-GM Geschäftsmodell ----------
-function geschaeftsmodell({ id, abschnitt }) {
+const GM_KURZ = "Zum Geschäftsmodell haben wir eine Hypothese, keine Zahlen. Eigentümer, öffentliche Einrichtungen und Wohnungsunternehmen könnten für ein Zielbild von Frühwarnung und Koordination zahlen. Die heutige Vorschau benachrichtigt niemanden. Ob jemand zahlen würde, wer das Budget hat und in welcher Höhe, haben wir nicht geprüft.";
+const PT_KURZ = "Für den nächsten Schritt suchen wir einen echten Fall: jemanden aus der Planung, der oder die einen Fall mit uns durchgeht. Daraus sehen wir, ob 14 Tage Mindestprüfzeit stimmen. Ein Einzelfall belegt keinen Markt. Wer so einen Fall hat, spricht uns nach dem Pitch an.";
+function geschaeftsmodell({ id, abschnitt, spricht = "Feyrouz" }) {
   return {
     id, abschnitt, layout: "INHALT", titel: "Wer zahlen könnte, ist eine Hypothese: Zahlungsbereitschaft ist ungeprüft",
     chips: ["hypothese"], fuss: "Quelle: Lösungsansatz des Teams; Rechercheplan des Teams",
@@ -164,7 +172,8 @@ function geschaeftsmodell({ id, abschnitt }) {
       T(s, "Die heutige Vorschau benachrichtigt niemanden.", { x: LM + 0.25, y: 5.5, w: CW - 0.5, h: 0.85, fontSize: 20, bold: true, valign: "middle" });
     },
     notiz: {
-      spricht: "Feyrouz",
+      spricht,
+      min3: { art: "kurz", text: GM_KURZ },
       text: "Zum Geschäftsmodell haben wir eine Hypothese, keine Zahlen. Eigentümer, öffentliche Einrichtungen und Wohnungsunternehmen könnten für ein Zielbild von Frühwarnung und Koordination zahlen. Die heutige Vorschau benachrichtigt niemanden. Betriebe für Prüfung, Ausbau, Transport, Lager und Wiedereinbau könnten Aufträge bekommen. Wofür man zahlen könnte, ist offen: zum Beispiel ein Pilot in einem Projekt oder die laufende Nutzung. Eine Alternative ist die Zusammenarbeit mit bestehenden Lösungen: Unser Lösungsansatz bindet qualifizierte Fachleute und bestehende Lösungen für Materialprüfung, Rückbau und Wiederverwendung in den Prozess ein. Ob jemand zahlen würde, wer das Budget hat und in welcher Höhe, haben wir nicht geprüft.",
     },
   };
@@ -195,7 +204,8 @@ function praxistestKurz({ id, abschnitt }) {
     },
     notiz: {
       spricht: "Feyrouz",
-      text: "Unser nächster Schritt ist klein. Für den nächsten Schritt suchen wir einen echten Fall: jemanden aus der Planung, der oder die einen Fall mit uns durchgeht. Wann wurde das Angebot bekannt? Wann erreichte es die zuständige Person? Bis wann musste sie entscheiden? Wann war die Übergabe möglich? Daraus sehen wir, ob 14 Tage Mindestprüfzeit stimmen. Das Signal wäre eine dokumentierte Prüfzeit mit Quelle. Ein Einzelfall belegt keinen Markt. Schlusssatz (Houssam): Wer so einen Fall hat, spricht uns nach dem Pitch an.",
+      min3: { art: "kurz", text: PT_KURZ },
+      text: "Unser nächster Schritt ist klein. Für den nächsten Schritt suchen wir einen echten Fall: jemanden aus der Planung, der oder die einen Fall mit uns durchgeht. Wann wurde das Angebot bekannt? Wann erreichte es die zuständige Person? Bis wann musste sie entscheiden? Wann war die Übergabe möglich? Daraus sehen wir, ob 14 Tage Mindestprüfzeit stimmen. Das Signal wäre eine dokumentierte Prüfzeit mit Quelle. Ein Einzelfall belegt keinen Markt. Wer so einen Fall hat, spricht uns nach dem Pitch an.",
     },
   };
 }
