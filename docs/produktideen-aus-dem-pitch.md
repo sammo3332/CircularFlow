@@ -2,10 +2,10 @@
 
 | | |
 |---|---|
-| Dokumentversion | 1.1 vom 17.11.2026. Befunde von cf-review auf Fassung 1.0 (`6a3db03`) sind eingearbeitet. |
+| Dokumentversion | 1.2 vom 17.11.2026. An Nachbesserung 4 des Pitches angepasst. Fassung 1.1 mit den Befunden von cf-review steht in `ce43e40`. |
 | Status | **Ideensammlung, keine Freigabe und kein Produktumfang.** Maßgeblich bleiben der Produktbrief v0.2 und die Entscheidungen des Teams. Was das Team übernimmt, trägt es mit Aufgabe und Commit in sein Entscheidungsprotokoll ein. |
 | Branch | `codex/plattform-v1` |
-| Ausgangscommit | `8b340b9` (Pitch-Endstand nach Nachbesserung 3) |
+| Ausgangscommit | `f0eefa6` (Pitch nach Nachbesserung 4) |
 | Herkunft | 5-Minuten-Pitch INNOSPRINT (`pitch/innosprint-2026/`), Steckbrief des Teams (13.11.2026), Fallakte CF-PILOT-01 1.3 (`docs/pilot/CF-PILOT-01-fallakte.md`), Plan Restmenge 1.1 (`docs/plan-restmenge.md`), Fassung 2 (`docs/plattform-v2.md`) |
 
 Status je Idee wie in der Fallakte:
@@ -24,7 +24,7 @@ Status je Idee wie in der Fallakte:
     - Gemessene Maße speichert die Vorschau schon, mit Wertstatus und Quelle.
     - Eine Ablage für Unterlagen, Dokumente am Pass und Unterlagen der Prüfung fehlen (Fallakte, Abschnitt 4,
       Schritte 2, 4 und 7).
-    - Die Verwendbarkeitsnachweise auf Folie 14 sind ein eigenes Thema.
+    - Welche Prüfungen und Nachweise ein Bauteil braucht, ist ein eigenes Thema (Folie 14).
   - „Nach Fristablauf muss die Planung den Termin neu bestätigen.“
     - Die Vorschau zeigt nach Fristablauf „Frist verstrichen“, und der Vorgang bleibt offen.
     - Die im Status erlaubten Schritte bleiben möglich, im Beispiel E-01 Vermerk und Abbruch.
@@ -37,9 +37,9 @@ Status je Idee wie in der Fallakte:
 | Nr. | Idee | Anlass | Status | Bezug zu bestehenden Plänen | Offene Prüfung |
 |---|---|---|---|---|---|
 | N1 | **Wirkung zählen:** je Projekt angebotene, rechtzeitig geprüfte und wieder eingebaute Bauteile, bei Scheitern mit Grund (zu spät, Angaben fehlen, ungeeignet) | Folie 7 („Ziel, noch keine Messung“); Umweltamt: „Es gibt kaum Daten zu Baustoffströmen.“ | eigener Vorschlag | Fassung 2 zählt Paare und Vorgänge (`docs/plattform-v2.md`, Abschnitt 4) und legt für die Übersicht „keine Wirkungszahlen“ fest (Abschnitt 2, Paket P5). Die Idee braucht also eine neue Entscheidung. „Einbau dokumentieren“ ist Kandidat in der Fallakte, Abschnitt 9. Nur Stückzahlen: CO₂-, Kosten- und Abfallwerte sind in Fassung 2 verworfen. | Wer bestätigt den Einbau, und wann gilt ein Bauteil als „wieder eingebaut“? |
-| N2 | **Herkunft der Prüfzeit:** zusätzlich zu „belegt“ und „geschätzt“ festhalten, ob die Prüfzeit eine Angabe der Fachperson oder gemessen ist; Dauer von Prüfbitte bis Fachergebnis aus den Vorgängen ablesen | Folie 9 („echte Prüfzeit statt 14 Tage Annahme“); 14 Tage sind Annahme A5 der Fallakte | eigener Vorschlag, Erweiterung von Fassung 2 | Fassung 2 kennzeichnet jede Zeitangabe eines Bedarfs als „belegt“ oder „geschätzt“ (`docs/plattform-v2.md`, Abschnitt 3). Vorgänge bestehen aus Ereignissen (`plattform/app/vorgang.js`). Ob sich die Dauer daraus ohne Umbau ablesen lässt, ist nicht geprüft. | Reale Werte gibt es erst mit einem Praxisfall. |
-| N3 | **Feld „Angebot erreicht die Projektleitung“**, damit sichtbar wird, wie viel Zeit zwischen Angebot und Kenntnis vergeht | Folie 1 („weil die Information zu spät kommt“); Folie 9 (vier Zeitpunkte) | Hypothese; Concular nennt nur allgemein „Zeitliche Unterschiede in Nachfrage und Angebot“ (Workshop, Folie 49) | Die Fallakte führt „erreicht die Planung“ schon als einen der vier Zeitpunkte je Variante (Abschnitt 0, Akzeptanzkriterium 4). In der App gibt es dafür kein Feld. Fassung 2 kennt „verfügbar ab“, Bestellfrist und Annahmefenster. | Im Pilot messen, ob hier die Lücke liegt. |
-| N4 | **Ergebnisblatt „Kurzcheck“** für eine Bauteilgruppe in einem Projekt: Paare, Zeitprüfung, fehlende Angaben, nächster Schritt; ohne Eignungsurteil | Folie 8 („erstes Angebot: Kurzcheck für eine Bauteilgruppe in einem Projekt“) | Hypothese; Zahlungsbereitschaft und Preis offen | Export und Druck sind in Fassung 2 auf „später“ gestellt. | Wer zahlt: Bauherrschaft oder Bestandsorganisation (Pitch) oder Büroleitung eines Planungsbüros (Steckbrief)? |
+| N2 | **Herkunft der Prüfzeit:** zusätzlich zu „belegt“ und „geschätzt“ festhalten, ob die Prüfzeit eine Angabe der Fachperson oder gemessen ist; Dauer von Prüfbitte bis Fachergebnis aus den Vorgängen ablesen | Folie 9 („tatsächliche Prüfzeit“ als eine der nötigen Angaben); 14 Tage sind Annahme A5 der Fallakte | eigener Vorschlag, Erweiterung von Fassung 2 | Fassung 2 kennzeichnet jede Zeitangabe eines Bedarfs als „belegt“ oder „geschätzt“ (`docs/plattform-v2.md`, Abschnitt 3). Vorgänge bestehen aus Ereignissen (`plattform/app/vorgang.js`). Ob sich die Dauer daraus ohne Umbau ablesen lässt, ist nicht geprüft. | Reale Werte gibt es erst mit einem Praxisfall. |
+| N3 | **Feld „Angebot erreicht die Projektleitung“**, damit sichtbar wird, wie viel Zeit zwischen Angebot und Kenntnis vergeht | Folie 1 („weil die Information zu spät kommt“); Folie 9 („Hilft die Karte einer Projektleitung, die Fachprüfung rechtzeitig anzustoßen?“) | Hypothese; Concular nennt nur allgemein „Zeitliche Unterschiede in Nachfrage und Angebot“ (Workshop, Folie 49) | Die Fallakte führt „erreicht die Planung“ schon als einen der vier Zeitpunkte je Variante (Abschnitt 0, Akzeptanzkriterium 4). In der App gibt es dafür kein Feld. Fassung 2 kennt „verfügbar ab“, Bestellfrist und Annahmefenster. | Im Pilot messen, ob hier die Lücke liegt. |
+| N4 | **Ergebnisblatt „Kurzcheck“** für eine Bauteilgruppe in einem Projekt: Paare, Zeitprüfung, fehlende Angaben, nächster Schritt; ohne Eignungsurteil | Folie 8 („Erstes Angebot: Kurzcheck für eine Bauteilgruppe im Umbau.“) | Hypothese; Zahlungsbereitschaft und Preis offen | Export und Druck sind in Fassung 2 auf „später“ gestellt. | Wer zahlt? Folie 8 sagt „Zahlender Auftraggeber: im Pilot zu klären.“ Die Notizen nennen Bauherrschaft, Bestandsorganisation oder Büroleitung eines Planungsbüros (Steckbrief). |
 | N5 | **Frist nach Ablauf neu bestätigen:** neue Frist mit Begründung und zuständiger Person | Steckbrief („Nach Fristablauf muss die Planung den Termin neu bestätigen.“) | Projektbeleg für die Lücke, Lösung eigener Vorschlag | Die Vorschau zeigt „Frist verstrichen … Der Vorgang bleibt offen. Weiter möglich: …“. Welche Schritte möglich sind, hängt vom Status ab, im Beispiel E-01 (Aufmaßfrist) Vermerk und Abbruch (`docs/pitch-ablauf.md`, Zusatz A für Fragen der Jury; `docs/plattform-v2.md`, Abschnitt 10). Einträge nach Ablauf der Bestellfrist tragen den Vermerk „Eingetragen nach Ablauf der Bestellfrist“. | Darf eine neu bestätigte Frist ein „zu spät“ aufheben, oder bleibt die Zeitregel streng? |
 | N6 | **Belege anhängen:** Foto oder Dokument am Pass und am Vorgang, mit Quelle und Datum | Steckbrief („Belege kommen als Foto, Maß oder Dokument dazu.“) | Projektbeleg für die Lücke (Fallakte, Abschnitt 4: Schritt 2 „Ablage für Unterlagen“, Schritt 4 „Dokumente am Pass“, Schritt 7 „Unterlagen der Prüfung“), Lösung eigener Vorschlag | Gemessene Maße speichert Fassung 2 schon mit Wertstatus „vorgeschlagen“, „gemessen“ oder „bestätigt“ und Quelle (Fallakte, Abschnitt 4, Tabelle „Wertstatus beim Scan und beim Aufmaß“). „Fachlich bestätigt“ ist dort ausdrücklich kein Wertstatus; daran ändert N6 nichts. „Einbau dokumentieren“ mit Foto ist Kandidat (Fallakte, Abschnitt 9). | Speicherort: Der Prototyp läuft ohne Server im Browser. |
 
@@ -62,8 +62,9 @@ Status je Idee wie in der Fallakte:
 
 ## 5. Offene Fragen für die Planung
 
-1. **Käufer:** Der Steckbrief nennt die Büroleitung eines Planungsbüros. Der Pitch nennt als Hypothese die
-   Bauherrschaft oder die Bestandsorganisation. Was davon testen wir zuerst?
+1. **Käufer:** Der Steckbrief nennt die Büroleitung eines Planungsbüros. Der Pitch lässt den zahlenden Auftraggeber
+   offen („im Pilot zu klären“). In den Notizen nennt er Bauherrschaft, Bestandsorganisation und Büroleitung als
+   mögliche Budgetverantwortliche. Was davon testen wir zuerst?
 2. **Abgrenzung oder Zusammenarbeit:** Concular zeigt „Interne Vermittlung“ mit „Reservieren“ und „Integration in
    Planungstool“ (Workshop, Folie 67, Herstellerangabe). Welche Teile ergänzt CircularFlow, und welche gibt es schon?
 
@@ -72,6 +73,7 @@ Status je Idee wie in der Fallakte:
 Es gilt der nächste Prüfauftrag der Fallakte (Abschnitt 11): Mit einer Planerin oder einem Planer aus einem realen
 Umbauprojekt prüfen, wie viele Tage vor der Ersatzbestellung ein Angebot vorliegen muss.
 
-- **Ergänzung aus dem Pitch:** Dabei die vier Zeitpunkte und die echte Prüfzeit erfassen (Folie 9).
+- **Ergänzung aus dem Pitch:** Dabei prüfen, ob die Karte einer Projektleitung hilft, die Fachprüfung rechtzeitig
+  anzustoßen, und die tatsächliche Prüfzeit erfassen (Folie 9).
 - **Danach:** N2 und N3 neu bewerten.
 - **Zuständigkeit und Frist:** wie in der Fallakte vorgeschlagen. Das Team bestätigt beides.
