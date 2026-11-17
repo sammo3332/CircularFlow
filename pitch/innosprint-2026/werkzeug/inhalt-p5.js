@@ -12,16 +12,16 @@ const TXT_UE = {
   p6: "Wechsel innerhalb der Folie: zweiter Absatz spricht Feyrouz",
 };
 const ZEIT = (sek, uhr) => ({ sek, uhr });
-const KEINE_ZEIT_EK = "Zeitfenster: keines (ersetzt den Demo-Schritt; die Zeit zählt zu den 60 Sekunden der Folie 4)";
+const KEINE_ZEIT_EK = "Zeitfenster: keines (ersetzt den Demo-Schritt; die Zeit zählt zum Zeitfenster der Folie 4)";
 const KEINE_ZEIT_AX = "Zeitfenster: keines (ausgeblendet, nur bei Rückfragen)";
 
 // Sprechtexte der sichtbaren Folien (wörtlich aus dem Bauauftrag)
 const TXT = {
   p1: "Ein ausgedachter Fall, der in Dortmund spielt: In einem Bürohaus werden zwölf Türen ausgebaut, sechs davon werden angeboten. Ein anderer Umbau braucht genau sechs Türen. Doch die Projektleitung erfährt zu spät davon und bestellt neu. Die angebotenen Türen können im Container landen. Wir sind Feyrouz Chahed und Houssam Taleb. Mit CircularFlow wollen wir das ändern.",
-  p2: "Der Umbau muss bis zum 19. Februar Ersatz bestellen. Das ist die Bestellfrist. Vorher muss eine Fachperson prüfen, ob die Türen passen. Wir nehmen an, das dauert 14 Tage. Das ist eine Annahme, keine Messung. Also muss die Projektleitung die Prüfung spätestens am 5. Februar anfragen. Diese Anfrage nennen wir Prüfbitte. Wer erst danach vom Angebot erfährt, ist zu spät. Wie CircularFlow prüft, ob die Zeit reicht, zeigt Houssam.",
-  p3: "CircularFlow bringt drei Angaben zusammen: wann ein Bauteil frei wird, bis wann ein Projekt bestellen muss und wie lange die Prüfung dauert. Daraus zeigt es: Reicht die Zeit, ist es knapp oder zu spät, welche Angaben fehlen und was als Nächstes zu tun ist. Die Eignung beurteilen Fachleute, die Bestellung entscheidet die Projektleitung.",
-  k1: "K1 · Das ist unsere Vorschau mit Beispieldaten, hier mit Systemtrennwänden statt Türen. Die Zeitfrage ist dieselbe.",
-  k2: "K2 · Jedes Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe. Bei vier Paaren fehlen noch Angaben, etwa eine Frist.",
+  p2: "Der Umbau muss bis zum 19. Februar Ersatz bestellen. Das ist die Bestellfrist. Vorher muss eine Fachperson prüfen, ob die Türen passen. Wir nehmen an, das dauert 14 Tage. Also muss die Projektleitung die Prüfung spätestens am 5. Februar anfragen. Diese Anfrage nennen wir Prüfbitte. Wer erst danach vom Angebot erfährt, ist zu spät. Wie CircularFlow prüft, ob die Zeit reicht, zeigt Houssam.",
+  p3: "CircularFlow bringt drei Angaben zusammen: wann ein Bauteil frei wird, bis wann ein Projekt bestellen muss und wie lange die Prüfung dauert. Daraus zeigt es: Reicht die Zeit, ist es knapp oder zu spät, welche Angaben fehlen und was als Nächstes zu tun ist.",
+  k1: "K1 · Das ist unsere Vorschau mit Beispieldaten. Ganz oben steht eine Innentür: Am Einbauort fehlt noch das Maß, die Frist endet in zwei Stunden. Im Weiteren geht es um Systemtrennwände statt Türen, die Zeitfrage ist dieselbe.",
+  k2: "K2 · Jedes Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe.",
   k3: "K3 · Dieses Paar ist zu spät: Mit der angenommenen Prüfzeit wäre die Prüfung erst fünf Tage nach der Bestellfrist fertig. Deshalb ist die Prüfbitte gesperrt.",
   k4: "K4 · Bei diesem Paar reicht die Zeit: weiter prüfen. Das ist ein Vorschlag, keine Freigabe. Entscheiden müssen Fachleute und Projektleitung.",
   zurueck: "Zurück zur Präsentation, Folie 7 · Was das für Dortmund bringen kann, erklärt Feyrouz.",
@@ -29,9 +29,9 @@ const TXT = {
   zeitdruck1: "Bei Zeitdruck: Steht K3 um 2:10 nicht da oder hakt die Vorschau: zurück zur Präsentation und die Bildschirmfotos über die Links auf dieser Folie zeigen.",
   zeitdruck2: "Bei Zeitdruck: Ist K4 um 2:25 noch nicht erreicht: zurück und direkt „Bildschirmfoto: weiter prüfen ›“.",
   p5: "Unser Bezug zu SDG 12.5: weniger Abfall durch Wiederverwendung. Das Umweltamt der Stadt hat im Sprint gezeigt: Es gibt kaum Daten zu Baustoffströmen. In einem geplanten Pilot in Dortmund wollen wir deshalb zählen: Wie viele angebotene Bauteile werden rechtzeitig geprüft, wie viele wirklich wieder eingebaut, und woran scheitert es sonst? Was heute schon steht, zeigt Houssam.",
-  p6a: "Heute läuft unser Prototyp im Browser, mit Beispieldaten. Nutzen soll ihn zuerst die Projektleitung im Umbau. Bezahlen könnte die Bauherrschaft oder Bestandsorganisation, zum Beispiel für einen Kurzcheck einer Bauteilgruppe in einem Projekt. Ob jemand zahlt, wissen wir noch nicht. Ich habe an der TU Dortmund Informatik studiert, bin jetzt im Master und entwickle den Prototyp.",
+  p6a: "Heute läuft unser Prototyp im Browser, mit Beispieldaten. Nutzen soll ihn zuerst die Projektleitung im Umbau. Bezahlen könnte die Bauherrschaft, die Bestandsorganisation oder, wie im Steckbrief, das Planungsbüro, zum Beispiel für einen Kurzcheck einer Bauteilgruppe. Ob jemand zahlt, wissen wir noch nicht. Ich habe an der TU Dortmund Informatik studiert, bin jetzt im Master und entwickle den Prototyp.",
   p6b: "Feyrouz: Ich studiere ebenfalls Informatik an der TU Dortmund und kenne mich in Datenanalyse und IT-Sicherheit aus. Uns fehlt Fachwissen aus Bau und Rückbau. Dafür suchen wir Partner aus der Branche.",
-  p7: "Im Sprint haben wir gelernt: Zeit ist eine echte Hürde. Das Umweltamt sagt, bei Bauentscheidungen zählen meist Zeit und Kosten. Concular nennt zeitliche Unterschiede zwischen Angebot und Nachfrage. Ob unsere 14 Tage Prüfzeit stimmen, wissen wir nicht. Das prüfen wir als Nächstes an einem echten Umbau. Unsere Bitte: Bringen Sie uns mit einem Dortmunder Umbauprojekt in Kontakt. Danke.",
+  p7: "Im Sprint haben wir gehört: Auf die Zeit kommt es an. Das Umweltamt sagt, bei Bauentscheidungen zählen meist Zeit und Kosten. Concular nennt zeitliche Unterschiede zwischen Angebot und Nachfrage. Ob unsere 14 Tage Prüfzeit stimmen, wissen wir nicht. Das prüfen wir als Nächstes an einem echten Umbau. Unsere Bitte: Bringen Sie uns mit einem Dortmunder Umbauprojekt in Kontakt. Danke.",
   ek3a: "Das ist unsere Vorschau mit Beispieldaten, hier mit Systemtrennwänden statt Türen.",
   ek3k2: "K2 · Jedes Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe.",
   ek4b: "Was das für Dortmund bringen kann, erklärt Feyrouz.",
@@ -43,7 +43,7 @@ const KURZ = {
   ax2: "Die Prüfung endet am Tag der Anfrage plus Prüfzeit. Im fiktiven Fall: Anfrage am 04.02., Prüfende am 18.02., weiter prüfen. Am 05.02. ist es knapp, ab dem 06.02. zu spät. Bei den Demo-Paaren ist BD-23 mit 14 Tagen Prüfzeit fünf Tage zu spät, BD-22 mit 10 Tagen Prüfzeit liegt 123 Tage vor der Bestellfrist.",
   ax3: "In der Simulation beschädigt der Probeausbau am 02.02.2027 eine Tür. Fünf Türen sind unverbindlich vorgemerkt, eine ist offen, Bestellfrist 19.02.2027. Die Vorschau zeigt den Bedarf danach als gedeckt, die fehlende Tür steht nur in einer Notiz. Als nächsten Ausbau planen wir, die offene Restmenge mit Frist sichtbar zu halten. Das ist nicht umgesetzt.",
   ax4: "Wir konzentrieren uns auf die einzelne Bestellentscheidung im laufenden Umbau: Reicht die Zeit für die Fachprüfung, was fehlt, was ist der nächste Schritt. Ob andere Plattformen das ebenso abbilden, haben wir nicht geprüft. Die Angaben zu Concular, Madaster und den Börsen stammen aus Workshop, Dokumentation und Steckbrief.",
-  ax5: "Die Vorschau zeigt den spätesten Tag für die Anfrage nicht als eigene Frist, Zeitkritisch zeigt die Bestellfrist erst sieben Tage vorher, und es gibt keine Benachrichtigung. Es sind nur Beispieldaten, das Fachergebnis ist ein Eintrag, ein Scan liefert nur Vorschläge, und für die Türregel zählt nur Gemessenes. Laut Concular braucht eine Innentür ohne Schutzanforderung keinen Verwendbarkeitsnachweis, bei einer Brandschutztür ist die Zustimmung im Einzelfall nötig.",
+  ax5: "Die Vorschau zeigt den spätesten Tag für die Anfrage nicht als eigene Frist, Zeitkritisch zeigt die Bestellfrist erst sieben Tage vorher, und es gibt keine Benachrichtigung. Es sind nur Beispieldaten, das Fachergebnis ist ein Eintrag, ein Scan liefert nur Vorschläge, und bei Türen zählen nur gemessene Maße. Nachweise nach Angaben von Concular, keine Rechtsberatung: Eine Innentür ohne Schutzanforderung braucht laut Handlungsempfehlung 12/2024 keinen neuen Verwendbarkeitsnachweis, Zustand und Passung prüft trotzdem eine Fachperson. Bei einer Brandschutztür ist laut Concular-Leitfaden derzeit die Zustimmung im Einzelfall nötig. Die Vorschau speichert keine Nachweise. Im Steckbrief steht, CircularFlow lasse keine Frist stillschweigend verstreichen. Läuft eine Frist ab, zeigt die Vorschau „Frist verstrichen“, und der Vorgang bleibt offen. Eine Benachrichtigung vorher und den spätesten Anfragetag als eigene Frist hat sie noch nicht.",
   ax6: "Die Quellen mit Stand stehen auf der Folie. Fiktiver Fall und Beispieldaten sind ausgedacht, Simulation und Fachergebnis sind Einträge ohne Fachfreigabe, Annahme und Hypothese sind nicht belegt, Herstellerangabe heißt: nicht selbst geprüft.",
 };
 const anhangNotiz = (spricht, kurz) => ({ spricht, absaetze: ["Nur bei Rückfragen.", "Kurzantwort: " + kurz], zeitfenster: KEINE_ZEIT_AX });
@@ -86,16 +86,16 @@ function folien() {
       const gw = 6 * tw + 5 * gap; // 4,42
       B.tuerGitter(s, { x: LM, y, cols: 6, rows: 2, tw, th, gap, dark: true, stil: (i, c) => (c >= 3 ? "hervor" : "normal") });
       const rx = LM + CW - gw;
-      const g3 = 3 * tw + 2 * gap, dx = rx + (gw - g3) / 2;
+      const dx = 7.9, g3 = 3 * tw + 2 * gap;
       B.tuerGitter(s, { x: dx, y, cols: 3, rows: 2, tw, th, gap, dark: true, stil: () => "gesucht" });
       const cy = y + (2 * th + gap) / 2 - 0.2;
       const mid = (LM + gw + dx) / 2;
       B.pfeilUnterbrochen(s, { x0: LM + gw + 0.3, x1: dx - 0.3, cy, farbe: dy });
-      T(s, "zu spät erfahren", { x: mid - 1.5, y: cy + 0.5, w: 3.0, h: 0.4, fontSize: 20, bold: true, color: COL.weiss, align: "center" });
+      T(s, "zu spät erfahren", { x: mid - 1.3, y: cy + 0.5, w: 2.6, h: 0.4, fontSize: 20, bold: true, color: COL.weiss, align: "center" });
       const ly = y + 2 * th + gap + 0.18;
       T(s, "Haus Lindenhof: 6 von 12 Türen angeboten", { x: LM, y: ly, w: gw, h: 0.7, fontSize: 20, bold: true, color: COL.weiss });
-      T(s, "Umbau am Kanal: braucht 6 Türen", { x: rx, y: ly, w: gw, h: 0.7, fontSize: 20, bold: true, color: COL.weiss });
-      T(s, "→ neu bestellt", { x: rx, y: ly + 0.8, w: gw, h: 0.55, fontSize: 28, bold: true, color: COL.weiss });
+      T(s, "Umbau am Kanal: braucht 6 Türen", { x: dx, y: ly, w: LM + CW - dx, h: 0.7, fontSize: 20, bold: true, color: COL.weiss });
+      T(s, "→ neu bestellt", { x: dx, y: ly + 0.8, w: LM + CW - dx, h: 0.55, fontSize: 28, bold: true, color: COL.weiss });
       B.chip(s, "fiktiv", LM, ly + 0.85, "Fiktiver Fall");
       T(s, "CircularFlow · Feyrouz Chahed · Houssam Taleb · INNOSPRINT Zirkuläres Bauen · Dortmund · 20.11.2026", { x: LM, y: 6.05, w: CW, h: 0.35, fontSize: 16, color: COL.gruenHell });
     },
@@ -120,7 +120,7 @@ function folien() {
         legende: { titel: "wenn die Projektleitung an diesem Tag anfragt", y: 5.35, eintraege: [["1F6B42", "rechtzeitig"], [COL.achtT, "knapp"], [COL.spaetT, "zu spät"]] },
       });
     },
-    notiz: { uebergabe: TXT_UE.p2, spricht: "Feyrouz", absaetze: [TXT.p2], zeit: ZEIT(38, "1:09") },
+    notiz: { uebergabe: TXT_UE.p2, spricht: "Feyrouz", absaetze: [TXT.p2], zeit: ZEIT(35, "1:06") },
   });
 
   // ---------- 3 · P3 Was CircularFlow prüft ----------
@@ -138,7 +138,7 @@ function folien() {
       karte(s, LM, 5.8, CW, 0.62, { fill: COL.papier, line: COL.rahmen });
       T(s, "Fachleute beurteilen die Eignung · Die Projektleitung entscheidet die Bestellung", { x: LM + 0.2, y: 5.8, w: CW - 0.4, h: 0.62, fontSize: 20, bold: true, valign: "middle", align: "center" });
     },
-    notiz: { spricht: "Houssam", absaetze: [TXT.p3], zeit: ZEIT(31, "1:40") },
+    notiz: { spricht: "Houssam", absaetze: [TXT.p3], zeit: ZEIT(27, "1:33") },
   });
 
   // ---------- 4 · P4 Demo ----------
@@ -146,7 +146,7 @@ function folien() {
     id: "P4", abschnitt: "Demo", layout: "DEMO", titel: "Live: Ein Paar ist fünf Tage zu spät, ein anderes kann weiter geprüft werden",
     fussPt: FUSS, fuss: "Prüfzeiten sind Beispielannahmen. Der Abgleich ist ein Vorschlag zur Prüfung, keine Freigabe. Es wird nichts versendet.",
     zeichne: (s, ctx) => {
-      T(s, "Vorschau Fassung 2 · Beispieldaten: Systemtrennwände statt Türen · Stichtag der Demo: Mi 18.11.2026, 14:00 Uhr (Simulation)", { x: LM, y: 1.65, w: CW, h: 0.75, fontSize: 20, color: COL.tinte2 });
+      T(s, "Vorschau Fassung 2 · Beispieldaten: Systemtrennwände statt Türen · Stichtag der Demo: Mi\u00a018.11.2026, 14:00 Uhr (Simulation)", { x: LM, y: 1.65, w: CW, h: 0.75, fontSize: 20, color: COL.tinte2 });
       B.chipZeile(s, ["beispiel", "simulation"], LM, 2.55);
       const g = 0.3, w = (CW - g) / 2, y = 3.2, h = 2.7;
       const karten = [
@@ -162,7 +162,7 @@ function folien() {
         T(s, [{ text: link, options: { hyperlink: { slide: ctx.nr[ziel], tooltip: tip } } }], { x: x + 0.3, y: y + h - 0.85, w: w - 0.6, h: 0.45, fontSize: 20 });
       });
     },
-    notiz: { uebergabe: TXT_UE.p4, spricht: "Houssam", absaetze: [TXT.k1, TXT.k2, TXT.k3, TXT.k4, TXT.zurueck, TXT.klick, TXT.zeitdruck1, TXT.zeitdruck2], zeit: ZEIT(60, "2:40") },
+    notiz: { uebergabe: TXT_UE.p4, spricht: "Houssam", absaetze: [TXT.k1, TXT.k2, TXT.k3, TXT.k4, TXT.zurueck, TXT.klick, TXT.zeitdruck1, TXT.zeitdruck2], zeit: ZEIT(64, "2:37") },
   });
 
   // ---------- 5 · EK3 ----------
@@ -185,7 +185,7 @@ function folien() {
 
   // ---------- 7 · P5 Impact ----------
   f.push({
-    id: "P5", abschnitt: "Impact", layout: "INHALT", titel: "Im Dortmunder Pilot wollen wir messen, was wirklich wiederverwendet wird",
+    id: "P5", abschnitt: "Impact", layout: "INHALT", titel: "In einem Dortmunder Pilot wollen wir messen, was wirklich wiederverwendet wird",
     chips: [["hypothese", "Ziel, noch keine Messung"]], fussPt: FUSS,
     fuss: "SDG 12.5: Unterziel der Vereinten Nationen, sinngemäß wiedergegeben; Zitat: Stadt Dortmund, Umweltamt, INNOSPRINT, 13.11.2026, Folie 11",
     zeichne: (s) => {
@@ -203,7 +203,7 @@ function folien() {
         { text: "Stadt Dortmund, Umweltamt, INNOSPRINT, 13.11.2026", options: { fontSize: 20, color: COL.tinte2 } },
       ], { x: qx + 0.25, y: y + 0.25, w: w3 - 0.5, h: h - 0.5 });
     },
-    notiz: { uebergabe: TXT_UE.p5, spricht: "Feyrouz", absaetze: [TXT.p5], zeit: ZEIT(33, "3:13") },
+    notiz: { uebergabe: TXT_UE.p5, spricht: "Feyrouz", absaetze: [TXT.p5], zeit: ZEIT(33, "3:10") },
   });
 
   // ---------- 8 · P6 Prototyp, Geschäftsmodell, Team ----------
@@ -223,14 +223,14 @@ function folien() {
       T(s, "Planung und Projektleitung im Umbau", { x: LM, y: 3.55, w: lw, h: 0.36, fontSize: 20, lineSpacingMultiple: ls });
       T(s, "Käufer", { x: LM, y: 4.07, w: 1.3, h: 0.36, fontSize: 22, bold: true, color: COL.gruen });
       B.chip(s, "hypothese", LM + 1.3, 4.07);
-      T(s, "Bauherrschaft oder Bestandsorganisation · erstes Angebot: Kurzcheck für eine Bauteilgruppe in einem Projekt · Zahlungsbereitschaft und Preis offen · offen auch: Liegt der Nutzen eher beim Planungsbüro?", { x: LM, y: 4.5, w: lw, h: 2.0, fontSize: 20, lineSpacingMultiple: ls });
+      T(s, "Bauherrschaft oder Bestandsorganisation · im Steckbrief: Büroleitung eines Planungsbüros · erstes Angebot: Kurzcheck für eine Bauteilgruppe in einem Projekt · Zahlungsbereitschaft und Preis offen", { x: LM, y: 4.5, w: lw, h: 2.0, fontSize: 20, lineSpacingMultiple: ls });
       // rechte Spalte
       B.personenKarte(s, { x: rx, y: 1.62, w: rw, h: 1.5, name: "Houssam Taleb", text: "Informatik an der TU Dortmund, jetzt im Master · entwickelt den Prototyp" });
       B.personenKarte(s, { x: rx, y: 3.25, w: rw, h: 1.75, name: "Feyrouz Chahed", text: "Informatik an der TU Dortmund · Datenanalyse, IT-Sicherheit, Umsetzung und Ideen" });
       karte(s, rx, 5.13, rw, 1.3, { fill: COL.hinwF });
       T(s, "Uns fehlt: Fachwissen aus Bau und Rückbau, Bauteilbewertung, Recht und Logistik → Partner gesucht", { x: rx + 0.2, y: 5.13, w: rw - 0.4, h: 1.3, fontSize: 20, bold: true, color: COL.hinwT, valign: "middle", lineSpacingMultiple: rs });
     },
-    notiz: { uebergabe: TXT_UE.p6, spricht: "Houssam, dann Feyrouz", absaetze: [TXT.p6a, TXT.p6b], zeit: ZEIT(50, "4:03") },
+    notiz: { uebergabe: TXT_UE.p6, spricht: "Houssam, dann Feyrouz", absaetze: [TXT.p6a, TXT.p6b], zeit: ZEIT(53, "4:03") },
   });
 
   // ---------- 9 · P7 Schluss ----------
@@ -305,7 +305,7 @@ function folien() {
       const zeilen = [
         ["Concular (Workshop im INNOSPRINT, Folien 49 und 67): nennt „Zeitliche Unterschiede in Nachfrage und Angebot“ und „Fehlende Infrastruktur für Lagerung, Rezertifizierung und Aufbereitung“; zeigt „Interne Vermittlung“: interner Marktplatz mit „Reservieren“ und „Integration in Planungstool“ mit „Reservieren und bilanzieren“.", 1.2, COL.papier],
         ["Madaster: Materialpässe für Gebäude (laut Steckbrief); Seite „Match“ mit „Verfügbar ab“, Vorlauf und E-Mail-Benachrichtigung (laut Dokumentation, Stand 09.09.2026).", 0.85, COL.papier],
-        ["Börsen wie Restado vermitteln Gebrauchtes (laut Steckbrief, nicht geprüft). Heute oft: eigene Excel-Listen (laut Steckbrief).", 0.85, COL.papier],
+        ["Börsen wie Restado vermitteln Gebrauchtes (laut Steckbrief, nicht geprüft). Alternative: eigene Excel-Listen (laut Steckbrief).", 0.85, COL.papier],
         ["Unser Fokus: die einzelne Bestellentscheidung im laufenden Umbau – reicht die Zeit für die Fachprüfung, was fehlt, was ist der nächste Schritt. Ob andere Plattformen das ebenso abbilden, haben wir nicht geprüft.", 0.95, COL.gruenHell],
       ];
       let y = 2.15;
@@ -324,14 +324,14 @@ function folien() {
     zeichne: (s) => {
       const txt = [
         "Der späteste Tag für die Anfrage steht nicht als eigene Frist da; „Zeitkritisch“ zeigt die Bestellfrist erst sieben Tage vorher; keine Benachrichtigung.",
-        "Nur Beispieldaten; Fachergebnis ist ein Eintrag; ein Scan liefert nur Vorschläge; für die Türregel zählt nur Gemessenes.",
-        "Nachweise laut Concular-Handlungsempfehlung (12/2024): Innentür ohne Schutzanforderung kein Verwendbarkeitsnachweis; Brandschutztür Zustimmung im Einzelfall.",
+        "Nur Beispieldaten; Fachergebnis ist ein Eintrag; ein Scan liefert nur Vorschläge; bei Türen zählen nur gemessene Maße.",
+        "Nachweise (Angaben von Concular, keine Rechtsberatung): Innentür ohne Schutzanforderung laut Handlungsempfehlung 12/2024 kein neuer Verwendbarkeitsnachweis; Zustand und Passung prüft trotzdem eine Fachperson. Brandschutztür laut Concular-Leitfaden derzeit Zustimmung im Einzelfall. Die Vorschau speichert keine Nachweise.",
       ];
       const g = 0.25, w = (CW - 2 * g) / 3;
       txt.forEach((t, i) => {
         const x = LM + i * (w + g);
-        karte(s, x, 1.7, w, 3.6, { fill: i === 2 ? COL.papier : COL.gruenHell, line: i === 2 ? COL.rahmen : COL.gruenHell });
-        T(s, t, { x: x + 0.25, y: 1.95, w: w - 0.5, h: 4.1, fontSize: 20 });
+        karte(s, x, 1.7, w, 4.4, { fill: i === 2 ? COL.papier : COL.gruenHell, line: i === 2 ? COL.rahmen : COL.gruenHell });
+        T(s, t, { x: x + 0.25, y: 1.95, w: w - 0.5, h: 3.9, fontSize: 18 });
       });
     },
     notiz: anhangNotiz("Houssam", KURZ.ax5),
