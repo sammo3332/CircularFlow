@@ -384,3 +384,19 @@ Abnahme:
 - Alle anderen Folienseiten sind pixelgleich zu `c45ce11`.
 - Die Links 4→5, 4→6, 5→6, 5→7 und 6→7 sowie `show="0"` bei 5, 6 und 10–15 sind unverändert.
 - Die Fassungen A, B und C bleiben unverändert.
+
+### Nachbesserung 4a (nach cf-review auf `9d9748a`)
+
+cf-review hat bestätigt:
+- Die drei Vorgaben sind erfüllt.
+- Es gibt keinen Sachfehler, und Wortzahl und Zeiten stimmen.
+
+Übernommen werden zwei Befunde. Sprechtext und Zeiten bleiben unverändert.
+
+| Stelle | Änderung | Grund |
+|---|---|---|
+| 9 · P7 · Folientext | Im Kasten „Nächster Test an einem echten Umbau“ eine Zeile zwischen den beiden bisherigen Zeilen: „Die Karte zeigt, was bis zur Frist fehlt, wer es liefert und was als Nächstes zu tun ist.“ Schrift mindestens 20 pt; Kasten und Abstände so anpassen, dass nichts überlappt und die Bitte frei steht. | „Karte“ kommt im Vortrag hier zum ersten Mal vor. Die Erklärung folgt dem Steckbrief („Eine Karte zeigt, was bis zur Frist fehlt und wer es liefert“; „… was als Nächstes zu tun ist“). Der Wortlaut des Teams bleibt. |
+| README, Abschnitt 11 | Der Satz „Ein Kandidat ist „Ob unsere 14 Tage Prüfzeit stimmen, wissen wir nicht.“, wenn das Gespräch etwas zur Prüfzeit sagt.“ lautet jetzt: „Ein Kandidat ist „Dafür brauchen wir unter anderem die tatsächliche Prüfzeit.“, wenn das Gespräch etwas zur Prüfzeit sagt.“ | Der alte Satz steht seit Nachbesserung 4 nicht mehr auf Folie 9. |
+
+Nicht übernommen ist der Hinweis, Kurzcheck (Folie 8) und Praxistest (Folie 9) im Sprechtext zu verbinden. Das wäre eine
+inhaltliche Festlegung, die das Team treffen sollte.
