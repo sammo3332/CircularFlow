@@ -1,5 +1,5 @@
 #!/bin/bash
-# Baut alle drei Pitch-Decks, prüft sie und erzeugt je zwei PDFs (Folien, Folien mit Sprechtext).
+# Baut alle drei Pitch-Decks, prüft sie und erzeugt je zwei PDFs (Folien; Sprechtext unter ausgabe/sprechtexte/).
 # Aufruf: bash exportiere.sh
 # Umgebung (Standardwerte für diese Sitzung, per Umgebungsvariable überschreibbar):
 #   PITCH_NODE_PATH  Ordner node_modules mit pptxgenjs 3.12.0
@@ -11,7 +11,11 @@ export NODE_PATH="${PITCH_NODE_PATH:-/tmp/claude-0/-home-user-CircularFlow/abdce
 SKILL="${SKILL:-/root/.claude/skills/synced/f3344db3-3b8b-47e1-a86e-4e52d34deb71_ae4ba12a-da81-4210-ae6c-9e30538d0646/pptx}"
 export PPTX_SKILL_DIR="$SKILL"
 TMP="${TMPDIR_PITCH:-/tmp/claude-0/-home-user-CircularFlow/abdce38b-a89c-5699-959f-aeaffcbb39fc/scratchpad/pitch-bau/export}"
-mkdir -p "$TMP"
+mkdir -p "$TMP" "$AUS/sprechtexte"
+# Bildausschnitte der Demo-Folien (D1) neu erzeugen
+python3 "$HIER/ausschnitte.py"
+# alte Sprechtext-PDFs in den Fassungsordnern entfernen (liegen jetzt unter sprechtexte/)
+rm -f "$AUS"/empfohlen-zur-abgabe/*_Sprechtext.pdf "$AUS"/weitere-fassungen/*_Sprechtext.pdf
 
 node "$HIER/baue.js"
 
@@ -33,6 +37,6 @@ for d in "${DECKS[@]}"; do
   # Sprechtext-PDF (Notizenseiten), zuerst in Temp-Ordner, dann umbenennen
   rm -f "$TMP/$NAME.pdf"
   python3 "$SKILL/scripts/office/soffice.py" --headless --convert-to "$NOTIZEN" --outdir "$TMP" "$PPTX" >/dev/null 2>&1
-  mv "$TMP/$NAME.pdf" "$ORDNER/${NAME}_Sprechtext.pdf"
-  echo "$NAME: Folien-PDF $(pdfinfo "$ORDNER/$NAME.pdf" | awk '/Pages/{print $2}') Seiten, Sprechtext-PDF $(pdfinfo "$ORDNER/${NAME}_Sprechtext.pdf" | awk '/Pages/{print $2}') Seiten"
+  mv "$TMP/$NAME.pdf" "$AUS/sprechtexte/${NAME}_Sprechtext.pdf"
+  echo "$NAME: Folien-PDF $(pdfinfo "$ORDNER/$NAME.pdf" | awk '/Pages/{print $2}') Seiten, Sprechtext-PDF $(pdfinfo "$AUS/sprechtexte/${NAME}_Sprechtext.pdf" | awk '/Pages/{print $2}') Seiten"
 done

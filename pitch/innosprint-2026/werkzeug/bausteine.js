@@ -41,6 +41,7 @@ const CHIPS = {
   vorschlagTest: { t: "Vorschlag", fg: COL.hinwT, bg: COL.hinwF },
   weiter: { t: "Weiter prüfen", fg: COL.okT, bg: COL.okF },
   spaet: { t: "Für diese Entscheidung zu spät", fg: COL.spaetT, bg: COL.spaetF },
+  projektbeleg: { t: "Projektbeleg", fg: COL.tinte2, bg: COL.grauF },
   knapp: { t: "Knapp", fg: COL.achtT, bg: COL.achtF },
 };
 
@@ -111,9 +112,23 @@ function kette(slide, { x, y, w, dark = false, zustand = null, mini = false, bes
   }
   if (beschriftung) {
     const by = y + d + 0.5, c = dark ? COL.gruenHell : COL.tinte2;
-    T(slide, "in der Demo gezeigt", { x, y: by, w: col * 3 - 0.1, h: 0.3, fontSize: 14, color: c });
+    T(slide, "in der Vorschau abgebildet", { x, y: by, w: col * 3 - 0.1, h: 0.3, fontSize: 14, color: c });
     T(slide, "nächster Schritt", { x: x + col * 3, y: by, w: col - 0.1, h: 0.3, fontSize: 14, color: c });
   }
+}
+
+// Kompakte Statuskette als Reihe (Schritte 1 bis n) mit Zuständen "voll" | "rand"
+function ketteZeile(slide, { x, y, w, h = 0.34, schritte, zustand }) {
+  const n = schritte.length, g = 0.4, pw = (w - g * (n - 1)) / n;
+  schritte.forEach((t, i) => {
+    const px = x + i * (pw + g), rand = zustand[i] === "rand";
+    slide.addText(`${i + 1}  ${t}`, {
+      shape: P.ShapeType.roundRect, rectRadius: 0.08, x: px, y, w: pw, h,
+      fill: { color: rand ? COL.weiss : COL.gruen }, line: { color: COL.gruen, width: 1.5 },
+      fontFace: FONT, fontSize: 14, bold: true, color: rand ? COL.gruen : COL.weiss, align: "center", valign: "middle", margin: 0.02, fit: "none",
+    });
+    if (i < n - 1) T(slide, "›", { x: px + pw, y, w: g, h, fontSize: 18, bold: true, color: COL.tinte3, align: "center", valign: "middle" });
+  });
 }
 
 // ---------- Vier-Punkte-Zeitleiste (Fragen) ----------
@@ -164,12 +179,13 @@ function zeitleisteFall(slide, { bandY = 3.95, marken, legende = true, legendeY 
     slide.addShape(P.ShapeType.ellipse, { x: x - 0.15, y: bandY + bh / 2 - 0.15, w: 0.3, h: 0.3, fill: { color: COL.weiss }, line: { color: COL.tinte, width: 2 } });
   }
   if (legende) {
+    T(slide, "Ergebnis, wenn die Planung an diesem Tag reagiert:", { x: LM, y: legendeY, w: CW, h: 0.3, fontSize: 14, bold: true, color: COL.tinte, valign: "middle" });
     const items = [["1F6B42", "weiter prüfen bis 04.02."], ["C98A12", "knapp: 05.02."], [COL.spaetT, "für diese Entscheidung zu spät ab 06.02."]];
     let cx = LM;
     for (const [c, t] of items) {
-      slide.addShape(P.ShapeType.rect, { x: cx, y: legendeY + 0.04, w: 0.24, h: 0.24, fill: { color: c }, line: { color: c, width: 0.25 } });
+      slide.addShape(P.ShapeType.rect, { x: cx, y: legendeY + 0.38, w: 0.24, h: 0.24, fill: { color: c }, line: { color: c, width: 0.25 } });
       const w = t.length * 0.098 + 0.2;
-      T(slide, t, { x: cx + 0.34, y: legendeY, w, h: 0.32, fontSize: 14, color: COL.tinte2, valign: "middle" });
+      T(slide, t, { x: cx + 0.34, y: legendeY + 0.34, w, h: 0.32, fontSize: 14, color: COL.tinte2, valign: "middle" });
       cx += 0.34 + w + 0.3;
     }
   }
@@ -181,6 +197,15 @@ const BILDMASSE = {
   "k4-weiter-pruefen.jpg": [2160, 1215], "k5-vorgang.jpg": [1698, 1217], "k6-vormerkung-anlegen.jpg": [2160, 1215],
   "pilot-pass-angaben.jpg": [1152, 828], "pilot-scan-karte.jpg": [831, 558],
 };
+try {
+  const aj = JSON.parse(fs.readFileSync(path.join(BILDER, "ausschnitte", "ausschnitte.json"), "utf8"));
+  for (const [n, d] of Object.entries(aj)) BILDMASSE["ausschnitte/" + n] = [d.w, d.h];
+} catch (e) { /* Ausschnitte fehlen: werkzeug/ausschnitte.py ausführen */ }
+// Hervorhebungsrahmen eines Ausschnitts (Bruchteile) aus der JSON
+function ausschnittRahmen(name) {
+  const aj = JSON.parse(fs.readFileSync(path.join(BILDER, "ausschnitte", "ausschnitte.json"), "utf8"));
+  return aj[name].hl;
+}
 function bildGroesse(datei, maxW, maxH) {
   const [pw, ph] = BILDMASSE[datei];
   let w = maxW, h = (maxW * ph) / pw;
@@ -278,7 +303,7 @@ async function baue(pres, folien, datei) {
       }
       if (f.chips) chipZeile(s, f.chips, cx, 1.62);
     }
-    if (f.fuss) T(s, f.fuss, { x: LM, y: FUSS_Y, w: 10.4, h: 0.42, fontSize: 10, color: COL.tinte3, valign: "bottom" });
+    if (f.fuss) T(s, f.fuss, { x: LM, y: FUSS_Y, w: 11.0, h: 0.42, fontSize: 10, color: COL.tinte3, valign: "bottom" });
     if (f.zeichne) f.zeichne(s, { nr, chip, chipZeile });
     const nt = notizText(f.notiz);
     s.addNotes(nt.text);
@@ -291,5 +316,5 @@ async function baue(pres, folien, datei) {
 
 module.exports = {
   COL, FONT, LM, CW, TOP, THEME, CHIPS, T, chip, chipZeile, karte, kette, zeit4, zeitleisteFall, fx,
-  bildPassend, bildGroesse, bildAusschnitt, papier, neuesDeck, baue, woerter, getP: () => P,
+  bildPassend, bildGroesse, bildAusschnitt, ausschnittRahmen, ketteZeile, papier, neuesDeck, baue, woerter, getP: () => P,
 };
