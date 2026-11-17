@@ -5,7 +5,7 @@
 | Dokumentversion | 1.3 vom 17.11.2026. An die Nachbesserungen 4 und 5 des Pitches angepasst. Fassung 1.1 mit den Befunden von cf-review steht in `ce43e40`. |
 | Status | **Ideensammlung, keine Freigabe und kein Produktumfang.** Maßgeblich bleiben der Produktbrief v0.2 und die Entscheidungen des Teams. Was das Team übernimmt, trägt es mit Aufgabe und Commit in sein Entscheidungsprotokoll ein. |
 | Branch | `codex/plattform-v1` |
-| Ausgangscommit | Pitch nach Nachbesserung 5 (Commit direkt vor dieser Fassung) |
+| Ausgangscommit | `b647ea3` (Pitch nach Nachbesserung 5) |
 | Herkunft | 5-Minuten-Pitch INNOSPRINT (`pitch/innosprint-2026/`), Steckbrief des Teams (13.11.2026), Fallakte CF-PILOT-01 1.3 (`docs/pilot/CF-PILOT-01-fallakte.md`), Plan Restmenge 1.1 (`docs/plan-restmenge.md`), Fassung 2 (`docs/plattform-v2.md`) |
 
 Status je Idee wie in der Fallakte:

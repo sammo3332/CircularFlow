@@ -122,6 +122,9 @@ Nichts aus dieser Liste ließ sich hier prüfen. Bitte bis zum 20.11. erledigen,
   (K4 erreicht). Das Zeichen gibt Feyrouz (Vorschlag aus Plan 0.2). Den Spätfall einmal proben: Ausfall um 2:10, auf
   Folie 5 nur K3. Ziel: Ende etwa 4:27.
 - [ ] **Gesamter Vortrag mit Stoppuhr** in ruhigem Tempo: gerechnet 4:19, Grenze 5:00. Die Übergabesätze üben.
+- [ ] **Folie 9:** „Entscheidungskarte“ wird nur auf der Folie erklärt (zweite Zeile im Kasten). Beim Satz zur
+  Entscheidungskarte auf diese Zeile zeigen. Vorher im Team klären, welche Ansicht der Vorschau gemeint ist, falls
+  die Jury danach fragt.
 - [ ] **Beamer:**
   - Sind die Zeitleiste auf Folie 2 und die Farben Grün, Gelb und Rot gut zu erkennen?
   - Sind die Bildschirmfotos auf Folie 5 und 6 lesbar? Der Kleintext darin ist klein, die Aussage steht in der
@@ -156,7 +159,9 @@ Nichts aus dieser Liste ließ sich hier prüfen. Bitte bis zum 20.11. erledigen,
   - Realisierbarkeit: Folien 3 und 8, Anhang Folie 13.
   - Steckbrief: eigenes Dokument, liegt der Jury laut Tag 5 vor dem Pitch vor.
   - Präsentation: alle Folien.
-  - „Im Sprint gelernt“ und „Nächster Test“ auf Folie 9 sind keine offiziellen Kriterien, sondern unsere Ergänzung.
+  - „Im Sprint gelernt“ und „Kurzcheck an einem echten Dortmunder Umbau erproben“ auf Folie 9 sind keine offiziellen
+    Kriterien, sondern unsere Ergänzung. Die zwei Zitate stehen seit Nachbesserung 5 nur noch auf der Folie, der
+    Sprechtext nennt sie nicht.
 - **Praxisfeedback:** Bis zum 17.11.2026, 23:10 Uhr, kam auf keine der neun Anfragen vom 17.11. (gesendet zwischen
   14:05 und 15:39 Uhr) eine Antwort. Geprüft wurden Posteingang und die gesendeten Verläufe des Teamkontos. Im Deck
   steht deshalb kein Praxisfeedback. Folie 9 nennt, was im Sprint gehört wurde, und den nächsten Test. Kommt
