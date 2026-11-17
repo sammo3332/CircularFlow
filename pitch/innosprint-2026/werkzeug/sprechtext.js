@@ -64,6 +64,17 @@ html { font-family: Arial, "Liberation Sans", sans-serif; hyphens: manual; -webk
 body { margin: 0; font-size: 11.5pt; line-height: 1.42; }
 section { break-before: page; page-break-before: always; }
 section.deckblatt { break-before: auto; page-break-before: auto; }
+/* nur P5-Deckblatt: enger gesetzt, damit es auf eine Seite passt (Schrift mindestens 10 pt) */
+section.deckblatt-p5 { font-size: 10.5pt; line-height: 1.3; }
+section.deckblatt-p5 h3 { margin: 6pt 0 3pt; }
+section.deckblatt-p5 table.ablauf { margin: 3pt 0; font-size: 10pt; line-height: 1.15; }
+section.deckblatt-p5 table.ablauf th, section.deckblatt-p5 table.ablauf td { padding: 1.5pt 4pt; }
+section.deckblatt-p5 ol.klickpfad { font-size: 10pt; margin: 0 0 2pt; line-height: 1.2; }
+section.deckblatt-p5 .hinweis { padding: 4pt 8pt; }
+section.deckblatt-p5 h1 { font-size: 20pt; }
+section.deckblatt-p5 p { margin: 0 0 4pt; }
+section.deckblatt-p5 .kasten { margin: 0 0 4pt; padding: 3pt 8pt 0; font-size: 10.5pt; }
+section.deckblatt-p5 .hinweis { font-size: 10.5pt; margin-top: 4pt; }
 h1 { font-size: 22pt; margin: 0 0 4pt; color: #0E5546; }
 h2.kopf { font-size: 12.5pt; margin: 0 0 6pt; padding: 5pt 8pt; background: #E0EEE8; color: #0E5546; border-left: 4pt solid #0E5546; break-after: avoid; page-break-after: avoid; }
 h2.kopf .aus { color: #7D4C00; font-weight: bold; }
@@ -171,7 +182,7 @@ function htmlFuerP5(d, folien, inhalt, bilder, summe) {
     return `<tr${aus ? ' class="aus"' : ""}><td><b>${i + 1} · ${esc(f.id)}</b> ${esc(titel[f.id] || "")}</td><td>${esc(n.spricht)}</td><td>${zf}</td><td>${uhr}</td><td>${esc(n.uebergabe || "–")}</td></tr>`;
   }).join("\n");
   const teile = [];
-  teile.push(`<section class="deckblatt"><h1>Sprechtext · ${esc(d.fassung)}</h1>
+  teile.push(`<section class="deckblatt deckblatt-p5"><h1>Sprechtext · ${esc(d.fassung)}</h1>
 <p class="klein">CircularFlow · INNOSPRINT Zirkuläres Bauen · Dortmund · 20.11.2026 · <b>${STAND}</b></p>
 <h3>Ablauf auf einen Blick</h3>
 <table class="ablauf"><tr><th>Folie</th><th>Spricht</th><th>Zeitfenster</th><th>Uhr am Ende</th><th>Übergabesatz</th></tr>
@@ -250,6 +261,8 @@ function pruefeP5(pdf, folien, inhalt) {
         const ziel5 = path.join(AUS, "sprechtexte", `${d.name}_Sprechtext.pdf`);
         await page5.pdf({ path: ziel5, format: "A4", printBackground: true });
         await page5.close();
+        const seiten5 = +/Pages:\s+(\d+)/.exec(execFileSync("pdfinfo", [ziel5], { encoding: "utf8" }))[1];
+        if (seiten5 !== 1 + folien.length) throw new Error(`${k}: ${seiten5} Seiten, erwartet ${1 + folien.length} (Deckblatt plus eine je Folie)`);
         console.log(`${k}: ${path.basename(ziel5)} (${/Pages:\s+(\d+)/.exec(execFileSync("pdfinfo", [ziel5], { encoding: "utf8" }))[1]} Seiten; ${summe.woerter} Wörter, ${summe.sek} s)`);
         for (const r of pruefeP5(ziel5, folien, inhalt)) {
           console.log(`   Folie ${r.nr} (${r.id}): ${r.ok ? "OK" : "FEHLER, fehlt: " + r.fehlt.join(", ")}`);
