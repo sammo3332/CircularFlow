@@ -361,3 +361,35 @@ werden für die Prüfung zusammengeführt. Kopfzeile mit Foliennummer **und** Ke
 
 **R12 · Sprache (ergänzt R3):** neben `lang` auch `altLang` auf Deutsch setzen, wo vorhanden. „Spricht: …“ bleibt die
 erste Zeile jeder Notiz.
+
+### E.3 Nachtrag nach der Bestätigung durch cf-review (17.11.2026)
+
+cf-review auf `1563cbf`: R8–R10 wörtlich umgesetzt, Summen nachgerechnet, kein blockierender Befund und kein
+Faktenfehler. Übernommen werden N1, N2, N3, N12 und N18 für die Notizen sowie die README-Befunde (README, Hauptsitzung).
+N9 (C9 „Schlusssatz (Houssam): Danke.“) und N13 bleiben, wie sie sind. Für die Folien ändert sich nichts.
+
+**R13 · C3 bei 5 Minuten (N1).** Wie bei 3 Minuten zuerst sagen: „Bis zu einem festen Tag, der Bestellfrist, muss Ersatz
+bestellt werden.“ (Satz von Folie C2).
+
+**R14 · B8 bei 5 und 3 Minuten (N2).** Kurzfassung (B4 mit „Status je Wert“ entfällt in beiden Stufen): „CircularFlow
+macht aus einem Paar einen prüfbaren nächsten Schritt: mit Zeitprüfung und ohne vorgetäuschte Freigabe. Heute ist das
+Simulation mit Beispieldaten. Fachleute prüfen, wir bereiten die Entscheidung vor. Als Nächstes brauchen wir einen echten
+Fall. Danke.“
+
+**R15 · Stichtag und „keine Freigabe“ in den 5-Minuten-Stufen (N3).**
+- A4-kurz neu: „Jetzt zeigen wir die Zeitprüfung live in der Vorschau. Die Türen aus unserem Fall liegen dort nicht, wir
+  nehmen die Beispieldaten der Vorschau. Die Zeitprüfung ist dieselbe. Der Stichtag der Demo ist ein gewählter Zeitpunkt in
+  der Simulation, nicht das heutige Datum. Ein Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe.“
+- B2-kurz neu: „Wir nehmen an, eine Prüfung dauert mindestens 14 Tage. Das nennen wir Mindestprüfzeit. Die Beispiele der
+  Vorschau sind Systemtrennwände. Der Stichtag der Demo ist ein gewählter Zeitpunkt in der Simulation, nicht das heutige
+  Datum. Ein Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe.“
+- E4 in A und B bei 5 Minuten: am Ende zusätzlich sagen: „Wichtig: Der Abgleich ist ein Vorschlag zur Prüfung, keine
+  fachliche Freigabe.“ (Satz aus E2).
+- A bei 3 Minuten: keine Änderung; das README nennt, dass der Satz dort nur auf der Folie steht.
+
+**R16 · B, E4 bei 3 Minuten (N12).** Als Bildfolie ohne Liste: den Satzanfang „Zurück zur Liste, jetzt“ weglassen.
+
+**R17 · Dauerzeile (N18).** „Dauer: etwa N Sekunden“ wird zu „Dauer (voll): etwa N Sekunden“. Die Selbstprüfung des
+Sprechtext-PDFs bleibt gültig.
+
+Sollwerte danach: A 435 / 305 / 180 s, B 435 / 305 / 190 s, C 345 / 305 / 190 s; Sprechanteil voll unverändert.
