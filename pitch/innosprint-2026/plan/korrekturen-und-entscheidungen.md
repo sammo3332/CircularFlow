@@ -115,3 +115,88 @@ bleibt; die Bildunterschrift sagt „Simulation“. **L4** E2: „Geprüft werde
 3. Wer die Demo bedient (Vorschlag: Houssam bedient, Feyrouz hat die Uhr).
 4. Ob die Bitte ans Publikum auf die Folien darf (Vorschlag: ja, ohne Datenschutzversprechen).
 5. Sprung auf die Ersatzfolien in der Generalprobe auf dem Vortragsrechner testen.
+
+## D. Korrekturrunde 2 (nach cf-test und cf-review der fertigen Folien, 17.11.2026)
+
+Grundlage: cf-test auf `4e2d477` (alle Prüfungen bestanden; Hinweis T7: Bildschrift auf Demo-Folien projiziert nur
+etwa 10 px) und cf-review auf `4e2d477` (keine blockierenden Befunde, nichts Erfundenes, 3 hoch, 10 mittel,
+10 gering). Wortlaut verbindlich, wo angegeben.
+
+**D1 · Lesbarkeit der Bildschirmfotos (T7, gering 2).** Demo-Folien E1–E6 und C5 zeigen **Ausschnitte** statt ganzer
+Bildschirme: linke Navigationsleiste weg, auf den relevanten Bereich zugeschnitten (E1: Zeitkritisch und Kacheln;
+E2: Filterchips und Tabelle; E3 und E4: Ergebniskasten mit Grund; E5: Statuskette und Formular; E6: Kasten „Nächster
+fachlicher Schritt“ und Status). Ausschnitte mit PIL in `pitch/innosprint-2026/bilder/ausschnitte/` speichern. Auf der
+Folie so groß, dass die Bildschrift bei 1920 px Projektionsbreite mindestens etwa 14 px hoch ist (Faustregel: Bildbreite
+in Zoll ≥ Ausschnittbreite in px ÷ 220). Hervorhebungsrahmen neu setzen. Seitentext auf eine kurze Bildunterschrift
+kürzen. C5: statt vier kleiner Bilder zwei große Ausschnitte (E3 „zu spät“ und E4 „weiter prüfen“), dazu die Statuskette
+bis „Vormerkung anlegen“; `k2` entfällt dort. Mit einer Renderprobe bei 144 dpi prüfen.
+
+**D2 · Demo-Ankündigung A4/B2 (H-A).** Statuskette entfernen. Stattdessen nur die sechs Demo-Schritte als nummerierte
+Reihe „Unsere sechs Demo-Schritte“: K1 Übersicht · K2 Paarliste · K3 Zu spät · K4 Weiter prüfen · K5 Prüfbitte · K6 Vormerkung.
+
+**D3 · Schlussfolien A/B (H-B).** Beschriftung der Schritte 1–3 „in der Vorschau abgebildet“ statt „in der Demo gezeigt“;
+Schritt 4 „nächster Schritt“. Titel A8/B8: „Wir prüfen nicht nur Typ und Menge, sondern ob die Zeit für die Prüfung reicht“.
+
+**D4 · Fassung C (H-C).**
+- C1-Sprechtext ergänzen: „Wird ein Angebot zu spät bekannt, wird neu bestellt, und passende Bauteile können entsorgt werden.“
+- C5: Zeile mit Chip „Hypothese“: „Erwarteter Nutzen: früh sehen, was frei wird · Zeit mit Begründung prüfen · nächster
+  Schritt statt Freigabe“.
+- C5-Sprechtext ergänzen: „Ein Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe. Prüfbar heißt: Die Zeit reicht
+  noch. Eine Vormerkung ist eine unverbindliche Reservierung.“
+- C4: Titel „Der fiktive Fall in vier Zeitpunkten“; Sprechtext im Konjunktiv („wäre der letzte Tag“) (M-2).
+- C2: „bis zu einem festen Tag“; Concular-Satz in zwei Sätze teilen; BLB-Kasten räumlich von den Fristkarten trennen,
+  eigener Chip „Projektbeleg“ und Überschrift „Dortmunder Beispiel“; Karte „Bedarfsseite“ mit Fußnote „Annahme des
+  Pilotfalls (Fallakte A4)“.
+- C9: „jemanden aus der Planung“ statt „die Planerin oder den Planer, die oder der“; kleiner Link „Vorschau-Bilder (Anhang)“
+  auf E1.
+
+**D5 · Zeitleiste A3 und Pilotfolie B (M-1).** Legende: „Ergebnis, wenn die Planung an diesem Tag reagiert“. Marker:
+„13.02. Bestellfrist erscheint unter „Zeitkritisch“ (Samstag, keine Benachrichtigung)“, „22.02. Variante 2: Angebot
+erreicht die Planung zu spät“, „08.03. Variante 1: Übergabe (Angebot rechtzeitig bei der Planung)“. Sprechtext ergänzen:
+„Zeitkritisch ist die Liste der Fristen der nächsten sieben Tage in der Übersicht.“ und „In Variante 1 erreicht das
+Angebot die Planung am 20. Januar, rechtzeitig. In Variante 2 erst am 22. Februar.“
+
+**D6 · Begriffe in B (M-3) und Sprache.** B2-Sprechtext: „Wir nehmen an, eine Prüfung dauert mindestens 14 Tage. Das
+nennen wir Mindestprüfzeit.“ Pilotfolie in B mit derselben Legende wie A2. In allen Fassungen „Fachkern“ in Sprechtexten
+und Fußnoten ersetzen durch „Rechenregel der Vorschau“. E1/E2-Sprechtext: „Ein Vorgang entsteht mit der Prüfbitte.“ und
+„Angaben fehlen heißt: Für den Abgleich fehlt noch etwas, zum Beispiel eine Frist.“ E4-Sprechtext: „Hier hat der Bedarf
+eine Mindestprüfzeit von zehn Tagen. Auch das ist ein Beispielwert. Das Annahmefenster ist der Zeitraum, in dem das
+Projekt die Teile annehmen kann.“ (M-8)
+
+**D7 · Fußnoten und Anhang (M-4, M-5).** Fußnoten mit ausgeschriebenen Kurznamen statt Kürzeln: „Fallakte CF-PILOT-01 §…“,
+„Pitch-Ablauf“, „Doku Fassung 2“, „Lösungsansatz des Teams“, „Rechercheplan des Teams“,
+„Produktbrief v0.2“, „Teilnahmebedingungen INNOSPRINT“. A2: „Quelle: Fallakte §0, §2 (A3, A4, A15), §3; Rollen:
+Lösungsansatz des Teams“. Anhang: je Quelle Stand und, wo öffentlich, die Adresse:
+- Concular, Handlungsempfehlung für die öffentliche Hand, Dezember 2024:
+  concular.de/wp-content/uploads/2024/12/2024_Concular_Handlungsempfehlung_oeffentliche_Hand_Wiederverwendung.pdf
+- BLB NRW, Pressemitteilung „Nachhaltiger Rückbau der Universitätsbibliothek“, 02.12.2024: blb.nrw.de (Presse)
+- Madaster, Dokumentation „Match“, zuletzt bearbeitet 09.09.2026: docs.madaster.com/de/de/knowledge-base/industrial-reuse.html
+- Concular Exchange: laut Rechercheplan des Teams (Anbieterseite am 08.11.2026 geöffnet, nicht erneut geprüft)
+- Teilnahmebedingungen INNOSPRINT, Stand 01.10.2026: greenhouse.ruhr/programme/innosprint/
+- Interne Unterlagen (Repository CircularFlow, nicht öffentlich): Fallakte CF-PILOT-01 Fassung 1.3 (16.11.2026),
+  Pitch-Ablauf (16.11.2026), Doku Fassung 2, Produktbrief v0.2 (08.11.2026), Lösungsansatz des Teams (05.11.2026),
+  Rechercheplan des Teams v1.0 (08.11.2026).
+
+**D8 · Abgrenzung (M-6).** Unter dem Satz aus M2 klein ergänzen: „Madaster: Die Dokumentation (Stand 09.09.2026) nennt
+keine Bestellfrist und keine Prüfzeit auf der Suchseite. Die Funktion selbst haben wir nicht bedient.“
+
+**D9 · Tonfall (M-7, gering 6).** A1-Titel: „Zwölf Bürotüren und ein Datum, das nirgends steht“. A2-Titel: „Eine Tür
+kann entsorgt werden, wenn die Planung zu spät vom Angebot erfährt“; Sprechtext „können entsorgt werden“; A2-Sprechtext
+nennt „Planung, Bauleitung und Eigentümer“ (gering 5). B1: „… wird neu bestellt, und passende Bauteile können entsorgt
+werden.“
+
+**D10 · Geschäftsmodell (M-9).** Drei Kästen:
+1. „Wer hätte den Nutzen?“ – Eigentümer, öffentliche Einrichtungen, Wohnungsunternehmen (Zielbild: Frühwarnung und
+   Koordination); Betriebe für Prüfung, Ausbau, Transport, Lager, Wiedereinbau (mögliche Aufträge).
+2. „Wofür könnte man zahlen?“ – offen, zum Beispiel ein Pilot in einem Projekt oder die laufende Nutzung; Alternative:
+   Zusammenarbeit mit bestehenden Lösungen (Lösungsansatz des Teams).
+3. „Ungeprüft“ – Zahlungsbereitschaft, Budget, Preis. Kein Preis, keine Zahl.
+Der Satz „Die heutige Vorschau benachrichtigt niemanden.“ bleibt.
+
+**D11 · Praxistest (M-10).** A und B: „Signal: eine dokumentierte Prüfzeit mit Quelle“.
+
+**D12 · Ausgabeordner (gering 7).** Sprechtext-PDFs nach `ausgabe/sprechtexte/`. In `ausgabe/empfohlen-zur-abgabe/`
+liegen nur PDF (zum Einreichen) und PPTX (für Vortrag und Bearbeitung; Notizen enthalten Sprechtext und Regieanweisungen).
+
+**D13 · Dauern.** Nach den Änderungen „Dauer: etwa N Sekunden“ neu aus den Wortzahlen rechnen (2,3 Wörter je Sekunde),
+Demo-Folien behalten ihre Planwerte. Die Summen meldet cf-entwicklung; das README übernimmt sie.
