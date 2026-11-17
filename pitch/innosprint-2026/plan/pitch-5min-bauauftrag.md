@@ -400,3 +400,66 @@ cf-review hat bestätigt:
 
 Nicht übernommen ist der Hinweis, Kurzcheck (Folie 8) und Praxistest (Folie 9) im Sprechtext zu verbinden. Das wäre eine
 inhaltliche Festlegung, die das Team treffen sollte.
+
+## Nachbesserung 5 (Vorgabe des Teams vom 17.11.2026: Kurzcheck und Praxistest verbinden)
+
+Folie 9 verbindet den Kurzcheck von Folie 8 mit dem Praxistest und nennt die Karte „Entscheidungskarte“.
+- Der gesamte Sprechtext von Folie 9 wird durch den Wortlaut des Teams ersetzt (40 statt 68 Wörter). Die Sätze zu
+  Umweltamt und Concular werden nicht mehr gesprochen. Der Kasten „Im Sprint gelernt“ bleibt auf der Folie.
+- Neue Summen: 433 Wörter (55 + 63 + 44 + 96 + 56 + 79 + 40), Feyrouz 244, Houssam 189.
+- Zeitfenster: 31/35/27/64/33/48/21 s, Summe 259 s.
+  - Folie 9 hat 21 s, die Uhr zeigt am Ende 4:19.
+  - Bei ruhigem Tempo: 433 / 1,8 + 18 s ≈ 259 s = 4:19.
+  - Bei zügigem Tempo: 433 / 2,3 + 18 s ≈ 206 s, also etwa 3:25.
+  - Bis 5:00 bleiben 41 s.
+- Spätfall nach den Annahmen von cf-test: mit nur K3 auf Folie 5 etwa 4:27, mit Einleitung und K2 etwa 4:39.
+- Andere Folien, Notizen, Links und Ausblendung bleiben unverändert.
+
+Wortlaut:
+
+```text
+Folie 9, Kasten (ersetzt Überschrift „Nächster Test an einem echten Umbau“ und die drei Zeilen):
+Überschrift: Kurzcheck an einem echten Dortmunder Umbau erproben
+Zeile 1: Mit einer Projektleitung prüfen: Hilft die Entscheidungskarte, die Fachprüfung rechtzeitig anzustoßen?
+Zeile 2: Sie zeigt, was bis zur Frist fehlt, wer es liefert und was als Nächstes zu tun ist.
+Zeile 3: Dafür klären wir auch die benötigte Prüfzeit.
+
+Folie 9, Notiz (ersetzt den ganzen bisherigen Text; 40 Wörter):
+Diesen Kurzcheck wollen wir mit einer Projektleitung an einem echten Dortmunder Umbau erproben. Dabei prüfen wir, ob unsere Entscheidungskarte hilft, die Fachprüfung rechtzeitig anzustoßen. Dafür klären wir auch die benötigte Prüfzeit. Bringen Sie uns mit einem passenden Umbauprojekt in Kontakt.
+
+Folie 9, Zeitfenster: etwa 21 Sekunden · Uhr am Ende: 4:19
+```
+
+Unverändert auf Folie 9 bleiben:
+- der Titel
+- der Kasten „Im Sprint gelernt“ mit beiden Zitaten
+- die Bitte „Unsere Bitte: Bringen Sie uns mit einem Dortmunder Umbauprojekt in Kontakt.“
+- die Quellenzeile
+
+Sprechtext-Deckblatt:
+- Die Zeit bei zügigem Tempo im Zeitsatz (`ZEITEN_SATZ` in `sprechtext.js`, bisher fest „etwa 3:40“) wird aus der
+  Wortzahl berechnet.
+- Rechnung: Wörter / 2,3 + 18 s, gerundet auf 5 s, mit „etwa“ davor. Das ergibt jetzt „etwa 3:25“.
+
+README:
+- **Abschnitt 2:**
+  - Zeile 9 der Tabelle: 21 s / **4:19**.
+  - „Der Standard-Sprechtext hat 433 Wörter. Feyrouz spricht 244, Houssam 189 und bedient die Demo.“
+  - Tempo: ruhig 4:35 → 4:19; zügig „etwa 3:40“ → „etwa 3:25“; bis 5:00 bleiben 41 Sekunden.
+- **Abschnitt 3:** Spätfall „etwa 4:45“ → „etwa 4:27“. „Wer auf Folie 5 auch Einleitung und K2 spricht, kommt auf
+  etwa 4:39.“
+- **Abschnitt 4:**
+  - Spätfall: „Ziel: Ende etwa 4:27.“
+  - Gesamter Vortrag: „gerechnet 4:19, Grenze 5:00“ statt „Ziel 4:35, Grenze 5:00“.
+- **Abschnitt 9:**
+  - Zeile „Standard-Sprechtext mit rund 450 Wörtern“: „433 Wörter (am 17.11. vom Team weiter gekürzt)“.
+  - Zeile „Timing“: „erfüllt (4:19)“.
+- **Abschnitt 11:** Ersatzkandidat für Praxisfeedback: „Dafür klären wir auch die benötigte Prüfzeit.“
+
+Abnahme:
+- `exportiere.sh` läuft durch. `validate.py` meldet PASSED. Die Sprechtext-Selbstprüfung meldet OK, der Sprechtext hat
+  16 Seiten.
+- `baue.js` meldet 433 Wörter und 259 s (4:19).
+- Folienseite 9 ist angesehen: nichts abgeschnitten, nichts überlappt, Haupttext mindestens 20 pt, die Bitte steht
+  frei. Alle anderen Folienseiten sind pixelgleich zu `8684a0a`.
+- Links und Ausblendung sind unverändert. Die Fassungen A, B und C bleiben unverändert.
