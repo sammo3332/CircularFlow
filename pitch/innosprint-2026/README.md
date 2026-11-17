@@ -1,7 +1,7 @@
 # CircularFlow · Pitch INNOSPRINT 2026
 
-Dokumentversion 2.0 · Stand 17.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `1e96e9b` ·
-Freigabe und Bauauftrag `4f327c3` · geprüfter Endstand des Decks: Commit `1eb08a2`
+Dokumentversion 2.1 · Stand 17.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `1e96e9b` ·
+Freigabe und Bauauftrag `4f327c3` · geprüfter Endstand des Decks: Commit `c45ce11`
 
 Eingereicht wurde nichts. Die Einreichung übernimmt das Team. Frist laut Veranstalter „bis einschließlich 18.11.26“,
 teamintern 18.11.2026, 12:00 Uhr. Plattform, Vorschau, Freigabe und `docs/pitch-ablauf.md` sind unverändert.
@@ -16,13 +16,13 @@ teamintern 18.11.2026, 12:00 Uhr. Plattform, Vorschau, Freigabe und `docs/pitch-
 
 - **Grundlage:**
   - Plan 0.2, am 17.11.2026 vom Team mit Anpassungen freigegeben (`plan/pitch-5min-plan.md`, Abschnitt 14).
-  - Bauauftrag mit Nachbesserung 1 und 2: `plan/pitch-5min-bauauftrag.md`.
+  - Bauauftrag mit Nachbesserung 1 bis 3: `plan/pitch-5min-bauauftrag.md`.
 - **Dauer laut Veranstalter:** Tag 5, S. 11 und 17: fünf Minuten Präsentation, fünf Minuten Rückfragen. CircularFlow
   pitcht als erstes von acht Teams.
 - **Zum PDF:** Es enthält alle 15 Folien. Nach Folie 4 stehen die zwei Ersatzfolien der Demo (Seiten 5 und 6), am
   Ende der Anhang für Rückfragen (Seiten 10–15). In der PPTX sind diese Folien ausgeblendet. Wer aus dem PDF
   vorträgt, blättert nach Seite 4 direkt zu Seite 7.
-- **Prüfsummen (SHA-256, Anfang):** PPTX `ff608778a9bbdf74`, PDF `004efaf88e89471a`, Sprechtext `a8de90c3df98dc24`.
+- **Prüfsummen (SHA-256, Anfang):** PPTX `1d39b2fbb53bc1a8`, PDF `afd272dddded9ede`, Sprechtext `2d33885c492929aa`.
 
 ## 2. Ablauf, Zeiten, Aufteilung
 
@@ -73,8 +73,8 @@ teamintern 18.11.2026, 12:00 Uhr. Plattform, Vorschau, Freigabe und `docs/pitch-
   prüfen ›“ (zu Folie 6).
   - Steht K3 um 2:10 nicht da oder hakt die Vorschau: zurück und beide Bildschirmfotos zeigen. Auf Folie 5 führt
     „weiter ›“ zu Folie 6. Waren K1 und K2 schon gesprochen, auf Folie 5 nur den K3-Satz sprechen.
-  - Zeit im Spätfall: Mit nur dem K3-Satz endet der Vortrag bei etwa 4:45. Wer auf Folie 5 die ganze Notiz liest,
-    kommt auf knapp 5:00.
+  - Zeit im Spätfall: Mit nur dem K3-Satz endet der Vortrag bei etwa 4:45. Wer auf Folie 5 auch Einleitung und K2
+    spricht, kommt auf knapp 5:00. Die Regiezeilen werden nicht gesprochen.
   - Ist K4 um 2:25 nicht erreicht: zurück und direkt „Bildschirmfoto: weiter prüfen ›“.
   - Im Vortrag geht es von Folie 5 immer mit „weiter ›“ zu Folie 6. Dort steht der Übergabesatz, und „zurück zum
     Vortrag“ führt zu Folie 7.
@@ -156,7 +156,7 @@ Nichts aus dieser Liste ließ sich hier prüfen. Bitte bis zum 20.11. erledigen,
   - Steckbrief: eigenes Dokument, liegt der Jury laut Tag 5 vor dem Pitch vor.
   - Präsentation: alle Folien.
   - „Im Sprint gelernt“ und „Nächster Test“ auf Folie 9 sind keine offiziellen Kriterien, sondern unsere Ergänzung.
-- **Praxisfeedback:** Bis zum 17.11.2026, 16:36 Uhr, kam auf keine der neun Anfragen vom 17.11. (gesendet zwischen
+- **Praxisfeedback:** Bis zum 17.11.2026, 23:10 Uhr, kam auf keine der neun Anfragen vom 17.11. (gesendet zwischen
   14:05 und 15:39 Uhr) eine Antwort. Geprüft wurden Posteingang und die gesendeten Verläufe des Teamkontos. Im Deck
   steht deshalb kein Praxisfeedback. Folie 9 nennt, was im Sprint gehört wurde, und den nächsten Test. Kommt
   rechtzeitig bestätigtes Feedback, gilt Abschnitt 11.
@@ -196,6 +196,22 @@ python-pptx. Die Agenten liefen nacheinander, jeweils auf einem festen Commit.
 | Endprüfung | cf-test, P1–P9 | `1eb08a2` | alle bestanden, nichts Blockierendes, vier kosmetische Hinweise |
 | Quellenabgleich | Koordination | `1eb08a2` | Die neuen Aussagen aus Nachbesserung 2 stimmen mit Steckbrief, Fallakte, Beispieldaten und Bildschirmfoto überein. |
 | Demo im lokalen Nachbau | Koordination | `1eb08a2` | Startbedingung und K1–K4 in Chromium durchgeklickt, ohne Konsolenfehler |
+| Inhaltsprüfung des Endstands | cf-review | `b6e4172` | kein Sachfehler, keine falsche Zahl, kein Widerspruch zwischen den Dateien. Drei Befunde: erster Satz auf Folie 9, Spätfall auf Folie 5, „geplanten Pilot“ auf Folie 7 |
+| Nachbesserung 3 | cf-entwicklung | `556a14e`, `c45ce11` | drei Befunde umgesetzt, Wortzahl und Zeiten gleich. Das Deckblatt des Sprechtexts brach danach auf eine zweite Seite um; es ist wieder einseitig und wird jetzt automatisch geprüft. |
+| Nachprüfung | cf-test, T1–T8 | `c45ce11` | alle bestanden. Folienseiten pixelgleich zu `1eb08a2`; geändert sind nur die vorgesehenen Notizen; Spätfall gerechnet etwa 4:43 |
+
+Nachprüfung auf `c45ce11` (cf-test, T1–T8, alle bestanden):
+
+- Prüfsummen wie in Abschnitt 1. Außerhalb von `pitch/` ist nichts geändert. Die Fassungen A, B und C sind
+  byte-gleich zu `1eb08a2`. Regeltests: 46 von 46 bestanden.
+- `validate.py` besteht. Folien, Ausblendung und die fünf Links sind unverändert.
+- Geändert sind nur die Notizen der Folien 4, 5, 7 und 9, wörtlich wie in Nachbesserung 3. Es bleibt bei 461
+  Wörtern, 275 Sekunden und 4:35.
+- Alle 15 Folienseiten sind bei 144 dpi pixelgleich zu `1eb08a2`. Die Sichtprüfung unten gilt deshalb weiter.
+- Der Sprechtext hat 16 Seiten, das Deckblatt steht vollständig auf Seite 1. Jeder Notizabsatz steht im
+  Sprechtext.
+- Spätfall nachgerechnet, mit 1,8 Wörtern je Sekunde und je 2 bis 3 Sekunden für Klicks: Ende etwa 4:43, mit
+  Einleitung und K2 auf Folie 5 etwa 4:55.
 
 Ergebnisse der Endprüfung auf `1eb08a2`:
 
@@ -294,7 +310,7 @@ Ergebnisse der Endprüfung auf `1eb08a2`:
 | Restmenge und Wettbewerbsvergleich im Anhang | erfüllt (Folien 12 und 13) | Endprüfung |
 | Eigener Teil für Feyrouz und Houssam auf der Teamfolie | erfüllt (Folie 8) | Notizen |
 | Schluss mit der Bitte um Kontakt zu einem Dortmunder Umbauprojekt | erfüllt (Folie 9) | Folientext und Notiz |
-| Bestätigtes Praxisfeedback, falls rechtzeitig | keines vorhanden (Stand 17.11., 16:36 Uhr) | Abschnitt 5 |
+| Bestätigtes Praxisfeedback, falls rechtzeitig | keines vorhanden (Stand 17.11., 23:10 Uhr) | Abschnitt 5 |
 | Visuell geprüft: lesbar, nichts abgeschnitten, Zahlen und Quellen richtig, Ersatzfolien vollständig | erfüllt bei 144 dpi; Beamer nicht geprüft | Sichtprüfung |
 | Timing aus Wortzahlen nachgerechnet | erfüllt (4:35); Stoppuhrprobe steht aus | Abschnitt 2 |
 | Plattform, Vorschau, Freigabe und Pitch-Ablauf unverändert, nichts eingereicht | erfüllt | `git diff` |
