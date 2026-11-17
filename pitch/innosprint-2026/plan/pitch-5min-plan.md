@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Planfassung | 0.2 vom 17.11.2026 · Phase 1 · **zur Freigabe**, noch nicht umgesetzt. Fassung 0.1 steht in `19185da`; danach wurden die Befunde von cf-review eingearbeitet (Abschnitt 13). |
+| Planfassung | 0.2 vom 17.11.2026, **am 17.11.2026 vom Team mit Anpassungen für Phase 2 freigegeben** (Abschnitt 14). Fassung 0.1 steht in `19185da`; danach wurden die Befunde von cf-review eingearbeitet (Abschnitt 13). Der Bau folgt `pitch-5min-bauauftrag.md`. |
 | Branch | `codex/plattform-v1` |
 | Ausgangscommit | `1e96e9b` (Fassung A, drei Fassungen und README) |
 | Grundlage | Fassung A (`ausgabe/empfohlen-zur-abgabe/`), Bildschirmfotos in `bilder/`, Fallakte CF-PILOT-01 1.3, Plan Restmenge 1.1, `docs/pitch-ablauf.md`, Vorschau Fassung 2 (Code `2121b92`) |
@@ -352,3 +352,33 @@ Die Folien sind in der PPTX ausgeblendet. Im PDF stehen sie an ihrer Stelle.
   - Ersatzfolien heißen „Ersatz K3/K4/K6“ statt E1–E3.
   - „19.01. Angebot bekannt“, kein Code-Hash auf Folie 3, Rückfragen vorbereitet (Abschnitt 8).
 - **Bewusst nicht geändert:** die Rechenregel von 2,3 Wörtern je Sekunde. Die Stoppuhrprobe entscheidet; die Kürzungsreihenfolge steht in Abschnitt 3.
+
+## 14. Freigabe und Anpassungen (17.11.2026)
+
+Das Team hat Plan 0.2 mit folgenden Anpassungen für Phase 2 freigegeben:
+- **Länge und Aufbau:**
+  - Standard-Sprechtext rund 450 Wörter.
+  - Erste drei Folien vereinfacht.
+  - Folie 2: „Spätestens am 5. Februar die Prüfung anfragen“, die 14 Tage sichtbar als Annahme.
+- **Demo:**
+  - Standarddemo nur mit „fünf Tage zu spät“ und „Weiter prüfen“.
+  - Bei Zeitdruck direkt das Bildschirmfoto des noch fehlenden Ergebnisses.
+- **Anhang:** Restmenge und Wettbewerbsvergleich wandern dorthin.
+- **Teamfolie:** je ein eigener Satz für Feyrouz und Houssam.
+- **Schluss:** die Bitte um Kontakt zu einem Dortmunder Umbauprojekt.
+- **Praxisfeedback:** nur verwenden, wenn es bestätigt und rechtzeitig vorliegt.
+
+Neue Unterlagen vom Team:
+- **Concular-Workshop, Folien 49 und 67:** gelesen.
+  - Folie 49 nennt „Zeitliche Unterschiede in Nachfrage und Angebot“ und „Fehlende Infrastruktur für Lagerung, Rezertifizierung und Aufbereitung“.
+  - Folie 67 zeigt die „Interne Vermittlung“ mit „Reservieren“ und „Integration in Planungstool“ mit „Reservieren und bilanzieren“.
+- **Onepager (Steckbrief):** zuletzt geändert am 13.11.2026, 11:53 Uhr. Ob er mit der hochgeladenen Fassung identisch ist, ist nicht belegt.
+  - Er nennt **Planungsbüros** als Zielgruppe und die **Büroleitung** als möglichen Käufer. Offen lässt er, ob der Nutzen beim Büro oder bei der Bauherrschaft liegt.
+  - Er kündigt für den Pitch an: „Einer Innentür fehlt das Maß.“
+  - Er belegt die Teamkompetenzen: Informatik an der TU Dortmund; Houssam im Master und für die technische Entwicklung zuständig; Feyrouz mit Softwareentwicklung, Datenanalyse und IT-Sicherheit. Ebenso die Lücken: Bau und Rückbau, Bauteilbewertung, Recht, Logistik.
+
+Folgen für das Deck:
+- **Team:** Folie 6 nutzt die Teamangaben aus dem Steckbrief. Damit ist Entscheidung 2 erledigt.
+- **Käufer:** Folie 6 nennt als Hypothese die Bauherrschaft oder Bestandsorganisation, wie in deiner Vorgabe vom 17.11. Ergänzt ist die Frage aus dem Steckbrief, ob der Nutzen eher beim Planungsbüro liegt.
+- **Demo:** Die Standarddemo zeigt, wie freigegeben, die Zeitprüfung. „Fehlende Angaben“ kommen in K2 in einem Satz vor („Bei vier Paaren fehlen noch Angaben, etwa eine Frist“). Ein fehlendes Türmaß zeigt der Standardablauf nicht. Dafür gibt es eine Antwort im Anhang (Türregel: zählt nur Gemessenes).
+- **Praxisfeedback:** Im Postfach war bis 17.11. nachmittags keine Antwort auf die fünf Anfragen. Folie 7 nutzt deshalb die Erkenntnisse aus dem Sprint (Umweltamt, Concular) und den geplanten Test.
