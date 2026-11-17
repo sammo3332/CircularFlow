@@ -185,6 +185,33 @@ function entfernung(ctx, bauteil, bedarf) {
   return { km, symbolisch: true, text: bauteil.projekt === bedarf.projekt ? 'gleiches Projekt (Lage symbolisch)' : `ca. ${String(km).replace('.', ',')} km Luftlinie (Lage symbolisch)` };
 }
 
+// ---------- Prüfbitte spätestens ----------
+// Letzter Tag, an dem der Abgleich ein Paar des Bedarfs noch als „Weiter prüfen“ oder „Knapp“ zeigt: Grenze G minus Mindestprüfzeit,
+// in Kalendertagen. G ist der frühere der Tage Bestellfrist und Ende des Annahmefensters (fehlt das Ende oder gilt Gleichstand: die Bestellfrist).
+// Am Fristtag fällt das Prüfende auf G („Knapp“, pruefeZeit), einen Tag später sagt der Abgleich „zu spät“.
+// Rein: ohne Systemuhr und ohne Projektzeit. Ob der Tag verstrichen ist oder unter „Zeitkritisch“ steht, entscheiden die Aufrufer mit dem Stichtag (ctx.at).
+export const FRIST_PRUEFBITTE = 'Prüfbitte spätestens';
+// Rückgabe: status 'ok' | 'fehlt' | 'klaerung' (Reihenfolge wie im Abgleich: Widerspruch vor fehlender Angabe), tag und grenzTag als „JJJJ-MM-TT“.
+// geschaetzt nennt nur Angaben, die in die Rechnung eingehen (die Grenze, die gilt, und die Mindestprüfzeit).
+export function pruefbitteFrist(bedarf) {
+  const F = fakt(bedarf.bestellfrist ?? bedarf.fristen?.ersatz); const A2 = fakt(bedarf.annahmeBis); const pz = pruefzeit(bedarf.pruefzeitTage);
+  const klaerung = []; const fehlend = [];
+  if (F.ungueltig) klaerung.push('Die Bestellfrist enthält ein ungültiges Datum.'); else if (F.tag === null) fehlend.push('Bestellfrist');
+  if (A2.ungueltig) klaerung.push('Das Ende des Annahmefensters enthält ein ungültiges Datum.');
+  if (pz.ungueltig) klaerung.push('Die Mindestprüfzeit muss eine ganze Zahl von 0 bis 365 Tagen sein.'); else if (pz.wert === null) fehlend.push('Mindestprüfzeit');
+  const ohneTag = { tag: null, grenze: null, grenzTag: null, pruefzeitTage: pz.wert, geschaetzt: [], fehlend, klaerung };
+  if (klaerung.length) return { ...ohneTag, status: 'klaerung', text: klaerung.join(' ') };
+  if (fehlend.length) return { ...ohneTag, status: 'fehlt', text: fehlend.map((f) => `${f} fehlt.`).join(' ') };
+  const annahme = A2.tag !== null && A2.tag < F.tag; const G = annahme ? A2.tag : F.tag;
+  const belegt = bedarf.belegt || {};
+  const geschaetzt = [!annahme && belegt.bestellfrist === 'geschaetzt' && 'Bestellfrist', belegt.pruefzeitTage === 'geschaetzt' && 'Mindestprüfzeit', annahme && belegt.annahme === 'geschaetzt' && 'Annahmefenster'].filter(Boolean);
+  const marke = (name) => (geschaetzt.includes(name) ? ' (geschätzt)' : '');
+  return {
+    ...ohneTag, status: 'ok', tag: tagText(G - pz.wert), grenze: annahme ? 'annahme' : 'bestellfrist', grenzTag: tagText(G), geschaetzt,
+    text: `${annahme ? 'Ende des Annahmefensters' : 'Bestellfrist'} ${dt(G)}${marke(annahme ? 'Annahmefenster' : 'Bestellfrist')} minus ${tage(pz.wert)} Mindestprüfzeit${marke('Mindestprüfzeit')}`,
+  };
+}
+
 // ---------- Abgleich ----------
 export function abgleich(ctx, bauteil, bedarf, opt = {}) {
   const typ = pruefeTyp(ctx, bauteil, bedarf);

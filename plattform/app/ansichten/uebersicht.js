@@ -31,7 +31,7 @@ function zeitkritisch(ctx, kz) {
     const href = e ? routeEntscheidung(e) : routeBedarf(f.ref);
     return `<li class="frist-zeile">
       <span class="fz-chip">${chip(f.ueberfaellig ? 'Überfällig' : a.text, f.ueberfaellig ? 'crit' : f.ton === 'crit' ? 'crit' : 'warn')}</span>
-      <span class="fz-text"><a href="${href}"><b>${esc(f.name)}</b> · ${esc(titel)}</a><small>${p ? `${pchip(p)} ` : ''}${f.art === 'entscheidung' ? 'Vorgang, zur Entscheidung' : 'Bedarf, zum Bedarf'}</small></span>
+      <span class="fz-text"><a href="${href}"><b>${esc(f.name)}</b> · ${esc(titel)}</a><small>${p ? `${pchip(p)} ` : ''}${f.detail ? esc(f.detail) : f.art === 'entscheidung' ? 'Vorgang, zur Entscheidung' : 'Bedarf, zum Bedarf'}</small></span>
       <span class="fz-zeit mono">${zeit(f.at)}</span>
     </li>`;
   };

@@ -1,6 +1,6 @@
 // Bedarfe: Liste und Detail. Erfassen und Ergänzen stehen in bedarfform.js.
 import { GRUPPEN } from '../daten.js';
-import { abgleichListe, lueckeText } from '../abgleich.js';
+import { abgleichListe, lueckeText, pruefbitteFrist, FRIST_PRUEFBITTE } from '../abgleich.js';
 import { fehlendeZeitangaben } from '../bedarf.js';
 import { bedarfBelegt, bedarfBelegtArt, bedarfVorgang, vorgangStatus } from '../vorgang.js';
 import { esc, chip, icon, leer, pchip, gruppenChip, seitenkopf, person, routeBedarf, routeAbgleich, routeEntscheidung, tagText, ergebnisChip, tonMarke } from '../ui.js';
@@ -67,6 +67,16 @@ export function bedarfeReiter(aktiv) {
 const angabe = (k, v) => `<div><dt>${k}</dt><dd>${v}</dd></div>`;
 const fehltChip = () => chip('fehlt', 'info');
 
+// Zeile „Prüfbitte spätestens“ (Regel: abgleich.pruefbitteFrist). „verstrichen“: der Tag liegt vor dem Stichtag (Tag von ctx.at).
+// Fehlen Angaben oder widersprechen sie sich, steht „nicht berechenbar“ mit dem Grund anstelle des Datums.
+function pruefbitteAngabe(ctx, d) {
+  const f = pruefbitteFrist(d);
+  if (f.status !== 'ok') return angabe(FRIST_PRUEFBITTE, `${chip('nicht berechenbar', f.status === 'klaerung' ? 'warn' : 'info')}<small>${esc(f.text)}</small>`);
+  const verstrichen = f.tag < String(ctx.at).slice(0, 10);
+  return angabe(FRIST_PRUEFBITTE, `<span class="mono">${tagText(f.tag)}</span>${f.geschaetzt.length ? ` ${chip('geschätzt', 'warn')}` : ''}${verstrichen ? ` ${chip('verstrichen', 'crit')}` : ''}<small>${esc(f.text)}</small>`
+    + `${verstrichen ? '' : '<small>In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft.</small>'}`);
+}
+
 export function bedarfDetail(ctx, d) {
   const p = ctx.daten.projekte.find((x) => x.kurz === d.projekt); const g = GRUPPEN[d.gruppe];
   const fehlt = fehlendeZeitangaben(d); const paare = abgleichListe(ctx, { bedarf: d }); const e = bedarfVorgang(ctx, d.projekt, d.id);
@@ -88,6 +98,7 @@ export function bedarfDetail(ctx, d) {
         ${angabe('Bestellfrist', bestellfristVon(d) ? `<span class="mono">${tagText(bestellfristVon(d))}</span>${markierung(d, 'bestellfrist')}${boden && !d.bestellfrist ? '<small>Frist der Ersatzentscheidung</small>' : ''}` : fehltChip())}
         ${angabe('Mindestprüfzeit', d.pruefzeitTage !== undefined && d.pruefzeitTage !== null && d.pruefzeitTage !== '' ? `<span class="mono">${esc(d.pruefzeitTage)} Tage</span>${markierung(d, 'pruefzeitTage')}` : fehltChip())}
         ${angabe('Annahmefenster', fenster(d) ? `<span class="mono">${fenster(d)}</span>${markierung(d, 'annahme')}` : fehltChip())}
+        ${pruefbitteAngabe(ctx, d)}
         ${angabe('Anforderungen', d.anforderungen ? `${esc(d.anforderungen)}<small>Freitext, nicht maschinell bewertet</small>` : d.text ? esc(d.text) : '<span class="leise">keine angegeben</span>')}
         ${angabe('Zuständig', d.zustaendig ? `${esc(person(d.zustaendig).rolle)}` : '<span class="leise">nicht festgelegt</span>')}
         ${angabe('Angelegt', d.angelegt ? `<span class="mono">${tagText(d.angelegt)}</span>` : '<span class="leise">Beispieldaten</span>')}

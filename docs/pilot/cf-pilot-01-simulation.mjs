@@ -1,4 +1,6 @@
 // CF-PILOT-01 · Nachrechnung der drei Varianten mit dem unveränderten Fachkern von Fassung 2 (Code 2121b92, Stand daa40a9).
+// Auf dem Entwicklungsbranch codex/plattform-entwicklung-20261118 kommt die Frist „Prüfbitte spätestens“ (pruefbitteFrist) hinzu;
+// Abgleichregel, Vorgangsstatus und Beispieldaten sind dort unverändert. Auf dem Pitch-Stand (codex/plattform-v1) gibt es diese Frist nicht.
 // Fiktiver Pilotfall „Zwölf Bürotüren vor dem Umbau“. Alle Namen, Daten, Mengen und Rollen sind Simulationsannahmen.
 // Neben den Beispieldaten enthält die Nachrechnung nur das Angebot LH · T-13 (6 Stk) und den Bedarf UAK · BD-24.
 // Die interne Tür und die zwei Türen mit Zustand C sind nur im Browserlauf erfasst. Fristen zählen in Kalendertagen.
@@ -13,7 +15,7 @@ import { baueDaten, leerePersistenz } from '../../plattform/app/zustand.js';
 import { projektAusEntwurf, pruefeProjekt } from '../../plattform/app/projektanlage.js';
 import { bedarfAusEntwurf, naechsteBedarfId, pruefeBedarf } from '../../plattform/app/bedarf.js';
 import { bauteilAusErfassung, naechsteBauteilId, pruefeErfassung } from '../../plattform/app/regeln.js';
-import { abgleich, abgleichListe, pruefbitteAnlegen, zuordnungZumBedarf } from '../../plattform/app/abgleich.js';
+import { abgleich, abgleichListe, pruefbitteAnlegen, pruefbitteFrist, zuordnungZumBedarf, FRIST_PRUEFBITTE } from '../../plattform/app/abgleich.js';
 import { vorgangSchritt, vorgangStatus, naechsterVorgangsschritt, bedarfBelegt } from '../../plattform/app/vorgang.js';
 import { kennzahlen } from '../../plattform/app/kennzahlen.js';
 
@@ -126,14 +128,26 @@ for (let d = '2027-01-19'; d <= '2027-02-22'; d = plusTage(d, 1)) {
 zeile('  Letzter Tag mit möglicher Prüfbitte: ', tag(letzterPruefbarerTag));
 assert.equal(letzterPruefbarerTag, '2027-02-05');
 
-// Zeitkritisch auf der Übersicht: ab wann erscheint die Bestellfrist des noch offenen Bedarfs?
-let ersterTagZeitkritisch = null;
-for (let d = '2027-01-19'; d <= '2027-02-19'; d = plusTage(d, 1)) {
-  const k = kennzahlen(ctxBei(basis.p, `${d}T09:00`));
-  if (k.zeitkritisch.eintraege.some((f) => f.art === 'bedarf' && f.id === basis.bedarf.id)) { ersterTagZeitkritisch = d; break; }
-}
-zeile('  Bestellfrist ', basis.bedarf.id, ' erscheint unter „Zeitkritisch (7 Tage)“ erstmals am ', tag(ersterTagZeitkritisch), ' (09:00), solange kein Vorgang läuft.');
-assert.equal(ersterTagZeitkritisch, '2027-02-13');
+// Prüfbitte spätestens (Fachkern pruefbitteFrist): derselbe Tag wie der letzte Tag mit möglicher Prüfbitte (Gleichlauf mit dem Abgleich).
+const fristPruefbitte = pruefbitteFrist(basis.bedarf);
+zeile('  ', FRIST_PRUEFBITTE, ' ', basis.bedarf.id, ': ', tag(fristPruefbitte.tag), ' (', fristPruefbitte.text, ')');
+assert.equal(fristPruefbitte.status, 'ok');
+assert.equal(fristPruefbitte.tag, letzterPruefbarerTag);
+
+// Zeitkritisch auf der Übersicht: ab wann erscheinen „Prüfbitte spätestens“ und die Bestellfrist des noch offenen Bedarfs?
+// Je Bedarf kann es beide Einträge geben; sie unterscheiden sich im Namen (name), nicht in der Art.
+const ersterTagZeitkritisch = (name) => {
+  for (let d = '2027-01-19'; d <= '2027-02-19'; d = plusTage(d, 1)) {
+    const k = kennzahlen(ctxBei(basis.p, `${d}T09:00`));
+    if (k.zeitkritisch.eintraege.some((f) => f.art === 'bedarf' && f.id === basis.bedarf.id && f.name === name)) return d;
+  }
+  return null;
+};
+const ersterTagPruefbitte = ersterTagZeitkritisch(FRIST_PRUEFBITTE); const ersterTagBestellfrist = ersterTagZeitkritisch('Bestellfrist');
+zeile('  ', FRIST_PRUEFBITTE, ' ', basis.bedarf.id, ' erscheint unter „Zeitkritisch (7 Tage)“ erstmals am ', tag(ersterTagPruefbitte), ' (09:00), solange kein Vorgang läuft.');
+zeile('  Bestellfrist ', basis.bedarf.id, ' erscheint unter „Zeitkritisch (7 Tage)“ erstmals am ', tag(ersterTagBestellfrist), ' (09:00), solange kein Vorgang läuft.');
+assert.equal(ersterTagPruefbitte, '2027-01-30');
+assert.equal(ersterTagBestellfrist, '2027-02-13');
 
 // ---------- Variante 1: rechtzeitig ----------
 function variante1() {
@@ -165,7 +179,7 @@ function variante2() {
   const z = zuordnungZumBedarf(ctx, finde(ctx.daten.bauteile, angebot.projekt, angebot.id), finde(ctx.daten.bedarfe, bedarf.projekt, bedarf.id));
   assert.equal(z.moeglich, false);
   const k = kennzahlen(ctx);
-  const frist = k.zeitkritisch.eintraege.find((f) => f.art === 'bedarf' && f.id === bedarf.id);
+  const frist = k.zeitkritisch.eintraege.find((f) => f.art === 'bedarf' && f.id === bedarf.id && f.name === 'Bestellfrist');
   assert.ok(frist?.ueberfaellig, 'Bestellfrist sollte als überfällig unter Zeitkritisch stehen');
   const andere = abgleichListe(ctx, { bauteil: finde(ctx.daten.bauteile, angebot.projekt, angebot.id) }).map((x) => `${x.bedarf.projekt} ${x.bedarf.id}: ${x.gesamt.label}`);
   return { a, z, frist, andere };
@@ -196,7 +210,7 @@ function variante3() {
     status: st.label, vormerkung: `${st.vormerkung.menge} ${st.vormerkung.einheit}`, naechster: naechsterVorgangsschritt(ctx, vorgang).text,
     mengeImAbgleich: `${a.menge.status} (Angebot ${a.menge.angebot}, Bedarf ${a.menge.bedarf})`,
     bedarfBelegt: bedarfBelegt(ctx, bedarf.projekt, bedarf.id),
-    bestellfristZeitkritisch: k.zeitkritisch.eintraege.some((f) => f.art === 'bedarf' && f.id === bedarf.id),
+    bestellfristZeitkritisch: k.zeitkritisch.eintraege.some((f) => f.art === 'bedarf' && f.id === bedarf.id && f.name === 'Bestellfrist'),
     bedarfOffenGezaehlt: k.bedarfeOffen.eintraege.some((d) => d.projekt === bedarf.projekt && d.id === bedarf.id),
     paareVorher, paareNachher: abgleichListe(ctx, { bedarf: finde(ctx.daten.bedarfe, bedarf.projekt, bedarf.id) }).length,
     zweitesAngebot: `KB T-31 → ${bedarf.id} am 04.02.2027: ${zweites.gesamt.label}, Prüfbitte gesperrt: ${zweites.sperrgrund}`,

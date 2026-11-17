@@ -9,6 +9,20 @@ Alle Projekte, Personen, Räume, Maße und Nachweise sind **Beispieldaten**. Die
 H-05 stammen aus öffentlichen Quellen (abgerufen am 15.11.2026) und sind **ungeprüft**. Die Hinweise
 B-01 bis B-04 sind erfunden und zeigen den Prüfablauf.
 
+## Entwicklungsstand: Prüfbitte spätestens
+
+Dieser Branch (`codex/plattform-entwicklung-20261118`) ergänzt die Frist „Prüfbitte spätestens“: den letzten Tag, an dem der Abgleich ein Angebot für einen Bedarf noch als prüfbar zeigt (der frühere Tag aus Bestellfrist und Ende des Annahmefensters, minus Mindestprüfzeit, in Kalendertagen).
+Die Übersicht führt sie unter „Zeitkritisch (7 Tage)“, solange ein Angebot prüfbar ist und kein Vorgang läuft, und die Bedarfsseite nennt im Block „Angaben“ den Tag, seine Rechnung und die Herkunft („geschätzt“), bei fehlenden oder ungültigen Angaben „nicht berechenbar“ mit Grund.
+Abgleichregel, Vorgangsstatus, Beispieldaten und Speicher bleiben unverändert; Plan und Abnahmekriterien stehen in [`docs/plan-pruefbitte-spaetestens.md`](../docs/plan-pruefbitte-spaetestens.md).
+
+**Starten:** Statischen Server vom Repository-Wurzelverzeichnis starten (`python3 -m http.server 8000`) und `http://localhost:8000/plattform/` öffnen.
+
+**Neue Anzeige sehen** (Klickpfad BA-3, Kurzform): „Bedarfe“ → „Bedarf erfassen“ mit Projekt „SB“, Gruppe „Systemtrennwände“, Titel „Fristtest“, Menge 30, Bestellfrist 30.11.2026, Mindestprüfzeit 6 mit „geschätzt (Annahme)“, Annahmefenster 01.02.2027 bis 31.03.2027, „Speichern“. Dann „Übersicht“: Unter „Zeitkritisch (7 Tage)“ steht „Prüfbitte spätestens · BD-24 · Fristtest“ (Di 24.11., 23:59), die Kopfzeile zählt „5 Fristen“, und die Bedarfsseite BD-24 zeigt den 24.11.2026 mit dem Chip „geschätzt“. Danach den „Stichtag der Demo“ auf „Fr 20.11., 09:00“ stellen: Der Chip der Zeile zählt auf „noch 4 Tg. 14 Std.“. Zum Aufräumen: Erfassen → „In diesem Browser gespeichert“ → „Zurücksetzen“.
+
+**Tests ausführen:** `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs`
+
+Dieser Branch ersetzt die geprüfte Pitch-Vorschau nicht. Pitch-Stand: Branch `codex/plattform-v1`, Code `2121b92`.
+
 ## Starten
 
 Einen statischen Server **vom Repository-Root** starten (Windows meist `py` statt `python3`):

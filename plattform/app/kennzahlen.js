@@ -4,7 +4,7 @@ import { GRUPPEN } from './daten.js';
 import { minuten } from './zeit.js';
 import { offeneNachweise, lageVorgang } from './regeln.js';
 import { vorgangStatus, VORGANG_STATUS, naechsterVorgangsschritt, aktiverVorgang, uebergebenerVorgang, bedarfBelegt, tagesende } from './vorgang.js';
-import { abgleichListe, ERGEBNIS_REIHENFOLGE } from './abgleich.js';
+import { abgleichListe, ERGEBNIS_REIHENFOLGE, FRIST_PRUEFBITTE, pruefbitteFrist } from './abgleich.js';
 
 const tagNr = (d) => Math.floor(minuten(`${String(d).slice(0, 10)}T00:00`) / 1440);
 const monatVon = (d) => String(d).slice(0, 7);
@@ -94,6 +94,17 @@ export function kennzahlen(ctx, { horizontTage = 90, kritischTage = 7 } = {}) {
       if ((vorbei && !f.offen) || (!vorbei && t > ende)) continue;
       fristen.push({ art: 'entscheidung', projekt: e.projekt, id: e.id, ref: e, name: f.name, at: f.at, ueberfaellig: vorbei, ton: vorbei ? 'crit' : f.ton, tage: Math.floor((t - jetzt) / 1440) });
     }
+  }
+  // „Prüfbitte spätestens“: je offenem Bedarf mit mindestens einem prüfbaren Paar höchstens ein Eintrag, nie überfällig.
+  // Danach zeigt der Abgleich „zu spät“, und die Bestellfrist folgt wie bisher. Vor der Bestellfrist eingefügt: bei gleicher Zeit steht die Prüfbitte zuerst.
+  const paareJeBedarf = new Map();
+  for (const a of pruefbarePaare) { const k = `${a.bedarf.projekt}:${a.bedarf.id}`; paareJeBedarf.set(k, (paareJeBedarf.get(k) || 0) + 1); }
+  for (const d of offeneBedarfe) {
+    const n = paareJeBedarf.get(`${d.projekt}:${d.id}`); const f = n ? pruefbitteFrist(d) : null;
+    if (!f || f.status !== 'ok') continue;
+    const at = tagesende(f.tag); const t = minuten(at);
+    if (t < jetzt || t > ende) continue;
+    fristen.push({ art: 'bedarf', projekt: d.projekt, id: d.id, ref: d, name: FRIST_PRUEFBITTE, at, ueberfaellig: false, ton: 'warn', tage: Math.floor((t - jetzt) / 1440), pruefbarePaare: n, detail: `Bedarf · ${n} ${n === 1 ? 'prüfbares Paar' : 'prüfbare Paare'} · ${f.text}` });
   }
   for (const d of offeneBedarfe) {
     if (!d.bestellfrist) continue;
