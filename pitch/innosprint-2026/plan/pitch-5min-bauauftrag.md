@@ -256,3 +256,59 @@ jetzt wörtlich:
 | 14 · AX5 · Folientext | Erste Spalte unverändert. Zweite Spalte: „Nur Beispieldaten; Fachergebnis ist ein Eintrag; ein Scan liefert nur Vorschläge; bei Türen zählen nur gemessene Maße.“ Dritte Spalte: „Nachweise (Angaben von Concular, keine Rechtsberatung): Innentür ohne Schutzanforderung laut Handlungsempfehlung 12/2024 kein neuer Verwendbarkeitsnachweis; Zustand und Passung prüft trotzdem eine Fachperson. Brandschutztür laut Concular-Leitfaden derzeit Zustimmung im Einzelfall. Die Vorschau speichert keine Nachweise.“ |
 | 14 · AX5 · Notiz | Kurzantwort wie die Folie, dazu: „Im Steckbrief steht, CircularFlow lasse keine Frist stillschweigend verstreichen. Läuft eine Frist ab, zeigt die Vorschau „Frist verstrichen“, und der Vorgang bleibt offen. Eine Benachrichtigung vorher und den spätesten Anfragetag als eigene Frist hat sie noch nicht.“ (Belegt: Pitch-Ablauf, Zusatz A; Fallakte §1, §5, §6.) |
 | Sprechtext-Deckblatt | Übersichtstabelle mit den neuen Zeitfenstern 31/35/27/64/33/53/32 s und Uhrzeiten 0:31/1:06/1:33/2:37/3:10/4:03/4:35. Zeitsatz unverändert (461 Wörter: 4:35 bei 1,8; etwa 3:40 bei 2,3 einschließlich 18 s für Wechsel, Umschalten und Klicks). Die Zeitdruckregel 2:10 / 2:25 bleibt. |
+
+## Nachbesserung 3 (nach cf-review auf `b6e4172`, 17.11.2026)
+
+cf-review hat keinen Sachfehler, keine falsche Zahl und keinen Widerspruch zwischen den Dateien gefunden. Übernommen
+werden die drei gemeldeten Befunde.
+- Der Standard-Sprechtext bleibt bei 461 Wörtern.
+- Zeitfenster und Uhrzeiten bleiben gleich.
+- Folientexte, Links und Ausblendung ändern sich nicht.
+
+| Stelle | Änderung | Grund |
+|---|---|---|
+| 9 · P7 · Notiz | Neuer erster Satz, gleich lang (11 Wörter) | Keine Quelle sagt „Auf die Zeit kommt es an“. Der alte Satz gab eine eigene Schlussfolgerung als gehörte Aussage aus. |
+| 7 · P5 · Notiz | „künftigen“ statt „geplanten“ Pilot | Es gibt noch keinen vereinbarten Pilot (Folie 9 sucht einen Umbaufall). |
+| 5 · EK3 · Notiz | zwei Regiezeilen | Im Spätfall wurden K1 und K2 sonst doppelt gesprochen, der Vortrag käme nah an 5:00. Wer von Folie 5 direkt zurückging, verlor den Übergabesatz. |
+| 4 · P4 · Notiz | Regel für 2:10 ergänzt | wie EK3 |
+| Sprechtext-Deckblatt | Regel bei Zeitdruck wie die neue Notiz von Folie 4; Übergabesatz für EK3 statt „–“ | wie EK3 |
+| README | Abschnitt 3: Spätfall mit Zeit; Abschnitt 4: Spätfall proben | Zeitrechnung für den Spätfall fehlte |
+
+Wortlaut (jede Zeile ist ein Absatz der Notiz):
+
+```text
+P7, erster Satz (ersetzt „Im Sprint haben wir gehört: Auf die Zeit kommt es an.“):
+Zwei Aussagen aus dem Sprint zeigen, dass Zeit eine Rolle spielt.
+
+P5, Beginn des dritten Satzes (ersetzt „In einem geplanten Pilot in Dortmund …“):
+In einem künftigen Pilot in Dortmund wollen wir deshalb zählen: …
+
+EK3, erster Absatz nach „Spricht: Houssam“, vor dem Sprechtext:
+Spätfall: Waren K1 und K2 schon live gesprochen, nur den K3-Satz sprechen.
+
+EK3, Absatz nach K3, vor der Zeile „Zeitfenster“:
+Danach immer „weiter ›“ zu Folie 6. Wer doch direkt „zurück zum Vortrag“ geht, sagt vorher: „Was das für Dortmund bringen kann, erklärt Feyrouz.“
+
+P4, Regel für 2:10 (ersetzt die bisherige Zeile):
+Bei Zeitdruck: Steht K3 um 2:10 nicht da oder hakt die Vorschau: zurück zur Präsentation und die Bildschirmfotos über die Links auf dieser Folie zeigen. Waren K1 und K2 schon gesprochen, auf Folie 5 nur den K3-Satz.
+
+Sprechtext-Deckblatt, Spalte Übergabesatz für „5 · EK3“:
+bei „zurück zum Vortrag“: Was das für Dortmund bringen kann, erklärt Feyrouz.
+```
+
+README:
+- **Abschnitt 3, „Bei Zeitdruck“:**
+  - Unter „Steht K3 um 2:10 nicht da …“ ergänzen: „Waren K1 und K2 schon gesprochen, auf Folie 5 nur den
+    K3-Satz sprechen.“
+  - Neuer Punkt: „Zeit im Spätfall: Mit nur dem K3-Satz endet der Vortrag bei etwa 4:45. Wer auf Folie 5 die ganze
+    Notiz liest, kommt auf knapp 5:00.“
+  - Der Punkt zu „zurück zum Vortrag“ lautet: „Im Vortrag geht es von Folie 5 immer mit „weiter ›“ zu Folie 6. Dort
+    steht der Übergabesatz, und „zurück zum Vortrag“ führt zu Folie 7.“
+- **Abschnitt 4, Punkt „Demo mit Stoppuhr“:** ergänzen: „Den Spätfall einmal proben: Ausfall um 2:10, auf Folie 5
+  nur K3. Ziel: Ende etwa 4:45.“
+
+Abnahme:
+- `exportiere.sh` läuft durch. `validate.py` meldet PASSED, und die Sprechtext-Selbstprüfung meldet OK.
+- Der Standard-Sprechtext hat 461 Wörter. Zeitfenster 31/35/27/64/33/53/32 s, Uhr 4:35.
+- Die Folienseiten des PDFs sehen aus wie in `1eb08a2`. Links und `show="0"` sind unverändert.
+- Die Fassungen A, B und C bleiben textgleich.
