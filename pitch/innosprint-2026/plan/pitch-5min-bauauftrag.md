@@ -312,3 +312,75 @@ Abnahme:
 - Der Standard-Sprechtext hat 461 Wörter. Zeitfenster 31/35/27/64/33/53/32 s, Uhr 4:35.
 - Die Folienseiten des PDFs sehen aus wie in `1eb08a2`. Links und `show="0"` sind unverändert.
 - Die Fassungen A, B und C bleiben textgleich.
+
+## Nachbesserung 4 (redaktionell, Vorgabe des Teams vom 17.11.2026)
+
+Drei redaktionelle Änderungen des Teams für Folie 8, Folie 9 und Folie 14:
+- Der Standard-Sprechtext bleibt bei 461 Wörtern. Folie 8 wird um 9 Wörter kürzer (79 statt 88), Folie 9 um 9 länger
+  (68 statt 59).
+- Neue Zeitfenster: Folie 8 hat 48 s, die Uhr am Ende zeigt 3:58. Folie 9 hat 37 s, die Uhr am Ende bleibt bei 4:35.
+  Die Summe bleibt 275 s.
+- Feyrouz spricht 272 Wörter, Houssam 189.
+- Links, Ausblendung, Ersatzfolien und alle anderen Folien bleiben unverändert.
+
+| Stelle | Änderung |
+|---|---|
+| 8 · P6 · Folientext | Die Felder „Nutzer“ und „Käufer“ werden zu einem Feld mit drei Zeilen (Bezeichnung fett). Der Chip „Hypothese“ bleibt am Feld. Alle anderen Felder bleiben. |
+| 8 · P6 · Notiz | Neuer Absatz für Houssam. Feyrouz bleibt gleich. Danach kommt ein neuer Absatz „Bei Rückfragen: …“ zu den Budgetverantwortlichen. Er zählt nicht zum Standard-Sprechtext. |
+| 9 · P7 · Folientext | Der Kasten „Nächster Test“ bekommt eine neue Überschrift und zwei neue Zeilen. Titel, „Im Sprint gelernt“, Bitte und Quelle bleiben. |
+| 9 · P7 · Notiz | Neuer Text: Der Praxistest prüft die Karte, die Prüfzeit ist eine der nötigen Angaben, und die Bitte bleibt. |
+| 14 · AX5 · Folientext | Die dritte Spalte bekommt einen neuen Text. Die pauschalen Aussagen zu Türnachweisen entfallen. „keine Nachweisdokumente“ ersetzt „keine Nachweise“. |
+| 14 · AX5 · Notiz | Die Sätze zu Nachweisen werden ersetzt, siehe unten. Der Rest der Kurzantwort bleibt. |
+| 15 · AX6 · Folientext | Quelle „Concular, Workshop im INNOSPRINT, Folien 49/67“ ohne „und Handlungsempfehlung 12/2024“. Folie 14 zitiert die Handlungsempfehlung nicht mehr. |
+| Zählregel | Absätze, die mit „Bei Rückfragen:“ beginnen, zählen nicht zum Standard-Sprechtext (wie „Klick:“ und „Bei Zeitdruck:“). Im Sprechtext-PDF stehen sie als eigener Kasten. |
+
+Wortlaut:
+
+```text
+Folie 8, Feld (drei Zeilen):
+Nutzer: Projektleitung im Planungsbüro.
+Erstes Angebot: Kurzcheck für eine Bauteilgruppe im Umbau.
+Zahlender Auftraggeber: im Pilot zu klären.
+
+Folie 8, Notiz Houssam (49 Wörter, ersetzt den bisherigen Absatz):
+Heute läuft unser Prototyp im Browser, mit Beispieldaten. Nutzen soll ihn zuerst die Projektleitung im Planungsbüro. Als erstes Angebot planen wir einen Kurzcheck für eine Bauteilgruppe. Wer dafür bezahlt, klären wir im Pilot. Ich habe an der TU Dortmund Informatik studiert, bin jetzt im Master und entwickle den Prototyp.
+
+Folie 8, neuer Absatz nach dem Absatz von Feyrouz (nicht gezählt):
+Bei Rückfragen: Als Budgetverantwortliche kommen infrage: die Bauherrschaft, die den Umbau beauftragt; die Bestandsorganisation, die Gebäude im Bestand verwaltet; oder die Büroleitung eines Planungsbüros, wie im Steckbrief angenommen, etwa mit einer Projektlizenz. Bestätigt ist davon nichts. Wer zahlt und zu welchem Preis, klären wir im Pilot.
+
+Folie 9, Kasten „Nächster Test“:
+Überschrift: Nächster Test an einem echten Umbau
+Zeile 1: Hilft die Karte einer Projektleitung, die Fachprüfung rechtzeitig anzustoßen?
+Zeile 2: Dafür nötige Angaben, unter anderem: tatsächliche Prüfzeit · Bestellfrist · Bauteil frei ab
+
+Folie 9, Notiz (68 Wörter, ersetzt den bisherigen Absatz):
+Zwei Aussagen aus dem Sprint zeigen, dass Zeit eine Rolle spielt. Das Umweltamt sagt, bei Bauentscheidungen zählen meist Zeit und Kosten. Concular nennt zeitliche Unterschiede zwischen Angebot und Nachfrage. Als Nächstes wollen wir an einem echten Umbau prüfen, ob unsere Karte einer Projektleitung hilft, die Fachprüfung rechtzeitig anzustoßen. Dafür brauchen wir unter anderem die tatsächliche Prüfzeit. Unsere Bitte: Bringen Sie uns mit einem Dortmunder Umbauprojekt in Kontakt. Danke.
+
+Folie 14, dritte Spalte (ersetzt den bisherigen Text):
+Nachweise: Welche Prüfungen und Nachweise erforderlich sind, klären Fachplanung und gegebenenfalls zuständige Prüfstellen für das konkrete Bauteil und den vorgesehenen Einbau. Die Vorschau speichert keine Nachweisdokumente.
+
+Folie 14, Notiz: Die Sätze von „Nachweise nach Angaben von Concular, keine Rechtsberatung: …“ bis „Die Vorschau speichert keine Nachweise.“ werden ersetzt durch:
+Welche Prüfungen und Nachweise erforderlich sind, klären Fachplanung und gegebenenfalls zuständige Prüfstellen für das konkrete Bauteil und den vorgesehenen Einbau. Die Vorschau speichert keine Nachweisdokumente.
+```
+
+README:
+- **Abschnitt 2:**
+  - Zeilen 8 und 9 der Tabelle: 48 s / 3:58 und 37 s / 4:35.
+  - Neue Aufteilung: „Feyrouz spricht 272, Houssam 189 und bedient die Demo.“
+- **Abschnitt 4:** Bei Folie 8 heißt es jetzt „Feld mit Nutzer, Angebot und Auftraggeber“ statt „Käufertext in der Spalte“.
+- **Abschnitt 5, Tabelle Steckbrief:**
+  - Zeile Nutzer: Folie 8 „Projektleitung im Planungsbüro“.
+  - Zeile Käufer: Folie 8 „Zahlender Auftraggeber: im Pilot zu klären“. Die möglichen Budgetverantwortlichen (Bauherrschaft, Bestandsorganisation, Büroleitung laut Steckbrief) stehen in den Notizen.
+- **Abschnitt 6:**
+  - „Hypothese: Nutzer und erstes Angebot (Folie 8).“
+  - Der Punkt „Nachweise auf Folie 14“ lautet: „Folie 14 sagt nur, wer die nötigen Prüfungen und Nachweise klärt. Pauschale Aussagen zu Türnachweisen enthält der Pitch nicht mehr.“
+
+Abnahme:
+- `exportiere.sh` läuft durch. `validate.py` meldet PASSED. Die Sprechtext-Selbstprüfung meldet OK, und der Sprechtext
+  hat 16 Seiten.
+- Der Standard-Sprechtext hat 461 Wörter. Die Zeitfenster sind 31/35/27/64/33/48/37 s, Summe 275 s, Uhr 4:35.
+- Die Folien 8, 9, 14 und 15 sind gerendert und angesehen: nichts abgeschnitten, nichts überlappt, Haupttext mindestens
+  20 pt, Anhang mindestens 14 pt.
+- Alle anderen Folienseiten sind pixelgleich zu `c45ce11`.
+- Die Links 4→5, 4→6, 5→6, 5→7 und 6→7 sowie `show="0"` bei 5, 6 und 10–15 sind unverändert.
+- Die Fassungen A, B und C bleiben unverändert.
