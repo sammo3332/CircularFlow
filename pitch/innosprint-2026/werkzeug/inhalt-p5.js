@@ -245,12 +245,13 @@ function folien() {
         { text: "Umweltamt: „Bei Bauentscheidungen zählen meist Zeit und Kosten.“", options: { breakLine: true } },
         { text: "Concular: „Zeitliche Unterschiede in Nachfrage und Angebot“", options: {} },
       ], { x: LM, y: 2.2, w: CW, h: 0.85, fontSize: 20, color: COL.weiss, paraSpaceAfter: 6 });
-      T(s, "Nächster Test an einem echten Umbau", { x: LM, y: 3.3, w: CW, h: 0.4, fontSize: 22, bold: true, color: COL.gruenHell });
+      T(s, "Nächster Test an einem echten Umbau", { x: LM, y: 3.15, w: CW, h: 0.4, fontSize: 22, bold: true, color: COL.gruenHell });
       T(s, [
         { text: "Hilft die Karte einer Projektleitung, die Fachprüfung rechtzeitig anzustoßen?", options: { breakLine: true } },
+        { text: "Die Karte zeigt, was bis zur Frist fehlt, wer es liefert und was als Nächstes zu tun ist.", options: { breakLine: true } },
         { text: "Dafür nötige Angaben, unter anderem: tatsächliche Prüfzeit · Bestellfrist · Bauteil frei ab", options: {} },
-      ], { x: LM, y: 3.75, w: CW, h: 0.95, fontSize: 20, color: COL.weiss, paraSpaceAfter: 6 });
-      T(s, "Unsere Bitte: Bringen Sie uns mit einem Dortmunder Umbauprojekt in Kontakt.", { x: LM, y: 4.9, w: CW, h: 1.4, fontSize: 32, bold: true, color: COL.weiss, valign: "middle" });
+      ], { x: LM, y: 3.6, w: CW, h: 1.4, fontSize: 20, color: COL.weiss, paraSpaceAfter: 6 });
+      T(s, "Unsere Bitte: Bringen Sie uns mit einem Dortmunder Umbauprojekt in Kontakt.", { x: LM, y: 5.1, w: CW, h: 1.3, fontSize: 32, bold: true, color: COL.weiss, valign: "middle" });
     },
     notiz: { spricht: "Feyrouz", absaetze: [TXT.p7], zeit: ZEIT(37, "4:35") },
   });

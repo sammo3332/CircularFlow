@@ -326,8 +326,8 @@ Bildschirmfotos, Zeitleiste und Anhang. Die frühere README mit allen Einzelheit
   - Voraussetzung ist eine Gesprächsnotiz mit Datum, Rolle und Aussage. Name, Zitat und Foto nur, wenn die Person
     zugestimmt hat.
   - Nur das verwenden, was dokumentiert ist, und es als Einzelaussage kennzeichnen.
-  - Auf Folie 9 einen Satz ersetzen, nicht ergänzen. Sonst wird die Zeit knapp. Ein Kandidat ist „Ob unsere 14 Tage
-    Prüfzeit stimmen, wissen wir nicht.“, wenn das Gespräch etwas zur Prüfzeit sagt.
+  - Auf Folie 9 einen Satz ersetzen, nicht ergänzen. Sonst wird die Zeit knapp. Ein Kandidat ist „Dafür brauchen wir
+    unter anderem die tatsächliche Prüfzeit.“, wenn das Gespräch etwas zur Prüfzeit sagt.
   - Danach PDF und Sprechtext neu erzeugen und den geänderten Satz einmal laut mit Stoppuhr sprechen.
 - **Kleine Textänderungen** kann das Team direkt in PowerPoint machen. Danach das PDF aus PowerPoint neu exportieren,
   mit „Ausgeblendete Folien einschließen“. Der Generator und das Sprechtext-PDF ändern sich dabei nicht mit.
