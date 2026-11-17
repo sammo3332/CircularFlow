@@ -200,3 +200,93 @@ liegen nur PDF (zum Einreichen) und PPTX (für Vortrag und Bearbeitung; Notizen 
 
 **D13 · Dauern.** Nach den Änderungen „Dauer: etwa N Sekunden“ neu aus den Wortzahlen rechnen (2,3 Wörter je Sekunde),
 Demo-Folien behalten ihre Planwerte. Die Summen meldet cf-entwicklung; das README übernimmt sie.
+
+## E. Korrekturrunde 3 (nach der Endprüfung durch cf-test, 17.11.2026)
+
+Grundlage: cf-test auf Commit `68e8798` (T1–T10, kein blockierender Befund) und eigene Nachrechnung der
+Kürzungsstufen. Die Folien selbst bleiben bis auf R6 unverändert. Die Punkte R1–R7 sind ein Entwurf, den cf-review vor der
+Umsetzung prüft.
+
+**R1 · Kürzungsstufen passen nicht zu ihrem Namen.** Nach der Schätzregel des Generators (2,3 Wörter je Sekunde, je Folie
+auf 5 Sekunden gerundet) ergeben die bisherigen Stufen: A 5:45 und 3:50, B 5:35 und 3:40, C 4:45 und 3:30. „Etwa 5
+Minuten“ und „etwa 3 Minuten“ stimmen damit für A und B nicht.
+Entscheidung: Die Stufen werden so angepasst, dass das Gesprochene höchstens 5:00 bzw. 3:00 ergibt; bei Live-Demo kommt
+Klickzeit hinzu. Kurzfassungen entstehen nur durch Weglassen ganzer Sätze aus dem Volltext, ohne neue Aussagen. Die
+Volltexte bleiben unverändert.
+
+Kurzfassungen (wörtlich, jeder Satz steht so im Volltext):
+- **A3-kurz** (30 s): „Das Angebot wird am 19. Januar bekannt. Mit 14 Tagen Mindestprüfzeit ist der letzte Tag für die
+  Prüfbitte der 5. Februar, nicht der 19. Ab dem 6. Februar lautet das Ergebnis: für diese Entscheidung zu spät. In
+  Variante 1 erreicht das Angebot die Planung am 20. Januar, rechtzeitig. In Variante 2 erst am 22. Februar, dann ist der
+  Ersatz schon bestellt. Alle Zeitpunkte sind nachgerechnet, nicht erlebt. Die 14 Tage sind eine Annahme.“
+- **A4-kurz** (10 s): „Jetzt zeigen wir die Zeitprüfung live in der Vorschau. Die Zeitprüfung ist dieselbe. Die
+  Beispiele der Vorschau sind Systemtrennwände, nicht Türen.“
+- **B2-kurz** (10 s): „Wir nehmen an, eine Prüfung dauert mindestens 14 Tage. Das nennen wir Mindestprüfzeit. Die
+  Beispiele der Vorschau sind Systemtrennwände, nicht Türen.“
+- **B5-kurz** (30 s): „Für wen? Unsere Hypothese: Planung und Bauleitung auf der Bedarfsseite, dazu Eigentümer, die
+  ausbauen lassen. Der Nutzen, den wir erwarten: früh sehen, was frei wird, die Zeit mit Begründung prüfen und den
+  nächsten Schritt kennen. Andere Plattformen vermitteln Angebot und Gesuch, Concular Exchange laut Anbieter, Madaster
+  Match laut Dokumentation. Unsere Frage dazu: Reicht die Zeit bis zur Bestellentscheidung für eine fachliche Prüfung? Ob
+  andere Plattformen das abbilden, haben wir nicht geprüft.“
+- **GM-kurz** für A6, B6, C7 (20 s): „Zum Geschäftsmodell haben wir eine Hypothese, keine Zahlen. Eigentümer, öffentliche
+  Einrichtungen und Wohnungsunternehmen könnten für ein Zielbild von Frühwarnung und Koordination zahlen. Die heutige
+  Vorschau benachrichtigt niemanden. Ob jemand zahlen würde, wer das Budget hat und in welcher Höhe, haben wir nicht
+  geprüft.“
+- **PT-kurz** für A7, B7 (20 s): „Für den nächsten Schritt suchen wir einen echten Fall: jemanden aus der Planung, der oder
+  die einen Fall mit uns durchgeht. Daraus sehen wir, ob 14 Tage Mindestprüfzeit stimmen. Ein Einzelfall belegt keinen
+  Markt. Schlusssatz (Houssam): Wer so einen Fall hat, spricht uns nach dem Pitch an.“
+- **C9-kurz** (15 s): „Unsere Bitte: Wenn Sie in Planung, Bauleitung oder bei einem Eigentümer einen Fall kennen, bei
+  dem Türen, Wände oder Böden vor einem Umbau frei wurden, sprechen Sie uns nach dem Pitch an. Schlusssatz (Houssam):
+  Danke.“
+- A5-kurz bleibt wie bisher (25 s).
+
+Neue Stufen (Summe des Gesprochenen nach Generatorregel):
+
+| Fassung | voll | etwa 5 Minuten | etwa 3 Minuten |
+|---|---|---|---|
+| A | 270 s + Demo 165 s = 7:15, dazu Klickzeit | A1, A2, A3-kurz, A4-kurz, Demo nur K3 und K4 kommentiert (K1 und K2 ohne Kommentar durchklicken, K5 und K6 entfallen), A5-kurz, A6, A7, A8 = 285 s (4:45), dazu Klickzeit | A1, A2, A3-kurz, A5-kurz, A6 GM-kurz, A7 PT-kurz, A8; A4 und E1–E6 entfallen = 180 s (3:00) |
+| B | 270 s + Demo 165 s = 7:15, dazu Klickzeit | B1, B2-kurz, Demo nur K3 und K4 kommentiert (K1 und K2 durchklicken, K5 und K6 entfallen), B3, B5, B6, B7, B8; B4 entfällt = 285 s (4:45), dazu Klickzeit | B1, E3 und E4 als sichtbare Bildfolien (je etwa 30 s), B5-kurz, B6 GM-kurz, B7 PT-kurz, B8; B2, Demo, B3 und B4 entfallen = 180 s (3:00) |
+| C | 325 s = 5:25, Demo nur auf Nachfrage | C2 entfällt = 285 s (4:45) | C1, C3, C5, C7 GM-kurz, C8, C9-kurz; C2, C4 und C6 entfallen = 180 s (3:00) |
+
+In jeder Stufe bleiben Problem, Zielgruppe (als Hypothese), Nutzen, Geschäftsmodell und nächster Praxistest enthalten.
+Notizen: „Bei 5 Minuten: …“ und „Bei 3 Minuten: …“ wie bisher, bei Kurzfassungen mit Dauer, zum Beispiel
+„Bei 5 Minuten: Kurzfassung sprechen (etwa 30 Sekunden): …“. E1 und E2 in A und B: „Bei 5 Minuten: ohne Kommentar
+durchklicken (Weg zu K3).“ `baue.js` meldet je Fassung die Summen für voll, 5 Minuten und 3 Minuten sowie den
+Sprechanteil je Person, berechnet aus denselben Daten, aus denen die Notizen entstehen.
+
+**R2 · Sprechtext-PDF schneidet lange Notizen ab (cf-test T7, Befund 1).** Betroffen A Seite 11 (Text bricht mitten im
+Satz ab) und die Zeile „Dauer“ auf A5, B3, B6, C6, C10. Ursache: Der Notizbereich der Notizenseite in LibreOffice ist
+fest und läuft über. Mit R1 werden Notizen länger.
+Entscheidung: Das Sprechtext-PDF wird nicht mehr über die Notizenseiten von LibreOffice erzeugt, sondern als eigenes
+Dokument: A4 hoch, je Folie ein Abschnitt mit Kopfzeile (Foliennummer, Kennung, „Spricht: …“, Dauer, bei ausgeblendeten
+Folien „ausgeblendet: Ersatzfolie“ bzw. „ausgeblendet: Anhang“), Folienbild in voller Breite und darunter dem
+vollständigen Notiztext mit Absätzen, mindestens 11 pt. Die Regieanweisungen „Bei 5 Minuten“ und „Bei 3 Minuten“
+stehen abgesetzt. Ein Abschnitt darf auf die nächste Seite umbrechen, aber nichts wird abgeschnitten. Quelle des Textes
+sind die Notizen der gebauten PPTX, nicht ein zweiter Text. Werkzeug: Chromium über Playwright (vorinstalliert), Bilder
+aus dem Folien-PDF mit `pdftoppm`. Prüfung: Für jede Folie steht der letzte Satz der Notiz im PDF-Text (`pdftotext`).
+
+**R3 · Notizen als echte Absätze und Sprache Deutsch.** Die Notizen stehen heute als ein `<a:t>` mit Zeilenumbrüchen im
+XML. Ob PowerPoint diese Umbrüche anzeigt, ist nicht geprüft. Alle Textläufe tragen `lang="en-US"`, was Rechtschreibprüfung
+und Vorlesefunktionen auf Englisch stellt.
+Entscheidung: Nach dem Schreiben der PPTX wird jede Notiz in einzelne Absätze (`<a:p>` je Zeile, leere Zeile als leerer
+Absatz) zerlegt; die Zeile „Spricht: …“ wird fett. In allen Folien-, Notiz-, Master- und Layoutdateien wird
+`lang="en-US"` durch `lang="de-DE"` ersetzt. validate.py muss weiter bestehen.
+
+**R4 · Sprechanteil in Fassung C (cf-test, Befund 7).** Heute Feyrouz 250 s, Houssam 75 s. C6 (Zielgruppe und Abgrenzung)
+und C7 (Geschäftsmodell) spricht künftig Houssam. Ergebnis: Feyrouz 170 s (C1–C4, C9), Houssam 155 s (C5–C8, Schlusssatz).
+Die Folgen: Feyrouz eröffnet mit Problem und Frage, Houssam führt durch Lösung, Abgrenzung, Geschäftsmodell und Test,
+Feyrouz schließt mit der Bitte.
+
+**R5 · C4-Notiz (cf-test, Befund 5).** „Mit 14 Tagen Prüfzeit wäre der letzte Tag der 5. Februar.“ wird zu „Mit
+angenommenen 14 Tagen Mindestprüfzeit wäre der letzte Tag der 5. Februar.“
+
+**R6 · Ausschnitte E1 und E5 (cf-test, Befund 4, kosmetisch).** Unterkante der Ausschnitte so weit nach unten setzen, dass
+die Kartenunterkanten und die letzte Textzeile ganz sichtbar sind. Nur umsetzen, wenn das Bild auf der Folie dadurch
+höchstens etwa 5 Prozent kleiner wird.
+
+**R7 · Nicht geändert.** Befund 2 (Bildschrift der Ersatzfolien, Großbuchstaben etwa 10 px, kleinste etwa 8 px bei 1920 px
+Breite) bleibt eine bekannte Grenze von Bildschirmfotos: Titel und Bildunterschrift tragen die Aussage, die Live-Demo ist
+der Normalfall. Hinweis: Die Faustregel aus D1 lautet „Bildbreite in Zoll ≥ Ausschnittbreite in Pixeln ÷ 220“, also
+höchstens 220 Bildpixel je Zoll; 171–212 Pixel je Zoll erfüllen sie. Befund 3 (Schriftgrößen) und Befund 6 (enge
+Abstände auf C5 und B9, keine Überlappung) bleiben, wie sie sind. Befund 8: Im PDF ersetzt LibreOffice Arial durch die
+metrisch gleiche Liberation Sans; das bleibt so.
