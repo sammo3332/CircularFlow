@@ -1,7 +1,7 @@
 # CircularFlow · Pitch INNOSPRINT 2026
 
-Dokumentversion 2.1 · Stand 17.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `1e96e9b` ·
-Freigabe und Bauauftrag `4f327c3` · geprüfter Endstand des Decks: Commit `c45ce11`
+Dokumentversion 2.2 · Stand 17.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `1e96e9b` ·
+Freigabe und Bauauftrag `4f327c3` · geprüfter Endstand des Decks: Commit `8684a0a`
 
 Eingereicht wurde nichts. Die Einreichung übernimmt das Team. Frist laut Veranstalter „bis einschließlich 18.11.26“,
 teamintern 18.11.2026, 12:00 Uhr. Plattform, Vorschau, Freigabe und `docs/pitch-ablauf.md` sind unverändert.
@@ -16,13 +16,13 @@ teamintern 18.11.2026, 12:00 Uhr. Plattform, Vorschau, Freigabe und `docs/pitch-
 
 - **Grundlage:**
   - Plan 0.2, am 17.11.2026 vom Team mit Anpassungen freigegeben (`plan/pitch-5min-plan.md`, Abschnitt 14).
-  - Bauauftrag mit Nachbesserung 1 bis 3: `plan/pitch-5min-bauauftrag.md`.
+  - Bauauftrag mit Nachbesserung 1 bis 4a: `plan/pitch-5min-bauauftrag.md`.
 - **Dauer laut Veranstalter:** Tag 5, S. 11 und 17: fünf Minuten Präsentation, fünf Minuten Rückfragen. CircularFlow
   pitcht als erstes von acht Teams.
 - **Zum PDF:** Es enthält alle 15 Folien. Nach Folie 4 stehen die zwei Ersatzfolien der Demo (Seiten 5 und 6), am
   Ende der Anhang für Rückfragen (Seiten 10–15). In der PPTX sind diese Folien ausgeblendet. Wer aus dem PDF
   vorträgt, blättert nach Seite 4 direkt zu Seite 7.
-- **Prüfsummen (SHA-256, Anfang):** PPTX `1d39b2fbb53bc1a8`, PDF `afd272dddded9ede`, Sprechtext `2d33885c492929aa`.
+- **Prüfsummen (SHA-256, Anfang):** PPTX `c833631a4210e3c3`, PDF `3458ef3a9bc595d4`, Sprechtext `ec04f5aa27cdf99f`.
 
 ## 2. Ablauf, Zeiten, Aufteilung
 
@@ -100,7 +100,8 @@ Nichts aus dieser Liste ließ sich hier prüfen. Bitte bis zum 20.11. erledigen,
 - [ ] **PPTX in PowerPoint (oder Keynote) öffnen:**
   - In der Referentenansicht sind die Notizen Absätze, „Spricht: …“ ist fett.
   - Mit Arial statt Liberation Sans verschiebt sich kein Umbruch, vor allem nicht auf Folie 1 („Umbau am Kanal:
-    braucht 6 Türen“ in einer Zeile), Folie 4 („Mi 18.11.2026“ zusammen) und Folie 8 (Feld mit Nutzer, Angebot und Auftraggeber).
+    braucht 6 Türen“ in einer Zeile), Folie 4 („Mi 18.11.2026“ zusammen) und Folie 8 (Feld mit Nutzer, Angebot
+    und Auftraggeber).
   - Auf Folie 4 sind die Kreise mit „1“ und „2“ zu sehen.
 - [ ] **Navigation im Vortragsmodus** mit Maus oder Touchpad (ein Presenter kann keine Links anklicken):
   - Folie 4 → „Bildschirmfoto: zu spät ›“ → Folie 5 → „weiter ›“ → Folie 6 → „zurück zum Vortrag“ → Folie 7.
@@ -198,6 +199,25 @@ python-pptx. Die Agenten liefen nacheinander, jeweils auf einem festen Commit.
 | Inhaltsprüfung des Endstands | cf-review | `b6e4172` | kein Sachfehler, keine falsche Zahl, kein Widerspruch zwischen den Dateien. Drei Befunde: erster Satz auf Folie 9, Spätfall auf Folie 5, „geplanten Pilot“ auf Folie 7 |
 | Nachbesserung 3 | cf-entwicklung | `556a14e`, `c45ce11` | drei Befunde umgesetzt, Wortzahl und Zeiten gleich. Das Deckblatt des Sprechtexts brach danach auf eine zweite Seite um; es ist wieder einseitig und wird jetzt automatisch geprüft. |
 | Nachprüfung | cf-test, T1–T8 | `c45ce11` | alle bestanden. Folienseiten pixelgleich zu `1eb08a2`; geändert sind nur die vorgesehenen Notizen; Spätfall gerechnet etwa 4:43 |
+| Nachbesserung 4 (Vorgaben des Teams) | cf-entwicklung | `f0eefa6` | Folie 8: Nutzer, erstes Angebot, zahlender Auftraggeber; Budgetverantwortliche als Rückfrage-Absatz. Folie 9: Test der Karte, tatsächliche Prüfzeit, Bitte bleibt. Folie 14: keine pauschalen Türnachweise, „keine Nachweisdokumente“. Wortzahl gleich |
+| Inhaltsprüfung | cf-review | `9d9748a` | Vorgaben erfüllt, kein Sachfehler. Übernommen: „Karte“ auf Folie 9 erklärt, veralteter Verweis in Abschnitt 11. Nicht übernommen: Brücke zwischen Kurzcheck und Praxistest (Entscheidung des Teams) |
+| Nachbesserung 4a | cf-entwicklung | `8684a0a` | Erklärzeile zur Karte auf Folie 9, README Abschnitt 11 |
+| Gezielte Prüfung | cf-test, U1–U8 | `8684a0a` | alle bestanden: geänderte Stellen wörtlich, 461 Wörter, Links und Ausblendung unverändert |
+
+Gezielte Prüfung auf `8684a0a` (cf-test, U1–U8, alle bestanden; Linkziele im PDF zusätzlich von der Koordination
+mit pypdf ausgelesen):
+
+- Prüfsummen wie in Abschnitt 1. Außer unter `pitch/` hat sich nur `docs/produktideen-aus-dem-pitch.md` geändert.
+  Die Fassungen A, B und C sind byte-gleich. Regeltests: 46 von 46 bestanden.
+- Ersatzfolienlinks in PPTX und PDF: genau 4→5, 4→6, 5→6, 5→7 und 6→7. Ausgeblendet sind die Folien 5, 6 und
+  10–15. `validate.py` besteht.
+- Geändert sind nur Folientext und Notizen der Folien 8, 9, 14 und 15, wörtlich wie in Nachbesserung 4 und 4a.
+- Es bleibt bei 461 Wörtern (55 + 63 + 44 + 96 + 56 + 79 + 68), aufgeteilt in 272 für Feyrouz und 189 für Houssam.
+  Der Absatz „Bei Rückfragen“ auf Folie 8 zählt nicht mit. Die Zeitfenster sind 31/35/27/64/33/48/37 s, Summe
+  275 s, Uhr 4:35.
+- Die Seiten 8, 9, 14 und 15 wurden bei 144 dpi angesehen: nichts abgeschnitten, nichts überlappt. Alle anderen
+  Folienseiten sind pixelgleich zu `c45ce11`.
+- Der Sprechtext hat 16 Seiten, das Deckblatt steht auf einer Seite. Jeder Notizabsatz steht im Sprechtext.
 
 Nachprüfung auf `c45ce11` (cf-test, T1–T8, alle bestanden):
 
