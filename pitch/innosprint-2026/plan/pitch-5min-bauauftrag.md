@@ -233,3 +233,26 @@
 - Der Standard-Sprechtext der sichtbaren Folien hat etwa 461 Wörter (zählen und melden).
 - Die Folien rendern und ansehen: nichts abgeschnitten, keine Überlappung, Schriftgrößen wie oben.
 - Die Fassungen A, B und C bleiben inhaltlich unverändert; nur der Ordner von A ändert sich.
+
+## Nachbesserung 2 (nach cf-test und cf-review auf `6fa5693`, 17.11.2026)
+
+cf-test hat P1–P10 bestanden. cf-review hat keinen Faktenfehler gefunden. Übernommen werden B1–B4 und C1–C3 von cf-review
+sowie die kosmetischen Punkte K2 und K4 von cf-test. Die Wortzahl bleibt bei 461. Die Notizen und Folientexte lauten
+jetzt wörtlich:
+
+| Folie | Änderung |
+|---|---|
+| 2 · P2 · Notiz | Satz „Das ist eine Annahme, keine Messung.“ entfällt (die Folie trägt den Chip, Folie 9 sagt „wissen wir nicht“). Zeitfenster 35 s, Uhr 1:06. |
+| 3 · P3 · Notiz | Satz „Die Eignung beurteilen Fachleute, die Bestellung entscheidet die Projektleitung.“ entfällt (steht auf der Folie und in K4). Zeitfenster 27 s, Uhr 1:33. |
+| 4 · P4 · Notiz K1 | „K1 · Das ist unsere Vorschau mit Beispieldaten. Ganz oben steht eine Innentür: Am Einbauort fehlt noch das Maß, die Frist endet in zwei Stunden. Im Weiteren geht es um Systemtrennwände statt Türen, die Zeitfrage ist dieselbe.“ (Belegt: Übersicht „Zeitkritisch“, „Aufmaßfrist · E-01 · T-07 → B-02 · noch 2 Std.“; T-07 Innentür, Zielöffnung B-02, Aufmaßfrist 18.11.2026, 16:00 Uhr; das löst die Ankündigung im Steckbrief „Einer Innentür fehlt das Maß“ ein.) |
+| 4 · P4 · Notiz K2 | „K2 · Jedes Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe.“ (Satz zu den vier Paaren entfällt.) Zeitfenster Folie 4: 64 s, Uhr 2:37. |
+| 4 · P4 · Folientext | „Mi 18.11.2026“ mit geschütztem Leerzeichen, damit „Mi“ nicht allein am Zeilenende steht. |
+| 1 · P1 · Folientext | Kein einzelnes „Türen“ in der zweiten Zeile der Beschriftung „Umbau am Kanal: braucht 6 Türen“ (Box breiter oder Umbruch nach dem Doppelpunkt). |
+| 7 · P5 · Titel | „In einem Dortmunder Pilot wollen wir messen, was wirklich wiederverwendet wird“. Zeitfenster 33 s, Uhr 3:10. |
+| 8 · P6 · Notiz Houssam | „Heute läuft unser Prototyp im Browser, mit Beispieldaten. Nutzen soll ihn zuerst die Projektleitung im Umbau. Bezahlen könnte die Bauherrschaft, die Bestandsorganisation oder, wie im Steckbrief, das Planungsbüro, zum Beispiel für einen Kurzcheck einer Bauteilgruppe. Ob jemand zahlt, wissen wir noch nicht. Ich habe an der TU Dortmund Informatik studiert, bin jetzt im Master und entwickle den Prototyp.“ Zeitfenster Folie 8: 53 s, Uhr 4:03. |
+| 8 · P6 · Folientext Käufer | „Bauherrschaft oder Bestandsorganisation · im Steckbrief: Büroleitung eines Planungsbüros · erstes Angebot: Kurzcheck für eine Bauteilgruppe in einem Projekt · Zahlungsbereitschaft und Preis offen“ (ersetzt „offen auch: Liegt der Nutzen eher beim Planungsbüro?“). |
+| 9 · P7 · Notiz | Erster Satz „Im Sprint haben wir gehört: Auf die Zeit kommt es an.“ (statt „… gelernt: Zeit ist eine echte Hürde.“). Zeitfenster 32 s, Uhr 4:35. |
+| 13 · AX4 · Folientext | „Alternative: eigene Excel-Listen (laut Steckbrief).“ (statt „Heute oft: …“). |
+| 14 · AX5 · Folientext | Erste Spalte unverändert. Zweite Spalte: „Nur Beispieldaten; Fachergebnis ist ein Eintrag; ein Scan liefert nur Vorschläge; bei Türen zählen nur gemessene Maße.“ Dritte Spalte: „Nachweise (Angaben von Concular, keine Rechtsberatung): Innentür ohne Schutzanforderung laut Handlungsempfehlung 12/2024 kein neuer Verwendbarkeitsnachweis; Zustand und Passung prüft trotzdem eine Fachperson. Brandschutztür laut Concular-Leitfaden derzeit Zustimmung im Einzelfall. Die Vorschau speichert keine Nachweise.“ |
+| 14 · AX5 · Notiz | Kurzantwort wie die Folie, dazu: „Im Steckbrief steht, CircularFlow lasse keine Frist stillschweigend verstreichen. Läuft eine Frist ab, zeigt die Vorschau „Frist verstrichen“, und der Vorgang bleibt offen. Eine Benachrichtigung vorher und den spätesten Anfragetag als eigene Frist hat sie noch nicht.“ (Belegt: Pitch-Ablauf, Zusatz A; Fallakte §1, §5, §6.) |
+| Sprechtext-Deckblatt | Übersichtstabelle mit den neuen Zeitfenstern 31/35/27/64/33/53/32 s und Uhrzeiten 0:31/1:06/1:33/2:37/3:10/4:03/4:35. Zeitsatz unverändert (461 Wörter: 4:35 bei 1,8; etwa 3:40 bei 2,3 einschließlich 18 s für Wechsel, Umschalten und Klicks). Die Zeitdruckregel 2:10 / 2:25 bleibt. |
