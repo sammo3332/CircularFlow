@@ -290,3 +290,74 @@ der Normalfall. Hinweis: Die Faustregel aus D1 lautet „Bildbreite in Zoll ≥ 
 höchstens 220 Bildpixel je Zoll; 171–212 Pixel je Zoll erfüllen sie. Befund 3 (Schriftgrößen) und Befund 6 (enge
 Abstände auf C5 und B9, keine Überlappung) bleiben, wie sie sind. Befund 8: Im PDF ersetzt LibreOffice Arial durch die
 metrisch gleiche Liberation Sans; das bleibt so.
+
+### E.2 Endgültige Festlegung nach cf-review (17.11.2026)
+
+cf-review (auf `68e8798`, mit `83c420b`): kein blockierender Befund, kein Faktenfehler. Übernommen werden S1–S7 sowie
+K1, K3, K5 und K6 aus dem Bericht. K2 („Türregel“) und K4 (Farbbalken der Zeitleiste) bleiben; K4 kommt als Punkt in die
+Generalprobe. R1–R7 gelten mit folgenden Änderungen. Der Grundsatz aus R1 wird gelockert: Kurzfassungen bestehen nur aus
+Sätzen, die schon in den Notizen oder auf den Folien **derselben Fassung** stehen (nach R8–R12). Die Stufenziele lauten
+„etwa 5 Minuten“ und „etwa 3 Minuten“; die geschätzten Werte stehen in der Tabelle und im README.
+
+**R8 · Volltexte (Notizen), wörtlich:**
+
+| Ort | heute | neu |
+|---|---|---|
+| E1 (A5, B3, C10), Notiz | „Wir haben acht Paare, davon zwei prüfbar, und zwei Vorgänge.“ | dahinter ergänzen: „Prüfbar heißt: Die Zeit reicht noch.“ (S1) |
+| E5 (A9, B7, C14), Notiz | „Jetzt trägt jemand das Fachergebnis ein:“ | „Als Nächstes trägt jemand das Fachergebnis ein:“ (K5) |
+| A7 und B7, Notiz | „Schlusssatz (Houssam): Wer so einen Fall hat, spricht uns nach dem Pitch an.“ | „Wer so einen Fall hat, spricht uns nach dem Pitch an.“ – spricht Feyrouz (S6) |
+| B2, Folie und Notiz | „Die Zeitprüfung ist dieselbe. Die Beispiele der Vorschau sind Systemtrennwände, nicht Türen.“ | „Die Beispiele der Vorschau sind Systemtrennwände.“ (K1) |
+| B3 (Folie 9), Notiz | „Warum die Zeit so wichtig ist, zeigt unser fiktiver Fall.“ | dahinter ergänzen: „Unser Fall spielt mit Türen, nicht mit Systemtrennwänden. Die Zeitprüfung ist dieselbe.“ (K1) |
+| B8 (Folie 14), Notiz | „aus einem Treffer“ | „aus einem Paar“ (K6) |
+| C2, Notiz | „… in der Regel bis kurz vor der Ausschreibung des Rückbaus.“ | dahinter ergänzen: „Das ist eine Angabe des Anbieters Concular.“ (K3) |
+| C2, Notiz | „In Dortmund wurde bei der Universitätsbibliothek erst ausgebaut und dann abgebrochen, das schreibt der BLB NRW.“ | „In Dortmund erfolgt laut BLB NRW der Rückbau der Universitätsbibliothek erst, nachdem alle demontierbaren Baustoffe ausgebaut wurden.“ (K3) |
+| C3, Notiz | „Statt Bauchgefühl wollen wir vier Zeitpunkte getrennt erfassen.“ | „Wir wollen vier Zeitpunkte getrennt erfassen.“ (K6) |
+| C4, Notiz | „Unser fiktiver Fall mit zwölf Türen aus Haus Lindenhof zeigt das.“ | dahinter ergänzen: „Das Projekt Umbau am Kanal braucht sechs Türen.“ (S5) |
+| C4, Notiz | „Mit 14 Tagen Prüfzeit wäre der letzte Tag der 5. Februar.“ | „Mit angenommenen 14 Tagen Mindestprüfzeit wäre der letzte Tag für die Prüfbitte der 5. Februar.“ (S5, ersetzt R5) |
+| C5, Notiz | „Links ein Paar, das zu spät ist: Prüfende fünf Tage nach der Bestellfrist, die Prüfbitte …“ | „Links ein Paar, das zu spät ist: Die Prüfung wäre fünf Tage nach der Bestellfrist fertig, die Prüfbitte …“ (S4) |
+| C5, Notiz | „Die Vorschau zeigen wir auf Nachfrage gern im Anschluss.“ | davor ergänzen: „Der Nutzen, den wir erwarten: Die Planung sieht früh, was frei wird, bekommt die Zeitprüfung mit Begründung in Tagen und sieht den nächsten Schritt. Das ist eine Hypothese.“ (S3) |
+| C6 und C7 | spricht Feyrouz | spricht Houssam (R4) |
+
+Die Dauern der Demo-Folien E1–E6 bleiben bei ihren Planwerten (D13).
+
+**R9 · Kurzfassungen, endgültig (ersetzt die Liste in R1):**
+- A3-kurz, B5-kurz, GM-kurz, C9-kurz: wie in R1.
+- **A4-kurz**: „Jetzt zeigen wir die Zeitprüfung live in der Vorschau. Die Türen aus unserem Fall liegen dort nicht, wir
+  nehmen die Beispieldaten der Vorschau. Die Zeitprüfung ist dieselbe. Ein Paar ist ein Angebot und ein Bedarf derselben
+  Bauteilgruppe.“ (S2)
+- **B2-kurz**: „Wir nehmen an, eine Prüfung dauert mindestens 14 Tage. Das nennen wir Mindestprüfzeit. Die Beispiele der
+  Vorschau sind Systemtrennwände. Ein Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe.“ (S2, K1)
+- **B1-Zusatz bei 3 Minuten** (am Ende von B1): „Wir nehmen an, eine Prüfung dauert mindestens 14 Tage. Das nennen wir
+  Mindestprüfzeit. Ein Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe.“ (S2)
+- **PT-kurz**: „Für den nächsten Schritt suchen wir einen echten Fall: jemanden aus der Planung, der oder die einen Fall
+  mit uns durchgeht. Daraus sehen wir, ob 14 Tage Mindestprüfzeit stimmen. Ein Einzelfall belegt keinen Markt. Wer so
+  einen Fall hat, spricht uns nach dem Pitch an.“ (S6)
+- **C3-Zusatz bei 3 Minuten** (am Anfang von C3, Satz von Folie C2): „Bis zu einem festen Tag, der Bestellfrist, muss
+  Ersatz bestellt werden.“ (S2)
+- **C5-kurz** (3 Minuten): „So sieht die Prüfung in unserer Vorschau aus, hier als zwei große Ausschnitte von
+  Bildschirmfotos mit Beispieldaten. Ein Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe. Links ein Paar, das
+  zu spät ist: Die Prüfung wäre fünf Tage nach der Bestellfrist fertig, die Prüfbitte ist gesperrt, der Grund steht
+  daneben. Rechts ein Paar, das passt: weiter prüfen. Das ist ein Vorschlag zur Prüfung, keine Freigabe. Der Nutzen, den
+  wir erwarten: Die Planung sieht früh, was frei wird, bekommt die Zeitprüfung mit Begründung in Tagen und sieht den
+  nächsten Schritt. Das ist eine Hypothese.“ (S3)
+- **C6-kurz** (3 Minuten, statt „entfällt“): „Wer hat das Problem? Unsere Hypothese: Planung und Bauleitung auf der
+  Bedarfsseite, dazu Eigentümer und Einrichtungen, die ausbauen lassen. Das ist eine Rollenannahme, kein
+  Praxisbefund.“ (S3)
+
+**R10 · Stufen, endgültig (ersetzt die Tabelle in R1):**
+
+| Fassung | voll | etwa 5 Minuten | etwa 3 Minuten |
+|---|---|---|---|
+| A | A1–A8 mit Demo K1–K6: 435 s (7:15) + Klickzeit | A1, A2, A3-kurz, A4-kurz, Demo: K1 und K2 ohne Kommentar durchklicken, K3 und K4 kommentiert, K5 und K6 entfallen; A5-kurz, A6, A7, A8: 290 s (4:50) + Klickzeit | A1, A2, A3-kurz, A5-kurz, A6 GM-kurz, A7 PT-kurz, A8; A4 und Demo entfallen: 180 s (3:00) |
+| B | B1–B8 mit Demo K1–K6: 435 s (7:15) + Klickzeit | B1, B2-kurz, Demo wie A, B3, B5, B6, B7, B8; B4 entfällt: 295 s (4:55) + Klickzeit | B1 mit Zusatz, E3 und E4 als sichtbare Bildfolien (je etwa 30 s), B5-kurz, B6 GM-kurz, B7 PT-kurz, B8; B2, Demo, B3, B4 entfallen: 190 s (3:10) |
+| C | C1–C9: 345 s (5:45); Demo-Bilder nur auf Nachfrage | C2 entfällt: 300 s (5:00) | C1, C3 mit Zusatz, C5-kurz, C6-kurz, C7 GM-kurz, C8, C9-kurz; C2 und C4 entfallen: 190 s (3:10) |
+
+Sprechanteil voll: A Feyrouz 220 s, Houssam 215 s · B Houssam 235 s, Feyrouz 200 s · C Feyrouz 180 s, Houssam 165 s.
+Fassung A ohne Demo (3 Minuten) zeigt die Plattform nicht; das steht im README.
+
+**R11 · Sprechtext-PDF (ergänzt R2):** `lang="de"`, keine automatische Silbentrennung (`hyphens: manual`). Prüfung je
+Folie mit normalisierten Leerzeichen: erster Satz, letzter Satz und Zeile „Dauer“ stehen im PDF-Text. Die Absätze aus R3
+werden für die Prüfung zusammengeführt. Kopfzeile mit Foliennummer **und** Kennung (zum Beispiel „Folie 9 · B3“).
+
+**R12 · Sprache (ergänzt R3):** neben `lang` auch `altLang` auf Deutsch setzen, wo vorhanden. „Spricht: …“ bleibt die
+erste Zeile jeder Notiz.
