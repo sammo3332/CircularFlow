@@ -164,7 +164,7 @@ function pruefe(pdf, folien, meta) {
 
 // ---------- Pitch 5 Minuten: Sprechtext mit Deckblatt "Ablauf auf einen Blick" ----------
 const ZEITEN_SATZ = "Zeiten bei ruhigem Tempo (etwa 1,8 Wörter je Sekunde) einschließlich Sprecherwechsel, Umschalten und Klicks. Bei zügigem Tempo (2,3 Wörter je Sekunde) dauert der Vortrag etwa 3:40. Probe mit Stoppuhr steht aus.";
-const istRegie = (a) => /^(Klick:|Bei Zeitdruck:|Zeitfenster:)/.test(a);
+const istRegie = (a) => /^(Klick:|Bei Zeitdruck:|Bei Rückfragen:|Zeitfenster:)/.test(a);
 
 function htmlFuerP5(d, folien, inhalt, bilder, summe) {
   const kopfZeile = (i) => {
@@ -203,6 +203,7 @@ ${zeitdruck.map((z) => `<div class="kasten m5"><p><b>Bei Zeitdruck:</b>${esc(z.s
       if (j === 0) html += `<p class="sprecher">${esc(a)}</p>`;
       else if (a.startsWith("Klick:")) html += `<div class="kasten klick"><p><b>Klick:</b>${esc(a.slice(6))}</p></div>`;
       else if (a.startsWith("Bei Zeitdruck:")) html += `<div class="kasten m5"><p><b>Bei Zeitdruck:</b>${esc(a.slice(14))}</p></div>`;
+      else if (a.startsWith("Bei Rückfragen:")) html += `<div class="kasten nur"><p><b>Bei Rückfragen:</b>${esc(a.slice(15))}</p></div>`;
       else if (a.startsWith("Zeitfenster:")) html += `<p class="dauer">${esc(a)}</p>`;
       else if (a === "Nur bei Rückfragen.") html += `<div class="kasten nur"><p><b>${esc(a)}</b></p></div>`;
       else html += `<p>${esc(a)}</p>`;
@@ -251,7 +252,7 @@ function pruefeP5(pdf, folien, inhalt) {
         execFileSync("pdftoppm", ["-jpeg", "-r", "80", folienPdf, path.join(bd5, "f")]);
         const dat5 = fs.readdirSync(bd5).filter((n) => n.endsWith(".jpg")).sort();
         if (dat5.length !== folien.length) throw new Error(`${k}: ${dat5.length} Folienbilder, ${folien.length} Folien`);
-        const sprechAbs = (a) => !/^(Klick:|Bei Zeitdruck:)/.test(a);
+        const sprechAbs = (a) => !/^(Klick:|Bei Zeitdruck:|Bei Rückfragen:)/.test(a);
         const gespr = (a) => a.replace(/^K\d · /, "").replace(/^Feyrouz: /, "").replace(/^Zurück zur Präsentation, Folie 7 · /, "");
         const sicht = inhalt.filter((f) => !f.versteckt);
         const summe = { woerter: sicht.reduce((n, f) => n + f.notiz.absaetze.filter(sprechAbs).reduce((m, a) => m + B.woerter(gespr(a)), 0), 0), sek: sicht.reduce((n, f) => n + f.notiz.zeit.sek, 0) };

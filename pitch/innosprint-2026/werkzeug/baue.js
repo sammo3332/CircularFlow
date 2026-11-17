@@ -33,7 +33,7 @@ const DECKS = {
     if (d.p5) {
       // P5: Wortzahl des Standard-Sprechtexts (Sprechabsätze der sichtbaren Folien ohne Klick-, Zeitdruck-Zeilen) und Summe der Zeitfenster
       // gezählt wird nur Gesprochenes: ohne Klick-/Zeitdruck-Absätze, Kennungen "K1 ·" bis "K4 ·", "Feyrouz:" und die Regieanweisung "Zurück zur Präsentation, Folie 7 ·"
-      const sprech = (a) => !/^(Klick:|Bei Zeitdruck:)/.test(a);
+      const sprech = (a) => !/^(Klick:|Bei Zeitdruck:|Bei Rückfragen:)/.test(a);
       const gesprochen = (a) => a.replace(/^K\d · /, "").replace(/^Feyrouz: /, "").replace(/^Zurück zur Präsentation, Folie 7 · /, "");
       const wz = folien.filter((f) => !f.versteckt).reduce((n, f) => n + f.notiz.absaetze.filter(sprech).reduce((m, a) => m + B.woerter(gesprochen(a)), 0), 0);
       const sek = folien.filter((f) => !f.versteckt).reduce((n, f) => n + f.notiz.zeit.sek, 0), mm = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;

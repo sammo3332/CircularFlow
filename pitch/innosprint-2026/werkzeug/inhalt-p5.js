@@ -29,9 +29,10 @@ const TXT = {
   zeitdruck1: "Bei Zeitdruck: Steht K3 um 2:10 nicht da oder hakt die Vorschau: zurück zur Präsentation und die Bildschirmfotos über die Links auf dieser Folie zeigen. Waren K1 und K2 schon gesprochen, auf Folie 5 nur den K3-Satz.",
   zeitdruck2: "Bei Zeitdruck: Ist K4 um 2:25 noch nicht erreicht: zurück und direkt „Bildschirmfoto: weiter prüfen ›“.",
   p5: "Unser Bezug zu SDG 12.5: weniger Abfall durch Wiederverwendung. Das Umweltamt der Stadt hat im Sprint gezeigt: Es gibt kaum Daten zu Baustoffströmen. In einem künftigen Pilot in Dortmund wollen wir deshalb zählen: Wie viele angebotene Bauteile werden rechtzeitig geprüft, wie viele wirklich wieder eingebaut, und woran scheitert es sonst? Was heute schon steht, zeigt Houssam.",
-  p6a: "Heute läuft unser Prototyp im Browser, mit Beispieldaten. Nutzen soll ihn zuerst die Projektleitung im Umbau. Bezahlen könnte die Bauherrschaft, die Bestandsorganisation oder, wie im Steckbrief, das Planungsbüro, zum Beispiel für einen Kurzcheck einer Bauteilgruppe. Ob jemand zahlt, wissen wir noch nicht. Ich habe an der TU Dortmund Informatik studiert, bin jetzt im Master und entwickle den Prototyp.",
+  p6a: "Heute läuft unser Prototyp im Browser, mit Beispieldaten. Nutzen soll ihn zuerst die Projektleitung im Planungsbüro. Als erstes Angebot planen wir einen Kurzcheck für eine Bauteilgruppe. Wer dafür bezahlt, klären wir im Pilot. Ich habe an der TU Dortmund Informatik studiert, bin jetzt im Master und entwickle den Prototyp.",
+  p6r: "Bei Rückfragen: Als Budgetverantwortliche kommen infrage: die Bauherrschaft, die den Umbau beauftragt; die Bestandsorganisation, die Gebäude im Bestand verwaltet; oder die Büroleitung eines Planungsbüros, wie im Steckbrief angenommen, etwa mit einer Projektlizenz. Bestätigt ist davon nichts. Wer zahlt und zu welchem Preis, klären wir im Pilot.",
   p6b: "Feyrouz: Ich studiere ebenfalls Informatik an der TU Dortmund und kenne mich in Datenanalyse und IT-Sicherheit aus. Uns fehlt Fachwissen aus Bau und Rückbau. Dafür suchen wir Partner aus der Branche.",
-  p7: "Zwei Aussagen aus dem Sprint zeigen, dass Zeit eine Rolle spielt. Das Umweltamt sagt, bei Bauentscheidungen zählen meist Zeit und Kosten. Concular nennt zeitliche Unterschiede zwischen Angebot und Nachfrage. Ob unsere 14 Tage Prüfzeit stimmen, wissen wir nicht. Das prüfen wir als Nächstes an einem echten Umbau. Unsere Bitte: Bringen Sie uns mit einem Dortmunder Umbauprojekt in Kontakt. Danke.",
+  p7: "Zwei Aussagen aus dem Sprint zeigen, dass Zeit eine Rolle spielt. Das Umweltamt sagt, bei Bauentscheidungen zählen meist Zeit und Kosten. Concular nennt zeitliche Unterschiede zwischen Angebot und Nachfrage. Als Nächstes wollen wir an einem echten Umbau prüfen, ob unsere Karte einer Projektleitung hilft, die Fachprüfung rechtzeitig anzustoßen. Dafür brauchen wir unter anderem die tatsächliche Prüfzeit. Unsere Bitte: Bringen Sie uns mit einem Dortmunder Umbauprojekt in Kontakt. Danke.",
   ek3a: "Das ist unsere Vorschau mit Beispieldaten, hier mit Systemtrennwänden statt Türen.",
   ek3spaet: "Spätfall: Waren K1 und K2 schon live gesprochen, nur den K3-Satz sprechen.",
   ek3weiter: "Danach immer „weiter ›“ zu Folie 6. Wer doch direkt „zurück zum Vortrag“ geht, sagt vorher: „Was das für Dortmund bringen kann, erklärt Feyrouz.“",
@@ -45,7 +46,7 @@ const KURZ = {
   ax2: "Die Prüfung endet am Tag der Anfrage plus Prüfzeit. Im fiktiven Fall: Anfrage am 04.02., Prüfende am 18.02., weiter prüfen. Am 05.02. ist es knapp, ab dem 06.02. zu spät. Bei den Demo-Paaren ist BD-23 mit 14 Tagen Prüfzeit fünf Tage zu spät, BD-22 mit 10 Tagen Prüfzeit liegt 123 Tage vor der Bestellfrist.",
   ax3: "In der Simulation beschädigt der Probeausbau am 02.02.2027 eine Tür. Fünf Türen sind unverbindlich vorgemerkt, eine ist offen, Bestellfrist 19.02.2027. Die Vorschau zeigt den Bedarf danach als gedeckt, die fehlende Tür steht nur in einer Notiz. Als nächsten Ausbau planen wir, die offene Restmenge mit Frist sichtbar zu halten. Das ist nicht umgesetzt.",
   ax4: "Wir konzentrieren uns auf die einzelne Bestellentscheidung im laufenden Umbau: Reicht die Zeit für die Fachprüfung, was fehlt, was ist der nächste Schritt. Ob andere Plattformen das ebenso abbilden, haben wir nicht geprüft. Die Angaben zu Concular, Madaster und den Börsen stammen aus Workshop, Dokumentation und Steckbrief.",
-  ax5: "Die Vorschau zeigt den spätesten Tag für die Anfrage nicht als eigene Frist, Zeitkritisch zeigt die Bestellfrist erst sieben Tage vorher, und es gibt keine Benachrichtigung. Es sind nur Beispieldaten, das Fachergebnis ist ein Eintrag, ein Scan liefert nur Vorschläge, und bei Türen zählen nur gemessene Maße. Nachweise nach Angaben von Concular, keine Rechtsberatung: Eine Innentür ohne Schutzanforderung braucht laut Handlungsempfehlung 12/2024 keinen neuen Verwendbarkeitsnachweis, Zustand und Passung prüft trotzdem eine Fachperson. Bei einer Brandschutztür ist laut Concular-Leitfaden derzeit die Zustimmung im Einzelfall nötig. Die Vorschau speichert keine Nachweise. Im Steckbrief steht, CircularFlow lasse keine Frist stillschweigend verstreichen. Läuft eine Frist ab, zeigt die Vorschau „Frist verstrichen“, und der Vorgang bleibt offen. Eine Benachrichtigung vorher und den spätesten Anfragetag als eigene Frist hat sie noch nicht.",
+  ax5: "Die Vorschau zeigt den spätesten Tag für die Anfrage nicht als eigene Frist, Zeitkritisch zeigt die Bestellfrist erst sieben Tage vorher, und es gibt keine Benachrichtigung. Es sind nur Beispieldaten, das Fachergebnis ist ein Eintrag, ein Scan liefert nur Vorschläge, und bei Türen zählen nur gemessene Maße. Welche Prüfungen und Nachweise erforderlich sind, klären Fachplanung und gegebenenfalls zuständige Prüfstellen für das konkrete Bauteil und den vorgesehenen Einbau. Die Vorschau speichert keine Nachweisdokumente. Im Steckbrief steht, CircularFlow lasse keine Frist stillschweigend verstreichen. Läuft eine Frist ab, zeigt die Vorschau „Frist verstrichen“, und der Vorgang bleibt offen. Eine Benachrichtigung vorher und den spätesten Anfragetag als eigene Frist hat sie noch nicht.",
   ax6: "Die Quellen mit Stand stehen auf der Folie. Fiktiver Fall und Beispieldaten sind ausgedacht, Simulation und Fachergebnis sind Einträge ohne Fachfreigabe, Annahme und Hypothese sind nicht belegt, Herstellerangabe heißt: nicht selbst geprüft.",
 };
 const anhangNotiz = (spricht, kurz) => ({ spricht, absaetze: ["Nur bei Rückfragen.", "Kurzantwort: " + kurz], zeitfenster: KEINE_ZEIT_AX });
@@ -221,18 +222,17 @@ function folien() {
       B.bildPassend(s, "ausschnitte/e1-uebersicht.jpg", LM + 0.05, 2.07, 1.95, 1.0, "Kleiner Ausschnitt der Übersicht der Vorschau mit Kacheln (Beispieldaten)");
       T(s, "Prototyp im Browser · Beispieldaten, Simulation", { x: LM + 2.25, y: 2.0, w: lw - 2.25, h: 0.7, fontSize: 20, lineSpacingMultiple: ls });
       B.chip(s, "beispiel", LM + 2.25, 2.75);
-      T(s, "Nutzer", { x: LM, y: 3.2, w: lw, h: 0.36, fontSize: 22, bold: true, color: COL.gruen });
-      T(s, "Planung und Projektleitung im Umbau", { x: LM, y: 3.55, w: lw, h: 0.36, fontSize: 20, lineSpacingMultiple: ls });
-      T(s, "Käufer", { x: LM, y: 4.07, w: 1.3, h: 0.36, fontSize: 22, bold: true, color: COL.gruen });
-      B.chip(s, "hypothese", LM + 1.3, 4.07);
-      T(s, "Bauherrschaft oder Bestandsorganisation · im Steckbrief: Büroleitung eines Planungsbüros · erstes Angebot: Kurzcheck für eine Bauteilgruppe in einem Projekt · Zahlungsbereitschaft und Preis offen", { x: LM, y: 4.5, w: lw, h: 2.0, fontSize: 20, lineSpacingMultiple: ls });
+      T(s, "Nutzer und Angebot", { x: LM, y: 3.2, w: 3.3, h: 0.36, fontSize: 22, bold: true, color: COL.gruen });
+      B.chip(s, "hypothese", LM + 3.4, 3.2);
+      const feld = (k, v, last) => [{ text: k, options: { bold: true } }, { text: " " + v, options: { breakLine: !last } }];
+      T(s, [...feld("Nutzer:", "Projektleitung im Planungsbüro."), ...feld("Erstes Angebot:", "Kurzcheck für eine Bauteilgruppe im Umbau."), ...feld("Zahlender Auftraggeber:", "im Pilot zu klären.", true)], { x: LM, y: 3.7, w: lw, h: 2.8, fontSize: 20, lineSpacingMultiple: ls, paraSpaceAfter: 8 });
       // rechte Spalte
       B.personenKarte(s, { x: rx, y: 1.62, w: rw, h: 1.5, name: "Houssam Taleb", text: "Informatik an der TU Dortmund, jetzt im Master · entwickelt den Prototyp" });
       B.personenKarte(s, { x: rx, y: 3.25, w: rw, h: 1.75, name: "Feyrouz Chahed", text: "Informatik an der TU Dortmund · Datenanalyse, IT-Sicherheit, Umsetzung und Ideen" });
       karte(s, rx, 5.13, rw, 1.3, { fill: COL.hinwF });
       T(s, "Uns fehlt: Fachwissen aus Bau und Rückbau, Bauteilbewertung, Recht und Logistik → Partner gesucht", { x: rx + 0.2, y: 5.13, w: rw - 0.4, h: 1.3, fontSize: 20, bold: true, color: COL.hinwT, valign: "middle", lineSpacingMultiple: rs });
     },
-    notiz: { uebergabe: TXT_UE.p6, spricht: "Houssam, dann Feyrouz", absaetze: [TXT.p6a, TXT.p6b], zeit: ZEIT(53, "4:03") },
+    notiz: { uebergabe: TXT_UE.p6, spricht: "Houssam, dann Feyrouz", absaetze: [TXT.p6a, TXT.p6b, TXT.p6r], zeit: ZEIT(48, "3:58") },
   });
 
   // ---------- 9 · P7 Schluss ----------
@@ -245,11 +245,14 @@ function folien() {
         { text: "Umweltamt: „Bei Bauentscheidungen zählen meist Zeit und Kosten.“", options: { breakLine: true } },
         { text: "Concular: „Zeitliche Unterschiede in Nachfrage und Angebot“", options: {} },
       ], { x: LM, y: 2.2, w: CW, h: 0.85, fontSize: 20, color: COL.weiss, paraSpaceAfter: 6 });
-      T(s, "Nächster Test", { x: LM, y: 3.3, w: CW, h: 0.4, fontSize: 22, bold: true, color: COL.gruenHell });
-      T(s, "ein echter Umbau · vier Zeitpunkte: Angebot bekannt → erreicht die Projektleitung → Bestellfrist → Übergabe · echte Prüfzeit statt 14 Tage Annahme", { x: LM, y: 3.75, w: CW, h: 0.8, fontSize: 20, color: COL.weiss });
+      T(s, "Nächster Test an einem echten Umbau", { x: LM, y: 3.3, w: CW, h: 0.4, fontSize: 22, bold: true, color: COL.gruenHell });
+      T(s, [
+        { text: "Hilft die Karte einer Projektleitung, die Fachprüfung rechtzeitig anzustoßen?", options: { breakLine: true } },
+        { text: "Dafür nötige Angaben, unter anderem: tatsächliche Prüfzeit · Bestellfrist · Bauteil frei ab", options: {} },
+      ], { x: LM, y: 3.75, w: CW, h: 0.95, fontSize: 20, color: COL.weiss, paraSpaceAfter: 6 });
       T(s, "Unsere Bitte: Bringen Sie uns mit einem Dortmunder Umbauprojekt in Kontakt.", { x: LM, y: 4.9, w: CW, h: 1.4, fontSize: 32, bold: true, color: COL.weiss, valign: "middle" });
     },
-    notiz: { spricht: "Feyrouz", absaetze: [TXT.p7], zeit: ZEIT(32, "4:35") },
+    notiz: { spricht: "Feyrouz", absaetze: [TXT.p7], zeit: ZEIT(37, "4:35") },
   });
 
   // ---------- Anhang ----------
@@ -327,7 +330,7 @@ function folien() {
       const txt = [
         "Der späteste Tag für die Anfrage steht nicht als eigene Frist da; „Zeitkritisch“ zeigt die Bestellfrist erst sieben Tage vorher; keine Benachrichtigung.",
         "Nur Beispieldaten; Fachergebnis ist ein Eintrag; ein Scan liefert nur Vorschläge; bei Türen zählen nur gemessene Maße.",
-        "Nachweise (Angaben von Concular, keine Rechtsberatung): Innentür ohne Schutzanforderung laut Handlungsempfehlung 12/2024 kein neuer Verwendbarkeitsnachweis; Zustand und Passung prüft trotzdem eine Fachperson. Brandschutztür laut Concular-Leitfaden derzeit Zustimmung im Einzelfall. Die Vorschau speichert keine Nachweise.",
+        "Nachweise: Welche Prüfungen und Nachweise erforderlich sind, klären Fachplanung und gegebenenfalls zuständige Prüfstellen für das konkrete Bauteil und den vorgesehenen Einbau. Die Vorschau speichert keine Nachweisdokumente.",
       ];
       const g = 0.25, w = (CW - 2 * g) / 3;
       txt.forEach((t, i) => {
@@ -363,7 +366,7 @@ function folien() {
         o("Fallakte CF-PILOT-01 1.3 und Plan Restmenge 1.1 (16.11.2026)"),
         o("Pitch-Ablauf (16.11.2026) und Vorschau Fassung 2 (Code 2121b92)"),
         o("Stadt Dortmund, Umweltamt, INNOSPRINT 13.11.2026"),
-        o("Concular, Workshop im INNOSPRINT, Folien 49/67, und Handlungsempfehlung 12/2024"),
+        o("Concular, Workshop im INNOSPRINT, Folien 49/67"),
         o("Madaster-Dokumentation (09.09.2026)"),
         o("INNOSPRINT Tag 5 (13.11.2026) und Teilnahmebedingungen (01.10.2026)"),
         o("Steckbrief des Teams (13.11.2026)"),

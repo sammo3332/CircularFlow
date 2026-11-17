@@ -33,10 +33,10 @@ teamintern 18.11.2026, 12:00 Uhr. Plattform, Vorschau, Freigabe und `docs/pitch-
 | 3 | CircularFlow zeigt, ob die Zeit für die Prüfung reicht | Houssam | 27 s | 1:33 |
 | 4 | Live: Ein Paar ist fünf Tage zu spät, ein anderes kann weiter geprüft werden | Houssam | 64 s | 2:37 |
 | 7 | In einem Dortmunder Pilot wollen wir messen, was wirklich wiederverwendet wird | Feyrouz | 33 s | 3:10 |
-| 8 | Der Prototyp läuft. Als Erstes wollen wir einen Kurzcheck testen | Houssam, dann Feyrouz | 53 s | 4:03 |
-| 9 | Wir suchen einen echten Umbaufall in Dortmund | Feyrouz | 32 s | **4:35** |
+| 8 | Der Prototyp läuft. Als Erstes wollen wir einen Kurzcheck testen | Houssam, dann Feyrouz | 48 s | 3:58 |
+| 9 | Wir suchen einen echten Umbaufall in Dortmund | Feyrouz | 37 s | **4:35** |
 
-- **Länge:** Der Standard-Sprechtext hat 461 Wörter. Feyrouz spricht 263, Houssam 198 und bedient die Demo.
+- **Länge:** Der Standard-Sprechtext hat 461 Wörter. Feyrouz spricht 272, Houssam 189 und bedient die Demo.
 - **Tempo:**
   - Bei ruhigem Tempo (etwa 1,8 Wörter je Sekunde) dauert der Vortrag 4:35. Darin stecken 18 Sekunden für
     Sprecherwechsel, Umschalten und Klicks.
@@ -100,7 +100,7 @@ Nichts aus dieser Liste ließ sich hier prüfen. Bitte bis zum 20.11. erledigen,
 - [ ] **PPTX in PowerPoint (oder Keynote) öffnen:**
   - In der Referentenansicht sind die Notizen Absätze, „Spricht: …“ ist fett.
   - Mit Arial statt Liberation Sans verschiebt sich kein Umbruch, vor allem nicht auf Folie 1 („Umbau am Kanal:
-    braucht 6 Türen“ in einer Zeile), Folie 4 („Mi 18.11.2026“ zusammen) und Folie 8 (Käufertext in der Spalte).
+    braucht 6 Türen“ in einer Zeile), Folie 4 („Mi 18.11.2026“ zusammen) und Folie 8 (Feld mit Nutzer, Angebot und Auftraggeber).
   - Auf Folie 4 sind die Kreise mit „1“ und „2“ zu sehen.
 - [ ] **Navigation im Vortragsmodus** mit Maus oder Touchpad (ein Presenter kann keine Links anklicken):
   - Folie 4 → „Bildschirmfoto: zu spät ›“ → Folie 5 → „weiter ›“ → Folie 6 → „zurück zum Vortrag“ → Folie 7.
@@ -141,8 +141,8 @@ Nichts aus dieser Liste ließ sich hier prüfen. Bitte bis zum 20.11. erledigen,
 
   | Steckbrief | Deck |
   |---|---|
-  | Nutzer: Planungsbüros, die Person mit Bauteilen und Fristen im Blick | Folie 8: Planung und Projektleitung im Umbau |
-  | Käufer: Büroleitung eines Planungsbüros, Projektlizenz (Annahme) | Folie 8: Bauherrschaft oder Bestandsorganisation, wie am 17.11. vorgegeben, mit dem Zusatz „im Steckbrief: Büroleitung eines Planungsbüros“. Houssam sagt: „oder, wie im Steckbrief, das Planungsbüro“. |
+  | Nutzer: Planungsbüros, die Person mit Bauteilen und Fristen im Blick | Folie 8: Projektleitung im Planungsbüro |
+  | Käufer: Büroleitung eines Planungsbüros, Projektlizenz (Annahme) | Folie 8: Zahlender Auftraggeber: im Pilot zu klären. Die möglichen Budgetverantwortlichen (Bauherrschaft, Bestandsorganisation, Büroleitung laut Steckbrief) stehen in den Notizen. |
   | „Im Pitch zeigen wir das als gekennzeichnete Simulation: Einer Innentür fehlt das Maß.“ | Demo K1: „Ganz oben steht eine Innentür: Am Einbauort fehlt noch das Maß, die Frist endet in zwei Stunden.“ |
   | „… lässt keine Frist stillschweigend verstreichen.“ | Rückfrage-Antwort in den Notizen zu Folie 14: Die Vorschau zeigt „Frist verstrichen“, der Vorgang bleibt offen. Eine Benachrichtigung vorher und den spätesten Anfragetag als eigene Frist hat sie noch nicht. |
   | Wettbewerb: Concular, Madaster, Börsen wie Restado; Alternative: eigene Excel-Listen | Folie 13 |
@@ -168,15 +168,14 @@ Nichts aus dieser Liste ließ sich hier prüfen. Bitte bis zum 20.11. erledigen,
   - Annahme, unbestätigt: 14 Tage Prüfzeit (Folie 2).
   - Beispieldaten und Simulation: Folien 4, 5, 6, 8 und 10.
   - Ziel, noch keine Messung: der Pilot (Folie 7).
-  - Hypothese: Käufer (Folie 8).
+  - Hypothese: Nutzer und erstes Angebot (Folie 8).
   - Herstellerangabe: Folie 13.
 - **Wörtliche Quellen:**
   - Stadt Dortmund, Umweltamt, INNOSPRINT, 13.11.2026, Folie 11: „Es gibt kaum Daten zu Baustoffströmen“ und „Bei
     Bauentscheidungen zählen meist Zeit und Kosten“.
   - Concular, Workshop im INNOSPRINT, Folie 49: „Zeitliche Unterschiede in Nachfrage und Angebot“.
-- **Nachweise auf Folie 14:** Angaben von Concular, keine Rechtsberatung. Belegt sind sie in der Fallakte
-  CF-PILOT-01, Abschnitt „Innentüren und Nachweise“: Handlungsempfehlung 12/2024 und Conculars Seite zum Leitfaden für
-  Brandschutztüren.
+- **Nachweise auf Folie 14:** Folie 14 sagt nur, wer die nötigen Prüfungen und Nachweise klärt. Pauschale Aussagen zu
+  Türnachweisen enthält der Pitch nicht mehr.
 - **SDG 12.5:** sinngemäß wiedergegeben. Die Primärquelle war aus dieser Umgebung nicht erreichbar.
 - **Nicht behauptet:** Kunden, Partner, Einsparungen, CO₂-Werte, Marktzahlen, Gesprächsergebnisse oder
   Jurykriterien. „Partner“ kommt nur als „Partner gesucht“ vor.
