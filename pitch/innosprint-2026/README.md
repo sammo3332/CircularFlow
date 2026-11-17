@@ -72,9 +72,12 @@ teamintern 18.11.2026, 12:00 Uhr. Plattform, Vorschau, Freigabe und `docs/pitch-
 - **Bei Zeitdruck:** Folie 4 hat zwei Links, „Bildschirmfoto: zu spät ›“ (zu Folie 5) und „Bildschirmfoto: weiter
   prüfen ›“ (zu Folie 6).
   - Steht K3 um 2:10 nicht da oder hakt die Vorschau: zurück und beide Bildschirmfotos zeigen. Auf Folie 5 führt
-    „weiter ›“ zu Folie 6.
+    „weiter ›“ zu Folie 6. Waren K1 und K2 schon gesprochen, auf Folie 5 nur den K3-Satz sprechen.
+  - Zeit im Spätfall: Mit nur dem K3-Satz endet der Vortrag bei etwa 4:45. Wer auf Folie 5 die ganze Notiz liest,
+    kommt auf knapp 5:00.
   - Ist K4 um 2:25 nicht erreicht: zurück und direkt „Bildschirmfoto: weiter prüfen ›“.
-  - Auf beiden Ersatzfolien führt „zurück zum Vortrag“ zu Folie 7.
+  - Im Vortrag geht es von Folie 5 immer mit „weiter ›“ zu Folie 6. Dort steht der Übergabesatz, und „zurück zum
+    Vortrag“ führt zu Folie 7.
 - **Im Vortragsmodus** überspringt „Weiter“ auf Folie 4 die ausgeblendeten Folien 5 und 6 und geht zu Folie 7.
 - **Ohne Internet:** Derselbe Code läuft lokal. Im Repository `python3 -m http.server 8000` starten und
   `http://localhost:8000/plattform/` öffnen. Seit `2121b92` hat sich unter `plattform/` nur die README geändert.
@@ -115,7 +118,8 @@ Nichts aus dieser Liste ließ sich hier prüfen. Bitte bis zum 20.11. erledigen,
 - [ ] **Umschalten** aus dem Vortragsmodus in den Browser und zurück (Alt+Tab bzw. Cmd+Tab), danach weiter zu
   Folie 7.
 - [ ] **Demo mit Stoppuhr:** Folie 4 hat 64 Sekunden (1:33 bis 2:37). Kontrollpunkte sind 2:10 (K3 steht) und 2:25
-  (K4 erreicht). Das Zeichen gibt Feyrouz (Vorschlag aus Plan 0.2).
+  (K4 erreicht). Das Zeichen gibt Feyrouz (Vorschlag aus Plan 0.2). Den Spätfall einmal proben: Ausfall um 2:10, auf
+  Folie 5 nur K3. Ziel: Ende etwa 4:45.
 - [ ] **Gesamter Vortrag mit Stoppuhr** in ruhigem Tempo: Ziel 4:35, Grenze 5:00. Die Übergabesätze üben.
 - [ ] **Beamer:**
   - Sind die Zeitleiste auf Folie 2 und die Farben Grün, Gelb und Rot gut zu erkennen?

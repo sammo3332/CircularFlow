@@ -26,13 +26,15 @@ const TXT = {
   k4: "K4 · Bei diesem Paar reicht die Zeit: weiter prüfen. Das ist ein Vorschlag, keine Freigabe. Entscheiden müssen Fachleute und Projektleitung.",
   zurueck: "Zurück zur Präsentation, Folie 7 · Was das für Dortmund bringen kann, erklärt Feyrouz.",
   klick: "Klick: Alt+Tab zum Browser (Übersicht) · in der Kachel „Paare derselben Gruppe“ auf 8 Paare · Zeile TW-01 → BD-23 · oben im Pfad Paare derselben Gruppe · Zeile TW-05 → BD-22 · Alt+Tab zurück.",
-  zeitdruck1: "Bei Zeitdruck: Steht K3 um 2:10 nicht da oder hakt die Vorschau: zurück zur Präsentation und die Bildschirmfotos über die Links auf dieser Folie zeigen.",
+  zeitdruck1: "Bei Zeitdruck: Steht K3 um 2:10 nicht da oder hakt die Vorschau: zurück zur Präsentation und die Bildschirmfotos über die Links auf dieser Folie zeigen. Waren K1 und K2 schon gesprochen, auf Folie 5 nur den K3-Satz.",
   zeitdruck2: "Bei Zeitdruck: Ist K4 um 2:25 noch nicht erreicht: zurück und direkt „Bildschirmfoto: weiter prüfen ›“.",
-  p5: "Unser Bezug zu SDG 12.5: weniger Abfall durch Wiederverwendung. Das Umweltamt der Stadt hat im Sprint gezeigt: Es gibt kaum Daten zu Baustoffströmen. In einem geplanten Pilot in Dortmund wollen wir deshalb zählen: Wie viele angebotene Bauteile werden rechtzeitig geprüft, wie viele wirklich wieder eingebaut, und woran scheitert es sonst? Was heute schon steht, zeigt Houssam.",
+  p5: "Unser Bezug zu SDG 12.5: weniger Abfall durch Wiederverwendung. Das Umweltamt der Stadt hat im Sprint gezeigt: Es gibt kaum Daten zu Baustoffströmen. In einem künftigen Pilot in Dortmund wollen wir deshalb zählen: Wie viele angebotene Bauteile werden rechtzeitig geprüft, wie viele wirklich wieder eingebaut, und woran scheitert es sonst? Was heute schon steht, zeigt Houssam.",
   p6a: "Heute läuft unser Prototyp im Browser, mit Beispieldaten. Nutzen soll ihn zuerst die Projektleitung im Umbau. Bezahlen könnte die Bauherrschaft, die Bestandsorganisation oder, wie im Steckbrief, das Planungsbüro, zum Beispiel für einen Kurzcheck einer Bauteilgruppe. Ob jemand zahlt, wissen wir noch nicht. Ich habe an der TU Dortmund Informatik studiert, bin jetzt im Master und entwickle den Prototyp.",
   p6b: "Feyrouz: Ich studiere ebenfalls Informatik an der TU Dortmund und kenne mich in Datenanalyse und IT-Sicherheit aus. Uns fehlt Fachwissen aus Bau und Rückbau. Dafür suchen wir Partner aus der Branche.",
-  p7: "Im Sprint haben wir gehört: Auf die Zeit kommt es an. Das Umweltamt sagt, bei Bauentscheidungen zählen meist Zeit und Kosten. Concular nennt zeitliche Unterschiede zwischen Angebot und Nachfrage. Ob unsere 14 Tage Prüfzeit stimmen, wissen wir nicht. Das prüfen wir als Nächstes an einem echten Umbau. Unsere Bitte: Bringen Sie uns mit einem Dortmunder Umbauprojekt in Kontakt. Danke.",
+  p7: "Zwei Aussagen aus dem Sprint zeigen, dass Zeit eine Rolle spielt. Das Umweltamt sagt, bei Bauentscheidungen zählen meist Zeit und Kosten. Concular nennt zeitliche Unterschiede zwischen Angebot und Nachfrage. Ob unsere 14 Tage Prüfzeit stimmen, wissen wir nicht. Das prüfen wir als Nächstes an einem echten Umbau. Unsere Bitte: Bringen Sie uns mit einem Dortmunder Umbauprojekt in Kontakt. Danke.",
   ek3a: "Das ist unsere Vorschau mit Beispieldaten, hier mit Systemtrennwänden statt Türen.",
+  ek3spaet: "Spätfall: Waren K1 und K2 schon live gesprochen, nur den K3-Satz sprechen.",
+  ek3weiter: "Danach immer „weiter ›“ zu Folie 6. Wer doch direkt „zurück zum Vortrag“ geht, sagt vorher: „Was das für Dortmund bringen kann, erklärt Feyrouz.“",
   ek3k2: "K2 · Jedes Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe.",
   ek4b: "Was das für Dortmund bringen kann, erklärt Feyrouz.",
 };
@@ -171,7 +173,7 @@ function folien() {
     alt: "Ausschnitt des Abgleichs TW-01 und BD-23: Für diese Entscheidung zu spät, Prüfende 02.12.2026 liegt 5 Tage nach der Bestellfrist 27.11.2026, Prüfbitte gesperrt (Beispieldaten)",
     unter: "K3 · TW-01 → BD-23 · Prüfende 02.12.2026 liegt 5 Tage nach der Bestellfrist 27.11.2026 · Prüfbitte gesperrt",
     links: [["weiter ›", "EK4", "Nächstes Bildschirmfoto"], ["zurück zum Vortrag", "P5", "Zurück zum Vortrag"]],
-    notiz: { spricht: "Houssam", absaetze: [TXT.ek3a, TXT.ek3k2, TXT.k3], zeitfenster: KEINE_ZEIT_EK },
+    notiz: { uebergabe: "bei „zurück zum Vortrag“: " + TXT_UE.p4, spricht: "Houssam", absaetze: [TXT.ek3spaet, TXT.ek3a, TXT.ek3k2, TXT.k3, TXT.ek3weiter], zeitfenster: KEINE_ZEIT_EK },
   }));
 
   // ---------- 6 · EK4 ----------
