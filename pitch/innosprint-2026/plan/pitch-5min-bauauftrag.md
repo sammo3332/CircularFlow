@@ -73,7 +73,7 @@
 - **Titel:** „Eine brauchbare Tür kann verloren gehen, weil die Information zu spät kommt“
 - **Grafik:**
   - Links 12 Türsymbole, davon 6 hervorgehoben, Beschriftung „Haus Lindenhof: 6 von 12 Türen angeboten“.
-  - Rechts 6 gestrichelte Türsymbole, „Umbau am Kanal: braucht 6 Türen“.
+  - Rechts genau 6 gestrichelte Türsymbole, „Umbau am Kanal: braucht 6 Türen“.
   - Dazwischen ein unterbrochener Pfeil mit Uhr: „zu spät erfahren“.
   - Darunter: „→ neu bestellt“.
 - **Chip:** „Fiktiver Fall“.
@@ -96,7 +96,7 @@
 - **Notiz:** „Der Umbau muss bis zum 19. Februar Ersatz bestellen. Das ist die Bestellfrist. Vorher muss eine Fachperson prüfen, ob die Türen passen. Wir nehmen an, das dauert 14 Tage. Das ist eine Annahme, keine Messung. Also muss die Projektleitung die Prüfung spätestens am 5. Februar anfragen. Diese Anfrage nennen wir Prüfbitte. Wer erst danach vom Angebot erfährt, ist zu spät. Wie CircularFlow prüft, ob die Zeit reicht, zeigt Houssam.“
 
 ### 3 · P3 · Was CircularFlow prüft · Spricht: Houssam · 31 s · Uhr 1:40
-- **Titel:** „CircularFlow zeigt, ob die Zeit für die Prüfung noch reicht“
+- **Titel:** „CircularFlow zeigt, ob die Zeit für die Prüfung reicht“ (Nachbesserung 17.11.: ohne „noch“)
 - **Grafik:**
   - Drei Eingabekästen in einer Reihe: „Bauteil frei ab“ · „Bestellfrist“ · „Prüfzeit“.
   - Pfeil zu: „Reicht die Zeit für die Prüfung?“
@@ -110,8 +110,8 @@
 - **Titel:** „Live: Ein Paar ist fünf Tage zu spät, ein anderes kann weiter geprüft werden“
 - **Zeile:** „Vorschau Fassung 2 · Beispieldaten: Systemtrennwände statt Türen · Stichtag der Demo: Mi 18.11.2026, 14:00 Uhr (Simulation)“.
 - **Zwei Schrittkarten:**
-  - „① Zu spät · TW-01 → BD-23“ mit Link „Bildschirmfoto: zu spät ›“ → Folie 5.
-  - „② Weiter prüfen · TW-05 → BD-22“ mit Link „Bildschirmfoto: weiter prüfen ›“ → Folie 6.
+  - „1 Zu spät · TW-01 → BD-23“ mit Link „Bildschirmfoto: zu spät ›“ → Folie 5; die Ziffer steht in einem gezeichneten Kreis (Nachbesserung 17.11.: kein Zeichen ①, ②).
+  - „2 Weiter prüfen · TW-05 → BD-22“ mit Link „Bildschirmfoto: weiter prüfen ›“ → Folie 6.
 - **Chips:** „Beispieldaten“, „Simulation“.
 - **Fußnote:** „Prüfzeiten sind Beispielannahmen. Der Abgleich ist ein Vorschlag zur Prüfung, keine Freigabe. Es wird nichts versendet.“
 - **Notiz (Absätze):**
@@ -149,6 +149,7 @@
 - **Kette in der Mitte:** „angeboten → rechtzeitig geprüft → wieder eingebaut“, darunter „Wenn nicht: zu spät · Angaben fehlen · ungeeignet“.
 - **Zitatkasten rechts:** „„Es gibt kaum Daten zu Baustoffströmen.“ Stadt Dortmund, Umweltamt, INNOSPRINT, 13.11.2026“.
 - **Chip:** „Ziel, noch keine Messung“.
+- **Fußnote:** „SDG 12.5: Unterziel der Vereinten Nationen, sinngemäß wiedergegeben; Zitat: Stadt Dortmund, Umweltamt, INNOSPRINT, 13.11.2026, Folie 11“ (Nachbesserung 17.11.).
 - **Notiz:** „Unser Bezug zu SDG 12.5: weniger Abfall durch Wiederverwendung. Das Umweltamt der Stadt hat im Sprint gezeigt: Es gibt kaum Daten zu Baustoffströmen. In einem geplanten Pilot in Dortmund wollen wir deshalb zählen: Wie viele angebotene Bauteile werden rechtzeitig geprüft, wie viele wirklich wieder eingebaut, und woran scheitert es sonst? Was heute schon steht, zeigt Houssam.“
 
 ### 8 · P6 · Prototyp, Geschäftsmodell, Team · Spricht: Houssam, dann Feyrouz · 50 s · Uhr 4:03
@@ -222,7 +223,7 @@
 - **Demo:**
   - Klickpfad.
   - Regel bei Zeitdruck (2:10 / 2:25) und Rückfall auf die Bildschirmfotos.
-- **Zeiten:** „Zeiten bei ruhigem Tempo (etwa 1,8 Wörter je Sekunde); zügig (2,3) etwa 3:40. Probe mit Stoppuhr steht aus.“
+- **Zeiten:** „Zeiten bei ruhigem Tempo (etwa 1,8 Wörter je Sekunde) einschließlich Sprecherwechsel, Umschalten und Klicks. Bei zügigem Tempo (2,3 Wörter je Sekunde) dauert der Vortrag etwa 3:40. Probe mit Stoppuhr steht aus.“ (Nachbesserung 17.11.)
 - **Notizen:** Je Folie wie bisher; die Kopfzeile nennt Foliennummer und Kennung. Statt „Dauer (voll)“ steht das Zeitfenster mit „Uhr am Ende“.
 
 ## Prüfung durch cf-entwicklung vor der Rückgabe

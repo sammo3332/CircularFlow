@@ -4,7 +4,7 @@
 //  - PDF: Chromium über Playwright
 //  - Kennung und Abschnitt je Folie: aus den inhalt-Modulen (gleiche Reihenfolge wie in der PPTX)
 //  - Selbstprüfung: pdftotext, je Folie erster Satz, letzter Satz und Zeile "Dauer (voll)" im PDF-Text; Exit-Code 1 bei FEHLER
-// Aufruf: node sprechtext.js [A|B|C ...]
+// Aufruf: node sprechtext.js [A|B|C|P5 ...]  (P5: eigenes Deckblatt "Ablauf auf einen Blick", Zeitfenster statt "Dauer (voll)")
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
@@ -16,9 +16,10 @@ const B = require("./bausteine");
 const AUS = path.join(__dirname, "..", "ausgabe");
 const STAND = "Stand 17.11.2026";
 const DECKS = {
-  A: { name: "CircularFlow_INNOSPRINT2026_Fassung-A_Umbaufall", ordner: "empfohlen-zur-abgabe", mod: "./inhalt-a", fassung: "Fassung A · Umbaufall", klick: "Live-Demo: dazu kommt Klickzeit." },
+  A: { name: "CircularFlow_INNOSPRINT2026_Fassung-A_Umbaufall", ordner: "weitere-fassungen", mod: "./inhalt-a", fassung: "Fassung A · Umbaufall", klick: "Live-Demo: dazu kommt Klickzeit." },
   B: { name: "CircularFlow_INNOSPRINT2026_Fassung-B_Demo-zuerst", ordner: "weitere-fassungen", mod: "./inhalt-b", fassung: "Fassung B · Demo zuerst", klick: "Live-Demo: dazu kommt Klickzeit." },
   C: { name: "CircularFlow_INNOSPRINT2026_Fassung-C_Praxistest-Dortmund", ordner: "weitere-fassungen", mod: "./inhalt-c", fassung: "Fassung C · Praxistest Dortmund", klick: "Demo-Bilder nur auf Nachfrage." },
+  P5: { name: "CircularFlow_INNOSPRINT2026_Pitch-5-Minuten", ordner: "abgabe-5-minuten", mod: "./inhalt-p5", fassung: "Pitch 5 Minuten", p5: true },
 };
 
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -57,8 +58,7 @@ function saetze(text) {
   return text.split(/(?<!\d)(?<=[.!?])\s+/).map((s) => s.trim()).filter(Boolean);
 }
 
-function htmlFuerDeck(d, folien, meta, bilder, sm) {
-  const css = `
+const CSS = `
 @page { size: A4; margin: 14mm 15mm; }
 html { font-family: Arial, "Liberation Sans", sans-serif; hyphens: manual; -webkit-hyphens: manual; color: #17201D; }
 body { margin: 0; font-size: 11.5pt; line-height: 1.42; }
@@ -81,7 +81,18 @@ th, td { border: 1pt solid #C9CFCB; padding: 6pt 12pt; text-align: left; }
 th { background: #E0EEE8; }
 td.z { text-align: right; }
 .hinweis { margin-top: 14pt; padding: 8pt 10pt; background: #F2F3F0; border: 1pt solid #ECEEE9; }
-.klein { color: #3F4A45; }`;
+.klein { color: #3F4A45; }
+table.ablauf { width: 100%; margin: 6pt 0; font-size: 8.8pt; line-height: 1.2; }
+table.ablauf td:first-child { white-space: nowrap; }
+table.ablauf th, table.ablauf td { padding: 2.5pt 5pt; vertical-align: top; }
+table.ablauf tr.aus td { color: #59655F; background: #F2F3F0; }
+h3 { font-size: 11.5pt; margin: 8pt 0 3pt; color: #0E5546; }
+ol.klickpfad { margin: 0 0 4pt; padding-left: 16pt; font-size: 10.5pt; }
+.kasten.nur { background: #FBECD0; border-color: #7D4C00; }
+.kasten.zeit { background: #FBECD0; border-color: #7D4C00; }`;
+
+function htmlFuerDeck(d, folien, meta, bilder, sm) {
+  const css = CSS;
   const teile = [];
   const anteil = Object.entries(sm.anteil).sort((a, b) => b[1] - a[1]).map(([p, v]) => `${esc(p)} ${v} s`).join(", ");
   teile.push(`<section class="deckblatt"><h1>Sprechtext · ${esc(d.fassung)}</h1>
@@ -140,19 +151,112 @@ function pruefe(pdf, folien, meta) {
   return ergebnis;
 }
 
+// ---------- Pitch 5 Minuten: Sprechtext mit Deckblatt "Ablauf auf einen Blick" ----------
+const ZEITEN_SATZ = "Zeiten bei ruhigem Tempo (etwa 1,8 Wörter je Sekunde) einschließlich Sprecherwechsel, Umschalten und Klicks. Bei zügigem Tempo (2,3 Wörter je Sekunde) dauert der Vortrag etwa 3:40. Probe mit Stoppuhr steht aus.";
+const istRegie = (a) => /^(Klick:|Bei Zeitdruck:|Zeitfenster:)/.test(a);
+
+function htmlFuerP5(d, folien, inhalt, bilder, summe) {
+  const kopfZeile = (i) => {
+    const n = inhalt[i].notiz;
+    const z = n.zeit ? `Zeitfenster etwa ${n.zeit.sek} s · Uhr am Ende ${n.zeit.uhr}` : "ohne eigenes Zeitfenster";
+    return `Folie ${i + 1} · ${inhalt[i].id} · Spricht: ${n.spricht} · ${z}`;
+  };
+  const absatzListe = (f) => f.absaetze.filter((a) => a !== "");
+  const klick = absatzListe(folien[inhalt.findIndex((x) => x.id === "P4")]).find((a) => a.startsWith("Klick:")) || "";
+  const zeitdruck = absatzListe(folien[inhalt.findIndex((x) => x.id === "P4")]).filter((a) => a.startsWith("Bei Zeitdruck:"));
+  const titel = { P1: "Einstieg", P2: "Spätestens am 5. Februar", P3: "Was CircularFlow prüft", P4: "Demo", EK3: "Ersatz: fünf Tage zu spät", EK4: "Ersatz: weiter prüfen", P5: "Impact Dortmund", P6: "Prototyp, Geschäftsmodell, Team", P7: "Schluss und Bitte", AX1: "Nach der Prüfbitte", AX2: "Zeitprüfung", AX3: "Restmenge", AX4: "Wettbewerb", AX5: "Grenzen und Nachweise", AX6: "Quellen" };
+  const zeilen = inhalt.map((f, i) => {
+    const n = f.notiz, aus = f.versteckt;
+    const zf = n.zeit ? `etwa ${n.zeit.sek} s` : "ausgeblendet", uhr = n.zeit ? n.zeit.uhr : "–";
+    return `<tr${aus ? ' class="aus"' : ""}><td><b>${i + 1} · ${esc(f.id)}</b> ${esc(titel[f.id] || "")}</td><td>${esc(n.spricht)}</td><td>${zf}</td><td>${uhr}</td><td>${esc(n.uebergabe || "–")}</td></tr>`;
+  }).join("\n");
+  const teile = [];
+  teile.push(`<section class="deckblatt"><h1>Sprechtext · ${esc(d.fassung)}</h1>
+<p class="klein">CircularFlow · INNOSPRINT Zirkuläres Bauen · Dortmund · 20.11.2026 · <b>${STAND}</b></p>
+<h3>Ablauf auf einen Blick</h3>
+<table class="ablauf"><tr><th>Folie</th><th>Spricht</th><th>Zeitfenster</th><th>Uhr am Ende</th><th>Übergabesatz</th></tr>
+${zeilen}</table>
+<p class="klein"><b>Standard-Sprechtext der sichtbaren Folien:</b> ${summe.woerter} Wörter · <b>Summe der Zeitfenster:</b> ${summe.sek} s (${mmss(summe.sek)})</p>
+<h3>Klickpfad der Demo (Folie 4)</h3>
+<ol class="klickpfad">${klick.replace(/^Klick:\s*/, "").split(" · ").map((k) => `<li>${esc(k.replace(/\.$/, ""))}</li>`).join("")}</ol>
+<h3>Regel bei Zeitdruck</h3>
+${zeitdruck.map((z) => `<div class="kasten m5"><p><b>Bei Zeitdruck:</b>${esc(z.slice(14))}</p></div>`).join("")}
+<div class="hinweis">${esc(ZEITEN_SATZ)}</div></section>`);
+  folien.forEach((f, i) => {
+    const m = inhalt[i];
+    const ausg = f.versteckt ? ` · <span class="aus">ausgeblendet: ${m.abschnitt === "Demo" ? "Ersatzfolie" : "Anhang"}</span>` : "";
+    let html = `<section><h2 class="kopf">${esc(kopfZeile(i))}${ausg}</h2>`;
+    html += `<img class="folie" alt="Folie ${i + 1}" src="data:image/jpeg;base64,${bilder[i].toString("base64")}">`;
+    f.absaetze.forEach((a, j) => {
+      if (a === "") return;
+      if (j === 0) html += `<p class="sprecher">${esc(a)}</p>`;
+      else if (a.startsWith("Klick:")) html += `<div class="kasten klick"><p><b>Klick:</b>${esc(a.slice(6))}</p></div>`;
+      else if (a.startsWith("Bei Zeitdruck:")) html += `<div class="kasten m5"><p><b>Bei Zeitdruck:</b>${esc(a.slice(14))}</p></div>`;
+      else if (a.startsWith("Zeitfenster:")) html += `<p class="dauer">${esc(a)}</p>`;
+      else if (a === "Nur bei Rückfragen.") html += `<div class="kasten nur"><p><b>${esc(a)}</b></p></div>`;
+      else html += `<p>${esc(a)}</p>`;
+    });
+    teile.push(html + "</section>");
+  });
+  return `<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><title>Sprechtext ${esc(d.fassung)}</title><style>${CSS}</style></head><body>${teile.join("\n")}</body></html>`;
+}
+
+// Selbstprüfung P5: je Folie Kopfzeile, erster Satz, letzter Satz des Gesprochenen, Zeitfenster-Zeile und jeder Absatz im PDF-Text
+function pruefeP5(pdf, folien, inhalt) {
+  const text = norm(execFileSync("pdftotext", [pdf, "-"], { encoding: "utf8", maxBuffer: 1 << 28 }));
+  const marken = folien.map((_, i) => text.indexOf(norm(`Folie ${i + 1} · ${inhalt[i].id} · Spricht:`)));
+  return folien.map((f, i) => {
+    const von = marken[i], bis = i + 1 < folien.length ? marken[i + 1] : text.length;
+    const fehlt = [];
+    if (von < 0) fehlt.push("Kopfzeile");
+    const abschnitt = von < 0 ? "" : text.slice(von, bis);
+    const inh = f.absaetze.filter((a) => a !== "");
+    const gesprochen = inh.filter((a, j) => j > 0 && !istRegie(a));
+    const erster = saetze(gesprochen[0] || "")[0], letzter = saetze(gesprochen[gesprochen.length - 1] || "").pop();
+    const zeitfenster = inh.find((a) => a.startsWith("Zeitfenster:"));
+    for (const [was, s] of [["erster Satz", erster], ["letzter Satz", letzter], ["Zeitfenster", zeitfenster]]) {
+      if (!s || !abschnitt.includes(norm(s))) fehlt.push(was);
+    }
+    inh.forEach((a, j) => { if (!abschnitt.includes(norm(a))) fehlt.push(`Absatz ${j + 1}`); });
+    return { nr: i + 1, id: inhalt[i].id, ok: fehlt.length === 0, fehlt };
+  });
+}
+
 (async () => {
-  const wahl = process.argv.slice(2).filter((a) => /^[ABC]$/.test(a));
+  const wahl = process.argv.slice(2).filter((a) => /^(A|B|C|P5)$/.test(a));
   const tmp = fs.mkdtempSync(path.join(process.env.TMPDIR_PITCH || os.tmpdir(), "sprechtext-"));
   fs.mkdirSync(path.join(AUS, "sprechtexte"), { recursive: true });
   const browser = await chromium.launch();
   let fehler = 0;
   try {
-    for (const k of wahl.length ? wahl : ["A", "B", "C"]) {
+    for (const k of wahl.length ? wahl : ["A", "B", "C", "P5"]) {
       const d = DECKS[k];
       const pptx = path.join(AUS, d.ordner, d.name + ".pptx"), folienPdf = path.join(AUS, d.ordner, d.name + ".pdf");
       const folien = await liesNotizen(pptx);
       const inhalt = require(d.mod).folien();
       if (inhalt.length !== folien.length) throw new Error(`${k}: ${inhalt.length} Folien im Inhaltsmodul, ${folien.length} in der PPTX`);
+      if (d.p5) {
+        const bd5 = path.join(tmp, k); fs.mkdirSync(bd5);
+        execFileSync("pdftoppm", ["-jpeg", "-r", "80", folienPdf, path.join(bd5, "f")]);
+        const dat5 = fs.readdirSync(bd5).filter((n) => n.endsWith(".jpg")).sort();
+        if (dat5.length !== folien.length) throw new Error(`${k}: ${dat5.length} Folienbilder, ${folien.length} Folien`);
+        const sprechAbs = (a) => !/^(Klick:|Bei Zeitdruck:)/.test(a);
+        const gespr = (a) => a.replace(/^K\d · /, "").replace(/^Feyrouz: /, "").replace(/^Zurück zur Präsentation, Folie 7 · /, "");
+        const sicht = inhalt.filter((f) => !f.versteckt);
+        const summe = { woerter: sicht.reduce((n, f) => n + f.notiz.absaetze.filter(sprechAbs).reduce((m, a) => m + B.woerter(gespr(a)), 0), 0), sek: sicht.reduce((n, f) => n + f.notiz.zeit.sek, 0) };
+        const html5 = htmlFuerP5(d, folien, inhalt, dat5.map((n) => fs.readFileSync(path.join(bd5, n))), summe);
+        const page5 = await browser.newPage();
+        await page5.setContent(html5, { waitUntil: "load" });
+        const ziel5 = path.join(AUS, "sprechtexte", `${d.name}_Sprechtext.pdf`);
+        await page5.pdf({ path: ziel5, format: "A4", printBackground: true });
+        await page5.close();
+        console.log(`${k}: ${path.basename(ziel5)} (${/Pages:\s+(\d+)/.exec(execFileSync("pdfinfo", [ziel5], { encoding: "utf8" }))[1]} Seiten; ${summe.woerter} Wörter, ${summe.sek} s)`);
+        for (const r of pruefeP5(ziel5, folien, inhalt)) {
+          console.log(`   Folie ${r.nr} (${r.id}): ${r.ok ? "OK" : "FEHLER, fehlt: " + r.fehlt.join(", ")}`);
+          if (!r.ok) fehler++;
+        }
+        continue;
+      }
       const meta = inhalt.map((f) => ({ id: f.id, abschnitt: f.abschnitt }));
       const sm = B.summen(inhalt);
       const bd = path.join(tmp, k); fs.mkdirSync(bd);

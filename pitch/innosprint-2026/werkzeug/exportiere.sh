@@ -1,5 +1,5 @@
 #!/bin/bash
-# Baut alle drei Pitch-Decks (inkl. Nachbearbeitung: Notizen als Absätze, Sprache Deutsch), prüft sie, erzeugt je ein
+# Baut alle vier Pitch-Decks (A, B, C, Pitch 5 Minuten) (inkl. Nachbearbeitung: Notizen als Absätze, Sprache Deutsch), prüft sie, erzeugt je ein
 # Folien-PDF (mit versteckten Folien) und das Sprechtext-PDF (ausgabe/sprechtexte/, mit Selbstprüfung).
 # Ablauf: Ausschnitte, Bau + Nachbearbeitung, validate, python-pptx, Folien-PDF, Sprechtext + Selbstprüfung.
 # Aufruf: bash exportiere.sh
@@ -18,14 +18,15 @@ export TMPDIR_PITCH="$TMP"
 # Bildausschnitte der Demo-Folien (D1) neu erzeugen
 python3 "$HIER/ausschnitte.py"
 # alte Sprechtext-PDFs in den Fassungsordnern entfernen (liegen jetzt unter sprechtexte/)
-rm -f "$AUS"/empfohlen-zur-abgabe/*_Sprechtext.pdf "$AUS"/weitere-fassungen/*_Sprechtext.pdf
+rm -f "$AUS"/weitere-fassungen/*_Sprechtext.pdf "$AUS"/abgabe-5-minuten/*_Sprechtext.pdf
 
 node "$HIER/baue.js"
 
 DECKS=(
-  "empfohlen-zur-abgabe/CircularFlow_INNOSPRINT2026_Fassung-A_Umbaufall"
+  "weitere-fassungen/CircularFlow_INNOSPRINT2026_Fassung-A_Umbaufall"
   "weitere-fassungen/CircularFlow_INNOSPRINT2026_Fassung-B_Demo-zuerst"
   "weitere-fassungen/CircularFlow_INNOSPRINT2026_Fassung-C_Praxistest-Dortmund"
+  "abgabe-5-minuten/CircularFlow_INNOSPRINT2026_Pitch-5-Minuten"
 )
 FOLIEN='pdf:impress_pdf_Export:{"ExportHiddenSlides":{"type":"boolean","value":"true"}}'
 

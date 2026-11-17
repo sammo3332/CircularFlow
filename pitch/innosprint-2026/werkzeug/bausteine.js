@@ -191,6 +191,140 @@ function zeitleisteFall(slide, { bandY = 3.95, marken, legende = true, legendeY 
   }
 }
 
+// ---------- Bausteine für das 5-Minuten-Deck (P5) ----------
+// Türsymbol: abgerundetes Rechteck mit kleinem Griff. Stil: "normal" | "hervor" (gefüllt) | "gesucht" (gestrichelt)
+function tuer(slide, x, y, w, h, stil = "normal", dark = false) {
+  let fill, line, griff, dash = "solid";
+  if (stil === "hervor") { fill = dark ? COL.weiss : COL.gruen; line = fill; griff = dark ? COL.gruen : COL.weiss; }
+  else if (stil === "gesucht") { fill = null; line = dark ? COL.weiss : COL.gruen; griff = line; dash = "dash"; }
+  else { fill = dark ? "1B6554" : COL.grauF; line = dark ? "6E9A8E" : COL.linie; griff = dark ? "9CBFB4" : "9AA39E"; }
+  slide.addShape(P.ShapeType.roundRect, {
+    x, y, w, h, rectRadius: 0.1,
+    fill: fill ? { color: fill } : { color: COL.weiss, transparency: 100 },
+    line: { color: line, width: 2, dashType: dash },
+  });
+  const gd = Math.min(w, h) * 0.16;
+  slide.addShape(P.ShapeType.ellipse, { x: x + w * 0.74 - gd / 2, y: y + h * 0.52, w: gd, h: gd, fill: { color: griff }, line: { color: griff, width: 0.25 } });
+}
+// Raster aus Türsymbolen; stil(i) liefert den Stil der i-ten Tür (zeilenweise)
+function tuerGitter(slide, { x, y, cols, rows, tw, th, gap, stil, dark = false }) {
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+    tuer(slide, x + c * (tw + gap), y + r * (th + gap), tw, th, stil(r * cols + c, c, r), dark);
+  }
+  return { w: cols * tw + (cols - 1) * gap, h: rows * th + (rows - 1) * gap };
+}
+// Uhr (Kreis mit zwei Zeigern), Mittelpunkt cx, cy
+function uhr(slide, cx, cy, d, farbe) {
+  slide.addShape(P.ShapeType.ellipse, { x: cx - d / 2, y: cy - d / 2, w: d, h: d, fill: { color: farbe === COL.weiss ? COL.gruen : COL.weiss }, line: { color: farbe, width: 2.5 } });
+  slide.addShape(P.ShapeType.line, { x: cx, y: cy - d * 0.32, w: 0, h: d * 0.32, line: { color: farbe, width: 2.5 } });
+  slide.addShape(P.ShapeType.line, { x: cx, y: cy, w: d * 0.24, h: 0, line: { color: farbe, width: 2.5 } });
+}
+// Unterbrochener Pfeil von x0 nach x1 auf Höhe cy mit Uhr in der Lücke
+function pfeilUnterbrochen(slide, { x0, x1, cy, farbe, uhrD = 0.75 }) {
+  const mx = (x0 + x1) / 2, luecke = uhrD + 0.3;
+  slide.addShape(P.ShapeType.line, { x: x0, y: cy, w: mx - luecke / 2 - x0, h: 0, line: { color: farbe, width: 3 } });
+  slide.addShape(P.ShapeType.line, { x: mx + luecke / 2, y: cy, w: x1 - mx - luecke / 2, h: 0, line: { color: farbe, width: 3, endArrowType: "triangle" } });
+  uhr(slide, mx, cy, uhrD, farbe);
+}
+
+// Vereinfachte Zeitleiste mit drei Marken, Klammer und Farbband grün/gelb/rot (linear in Tagen)
+// d = Tage ab Start; band = [[von, bis, Farbe]]; marken: {d, datum, text, ausr: "l"|"m"|"r"}
+function zeitleisteDrei(slide, { x0 = 0.95, w = 11.5, tage = 33, bandY, bh = 0.45, band, marken, klammer, legende }) {
+  const X = (d) => x0 + (d / tage) * w;
+  for (const [a, b, c] of band) slide.addShape(P.ShapeType.rect, { x: X(a), y: bandY, w: X(b) - X(a), h: bh, fill: { color: c }, line: { color: c, width: 0.25 } });
+  const lw = 3.5, lh = 1.05;
+  for (const m of marken) {
+    const x = X(m.d);
+    slide.addShape(P.ShapeType.line, { x, y: bandY - 0.3, w: 0, h: 0.3 + bh / 2, line: { color: COL.tinte3, width: 1.25 } });
+    const lx = m.ausr === "l" ? LM : m.ausr === "r" ? LM + CW - lw : x - lw / 2;
+    T(slide, [
+      { text: m.datum, options: { bold: true, fontSize: 22, color: COL.tinte, breakLine: true } },
+      { text: m.text, options: { fontSize: 20, color: COL.tinte2 } },
+    ], { x: lx, y: bandY - 0.3 - 0.08 - lh, w: lw, h: lh, valign: "bottom", align: m.ausr === "l" ? "left" : m.ausr === "r" ? "right" : "center" });
+    slide.addShape(P.ShapeType.ellipse, { x: x - 0.17, y: bandY + bh / 2 - 0.17, w: 0.34, h: 0.34, fill: { color: COL.weiss }, line: { color: COL.tinte, width: 2.5 } });
+  }
+  if (klammer) {
+    const xa = X(klammer.von), xb = X(klammer.bis), yb = bandY + bh + 0.42;
+    const lo = { color: COL.tinte, width: 2 };
+    slide.addShape(P.ShapeType.line, { x: xa, y: yb, w: xb - xa, h: 0, line: lo });
+    slide.addShape(P.ShapeType.line, { x: xa, y: yb - 0.2, w: 0, h: 0.2, line: lo });
+    slide.addShape(P.ShapeType.line, { x: xb, y: yb - 0.2, w: 0, h: 0.2, line: lo });
+    T(slide, klammer.text, { x: xa, y: yb + 0.08, w: xb - xa, h: 0.4, fontSize: 22, bold: true, align: "center", color: COL.tinte });
+  }
+  if (legende) {
+    T(slide, legende.titel, { x: LM, y: legende.y, w: CW, h: 0.4, fontSize: 20, bold: true, color: COL.tinte, valign: "middle" });
+    const runs = [];
+    legende.eintraege.forEach(([c, t], i) => {
+      if (i > 0) runs.push({ text: " · ", options: { color: COL.tinte3, bold: true } });
+      runs.push({ text: t, options: { color: c, bold: true } });
+    });
+    T(slide, runs, { x: LM, y: legende.y + 0.5, w: CW, h: 0.45, fontSize: 24, valign: "middle" });
+  }
+}
+
+// Eingabe-Ampel: drei Eingabekästen, Pfeil, Frage, Pfeil, drei Ergebnisse (grün/gelb/rot = Zeitstatus)
+function eingabeAmpel(slide, { y, eingaben, frage, ergebnisse }) {
+  const g = 0.35, bw = (CW - 2 * g) / 3, bh = 0.7;
+  eingaben.forEach((t, i) => {
+    const x = LM + i * (bw + g);
+    karte(slide, x, y, bw, bh, { fill: COL.gruenHell, line: COL.gruen, lw: 1.5 });
+    T(slide, t, { x, y, w: bw, h: bh, fontSize: 22, bold: true, color: COL.gruen, align: "center", valign: "middle" });
+  });
+  const qy = y + bh + 0.55, qw = 6.6, qx = LM + (CW - qw) / 2;
+  slide.addShape(P.ShapeType.downArrow, { x: LM + CW / 2 - 0.2, y: y + bh + 0.08, w: 0.4, h: 0.4, fill: { color: COL.tinte3 }, line: { color: COL.tinte3, width: 0.25 } });
+  slide.addText(frage, {
+    shape: P.ShapeType.roundRect, rectRadius: 0.1, x: qx, y: qy, w: qw, h: 0.75, fill: { color: COL.gruen }, line: { color: COL.gruen, width: 0.5 },
+    fontFace: FONT, fontSize: 24, bold: true, color: COL.weiss, align: "center", valign: "middle", margin: 0.05, fit: "none",
+  });
+  const ry = qy + 0.75 + 0.55;
+  slide.addShape(P.ShapeType.downArrow, { x: LM + CW / 2 - 0.2, y: qy + 0.75 + 0.08, w: 0.4, h: 0.4, fill: { color: COL.tinte3 }, line: { color: COL.tinte3, width: 0.25 } });
+  ergebnisse.forEach(([t, fg, bg], i) => {
+    const x = LM + i * (bw + g);
+    slide.addText(t, {
+      shape: P.ShapeType.roundRect, rectRadius: 0.1, x, y: ry, w: bw, h: 0.75, fill: { color: bg }, line: { color: fg, width: 2 },
+      fontFace: FONT, fontSize: 24, bold: true, color: fg, align: "center", valign: "middle", margin: 0.05, fit: "none",
+    });
+  });
+  return { bis: ry + 0.75 };
+}
+
+// Kette angeboten → geprüft → eingebaut (senkrecht, für schmale Spalten)
+function kettePilot(slide, { x, y, w, stufen, darunter }) {
+  const bh = 0.8, ab = 0.45;
+  stufen.forEach((t, i) => {
+    const sy = y + i * (bh + ab), letzte = i === stufen.length - 1;
+    slide.addText(t, {
+      shape: P.ShapeType.roundRect, rectRadius: 0.1, x, y: sy, w, h: bh, fill: { color: letzte ? COL.gruen : COL.gruenHell }, line: { color: COL.gruen, width: 2 },
+      fontFace: FONT, fontSize: 22, bold: true, color: letzte ? COL.weiss : COL.gruen, align: "center", valign: "middle", margin: 0.08, fit: "none",
+    });
+    if (!letzte) slide.addShape(P.ShapeType.downArrow, { x: x + w / 2 - 0.2, y: sy + bh + 0.04, w: 0.4, h: ab - 0.08, fill: { color: COL.tinte3 }, line: { color: COL.tinte3, width: 0.25 } });
+  });
+  const dy = y + stufen.length * bh + (stufen.length - 1) * ab + 0.2;
+  T(slide, darunter, { x, y: dy, w, h: 0.9, fontSize: 20, color: COL.tinte2, align: "center" });
+  return { bis: dy + 0.9 };
+}
+
+// Personenkarte: Name fett, darunter Beschreibung
+function personenKarte(slide, { x, y, w, h, name, text, fill = COL.gruenHell }) {
+  karte(slide, x, y, w, h, { fill });
+  T(slide, [
+    { text: name, options: { bold: true, fontSize: 22, color: COL.gruen, breakLine: true } },
+    { text, options: { fontSize: 20, color: COL.tinte } },
+  ], { x: x + 0.2, y: y + 0.12, w: w - 0.4, h: h - 0.24, valign: "top", lineSpacingMultiple: 0.9 });
+}
+
+// Mengenleiste: n Türen, die ersten `belegt` gefüllt (vorgemerkt), die übrigen gestrichelt (offen); Beschriftung darunter
+function mengenleiste(slide, { x, y, n, belegt, tw = 1.0, th = 1.7, gap = 0.3, textBelegt, textOffen }) {
+  for (let i = 0; i < n; i++) tuer(slide, x + i * (tw + gap), y, tw, th, i < belegt ? "hervor" : "gesucht", false);
+  const bw = belegt * tw + (belegt - 1) * gap, ox = x + belegt * (tw + gap);
+  const ly = y + th + 0.12;
+  slide.addShape(P.ShapeType.line, { x, y: ly, w: bw, h: 0, line: { color: COL.gruen, width: 2 } });
+  T(slide, textBelegt, { x, y: ly + 0.06, w: bw, h: 0.4, fontSize: 16, bold: true, color: COL.gruen, align: "center" });
+  slide.addShape(P.ShapeType.line, { x: ox, y: ly, w: (n - belegt) * tw + (n - belegt - 1) * gap, h: 0, line: { color: COL.tinte, width: 2, dashType: "dash" } });
+  T(slide, textOffen, { x: ox - 0.2, y: ly + 0.06, w: tw + 0.4, h: 0.4, fontSize: 16, bold: true, color: COL.tinte, align: "center" });
+  return { w: n * tw + (n - 1) * gap, bis: ly + 0.5 };
+}
+
 // ---------- Bilder ----------
 const BILDMASSE = {
   "k1-uebersicht.jpg": [2160, 1215], "k2-paarliste.jpg": [2160, 1215], "k3-zu-spaet.jpg": [2160, 1215],
@@ -238,7 +372,7 @@ function papier(slide, x, y, w, h) {
 }
 
 // ---------- Deck, Layouts ----------
-function neuesDeck(titel) {
+function neuesDeck(titel, opt = {}) {
   const pres = new pptxgen();
   P = pres;
   pres.layout = "LAYOUT_WIDE";
@@ -253,8 +387,16 @@ function neuesDeck(titel) {
   ];
   const nr = (dark) => ({ x: 11.73, y: 6.98, w: 1.0, h: 0.3, fontFace: FONT, fontSize: 10, color: dark ? COL.gruenHell : COL.tinte3, align: "right", margin: [0, 0, 0, 0] });
   const titelPh = (o) => ({ placeholder: { options: Object.assign({ name: "title", type: "title", x: LM, y: 0.4, w: CW, h: 1.15, fontFace: FONT, fontSize: 32, bold: true, color: COL.tinte, valign: "top", align: "left", margin: 0 }, o), text: "" } });
-  const hell = (name) => pres.defineSlideMaster({ title: name, background: { color: COL.weiss }, objects: [titelPh({}), ...fuss(false)], slideNumber: nr(false) });
+  const hell = (name) => pres.defineSlideMaster({ title: name, background: { color: COL.weiss }, objects: [titelPh(opt.p5 ? { fontSize: 34 } : {}), ...fuss(false)], slideNumber: nr(false) });
   ["INHALT", "BILD", "DEMO", "ANHANG"].forEach(hell);
+  if (opt.p5) {
+    // Pitch 5 Minuten: dunkle Layouts ohne feste Namenszeilen, Titel 34 pt
+    const dunkelP5 = (name) => pres.defineSlideMaster({
+      title: name, background: { color: COL.gruen }, objects: [titelPh({ x: LM, y: 0.5, w: CW, h: 1.3, fontSize: 34, color: COL.weiss }), ...fuss(true)], slideNumber: nr(true),
+    });
+    dunkelP5("P5TITEL"); dunkelP5("P5SCHLUSS");
+    return pres;
+  }
   const dunkel = (name, tp) => pres.defineSlideMaster({
     title: name, background: { color: COL.gruen },
     objects: [
@@ -308,7 +450,13 @@ function notizDaten(n) {
   const zeigen = !!(n.min5 || n.min3);
   return { voll, s5, s3, zeigen };
 }
+// Notizformat des 5-Minuten-Decks: n.absaetze (Liste von Absätzen), n.zeitfenster (Zeile am Ende) oder n.zeit {sek, uhr}
+function notizTextP5(n) {
+  const teile = [`Spricht: ${n.spricht}`, "", n.absaetze.join("\n\n"), "", n.zeitfenster || `Zeitfenster: etwa ${n.zeit.sek} Sekunden · Uhr am Ende: ${n.zeit.uhr}`];
+  return { text: teile.join("\n"), dauer: n.zeit ? n.zeit.sek : 0 };
+}
 function notizText(n) {
+  if (n.absaetze) return notizTextP5(n);
   const d = notizDaten(n);
   const teile = [`Spricht: ${n.spricht}`, "", n.text];
   if (n.klick) teile.push("", n.klick);
@@ -350,7 +498,7 @@ async function baue(pres, folien, datei) {
       }
       if (f.chips) chipZeile(s, f.chips, cx, 1.62);
     }
-    if (f.fuss) T(s, f.fuss, { x: LM, y: FUSS_Y, w: 11.0, h: 0.42, fontSize: 10, color: COL.tinte3, valign: "bottom" });
+    if (f.fuss) T(s, f.fuss, { x: LM, y: FUSS_Y, w: 11.0, h: 0.42, fontSize: f.fussPt || 10, color: f.fussFarbe || COL.tinte3, valign: "bottom" });
     if (f.zeichne) f.zeichne(s, { nr, chip, chipZeile });
     const nt = notizText(f.notiz);
     s.addNotes(nt.text);
@@ -363,5 +511,6 @@ async function baue(pres, folien, datei) {
 
 module.exports = {
   COL, FONT, LM, CW, TOP, THEME, CHIPS, T, chip, chipZeile, karte, kette, zeit4, zeitleisteFall, fx,
+  tuer, tuerGitter, uhr, pfeilUnterbrochen, zeitleisteDrei, eingabeAmpel, kettePilot, personenKarte, mengenleiste,
   bildPassend, bildGroesse, bildAusschnitt, ausschnittRahmen, ketteZeile, papier, neuesDeck, baue, woerter, sekunden, summen, notizDaten, getP: () => P,
 };
