@@ -158,7 +158,7 @@ function folien() {
         karte(s, x, y, w, h, { fill, line: fg, lw: 1.5 });
         s.addText(ziffer, { shape: B.getP().ShapeType.ellipse, x: x + 0.3, y: y + 0.38, w: 0.6, h: 0.6, fill: { color: fg }, line: { color: fg, width: 2.25 },
           fontFace: B.FONT, fontSize: 24, bold: true, color: COL.weiss, align: "center", valign: "middle", margin: 0, fit: "none" });
-        T(s, titel, { x: x + 1.1, y: y + 0.35, w: w - 1.4, h: 1.2, fontSize: 28, bold: true, color: fg, valign: "top" });
+        T(s, titel, { x: x + 1.0, y: y + 0.38, w: w - 1.1, h: 0.6, fontSize: 22, bold: true, color: fg, valign: "middle" });
         T(s, [{ text: link, options: { hyperlink: { slide: ctx.nr[ziel], tooltip: tip } } }], { x: x + 0.3, y: y + h - 0.85, w: w - 0.6, h: 0.45, fontSize: 20 });
       });
     },
