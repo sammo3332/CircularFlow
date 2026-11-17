@@ -1,6 +1,6 @@
 # CircularFlow · Pitch INNOSPRINT 2026
 
-Dokumentversion 2.3 · Stand 17.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `1e96e9b` ·
+Dokumentversion 2.4 · Stand 18.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `1e96e9b` ·
 Freigabe und Bauauftrag `4f327c3` · geprüfter Endstand des Decks: Commit `b647ea3`
 
 Eingereicht wurde nichts. Die Einreichung übernimmt das Team. Frist laut Veranstalter „bis einschließlich 18.11.26“,
@@ -23,6 +23,15 @@ teamintern 18.11.2026, 12:00 Uhr. Plattform, Vorschau, Freigabe und `docs/pitch-
   Ende der Anhang für Rückfragen (Seiten 10–15). In der PPTX sind diese Folien ausgeblendet. Wer aus dem PDF
   vorträgt, blättert nach Seite 4 direkt zu Seite 7.
 - **Prüfsummen (SHA-256, Anfang):** PPTX `9d5a86e7e239229a`, PDF `bc7f651fa7b5b669`, Sprechtext `e210d241234c43b0`.
+  Am 18.11.2026 gegen die tatsächlichen Dateien nachgerechnet (23 von 23 Abgleichsprüfungen,
+  [`generalprobe/pruefprotokoll-2026-11-18.md`](generalprobe/pruefprotokoll-2026-11-18.md)).
+- **Zur Generalprobe:** [`generalprobe/probenanleitung.md`](generalprobe/probenanleitung.md) mit Sprecherwechseln, Demo in
+  sechs Schritten, Zeitkontrollen und Verhalten bei Ausfall. Sie trennt ausgeführte Browserprüfungen von der noch
+  nötigen Probe in PowerPoint und am Beamer. Ersatzbilder der Demo: `generalprobe/bilder/`.
+- **Für Rückfragen der Jury:** [`juryfragen/juryantworten.md`](juryfragen/juryantworten.md), zehn kurze Antworten mit Status
+  (belegt, gezeigt, Hypothese), Prüfschritten und Quellenprüfung.
+- **Nächster Praxistest:** Einseiter, 15-Minuten-Leitfaden und Notizvorlage in
+  [`../../docs/praxistest/`](../../docs/praxistest/README.md). Entwurf, kein Gespräch geführt, nichts versendet.
 
 ## 2. Ablauf, Zeiten, Aufteilung
 
