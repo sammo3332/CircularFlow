@@ -70,7 +70,7 @@ Jede Folie hat ein visuelles Element (Bild, Zeitleiste, Kette, Karten, große Za
 ## Sprechtext
 
 - Jede Folie hat Notizen: erste Zeile „Spricht: Houssam“ oder „Spricht: Feyrouz“, dann eine Leerzeile, dann der
-  Sprechtext. Optional am Ende „Dauer: etwa N Sekunden“.
+  Sprechtext. Optional am Ende „Dauer (voll): etwa N Sekunden“.
 
 ## Dateien
 

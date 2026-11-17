@@ -74,6 +74,11 @@ function kuerzung(modus, k) {
   if (k === 3 || k === 4) {
     min5 = { art: "voll" };
     if (modus === "B") min3 = { art: "bild", dauer: 30 };
+    // R15: Satz aus E2 am Ende; R16: bei B/3 Minuten fällt der Satzanfang weg (E4 als Bildfolie ohne Liste)
+    if (k === 4) {
+      min5 = { art: "zusatz", text: "Wichtig: Der Abgleich ist ein Vorschlag zur Prüfung, keine fachliche Freigabe." };
+      if (modus === "B") min3 = { art: "bild", dauer: 30, regie: "Der Satzanfang „Zurück zur Liste, jetzt“ fällt weg." };
+    }
   }
   return { min5, min3 };
 }

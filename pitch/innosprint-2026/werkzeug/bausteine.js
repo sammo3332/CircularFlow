@@ -280,7 +280,7 @@ const sekunden = (text) => Math.max(5, Math.round(woerter(text) / 2.3 / 5) * 5);
 //   { art: "weg", text }               Folie entfällt oder wird ohne Kommentar gezeigt (0 s); text = Zeile
 //   { art: "kurz", text, dauer? }      Kurzfassung statt Volltext; Dauer aus der Wortzahl, falls nicht gesetzt
 //   { art: "zusatz"|"zuerst", text }   Volltext plus Zusatz am Ende bzw. am Anfang
-//   { art: "bild", dauer }             als sichtbare Bildfolie, feste Dauer
+//   { art: "bild", dauer, regie? }             als sichtbare Bildfolie, feste Dauer
 // Fehlt eine der beiden Stufen, gilt "voll"; fehlen beide, steht keine Zeile in der Notiz.
 function stufeAus(n, key, voll) {
   let st = n[key];
@@ -298,7 +298,7 @@ function stufeAus(n, key, voll) {
       return { zeile: `${wo} (etwa ${d} Sekunden): ${st.text}`, sek: voll + d, benannt: true };
     }
     case "bild":
-      return { zeile: `als sichtbare Bildfolie zeigen (Kopie der Demo-Folie, sichtbar gestellt, etwa ${st.dauer} Sekunden).`, sek: st.dauer, benannt: true };
+      return { zeile: `als sichtbare Bildfolie zeigen (Kopie der Demo-Folie, sichtbar gestellt, etwa ${st.dauer} Sekunden).${st.regie ? " " + st.regie : ""}`, sek: st.dauer, benannt: true };
     default: throw new Error("Unbekannte Stufe: " + st.art);
   }
 }
@@ -313,7 +313,7 @@ function notizText(n) {
   const teile = [`Spricht: ${n.spricht}`, "", n.text];
   if (n.klick) teile.push("", n.klick);
   if (d.zeigen) teile.push("", `Bei 5 Minuten: ${d.s5.zeile}`, "", `Bei 3 Minuten: ${d.s3.zeile}`);
-  teile.push("", `Dauer: etwa ${d.voll} Sekunden`);
+  teile.push("", `Dauer (voll): etwa ${d.voll} Sekunden`);
   return { text: teile.join("\n"), dauer: d.voll };
 }
 // Summen je Fassung aus denselben Daten wie die Notizen. Folien mit notiz.ausSumme (Anhang-Demo in C) zählen nicht.

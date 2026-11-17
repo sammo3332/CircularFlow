@@ -3,7 +3,8 @@ const B = require("./bausteine");
 const G = require("./inhalt-gemeinsam");
 const { COL, LM, CW, T, karte, kette, zeitleisteFall, bildPassend, bildGroesse, papier } = B;
 
-const B2_KURZ = "Wir nehmen an, eine Prüfung dauert mindestens 14 Tage. Das nennen wir Mindestprüfzeit. Die Beispiele der Vorschau sind Systemtrennwände. Ein Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe.";
+const B8_KURZ = "CircularFlow macht aus einem Paar einen prüfbaren nächsten Schritt: mit Zeitprüfung und ohne vorgetäuschte Freigabe. Heute ist das Simulation mit Beispieldaten. Fachleute prüfen, wir bereiten die Entscheidung vor. Als Nächstes brauchen wir einen echten Fall. Danke.";
+const B2_KURZ = "Wir nehmen an, eine Prüfung dauert mindestens 14 Tage. Das nennen wir Mindestprüfzeit. Die Beispiele der Vorschau sind Systemtrennwände. Der Stichtag der Demo ist ein gewählter Zeitpunkt in der Simulation, nicht das heutige Datum. Ein Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe.";
 const B1_ZUSATZ = "Wir nehmen an, eine Prüfung dauert mindestens 14 Tage. Das nennen wir Mindestprüfzeit. Ein Paar ist ein Angebot und ein Bedarf derselben Bauteilgruppe.";
 const B5_KURZ = "Für wen? Unsere Hypothese: Planung und Bauleitung auf der Bedarfsseite, dazu Eigentümer, die ausbauen lassen. Der Nutzen, den wir erwarten: früh sehen, was frei wird, die Zeit mit Begründung prüfen und den nächsten Schritt kennen. Andere Plattformen vermitteln Angebot und Gesuch, Concular Exchange laut Anbieter, Madaster Match laut Dokumentation. Unsere Frage dazu: Reicht die Zeit bis zur Bestellentscheidung für eine fachliche Prüfung? Ob andere Plattformen das abbilden, haben wir nicht geprüft.";
 const MADASTER = "Madaster: Die Dokumentation (Stand 09.09.2026) nennt keine Bestellfrist und keine Prüfzeit auf der Suchseite. Die Funktion selbst haben wir nicht bedient.";
@@ -138,6 +139,7 @@ function folien() {
     notiz: {
       spricht: "Houssam",
       text: "CircularFlow macht aus einem Paar einen prüfbaren nächsten Schritt: mit Zeitprüfung, mit Status je Wert und ohne vorgetäuschte Freigabe. Heute ist das Simulation mit Beispieldaten. Fachleute prüfen, wir bereiten die Entscheidung vor. Als Nächstes brauchen wir einen echten Fall. Danke.",
+      min5: { art: "kurz", text: B8_KURZ }, min3: { art: "kurz", text: B8_KURZ },
     },
   });
 

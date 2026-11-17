@@ -3,7 +3,7 @@
 //  - Folienbilder: Folien-PDF der Fassung, pdftoppm -jpeg -r 80
 //  - PDF: Chromium über Playwright
 //  - Kennung und Abschnitt je Folie: aus den inhalt-Modulen (gleiche Reihenfolge wie in der PPTX)
-//  - Selbstprüfung: pdftotext, je Folie erster Satz, letzter Satz und Zeile "Dauer" im PDF-Text; Exit-Code 1 bei FEHLER
+//  - Selbstprüfung: pdftotext, je Folie erster Satz, letzter Satz und Zeile "Dauer (voll)" im PDF-Text; Exit-Code 1 bei FEHLER
 // Aufruf: node sprechtext.js [A|B|C ...]
 const fs = require("fs");
 const os = require("os");
@@ -96,7 +96,7 @@ td.z { text-align: right; }
 <div class="hinweis">Zeiten sind Schätzungen aus Wortzahlen (2,3 Wörter/s); Probe mit Stoppuhr steht aus.</div></section>`);
   folien.forEach((f, i) => {
     const m = meta[i];
-    const dauerZeile = f.absaetze.find((a) => a.startsWith("Dauer:")) || "";
+    const dauerZeile = f.absaetze.find((a) => a.startsWith("Dauer (voll):")) || "";
     const dm = /(\d+)/.exec(dauerZeile);
     const ausg = f.versteckt ? ` · <span class="aus">ausgeblendet: ${m.abschnitt === "Demo" ? "Ersatzfolie" : "Anhang"}</span>` : "";
     const sprecher = (f.absaetze[0] || "").replace(/^Spricht:\s*/, "");
@@ -108,7 +108,7 @@ td.z { text-align: right; }
       else if (a.startsWith("Klick:")) html += `<div class="kasten klick"><p><b>Klick:</b>${esc(a.slice(6))}</p></div>`;
       else if (a.startsWith("Bei 5 Minuten:")) html += `<div class="kasten m5"><p><b>Bei 5 Minuten:</b>${esc(a.slice(14))}</p></div>`;
       else if (a.startsWith("Bei 3 Minuten:")) html += `<div class="kasten m3"><p><b>Bei 3 Minuten:</b>${esc(a.slice(14))}</p></div>`;
-      else if (a.startsWith("Dauer:")) html += `<p class="dauer">${esc(a)}</p>`;
+      else if (a.startsWith("Dauer (voll):")) html += `<p class="dauer">${esc(a)}</p>`;
       else html += `<p>${esc(a)}</p>`;
     });
     teile.push(html + "</section>");
@@ -128,10 +128,10 @@ function pruefe(pdf, folien, meta) {
     if (von < 0) fehlt.push("Kopfzeile");
     const abschnitt = von < 0 ? "" : text.slice(von, bis);
     const inhalt = f.absaetze.filter((a) => a !== "");
-    const volltext = inhalt.find((a, j) => j > 0 && !/^(Klick:|Bei 5 Minuten:|Bei 3 Minuten:|Dauer:)/.test(a)) || "";
-    const letzte = inhalt.filter((a) => !a.startsWith("Dauer:")).pop() || "";
+    const volltext = inhalt.find((a, j) => j > 0 && !/^(Klick:|Bei 5 Minuten:|Bei 3 Minuten:|Dauer \(voll\):)/.test(a)) || "";
+    const letzte = inhalt.filter((a) => !a.startsWith("Dauer (voll):")).pop() || "";
     const erster = saetze(volltext)[0], letzterVoll = saetze(volltext).pop(), letzterNotiz = saetze(letzte).pop();
-    const dauer = inhalt.find((a) => a.startsWith("Dauer:"));
+    const dauer = inhalt.find((a) => a.startsWith("Dauer (voll):"));
     for (const [was, s] of [["erster Satz", erster], ["letzter Satz", letzterVoll], ["letzter Satz der Notiz", letzterNotiz], ["Dauer", dauer]]) {
       if (!s || !abschnitt.includes(norm(s))) fehlt.push(was);
     }

@@ -73,7 +73,7 @@ function folien() {
     notiz: {
       spricht: "Feyrouz",
       text: "Wir wollen vier Zeitpunkte getrennt erfassen. Erstens: Wann wurde das Angebot auf der abgebenden Seite bekannt? Zweitens: Wann erreichte es die zuständige Person? Drittens: Bis wann musste diese Person entscheiden? Viertens: Wann war die Übergabe möglich? Bleibt zwischen dem zweiten und dritten Zeitpunkt weniger Zeit, als eine Prüfung braucht, kommt das Angebot zu spät. Dafür muss vor der Bestellung eine Fachperson prüfen, ob das Bauteil passt. Die Bitte dazu heißt bei uns Prüfbitte. Wir nehmen an, die Prüfung dauert mindestens 14 Tage, das ist die Mindestprüfzeit. Das ist unsere Arbeitsannahme.",
-      min5: { art: "voll" }, min3: { art: "zuerst", text: "Bis zu einem festen Tag, der Bestellfrist, muss Ersatz bestellt werden." },
+      min5: { art: "zuerst", text: "Bis zu einem festen Tag, der Bestellfrist, muss Ersatz bestellt werden." }, min3: { art: "zuerst", text: "Bis zu einem festen Tag, der Bestellfrist, muss Ersatz bestellt werden." },
     },
   });
 
