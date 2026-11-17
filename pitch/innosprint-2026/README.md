@@ -1,7 +1,7 @@
 # CircularFlow · Pitch INNOSPRINT 2026
 
-Dokumentversion 2.2 · Stand 17.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `1e96e9b` ·
-Freigabe und Bauauftrag `4f327c3` · geprüfter Endstand des Decks: Commit `8684a0a`
+Dokumentversion 2.3 · Stand 17.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `1e96e9b` ·
+Freigabe und Bauauftrag `4f327c3` · geprüfter Endstand des Decks: Commit `b647ea3`
 
 Eingereicht wurde nichts. Die Einreichung übernimmt das Team. Frist laut Veranstalter „bis einschließlich 18.11.26“,
 teamintern 18.11.2026, 12:00 Uhr. Plattform, Vorschau, Freigabe und `docs/pitch-ablauf.md` sind unverändert.
@@ -16,13 +16,13 @@ teamintern 18.11.2026, 12:00 Uhr. Plattform, Vorschau, Freigabe und `docs/pitch-
 
 - **Grundlage:**
   - Plan 0.2, am 17.11.2026 vom Team mit Anpassungen freigegeben (`plan/pitch-5min-plan.md`, Abschnitt 14).
-  - Bauauftrag mit Nachbesserung 1 bis 4a: `plan/pitch-5min-bauauftrag.md`.
+  - Bauauftrag mit Nachbesserung 1 bis 5: `plan/pitch-5min-bauauftrag.md`.
 - **Dauer laut Veranstalter:** Tag 5, S. 11 und 17: fünf Minuten Präsentation, fünf Minuten Rückfragen. CircularFlow
   pitcht als erstes von acht Teams.
 - **Zum PDF:** Es enthält alle 15 Folien. Nach Folie 4 stehen die zwei Ersatzfolien der Demo (Seiten 5 und 6), am
   Ende der Anhang für Rückfragen (Seiten 10–15). In der PPTX sind diese Folien ausgeblendet. Wer aus dem PDF
   vorträgt, blättert nach Seite 4 direkt zu Seite 7.
-- **Prüfsummen (SHA-256, Anfang):** PPTX `c833631a4210e3c3`, PDF `3458ef3a9bc595d4`, Sprechtext `ec04f5aa27cdf99f`.
+- **Prüfsummen (SHA-256, Anfang):** PPTX `9d5a86e7e239229a`, PDF `bc7f651fa7b5b669`, Sprechtext `e210d241234c43b0`.
 
 ## 2. Ablauf, Zeiten, Aufteilung
 
@@ -208,6 +208,21 @@ python-pptx. Die Agenten liefen nacheinander, jeweils auf einem festen Commit.
 | Inhaltsprüfung | cf-review | `9d9748a` | Vorgaben erfüllt, kein Sachfehler. Übernommen: „Karte“ auf Folie 9 erklärt, veralteter Verweis in Abschnitt 11. Nicht übernommen: Brücke zwischen Kurzcheck und Praxistest (Entscheidung des Teams) |
 | Nachbesserung 4a | cf-entwicklung | `8684a0a` | Erklärzeile zur Karte auf Folie 9, README Abschnitt 11 |
 | Gezielte Prüfung | cf-test, U1–U8 | `8684a0a` | alle bestanden: geänderte Stellen wörtlich, 461 Wörter, Links und Ausblendung unverändert |
+| Nachbesserung 5 (Vorgabe des Teams) | cf-entwicklung | `b647ea3` | Folie 9 verbindet Kurzcheck und Praxistest, „Entscheidungskarte“; Sprechtext von Folie 9 nach Wortlaut des Teams (40 Wörter); zügige Zeit wird aus der Wortzahl berechnet |
+| Inhaltsprüfung | cf-review | `53517a1` | Vorgabe erfüllt, Auslegung vertretbar, kein Sachfehler. Übernommen: zwei README-Hinweise (Zitate nur auf der Folie, Probenpunkt zur Entscheidungskarte) |
+| Gezielte Prüfung | cf-test, V1–V6 | `e21ccc9` (Deck `b647ea3`) | alle bestanden: Folie 9 und Notiz wörtlich, 433 Wörter, 259 s, Links in PPTX und PDF einzeln bestätigt |
+
+Gezielte Prüfung auf `e21ccc9`, Deckdateien aus `b647ea3` (cf-test, V1–V6, alle bestanden):
+
+- Prüfsummen wie in Abschnitt 1. Die Fassungen A, B und C sind byte-gleich. Regeltests: 46 von 46 bestanden.
+- Geändert sind nur Folientext und Notiz von Folie 9, wörtlich wie in Nachbesserung 5. Alle anderen Folienseiten
+  sind bei 144 dpi pixelgleich zu `8684a0a`.
+- Es sind 433 Wörter (55 + 63 + 44 + 96 + 56 + 79 + 40), aufgeteilt in 244 für Feyrouz und 189 für Houssam.
+  Zeitfenster 31/35/27/64/33/48/21 s, Summe 259 s, Uhr 4:19. Bei zügigem Tempo etwa 3:25. Im Spätfall etwa 4:27,
+  mit Einleitung und K2 auf Folie 5 etwa 4:39. Notizen, Sprechtext-Deckblatt und README nennen dieselben Zahlen.
+- Ersatzfolienlinks in PPTX und PDF einzeln ausgelesen: genau 4→5, 4→6, 5→6, 5→7 und 6→7. Ausgeblendet sind die
+  Folien 5, 6 und 10–15. `validate.py` besteht.
+- Der Sprechtext hat 16 Seiten, das Deckblatt steht auf einer Seite. Jeder Notizabsatz steht im Sprechtext.
 
 Gezielte Prüfung auf `8684a0a` (cf-test, U1–U8, alle bestanden; Linkziele im PDF zusätzlich von der Koordination
 mit pypdf ausgelesen):
@@ -312,7 +327,7 @@ Ergebnisse der Endprüfung auf `1eb08a2`:
   - Fassung A dauerte mit Demo etwa 7:15.
   - Die Jury soll den Nutzen ohne technisches Vorwissen verstehen.
 - **Gewünschtes Verhalten:**
-  - sieben sichtbare Folien mit Live-Demo, auf 4:35 gerechnet
+  - sieben sichtbare Folien mit Live-Demo, auf 4:35 geplant; nach den Kürzungen vom 17.11. auf 4:19 gerechnet
   - Ersatzfolien
   - Sprechtext mit Zeiten und Sprecherwechseln
   - Anhang für Rückfragen
