@@ -1,383 +1,337 @@
-# CircularFlow · Pitch INNOSPRINT 2026 · drei Fassungen
+# CircularFlow · Pitch INNOSPRINT 2026
 
-Dokumentversion 1.0 · Stand 17.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `bdf8d2e` ·
-geprüfter Stand der Präsentationen: Commit `aac67d5` (siehe Abschnitt 8)
+Dokumentversion 2.0 · Stand 17.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `1e96e9b` ·
+Freigabe und Bauauftrag `4f327c3` · geprüfter Endstand des Decks: Commit `1eb08a2`
 
-Eingereicht wurde nichts. Die Einreichung übernimmt das Team (Frist laut Veranstalter: bis einschließlich 18.11.2026;
-teamintern: 18.11.2026, 13 Uhr). Plattform, Vorschau und Freigabe sind unverändert.
+Eingereicht wurde nichts. Die Einreichung übernimmt das Team. Frist laut Veranstalter „bis einschließlich 18.11.26“,
+teamintern 18.11.2026, 12:00 Uhr. Plattform, Vorschau, Freigabe und `docs/pitch-ablauf.md` sind unverändert.
 
-## 1. Empfohlen zur Abgabe: Fassung A „Umbaufall“
+## 1. Empfohlen zur Abgabe: Pitch 5 Minuten
 
 | Zweck | Datei |
 |---|---|
-| **Einreichen** (PDF, 15 Seiten) | [`ausgabe/empfohlen-zur-abgabe/CircularFlow_INNOSPRINT2026_Fassung-A_Umbaufall.pdf`](ausgabe/empfohlen-zur-abgabe/CircularFlow_INNOSPRINT2026_Fassung-A_Umbaufall.pdf) |
-| Vortragen und bearbeiten (PPTX, Sprechtext und Regie in den Notizen) | [`ausgabe/empfohlen-zur-abgabe/CircularFlow_INNOSPRINT2026_Fassung-A_Umbaufall.pptx`](ausgabe/empfohlen-zur-abgabe/CircularFlow_INNOSPRINT2026_Fassung-A_Umbaufall.pptx) |
-| Sprechtext zum Ausdrucken | [`ausgabe/sprechtexte/CircularFlow_INNOSPRINT2026_Fassung-A_Umbaufall_Sprechtext.pdf`](ausgabe/sprechtexte/CircularFlow_INNOSPRINT2026_Fassung-A_Umbaufall_Sprechtext.pdf) |
+| **Einreichen** (PDF, 15 Seiten, 16:9) | [`ausgabe/abgabe-5-minuten/CircularFlow_INNOSPRINT2026_Pitch-5-Minuten.pdf`](ausgabe/abgabe-5-minuten/CircularFlow_INNOSPRINT2026_Pitch-5-Minuten.pdf) |
+| Vortragen (PPTX, Sprechtext und Regie in den Notizen) | [`ausgabe/abgabe-5-minuten/CircularFlow_INNOSPRINT2026_Pitch-5-Minuten.pptx`](ausgabe/abgabe-5-minuten/CircularFlow_INNOSPRINT2026_Pitch-5-Minuten.pptx) |
+| Sprechtext zum Ausdrucken (A4, 16 Seiten: Ablauf auf einen Blick, dann je Folie eine Seite) | [`ausgabe/sprechtexte/CircularFlow_INNOSPRINT2026_Pitch-5-Minuten_Sprechtext.pdf`](ausgabe/sprechtexte/CircularFlow_INNOSPRINT2026_Pitch-5-Minuten_Sprechtext.pdf) |
 
-Online: <https://github.com/sammo3332/CircularFlow/tree/codex/plattform-v1/pitch/innosprint-2026>
+- **Grundlage:**
+  - Plan 0.2, am 17.11.2026 vom Team mit Anpassungen freigegeben (`plan/pitch-5min-plan.md`, Abschnitt 14).
+  - Bauauftrag mit Nachbesserung 1 und 2: `plan/pitch-5min-bauauftrag.md`.
+- **Dauer laut Veranstalter:** Tag 5, S. 11 und 17: fünf Minuten Präsentation, fünf Minuten Rückfragen. CircularFlow
+  pitcht als erstes von acht Teams.
+- **Zum PDF:** Es enthält alle 15 Folien. Nach Folie 4 stehen die zwei Ersatzfolien der Demo (Seiten 5 und 6), am
+  Ende der Anhang für Rückfragen (Seiten 10–15). In der PPTX sind diese Folien ausgeblendet. Wer aus dem PDF
+  vorträgt, blättert nach Seite 4 direkt zu Seite 7.
+- **Prüfsummen (SHA-256, Anfang):** PPTX `ff608778a9bbdf74`, PDF `004efaf88e89471a`, Sprechtext `a8de90c3df98dc24`.
 
-**Warum A:** Das ist eine Einschätzung aus der Koordination. Sie wurde nicht vor Publikum erprobt, und die
-Jurykriterien sind nicht bekannt.
-- A erklärt zuerst den Fall und die Begriffe Bestellfrist, Prüfbitte und Mindestprüfzeit, in etwa zwei Minuten. Danach
-  braucht die Demo kaum Erklärung.
-- B zeigt zuerst die Plattform und bringt den Fall später. C verzichtet auf die Live-Demo.
-- Der Kern lässt sich in einem Satz sagen: „Der letzte Tag ist der 5. Februar, nicht der 19.“
-- Die Aufteilung ist ausgeglichen (Feyrouz etwa 3:40, Houssam etwa 3:35).
+## 2. Ablauf, Zeiten, Aufteilung
 
-**Einschränkungen:**
-- Die Geschichte spielt mit Türen, die Demo zeigt Systemtrennwände. Folie A4 sagt das offen, es bleibt aber ein Bruch.
-- Mit Live-Demo dauert A etwa 7:15 plus Klickzeit. Nennt der Veranstalter weniger Zeit, gilt die Stufe „etwa 5
-  Minuten“ oder „etwa 3 Minuten“ (Abschnitt 3). In der 3-Minuten-Stufe zeigt A die Plattform nicht.
-- Wie B trägt A das Risiko einer Live-Demo. Beide haben Ersatzfolien (Abschnitt 4).
-- Wer kein Demo-Risiko eingehen will, nimmt Fassung C (ohne Live-Demo, 5:45).
+| Folie | Inhalt | Spricht | Zeitfenster | Uhr am Ende |
+|---|---|---|---|---|
+| 1 | Eine brauchbare Tür kann verloren gehen, weil die Information zu spät kommt | Feyrouz | 31 s | 0:31 |
+| 2 | Spätestens am 5. Februar die Prüfung anfragen | Feyrouz | 35 s | 1:06 |
+| 3 | CircularFlow zeigt, ob die Zeit für die Prüfung reicht | Houssam | 27 s | 1:33 |
+| 4 | Live: Ein Paar ist fünf Tage zu spät, ein anderes kann weiter geprüft werden | Houssam | 64 s | 2:37 |
+| 7 | In einem Dortmunder Pilot wollen wir messen, was wirklich wiederverwendet wird | Feyrouz | 33 s | 3:10 |
+| 8 | Der Prototyp läuft. Als Erstes wollen wir einen Kurzcheck testen | Houssam, dann Feyrouz | 53 s | 4:03 |
+| 9 | Wir suchen einen echten Umbaufall in Dortmund | Feyrouz | 32 s | **4:35** |
 
-**Zum PDF:** Es enthält alle 15 Folien, auch die in der PPTX ausgeblendeten:
-- die Ersatzfolien auf den Seiten 5–10
-- den Anhang mit Quellen und Kennzeichnung auf Seite 15
+- **Länge:** Der Standard-Sprechtext hat 461 Wörter. Feyrouz spricht 263, Houssam 198 und bedient die Demo.
+- **Tempo:**
+  - Bei ruhigem Tempo (etwa 1,8 Wörter je Sekunde) dauert der Vortrag 4:35. Darin stecken 18 Sekunden für
+    Sprecherwechsel, Umschalten und Klicks.
+  - Bei zügigem Tempo (2,3 Wörter je Sekunde) dauert er etwa 3:40.
+  - Bis zur Grenze von 5:00 bleiben 25 Sekunden.
+  - Alle Zeiten sind aus Wortzahlen gerechnet. Die Probe mit Stoppuhr steht aus.
+- **Wechsel:**
+  - vor Folie 3: „Wie CircularFlow prüft, ob die Zeit reicht, zeigt Houssam.“
+  - nach der Demo: „Was das für Dortmund bringen kann, erklärt Feyrouz.“
+  - vor Folie 8: „Was heute schon steht, zeigt Houssam.“
+  - in Folie 8 nach Houssams Teil: Feyrouz übernimmt.
+- **Anpassungen des Teams vom 17.11.:**
+  - Folie 2 lautet „Spätestens am 5. Februar die Prüfung anfragen“. Die 14 Tage sind als Annahme sichtbar.
+  - Die Standarddemo zeigt „fünf Tage zu spät“ und „Weiter prüfen“.
+  - Bei Zeitdruck kommt direkt das Bildschirmfoto des noch fehlenden Ergebnisses.
+  - Restmenge und Wettbewerbsvergleich stehen im Anhang.
+  - Auf Folie 8 sprechen Feyrouz und Houssam je einen eigenen Teil.
+  - Am Schluss steht die Bitte um Kontakt zu einem Dortmunder Umbauprojekt.
 
-Wird aus dem PDF vorgetragen und die Live-Demo gelingt, die Seiten 5–10 überspringen. Fällt die Demo aus, einfach
-weiterblättern.
+## 3. Demo und Ersatzfolien
 
-## 2. Die drei Fassungen
+- **Standarddemo** in der Vorschau Fassung 2 mit Beispieldaten (Code `2121b92`). Gezeigt werden Systemtrennwände statt
+  Türen. Zu sehen ist:
+  1. **K1, Übersicht:** Oben in „Zeitkritisch“ steht „noch 2 Std. · Aufmaßfrist · E-01 · T-07 → B-02“. T-07 ist eine
+     Innentür.
+  2. **K2:** In der Kachel „Paare derselben Gruppe“ auf **8 Paare** klicken.
+  3. **K3:** Zeile **TW-01 → BD-23** anklicken. Die Vorschau zeigt „Für diese Entscheidung zu spät“ und „Prüfende
+     02.12.2026 liegt 5 Tage nach der Bestellfrist 27.11.2026“. Die Prüfbitte ist gesperrt.
+  4. Oben im Pfad auf **Paare derselben Gruppe** klicken.
+  5. **K4:** Zeile **TW-05 → BD-22** anklicken. Die Vorschau zeigt „Weiter prüfen“ und „Vorschlag zur Prüfung,
+     keine fachliche Freigabe“.
+  6. Mit Alt+Tab (Mac: Cmd+Tab) zurück zur Präsentation, dann weiter zu Folie 7.
+- **Bei Zeitdruck:** Folie 4 hat zwei Links, „Bildschirmfoto: zu spät ›“ (zu Folie 5) und „Bildschirmfoto: weiter
+  prüfen ›“ (zu Folie 6).
+  - Steht K3 um 2:10 nicht da oder hakt die Vorschau: zurück und beide Bildschirmfotos zeigen. Auf Folie 5 führt
+    „weiter ›“ zu Folie 6.
+  - Ist K4 um 2:25 nicht erreicht: zurück und direkt „Bildschirmfoto: weiter prüfen ›“.
+  - Auf beiden Ersatzfolien führt „zurück zum Vortrag“ zu Folie 7.
+- **Im Vortragsmodus** überspringt „Weiter“ auf Folie 4 die ausgeblendeten Folien 5 und 6 und geht zu Folie 7.
+- **Ohne Internet:** Derselbe Code läuft lokal. Im Repository `python3 -m http.server 8000` starten und
+  `http://localhost:8000/plattform/` öffnen. Seit `2121b92` hat sich unter `plattform/` nur die README geändert.
+- **Anhang für Rückfragen** (ausgeblendet, Kurzantworten in den Notizen):
 
-| | **A · Umbaufall** (empfohlen) | **B · Demo zuerst** | **C · Praxistest Dortmund** |
-|---|---|---|---|
-| Einstieg | fiktiver Umbaufall: zwölf Bürotüren und ein Datum | Live-Demo nach etwa einer Minute | Bitte um einen echten Fall in Dortmund |
-| Schwerpunkt | Zeit als Engpass, am Fall erklärt | Vorschlag statt Freigabe, an der Vorschau gezeigt | nächster Praxistest entlang von vier Zeitpunkten |
-| Live-Demo | ja, in der Mitte, 6 Schritte | ja, am Anfang, 6 Schritte | nein; Bildschirmfotos, Demo nur auf Nachfrage |
-| Folien | 15: 8 sichtbar, 6 Ersatzfolien, 1 Anhang | 15: 8 sichtbar, 6 Ersatzfolien, 1 Anhang | 16: 9 sichtbar, 6 Demo-Bilder, 1 Anhang |
-| Sprechzeit voll (Schätzung) | 7:15 + Klickzeit | 7:15 + Klickzeit | 5:45 |
-| Aufteilung voll | Feyrouz 3:40 · Houssam 3:35 | Houssam 3:55 · Feyrouz 3:20 | Feyrouz 3:00 · Houssam 2:45 |
-| PPTX und PDF | `ausgabe/empfohlen-zur-abgabe/` | `ausgabe/weitere-fassungen/` | `ausgabe/weitere-fassungen/` |
+  | Folie | Thema | Spricht |
+  |---|---|---|
+  | 10 | Nach der Prüfbitte: Fachergebnis und nächster Schritt | Houssam |
+  | 11 | So rechnet die Zeitprüfung | Houssam |
+  | 12 | Restmenge (Erkenntnis aus der Simulation) | Houssam |
+  | 13 | Wettbewerb und Abgrenzung | Feyrouz |
+  | 14 | Grenzen der Vorschau und Nachweise, dazu „keine Frist stillschweigend“ aus dem Steckbrief | Houssam |
+  | 15 | Quellen und Kennzeichnung | Feyrouz |
 
-Ablauf, Kennung und wer spricht (ausgeblendete Folien in eckigen Klammern):
+## 4. Auf dem Vortragsrechner proben
 
-- **A:**
-  1. A1 Titel – Feyrouz
-  2. A2 Fall und Begriffe – Feyrouz
-  3. A3 Zeitleiste – Feyrouz
-  4. A4 Ankündigung der Demo – Houssam
-  5. [5–10 E1–E6 Ersatzfolien – Houssam, E3 Feyrouz]
-  6. 11 A5 Nutzen und Abgrenzung – Houssam
-  7. 12 A6 Geschäftsmodell – Feyrouz
-  8. 13 A7 Praxistest – Feyrouz
-  9. 14 A8 Schluss – Houssam
-  10. [15 Anhang]
-- **B:**
-  1. B1 Frage und Problem – Houssam
-  2. B2 Start der Demo – Houssam
-  3. [3–8 E1–E6 Ersatzfolien]
-  4. 9 B3 Pilotfall – Feyrouz
-  5. 10 B4 Scan und Messwerte – Houssam
-  6. 11 B5 Für wen und was anders – Feyrouz
-  7. 12 B6 Geschäftsmodell – Feyrouz
-  8. 13 B7 Praxistest – Feyrouz
-  9. 14 B8 Schluss – Houssam
-  10. [15 Anhang]
-- **C:**
-  1. C1 Frage – Feyrouz
-  2. C2 Zwei Fristen – Feyrouz
-  3. C3 Vier Zeitpunkte – Feyrouz
-  4. C4 Fiktiver Fall – Feyrouz
-  5. C5 Plattform – Houssam
-  6. C6 Zielgruppe und Abgrenzung – Houssam
-  7. C7 Geschäftsmodell – Houssam
-  8. C8 Praxistest – Houssam
-  9. C9 Bitte – Feyrouz, Schlusssatz Houssam
-  10. [10–15 Demo-Bilder E1–E6, 16 Anhang]
+Nichts aus dieser Liste ließ sich hier prüfen. Bitte bis zum 20.11. erledigen, spätestens beim Technik-Check ab
+13:30 Uhr.
 
-Die fünf Pflichtteile stehen in jeder Fassung:
+- [ ] **PPTX in PowerPoint (oder Keynote) öffnen:**
+  - In der Referentenansicht sind die Notizen Absätze, „Spricht: …“ ist fett.
+  - Mit Arial statt Liberation Sans verschiebt sich kein Umbruch, vor allem nicht auf Folie 1 („Umbau am Kanal:
+    braucht 6 Türen“ in einer Zeile), Folie 4 („Mi 18.11.2026“ zusammen) und Folie 8 (Käufertext in der Spalte).
+  - Auf Folie 4 sind die Kreise mit „1“ und „2“ zu sehen.
+- [ ] **Navigation im Vortragsmodus** mit Maus oder Touchpad (ein Presenter kann keine Links anklicken):
+  - Folie 4 → „Bildschirmfoto: zu spät ›“ → Folie 5 → „weiter ›“ → Folie 6 → „zurück zum Vortrag“ → Folie 7.
+  - Folie 4 → „Bildschirmfoto: weiter prüfen ›“ → Folie 6 → „zurück zum Vortrag“ → Folie 7.
+  - Auf Folie 4 die Weiter-Taste drücken: Es muss Folie 7 kommen.
+  - Anhang bei Rückfragen: In PowerPoint sollte die Foliennummer mit Enter auch zu ausgeblendeten Folien führen
+    (zum Beispiel 13 ↵). Ausprobieren. Klappt es nicht, die Seite im PDF zeigen.
+- [ ] **PDF-Viewer**, falls aus dem PDF vorgetragen wird: Links 4→5, 4→6, 5→6, 5→7 und 6→7 anklicken.
+- [ ] **Vorschau vorbereiten:**
+  - frisches Browserprofil, Vollbild, mindestens 1280 × 720
+  - Startbedingung: Stichtag „Mi 18.11., 14:00 (Simulation)“, oben in „Zeitkritisch“ „noch 2 Std. · Aufmaßfrist ·
+    E-01 · T-07 → B-02“ (darauf baut der erste Demo-Satz), „8 Paare, davon 2 prüfbar“ und „2 Vorgänge“
+  - Online-Vorschau oder lokale Variante. Netz am Veranstaltungsort klären. Für die lokale Variante müssen
+    Repository und Python 3 auf dem Laptop sein.
+- [ ] **Umschalten** aus dem Vortragsmodus in den Browser und zurück (Alt+Tab bzw. Cmd+Tab), danach weiter zu
+  Folie 7.
+- [ ] **Demo mit Stoppuhr:** Folie 4 hat 64 Sekunden (1:33 bis 2:37). Kontrollpunkte sind 2:10 (K3 steht) und 2:25
+  (K4 erreicht). Das Zeichen gibt Feyrouz (Vorschlag aus Plan 0.2).
+- [ ] **Gesamter Vortrag mit Stoppuhr** in ruhigem Tempo: Ziel 4:35, Grenze 5:00. Die Übergabesätze üben.
+- [ ] **Beamer:**
+  - Sind die Zeitleiste auf Folie 2 und die Farben Grün, Gelb und Rot gut zu erkennen?
+  - Sind die Bildschirmfotos auf Folie 5 und 6 lesbar? Der Kleintext darin ist klein, die Aussage steht in der
+    Bildunterschrift.
+  - Folie 2 von jemandem erklären lassen, der den Fall nicht kennt.
+- [ ] **Nach jeder Probe:** Wurde in der Vorschau etwas angelegt (zum Beispiel eine Prüfbitte), zurücksetzen. Das
+  geht mit einem neuen frischen Profil oder über Erfassen → In diesem Browser gespeichert → Zurücksetzen. Die
+  Startbedingung direkt vor dem Pitch erneut prüfen.
+- [ ] **Technik-Check:** eigener Laptop, Adapter (HDMI oder USB-C), Strom, Hotspot. PDF und PPTX zusätzlich auf einem
+  USB-Stick.
+- [ ] **Nach Änderungen in PowerPoint:** Das PDF neu exportieren und dabei „Ausgeblendete Folien einschließen“ wählen.
+  Sonst fehlen Ersatzfolien und Anhang.
 
-| Pflichtteil | A | B | C |
-|---|---|---|---|
-| Problem | A1–A3 | B1, B3 | C1–C4 |
-| Zielgruppe (Hypothese) | A2, A6 | B5, B6 | C6, C7 |
-| Nutzen der Plattform | Demo, A5 | Demo, B5 | C5 |
-| Mögliches Geschäftsmodell (Hypothese) | A6 | B6 | C7 |
-| Nächster Praxistest | A7 | B7 | C8, C9 |
+## 5. Abgleich mit Steckbrief, Kriterien und Praxisfeedback
 
-## 3. Sprechzeiten und Kürzungsstufen
+- **Steckbrief:** `CircularFlow_Onepager_INNOSPRINT.docx`, Stand 13.11.2026. Ob er genau der beim Veranstalter
+  eingereichten Fassung entspricht, ist nicht belegt.
 
-Der Veranstalter nennt keine Pitchdauer. Für die Pitches sind 15:00 bis 16:30 Uhr vorgesehen, für bis zu acht Teams.
-Bei acht Teams sind das etwa 11 Minuten je Team, einschließlich Wechsel und Fragen. Das ist eine eigene Rechnung, keine
-Vorgabe.
+  | Steckbrief | Deck |
+  |---|---|
+  | Nutzer: Planungsbüros, die Person mit Bauteilen und Fristen im Blick | Folie 8: Planung und Projektleitung im Umbau |
+  | Käufer: Büroleitung eines Planungsbüros, Projektlizenz (Annahme) | Folie 8: Bauherrschaft oder Bestandsorganisation, wie am 17.11. vorgegeben, mit dem Zusatz „im Steckbrief: Büroleitung eines Planungsbüros“. Houssam sagt: „oder, wie im Steckbrief, das Planungsbüro“. |
+  | „Im Pitch zeigen wir das als gekennzeichnete Simulation: Einer Innentür fehlt das Maß.“ | Demo K1: „Ganz oben steht eine Innentür: Am Einbauort fehlt noch das Maß, die Frist endet in zwei Stunden.“ |
+  | „… lässt keine Frist stillschweigend verstreichen.“ | Rückfrage-Antwort in den Notizen zu Folie 14: Die Vorschau zeigt „Frist verstrichen“, der Vorgang bleibt offen. Eine Benachrichtigung vorher und den spätesten Anfragetag als eigene Frist hat sie noch nicht. |
+  | Wettbewerb: Concular, Madaster, Börsen wie Restado; Alternative: eigene Excel-Listen | Folie 13 |
+  | Team und Lücken | Folie 8 |
 
-Alle Zeiten sind Schätzungen aus den Wortzahlen der Notizen, gerechnet mit 2,3 Wörtern je Sekunde und je Folie auf 5
-Sekunden gerundet. Ausnahme sind die Demo-Folien E1–E6: Ihre Dauern sind Planwerte aus dem Folienplan, zusammen
-165 Sekunden. Nach Wortzahl ergäben sie zusammen etwa 170 Sekunden, wobei E1 länger ist und andere kürzer sind. Bei
-Live-Demo kommt Klickzeit hinzu, laut Folienplan etwa 15 Sekunden für sechs Schritte. Eine Probe mit Stoppuhr steht
-aus.
+- **Kriterien (Tag 5, S. 18):**
+  - Lösungsansatz: Folien 1–4 und 8.
+  - Impact mit SDG 12.5: Folie 7.
+  - Team: Folie 8.
+  - Realisierbarkeit: Folien 3 und 8, Anhang Folie 13.
+  - Steckbrief: eigenes Dokument, liegt der Jury laut Tag 5 vor dem Pitch vor.
+  - Präsentation: alle Folien.
+  - „Im Sprint gelernt“ und „Nächster Test“ auf Folie 9 sind keine offiziellen Kriterien, sondern unsere Ergänzung.
+- **Praxisfeedback:** Bis zum 17.11.2026, 16:36 Uhr, kam auf keine der neun Anfragen vom 17.11. (gesendet zwischen
+  14:05 und 15:39 Uhr) eine Antwort. Geprüft wurden Posteingang und die gesendeten Verläufe des Teamkontos. Im Deck
+  steht deshalb kein Praxisfeedback. Folie 9 nennt, was im Sprint gehört wurde, und den nächsten Test. Kommt
+  rechtzeitig bestätigtes Feedback, gilt Abschnitt 11.
 
-| Fassung | voll | etwa 5 Minuten | etwa 3 Minuten |
-|---|---|---|---|
-| A | 7:15 + Klickzeit (davon Demo 2:45) | 5:05 + Klickzeit: A3 und A4 kurz, Demo nur K3 und K4 kommentiert (K1 und K2 ohne Kommentar durchklicken, K5 und K6 entfallen), A5 kurz | 3:00: ohne Demo; A3, A5, A6 und A7 kurz |
-| B | 7:15 + Klickzeit (davon Demo 2:45) | 5:05 + Klickzeit: B2 kurz, Demo wie bei A, B4 entfällt, B8 kurz | 3:10: ohne Live-Demo, dafür E3 und E4 als sichtbare Bildfolien; B1 mit Zusatz; B5, B6, B7 und B8 kurz; B2, B3 und B4 entfallen |
-| C | 5:45 (Demo-Bilder nur auf Nachfrage) | 5:05: C2 entfällt, C3 mit Zusatz | 3:10: C2 und C4 entfallen; C3 mit Zusatz; C5, C6, C7 und C9 kurz |
+## 6. Kennzeichnung und Belege
 
-Fassung A zeigt in der 3-Minuten-Stufe die Plattform nicht; B zeigt sie dort über zwei Bildfolien. In A verweist die
-Schlussfolie dann auf eine Vorschau, die nicht gezeigt wurde. Der Satz „Vorschlag zur Prüfung, keine fachliche
-Freigabe“ wird dort nicht gesprochen; Folie A5 trägt ihn sinngemäß („Nächster Schritt statt Freigabe“).
+- **Kennzeichnung auf den Folien:**
+  - Fiktiver Fall: Folien 1 und 2, Anhang Folie 12.
+  - Annahme, unbestätigt: 14 Tage Prüfzeit (Folie 2).
+  - Beispieldaten und Simulation: Folien 4, 5, 6, 8 und 10.
+  - Ziel, noch keine Messung: der Pilot (Folie 7).
+  - Hypothese: Käufer (Folie 8).
+  - Herstellerangabe: Folie 13.
+- **Wörtliche Quellen:**
+  - Stadt Dortmund, Umweltamt, INNOSPRINT, 13.11.2026, Folie 11: „Es gibt kaum Daten zu Baustoffströmen“ und „Bei
+    Bauentscheidungen zählen meist Zeit und Kosten“.
+  - Concular, Workshop im INNOSPRINT, Folie 49: „Zeitliche Unterschiede in Nachfrage und Angebot“.
+- **Nachweise auf Folie 14:** Angaben von Concular, keine Rechtsberatung. Belegt sind sie in der Fallakte
+  CF-PILOT-01, Abschnitt „Innentüren und Nachweise“: Handlungsempfehlung 12/2024 und Conculars Seite zum Leitfaden für
+  Brandschutztüren.
+- **SDG 12.5:** sinngemäß wiedergegeben. Die Primärquelle war aus dieser Umgebung nicht erreichbar.
+- **Nicht behauptet:** Kunden, Partner, Einsparungen, CO₂-Werte, Marktzahlen, Gesprächsergebnisse oder
+  Jurykriterien. „Partner“ kommt nur als „Partner gesucht“ vor.
 
-Für eine Kurzstufe am besten eine Kopie der PPTX anlegen und darin Folien aus- oder einblenden (in PowerPoint:
-Rechtsklick auf die Miniatur, „Folie ausblenden“ an- oder abwählen):
+## 7. Durchgeführte Prüfungen
 
-| Stufe | ausblenden | einblenden |
-|---|---|---|
-| A, etwa 5 Minuten | – (Demo live, nur K3 und K4 kommentieren) | – |
-| A, etwa 3 Minuten | Folie 4 (A4) | – |
-| B, etwa 5 Minuten | Folie 10 (B4) | – |
-| B, etwa 3 Minuten | Folien 2 (B2), 9 (B3), 10 (B4) | Folien 5 (E3) und 6 (E4) |
-| C, etwa 5 Minuten | Folie 2 (C2) | – |
-| C, etwa 3 Minuten | Folien 2 (C2) und 4 (C4) | – |
-
-In der Stufe B mit 3 Minuten die eingeblendeten Folien E3 und E4 mit der Pfeiltaste weiterschalten. Ihre Links „weiter ›“
-und „zurück zum Vortrag“ führen dort zu ausgeblendeten Folien und werden nicht angeklickt.
-
-Die Kürzungen stehen auch in den Notizen der betroffenen Folien („Bei 5 Minuten: …“, „Bei 3 Minuten: …“).
-Kurzfassungen bestehen nur aus Sätzen, die in den Notizen oder auf den Folien derselben Fassung stehen. Einzelne Sätze
-sind vorgezogen, neue Aussagen kommen nicht hinzu. In jeder Stufe bleiben Problem, Zielgruppe, Nutzen, Geschäftsmodell
-und Praxistest enthalten. Die Zeile „Dauer (voll)“ in den Notizen gilt für den Volltext; die Dauer einer Kurzfassung
-steht in deren Zeile.
-
-## 4. Live-Demo und Ersatzfolien
-
-- **Demo:** Gezeigt wird die geprüfte Vorschau Fassung 2 mit Beispieldaten:
-  - Versions-ID `1794826502-00b9`, Code `2121b92`
-  - Ablauf K1–K6, Startbedingung und Notfälle: [`docs/pitch-ablauf.md`](../../docs/pitch-ablauf.md)
-  - Die Demo endet bei „Vormerkung anlegen“.
-- **Vorbereitung:**
-  - Frisches Browserprofil verwenden.
-  - Die Übersicht muss in „Paare derselben Gruppe“ **8 Paare, davon 2 prüfbar** zeigen und **2 Vorgänge**.
-- **Rollen (Vorschlag):** Houssam bedient. Feyrouz hat die Uhr und spricht K3.
-- **Wenn die Demo ausfällt (PPTX im Vortragsmodus):**
-  - Der Link „Ersatzfolien“ auf der Demo-Folie führt zu den ausgeblendeten Folien E1–E6. Das ist in A Folie 4 und in B
-    Folie 2.
-  - „weiter ›“ führt zum nächsten Demo-Schritt.
-  - „zurück zum Vortrag“ führt zur nächsten Vortragsfolie: in A Folie 11, in B Folie 9.
-  - In C führt Folie 9 „Vorschau-Bilder (Anhang)“ zu den Bildern ab Folie 10.
-- **Im PDF** stehen die Ersatzfolien an ihrer Stelle.
-- **Nicht geprüft:** Die Links sind in der Datei und im PDF geprüft, im Vortragsmodus von PowerPoint aber nicht. In der
-  Generalprobe einmal auf dem Vortragsrechner klicken.
-
-## 5. Kennzeichnung und Belegstand
-
-Kennzeichen auf den Folien (Erklärung auch auf der Anhangfolie):
-- **Fiktiver Pilotfall:** ausgedachter Fall, mit veröffentlichten Quellen eingeordnet
-- **Beispieldaten:** Die Daten der Vorschau sind fiktiv.
-- **Simulation:** Vorgänge und Ergebnisse sind Einträge, keine Fachfreigabe.
-- **Annahme, unbestätigt:** zum Beispiel die 14 Tage Mindestprüfzeit
-- **Hypothese:** vom Team erwartet, nicht belegt
-- **Herstellerangabe:** laut Anbieter oder Dokumentation, nicht selbst geprüft
-
-| Aussage | Status | Quelle |
-|---|---|---|
-| Haus Lindenhof, Umbau am Kanal, zwölf Türen und alle Daten des Falls | fiktiver Pilotfall; Daten mit der Rechenregel der Vorschau nachgerechnet | `docs/pilot/CF-PILOT-01-fallakte.md` (1.3) |
-| 14 Tage Mindestprüfzeit | Annahme, unbestätigt; bleibt Simulationsannahme bis zu einem konkreten Praxisfall | Fallakte; Teamvorgabe vom 16.11.2026 |
-| Demo-Werte (8 Paare, davon 2 prüfbar, 2 Vorgänge, Prüfende 02.12.2026 gegen Bestellfrist 27.11.2026, 123 Tage) | Beispieldaten der Vorschau Fassung 2, direkt beobachtet | `docs/pitch-ablauf.md`, Bildschirmfotos in `bilder/` |
-| Zielgruppe, Nutzen, Geschäftsmodell | Hypothese, nicht geprüft | Lösungsansatz des Teams (05.11.2026) |
-| Concular Exchange vermittelt Angebot und Gesuch | Herstellerangabe, Stand 08.11.2026, nicht erneut geprüft | Rechercheplan des Teams v1.0 |
-| Madaster Match nennt auf der Suchseite keine Bestellfrist und keine Prüfzeit | Dokumentation, zuletzt bearbeitet 09.09.2026; Funktion nicht bedient | docs.madaster.com |
-| Frist für den Verkauf von Bauprodukten bis kurz vor der Ausschreibung des Rückbaus | veröffentlichte Empfehlung (PDF-Seite 38) | Concular, Handlungsempfehlung für die öffentliche Hand, Dezember 2024 |
-| Universitätsbibliothek der TU Dortmund: Rückbau erst, nachdem alle demontierbaren Baustoffe ausgebaut wurden | Pressemitteilung, Stand 02.12.2024 | BLB NRW |
-
-Nicht behauptet werden:
-- Kunden, Partner, Zusagen
-- Einsparungen, CO₂-Werte, Marktzahlen
-- Jurykriterien
-
-## 6. Veranstaltervorgaben (geprüft am 16.11.2026)
-
-- **Quelle:** Teilnahmebedingungen INNOSPRINT 2026, Stand 01.10.2026, im Drive des Teams
-- **Einreichung:** „Einreichung Pitchpräsentation bis einschließlich 18.11.26“.
-- **Abschluss am 20.11.2026** im Reinoldinum, Schwanenwall 34, Dortmund:
-  - 15:00 Uhr Pitches der bis zu acht Teams
-  - 16:30 Uhr Jurysitzung während der Networking-Pause
-  - 17:15 Uhr Prämierung der Top 3
-- **Nicht genannt** (im PDF der Teilnahmebedingungen): Pitchdauer, Fragerunde, Dateiformat, Folienvorlage,
-  Einreichungsweg, Bewertungskriterien.
-- **Nicht geöffnet:** die Pressemitteilung der Stadt Dortmund zum INNOSPRINT 2026. Aus dieser Arbeitsumgebung gab es
-  keinen Zugriff. Pitchdauer und Format sind damit nicht belegt, aber auch nicht ausgeschlossen.
-- **Gmail des Teamkontos:** keine Treffer zu INNOSPRINT, greenhouse, stadtdo.de, Pitch und Steckbrief.
-- **Folgerung:** PDF einreichen, weil es überall gleich aussieht. Die PPTX zum Vortrag mitbringen.
-
-## 7. Vor der Abgabe vom Team zu entscheiden
-
-1. Welche Fassung abgegeben wird (Empfehlung: A).
-2. Ob sich seit dem Sprint ein Praxispartner oder ein echter Fall gefunden hat. Dann A7, B7 bzw. C8 und C9 anpassen; bis
-   dahin bleibt es bei „Für den nächsten Schritt suchen wir einen echten Fall.“
-3. Wer die Demo bedient (Vorschlag: Houssam, Feyrouz hat die Uhr).
-4. Ob die Bitte ans Publikum auf den Folien bleibt (Vorschlag: ja).
-5. **Generalprobe auf dem Vortragsrechner mit Beamer:**
-   - Links zu den Ersatzfolien prüfen
-   - Live-Demo mit frischem Profil durchspielen
-   - Zeit mit Stoppuhr messen
-   - Bildschirmfotos auf Lesbarkeit prüfen
-   - Zeitleiste A3 von jemandem lesen lassen, der den Fall nicht kennt: Der rote Balken läuft bis zum 08.03.
-   - Notizen im Referentenmodus von PowerPoint ansehen
-6. Ob beim Veranstalter Pitchdauer, Format und Einreichungsweg erfragt werden. Danach die passende Stufe wählen.
-
-## 8. Durchgeführte Prüfungen
-
-Alle Prüfungen liefen in dieser Arbeitsumgebung: Linux, LibreOffice 24.2.7, Poppler, Chromium über Playwright,
+Alle Prüfungen liefen in dieser Arbeitsumgebung: Linux, LibreOffice 24.2, Poppler, Chromium über Playwright und
 python-pptx. Die Agenten liefen nacheinander, jeweils auf einem festen Commit.
 
 | Runde | Wer | Stand | Ergebnis |
 |---|---|---|---|
-| Folienplan | cf-planung, danach cf-review | `627b900`, `001adec` | drei Geschichten und Folienabläufe; Korrekturen K1–K7 |
-| Prüfung der ersten Fassungen | cf-test und cf-review | `4e2d477` | Korrekturrunde 2 (D1–D13) |
-| Endprüfung 1 | cf-test, T1–T10 | `68e8798` | nichts Blockierendes; das alte Sprechtext-PDF schnitt lange Notizen ab |
-| Schlussprüfung Inhalt | cf-review | `68e8798` | nichts Blockierendes, kein Faktenfehler; sieben Verständlichkeitslücken (S1–S7), kleinere Punkte |
-| Korrekturrunde 3 | cf-entwicklung | `1563cbf` | R1–R5 und R8–R12 umgesetzt; R6 teilweise (E1 erweitert, E5 bewusst nicht); R7 bewusst unverändert |
-| Endprüfung 2 | cf-test, T1–T10 | `1563cbf` | alle zehn Prüfungen bestanden; drei kosmetische Hinweise |
-| Bestätigung | cf-review | `1563cbf` | R8–R10 wörtlich umgesetzt, Summen nachgerechnet; nichts Blockierendes, kein Faktenfehler; Hinweise zu Kurzstufen und README übernommen (E.3) |
-| Nachtrag R13–R17 | cf-entwicklung | `aac67d5` | Kurzstufen ergänzt, „Dauer (voll)“ |
-| Prüfung des Nachtrags | cf-test | `aac67d5` | T1, T3–T7 und T9 bestanden; Summen A 435/305/180 s, B 435/305/190 s, C 345/305/190 s; Folien-PDFs textgleich zu `1563cbf` |
+| Plan 0.1 | cf-review | `19185da` | Ein Übergabesatz versprach eine Anzeige, die die Vorschau nicht hat. Der Concular-Satz durfte nur in belegter Form bleiben. Beides ist in Plan 0.2 (`3dca4e5`) behoben. |
+| Bau und Nachbesserung 1 | cf-entwicklung | `ca504bf`, `6fa5693` | Deck gebaut. Danach Folie 1 mit 6 Türen, Kreise statt Sonderzeichen, Titel von Folie 3 und Zeitsatz geändert. |
+| Prüfung | cf-test, P1–P10 | `6fa5693` | alle zehn bestanden, sechs kosmetische Hinweise |
+| Inhaltsprüfung | cf-review | `6fa5693` | kein Faktenfehler. Hinweise B1–B4 und C1–C3, unter anderem zu den Nachweisen, zur Innentür aus dem Steckbrief, zu „keine Frist stillschweigend“ und zum Käufer |
+| Nachbesserung 2 | cf-entwicklung | `ac29101`, `1eb08a2` | B1–B4, C1–C3 und zwei kosmetische Punkte umgesetzt. Zeitfenster der Ersatzfolien vereinheitlicht. |
+| Endprüfung | cf-test, P1–P9 | `1eb08a2` | alle bestanden, nichts Blockierendes, vier kosmetische Hinweise |
+| Quellenabgleich | Koordination | `1eb08a2` | Die neuen Aussagen aus Nachbesserung 2 stimmen mit Steckbrief, Fallakte, Beispieldaten und Bildschirmfoto überein. |
+| Demo im lokalen Nachbau | Koordination | `1eb08a2` | Startbedingung und K1–K4 in Chromium durchgeklickt, ohne Konsolenfehler |
 
-Abschlussprüfung auf dem Endstand `aac67d5`: cf-test hat die Prüfungen T1, T3–T7 und T9 wiederholt, alle bestanden.
-- **Stand:** Prüfsummen stimmen, Regeltests 46 von 46.
-- **Dateien:** `validate.py` besteht, die Links stimmen.
-- **Notizen:**
-  - „Dauer (voll)“ steht in allen 46 Notizen.
-  - Die Summen stimmen mit dem Soll.
-  - Die neuen Sätze aus R13–R16 stehen wörtlich in den Notizen.
-- **Sprechtext-PDFs:** Alle 46 Notizen sind vollständig.
-- **Folien-PDFs:** textgleich zu `1563cbf`, denn der Nachtrag betrifft nur Notizen.
-- **Nicht wiederholt** für den Endstand: T2 (Ordner), T8 (Layout) und T10 (Nachbau).
-
-Ergebnisse der Endprüfung 2 (Stand `1563cbf`):
+Ergebnisse der Endprüfung auf `1eb08a2`:
 
 - **Stand:**
-  - Die Prüfsummen der neun Ausgabedateien stimmen.
-  - Außerhalb von `pitch/` ist seit `bdf8d2e` nichts geändert.
-  - Die Regeltests laufen durch: 46 von 46 bestanden (`node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs`).
-- **Dateien:**
-  - `validate.py` besteht für alle drei PPTX; python-pptx und LibreOffice öffnen sie.
-  - Folienzahl und ausgeblendete Folien sind wie vorgesehen.
-- **Links:** Alle internen Links in PPTX und PDF zeigen auf die richtigen Folien („Ersatzfolien“, „weiter ›“,
-  „zurück zum Vortrag“).
+  - Die Prüfsummen der drei Dateien stimmen.
+  - Außerhalb von `pitch/` ist seit `4f327c3` nichts geändert.
+  - Regeltests: 46 von 46 bestanden (`node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs`).
+- **Dateien:** `validate.py` besteht. Das Deck hat 15 Folien, ausgeblendet sind genau 5, 6 und 10–15.
+- **Navigation:**
+  - PPTX: Folie 4 → 5 und 4 → 6, Folie 5 → 6 („weiter ›“) und 5 → 7, Folie 6 → 7. Es gibt keine weiteren Links
+    und keinen, der ins Leere führt.
+  - PDF: dieselben fünf internen Ziele.
+  - Aus Reihenfolge und Ausblendung folgt, dass im Vortragsmodus nach Folie 4 die Folie 7 kommt.
 - **Notizen:**
-  - Die Notizen sind echte Absätze, „Spricht: …“ steht fett in der ersten Zeile, die Sprache ist Deutsch.
-  - Die Summen der Stufen wurden aus den Notizen nachgerechnet und stimmen mit den Sollwerten überein.
-- **Folien-PDF:**
-  - 16:9, alle Schriften eingebettet (Liberation Sans, metrisch gleich zu Arial).
-  - Gegenüber `68e8798` hat sich inhaltlich nur die Zeile auf B2 geändert.
-- **Sprechtext-PDF:** A4, Deckblatt und je Folie eine Seite; lange Notizen dürfen umbrechen, im geprüften Stand war das
-  nicht nötig. Bei allen 46 Notizen stehen erster Satz, letzter Satz und Dauer vollständig im PDF.
-- **Layout:** Bei 144 dpi angesehen, ohne Überlauf oder Überlappung.
-- **Kennzeichnung:**
-  - Fiktiver Fall, Beispieldaten, Simulation und Annahmen sind gekennzeichnet.
-  - Kein Kunde, Partner, keine Einsparung und kein Jurykriterium.
-  - Die Kurzfassungen bestehen nur aus Sätzen derselben Fassung.
-- **Nachbau:** Aus `git archive 1563cbf` gebaut, sind Folien- und Notiz-XML byte-gleich mit den eingecheckten PPTX.
+  - „Spricht: …“ ist fett, die Sprache ist Deutsch.
+  - Der Wortlaut entspricht dem Bauauftrag mit Nachbesserung 2.
+  - 461 Wörter (55 + 63 + 44 + 96 + 56 + 88 + 59).
+  - Zeitfenster 31 + 35 + 27 + 64 + 33 + 53 + 32 = 275 Sekunden, Uhr am Ende 4:35.
+- **Folien-PDF:** 15 Seiten, 16:9. Die Titel sind wörtlich wie im Bauauftrag. Die Schriften sind eingebettet
+  (Liberation Sans, metrisch gleich zu Arial).
+- **Sprechtext-PDF:**
+  - A4, 16 Seiten.
+  - Das Deckblatt enthält die neuen Zeiten, den Klickpfad, die Regel 2:10/2:25 und den Zeitsatz.
+  - Keine Notiz fehlt.
+- **Sichtprüfung:**
+  - Alle 15 Seiten wurden bei 144 dpi angesehen. Nichts ist abgeschnitten, nichts überlappt.
+  - Schriftgrößen: Titel 34 pt, Haupttext auf den Folien 2–9 mindestens 20 pt, Fußnoten 11 pt, Anhang mindestens
+    14 pt. Nur die kleine Zeile auf Folie 1 hat 16 pt, das ist so gewollt.
+  - Zusätzlich hat die Koordination die Folien 1, 4, 7 und 8 im Endstand selbst angesehen.
+- **Kennzeichnung:** Alle Kennzeichen stehen an den Sollstellen. „Kunde“, „Einsparung“, „CO₂“, „Jury“,
+  „Kriterium“, „€“ und „%“ kommen nicht vor.
+- **Fassungen A, B, C:** Folien- und Sprechtext-PDFs sind textgleich zum Stand vor dem 5-Minuten-Deck.
+- **Nicht wiederholt auf `1eb08a2`:** Nachbau aus `git archive` (P10). Er war auf `6fa5693` bestanden.
+- **Kosmetisch, bewusst offen:**
+  - Die kleine Zeile auf Folie 1 hat 16 pt.
+  - Auf Folie 2 sitzt das Etikett „19.02.“ leicht rechts der Marke.
+  - Folie 3 hat etwa 32 statt etwa 25 sichtbare Wörter.
+  - Die Bildschrift auf den Folien 5 und 6 ist klein.
+- **Demo im lokalen Nachbau:**
+  - Getestet am 17.11.2026 auf `1eb08a2` mit `python3 -m http.server`, Chromium (Playwright) in einem frischen
+    Browserkontext, Fenster 1440 × 900.
+  - Übersicht wie oben in Abschnitt 3 beschrieben. „8 Paare“ führt zur Paarliste.
+  - TW-01 → BD-23: „Für diese Entscheidung zu spät“, „Prüfende 02.12.2026 liegt 5 Tage nach der Bestellfrist
+    27.11.2026“, die Prüfbitte ist gesperrt.
+  - Über „Paare derselben Gruppe“ zurück.
+  - TW-05 → BD-22: „Weiter prüfen“, „Vorschlag zur Prüfung, keine fachliche Freigabe“, „Prüfende 28.11.2026 liegt
+    123 Tage vor der Bestellfrist 31.03.2027“.
+- **Prüfbefehle (Auswahl):**
+  - `sha256sum`
+  - `git diff --stat 4f327c3 1eb08a2 -- . ':(exclude)pitch/'`
+  - `validate.py`
+  - `pdfinfo`, `pdffonts`, `pdftotext -layout`
+  - `pdftoppm -r 144`
+  - pypdf zur Auswertung der Links
+  - die Prüfskripte von cf-test und das Playwright-Skript der Koordination (nicht im Repository)
 
-Prüfbefehle (Auswahl):
-- `sha256sum`
-- `git diff --stat bdf8d2e aac67d5 -- . ':(exclude)pitch/'`
-- `validate.py`
-- `pdfinfo`, `pdffonts`, `pdftotext -layout`
-- `pdftoppm -r 144`
-- `git archive` mit `baue.js`
-- die Prüfskripte von cf-test (nicht im Repository)
+## 8. Nicht geprüft
 
-## 9. Nicht geprüft
-
-- **PowerPoint, Keynote, Google Slides:** Nicht geprüft sind das Öffnen der Dateien, die Notizen im Referentenmodus,
-  die Rechtschreibsprache und Arial statt Liberation Sans (Zeilenumbrüche). Geprüft wurde mit LibreOffice, python-pptx
-  und `validate.py`.
-- **Präsentationsmodus:** Die Ziele der Links sind in Datei und PDF geprüft. Ob das Klicken auf dem Vortragsrechner
-  funktioniert, ist nicht geprüft.
-- **Live-Demo:** Weder die Demo auf dem Vortragsrechner noch die Vorschau auf claude.ai wurden hier geprüft, denn diese
-  Arbeitsumgebung hat keinen Browserzugang zu claude.ai. Der Ablauf wurde früher mit lokalen Builds geprüft (siehe
-  `docs/pitch-ablauf.md`).
-- **Beamer:** Bei 1920 px Folienbreite ist die Schrift in den Bildschirmfotos der Ersatzfolien klein: Großbuchstaben
-  im Fließtext etwa 10 px, der kleinste Text etwa 8 px. Titel, Bildunterschrift und Rahmen tragen die Aussage. Kleintext
-  ist am Beamer nur eingeschränkt lesbar.
-- **Stoppuhrprobe:** Alle Zeiten sind Schätzungen.
+- **PowerPoint, Keynote, Google Slides:** Nicht geprüft sind das Öffnen der Datei, die Referentenansicht und die
+  Zeilenumbrüche mit Arial. Geprüft wurde mit LibreOffice, python-pptx und `validate.py`.
+- **Klicks im Vortragsmodus und im PDF-Viewer:** Die Ziele der Links sind in Datei und PDF geprüft, das Anklicken nicht.
+- **Online-Vorschau auf claude.ai:** Aus dieser Umgebung gibt es keinen Browserzugang dorthin. Geprüft wurde der lokale
+  Nachbau desselben Codes.
+- **Vortragsrechner:** Umschalten mit Alt+Tab und Netz am Veranstaltungsort sind nicht geprüft.
+- **Beamer:** Die Bildschrift auf den Folien 5 und 6 ist klein (Großbuchstaben im Fließtext etwa 11–12 px bei 1920 px
+  Breite). Bildunterschrift und Rahmen tragen die Aussage.
+- **Stoppuhrprobe:** Alle Zeiten sind aus Wortzahlen gerechnet.
 - **Bildschirmleser.**
-- **Wirkung auf Außenstehende:**
-  - Zeitleiste A3: Der rote Balken läuft bis zum 08.03. Die Legende erklärt, dass er das Ergebnis zeigt, wenn die
-    Planung an diesem Tag reagiert. Das in der Generalprobe von jemandem lesen lassen, der den Fall nicht kennt.
-- **Kosmetisch und bekannt:**
-  - Auf E1 liegen die Kartenunterkanten außerhalb des Bildschirmfotos.
-  - Das Formular auf E5 ist unten angeschnitten. Das bleibt so, weil das Bild sonst kleiner würde.
 
-## 10. Auftrag, Umfang und Abnahme
+## 9. Auftrag und Abnahme
 
-- **Nutzerproblem:** Das Team braucht für den Abschluss am 20.11.2026 eine einreichbare Pitchpräsentation. Folgendes
-  ist dabei offen: die Pitchdauer, ob die Live-Demo am Vortragsort funktioniert und welche Geschichte am besten trägt.
+- **Nutzerproblem:**
+  - Am 20.11. hat das Team höchstens fünf Minuten einschließlich Sprecherwechsel und Demo.
+  - Fassung A dauerte mit Demo etwa 7:15.
+  - Die Jury soll den Nutzen ohne technisches Vorwissen verstehen.
 - **Gewünschtes Verhalten:**
-  - drei eigenständig vortragbare Fassungen mit unterschiedlichem Einstieg, jeweils als PPTX und PDF
-  - kurzer Sprechtext je Folie und Aufteilung zwischen Houssam und Feyrouz
-  - geschätzte Sprechzeit je Fassung
-  - Ersatzfolien für die Demo
-  - klare Kennzeichnung von fiktivem Fall, Beispieldaten und Annahmen
-  - genau eine Fassung „Empfohlen zur Abgabe“
+  - sieben sichtbare Folien mit Live-Demo, auf 4:35 gerechnet
+  - Ersatzfolien
+  - Sprechtext mit Zeiten und Sprecherwechseln
+  - Anhang für Rückfragen
+  - sichtbare Kennzeichnung
 - **Ausgeschlossen:**
-  - Änderungen an Plattform, Vorschau, Freigabe und Pitch-Ablauf
-  - Einreichung und Kontakt zum Veranstalter
-  - erfundene Kunden, Partner, Einsparungen oder Jurykriterien
+  - Änderungen an Plattform, Vorschau, Freigabe und `docs/pitch-ablauf.md`
+  - Einreichung und Kontakt zu Veranstalter oder Jury
+  - erfundene Kunden, Partner, Einsparungen, Gesprächsergebnisse oder Jurykriterien
   - kostenpflichtige Dienste
-- **Abnahmekriterien und Stand:**
 
 | Kriterium | Stand | Beleg |
 |---|---|---|
-| Drei eigenständig vortragbare Fassungen mit unterschiedlichem Schwerpunkt, je als PPTX und PDF | erfüllt (auf Dateiebene geprüft; nicht in PowerPoint geöffnet, nicht geprobt) | Abschnitt 2; cf-review |
-| Jede Fassung erklärt Problem, Zielgruppe, Nutzen, Geschäftsmodell und nächsten Praxistest | erfüllt | Tabelle in Abschnitt 2; cf-review |
-| Demo mit der geprüften Fassung 2, Ersatzfolien bei Ausfall | erfüllt mit Einschränkungen | Abschnitte 4 und 9; Links in Datei und PDF geprüft (T4), Vortragsmodus und Vorschau auf claude.ai nicht |
-| Fiktiver Fall, Beispieldaten und unbestätigte Annahmen gekennzeichnet | erfüllt | T9; cf-review |
-| Keine erfundenen Kunden, Einsparungen oder Jurykriterien | erfüllt | T9; cf-review |
-| Kurzer Sprechtext je Folie, Aufteilung Houssam und Feyrouz | erfüllt | Notizen; Sprechtext-PDFs |
-| Geschätzte Sprechzeit je Fassung, da keine Dauer belegt ist | erfüllt (Schätzung) | Abschnitt 3 |
-| Genau eine Fassung „Empfohlen zur Abgabe“ | erfüllt | Abschnitt 1; Ordner `empfohlen-zur-abgabe/` |
-| Plattform und Freigabe unverändert, nichts eingereicht | erfüllt | T1 (`git diff`) |
-| Export, Layout und Lesbarkeit geprüft | erfüllt mit Einschränkungen | Abschnitte 8 und 9 |
+| PPTX und PDF nach Plan 0.2 mit den Anpassungen vom 17.11. | erfüllt auf Dateiebene; nicht in PowerPoint geöffnet | Abschnitte 1 und 7 |
+| Standard-Sprechtext mit rund 450 Wörtern | 461 Wörter | Endprüfung, Notizen |
+| Erste drei Folien vereinfacht | erfüllt; Folie 3 etwas wortreicher als geplant | Sichtprüfung |
+| Folie 2 mit „Spätestens am 5. Februar die Prüfung anfragen“, 14 Tage als Annahme sichtbar | erfüllt | Endprüfung |
+| Standarddemo zeigt „fünf Tage zu spät“ und „Weiter prüfen“ | erfüllt; im lokalen Nachbau durchgeklickt, nicht auf dem Vortragsrechner | Abschnitt 7 |
+| Bei Zeitdruck direkt das Bildschirmfoto des fehlenden Ergebnisses | erfüllt in Datei und PDF; Anklicken nicht geprüft | Endprüfung, Navigation |
+| Restmenge und Wettbewerbsvergleich im Anhang | erfüllt (Folien 12 und 13) | Endprüfung |
+| Eigener Teil für Feyrouz und Houssam auf der Teamfolie | erfüllt (Folie 8) | Notizen |
+| Schluss mit der Bitte um Kontakt zu einem Dortmunder Umbauprojekt | erfüllt (Folie 9) | Folientext und Notiz |
+| Bestätigtes Praxisfeedback, falls rechtzeitig | keines vorhanden (Stand 17.11., 16:36 Uhr) | Abschnitt 5 |
+| Visuell geprüft: lesbar, nichts abgeschnitten, Zahlen und Quellen richtig, Ersatzfolien vollständig | erfüllt bei 144 dpi; Beamer nicht geprüft | Sichtprüfung |
+| Timing aus Wortzahlen nachgerechnet | erfüllt (4:35); Stoppuhrprobe steht aus | Abschnitt 2 |
+| Plattform, Vorschau, Freigabe und Pitch-Ablauf unverändert, nichts eingereicht | erfüllt | `git diff` |
 
-## 11. Neu bauen
+## 10. Frühere Langfassungen A, B und C
 
-Die Decks entstehen aus dem Generator in `werkzeug/`. Die Gestaltungsregeln stehen in `werkzeug/GESTALTUNG.md`, die
-Entscheidungen in `plan/korrekturen-und-entscheidungen.md`.
+Sie sind am 17.11.2026 morgens entstanden. Mit 7:15 (A, B) bzw. 5:45 (C) passen sie **nicht** in die fünf Minuten laut
+Tag 5. Sie liegen weiter in `ausgabe/weitere-fassungen/`, die Sprechtexte in `ausgabe/sprechtexte/`. Aus ihnen stammen
+Bildschirmfotos, Zeitleiste und Anhang. Die frühere README mit allen Einzelheiten steht in Commit `1e96e9b`.
 
-Kleine Textänderungen kann das Team direkt in PowerPoint machen. Dann gilt:
-- Es ändert sich nur diese Datei. Der Generator bleibt auf dem Stand dieses Commits, und PDF und Sprechtext-PDF
-  ändern sich nicht mit.
-- Das einzureichende PDF muss danach neu aus PowerPoint exportiert werden.
-- Ausgeblendete Folien nimmt PowerPoint dabei nur mit, wenn in den PDF-Optionen „Ausgeblendete Folien einschließen“
-  gewählt ist. Das ist hier nicht prüfbar, deshalb vor der Abgabe nachsehen. Für einen vollständigen Neubau aus `werkzeug/inhalt-*.js`:
+## 11. Ändern und neu bauen
 
-- **Voraussetzungen:**
-  - Node.js mit pptxgenjs 3.12.0 (bringt jszip mit)
-  - Playwright mit Chromium
-  - Python 3 mit Pillow und python-pptx
-  - LibreOffice 24.2 und Poppler
-- **Herkunft der Hilfsskripte:** `validate.py` und `soffice.py` stammen aus der PPTX-Anleitung der Arbeitsumgebung
-  (Variable `SKILL`).
-- **Standardpfade:** Die Pfade in `exportiere.sh` und `sprechtext.js` (Playwright) gelten für die Arbeitsumgebung dieser
-  Sitzung. Anderswo müssen sie angepasst werden.
+- **Falls bestätigtes Praxisfeedback kommt:**
+  - Voraussetzung ist eine Gesprächsnotiz mit Datum, Rolle und Aussage. Name, Zitat und Foto nur, wenn die Person
+    zugestimmt hat.
+  - Nur das verwenden, was dokumentiert ist, und es als Einzelaussage kennzeichnen.
+  - Auf Folie 9 einen Satz ersetzen, nicht ergänzen. Sonst wird die Zeit knapp. Ein Kandidat ist „Ob unsere 14 Tage
+    Prüfzeit stimmen, wissen wir nicht.“, wenn das Gespräch etwas zur Prüfzeit sagt.
+  - Danach PDF und Sprechtext neu erzeugen und den geänderten Satz einmal laut mit Stoppuhr sprechen.
+- **Kleine Textänderungen** kann das Team direkt in PowerPoint machen. Danach das PDF aus PowerPoint neu exportieren,
+  mit „Ausgeblendete Folien einschließen“. Der Generator und das Sprechtext-PDF ändern sich dabei nicht mit.
+- **Vollständiger Neubau:** Der Generator liegt in `werkzeug/`, die Gestaltungsregeln stehen in
+  `werkzeug/GESTALTUNG.md`, die Inhalte des 5-Minuten-Decks in `werkzeug/inhalt-p5.js`.
+  - Voraussetzungen: Node.js mit pptxgenjs 3.12.0, Playwright mit Chromium, Python 3 mit Pillow und python-pptx,
+    LibreOffice 24.2 und Poppler.
+  - `validate.py` und `soffice.py` stammen aus der PPTX-Anleitung der Arbeitsumgebung (Variable `SKILL`).
+  - Die Standardpfade in `exportiere.sh` und `sprechtext.js` gelten für diese Arbeitsumgebung.
 
 ```bash
-npm install --prefix ~/pitch-tools pptxgenjs@3.12.0
+PITCH_NODE_PATH=<node_modules mit pptxgenjs> SKILL=<Ordner der PPTX-Anleitung> bash pitch/innosprint-2026/werkzeug/exportiere.sh
 ```
-
-```bash
-PITCH_NODE_PATH=~/pitch-tools/node_modules SKILL=<Ordner der PPTX-Anleitung> bash pitch/innosprint-2026/werkzeug/exportiere.sh
-```
-
-`exportiere.sh` führt diese Schritte aus:
-1. erzeugt die Bildausschnitte
-2. baut die drei PPTX und bearbeitet sie nach (Notizen als Absätze, Sprache Deutsch)
-3. prüft sie mit `validate.py` und python-pptx
-4. exportiert die Folien-PDFs mit LibreOffice, die ausgeblendeten Folien eingeschlossen
-5. erzeugt die Sprechtext-PDFs mit einer Selbstprüfung (erster und letzter Satz sowie die Dauer jeder Notiz müssen im
-   PDF stehen)
-
-`baue.js` meldet je Fassung die Summen für die drei Stufen und den Sprechanteil.
 
 ## 12. Ordner
 
-- `plan/`: Folienplan (cf-planung) sowie Korrekturen und Entscheidungen aus Review und Test
-- `werkzeug/`: Generator, Gestaltungsvorgabe und Export
-- `bilder/`: Bildschirmfotos aus Fassung 2; in `bilder/ausschnitte/` die Ausschnitte für die Ersatzfolien
+- `plan/`:
+  - `pitch-5min-plan.md` (Plan 0.2 mit Freigabe)
+  - `pitch-5min-bauauftrag.md` (mit Nachbesserung 1 und 2)
+  - Folienplan sowie Korrekturen und Entscheidungen der Langfassungen
+- `werkzeug/`: Generator, darunter `inhalt-p5.js` für das 5-Minuten-Deck
+- `bilder/`: Bildschirmfotos aus Fassung 2 und Ausschnitte
 - `ausgabe/`:
-  - `empfohlen-zur-abgabe/`: Fassung A
-  - `weitere-fassungen/`: Fassungen B und C
-  - `sprechtexte/`: Sprechtext-PDFs aller drei Fassungen
+  - `abgabe-5-minuten/`: zur Abgabe
+  - `weitere-fassungen/`: A, B, C
+  - `sprechtexte/`: alle Sprechtext-PDFs
