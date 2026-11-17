@@ -36,7 +36,7 @@ function folien() {
       ], { x: 5.25, y: 3.95, w: 7.2, h: 0.65 });
       karte(s, LM, 5.2, CW, 1.2, { fill: COL.weiss, line: COL.linie });
       B.chip(s, "projektbeleg", LM + 0.25, 5.3);
-      T(s, "Dortmunder Beispiel", { x: LM + 1.9, y: 5.3, w: 6, h: 0.36, fontSize: 18, bold: true, valign: "middle" });
+      T(s, "Dortmunder Beispiel", { x: LM + 2.15, y: 5.3, w: 6, h: 0.36, fontSize: 18, bold: true, valign: "middle" });
       T(s, [
         { text: "BLB NRW, 02.12.2024: erst ausbauen, dann abbrechen", options: { bold: true, fontSize: 16, breakLine: true } },
         { text: "„Rückbau erst, nachdem alle demontierbaren Baustoffe vollständig ausgebaut wurden“ (UB TU Dortmund)", options: { fontSize: 14, color: COL.tinte2 } },
@@ -107,21 +107,21 @@ function folien() {
         ["e3-zu-spaet.jpg", "K3 · TW-01 → BD-23: zu spät, Prüfbitte gesperrt", "Ausschnitt des Abgleichs TW-01 und BD-23: Für diese Entscheidung zu spät, Prüfende 5 Tage nach der Bestellfrist, Prüfbitte gesperrt (Beispieldaten)"],
         ["e4-weiter-pruefen.jpg", "K4 · TW-05 → BD-22: weiter prüfen, 123 Tage davor", "Ausschnitt des Abgleichs TW-05 und BD-22: Weiter prüfen, Prüfende 123 Tage vor der Bestellfrist (Beispieldaten)"],
       ];
-      const iw = 5.98, g = CW - 2 * (iw + 0.1);
+      const iw = 5.9, g = CW - 2 * (iw + 0.1);
       zellen.forEach(([bild, unter, alt], i) => {
         const x = LM + i * (iw + 0.1 + g), datei = "ausschnitte/" + bild;
         const gr = B.bildGroesse(datei, iw, 3.5);
-        papier(s, x, 2.1, gr.w + 0.1, gr.h + 0.1);
-        B.bildPassend(s, datei, x + 0.05, 2.15, iw, 3.5, alt);
-        T(s, unter, { x, y: 2.1 + gr.h + 0.14, w: iw + 0.1, h: 0.3, fontSize: 14, bold: true, color: COL.tinte2 });
+        papier(s, x, 2.05, gr.w + 0.1, gr.h + 0.1);
+        B.bildPassend(s, datei, x + 0.05, 2.1, iw, 3.5, alt);
+        T(s, unter, { x, y: 2.05 + gr.h + 0.13, w: iw + 0.1, h: 0.26, fontSize: 14, bold: true, color: COL.tinte2 });
       });
       B.ketteZeile(s, {
-        x: LM, y: 5.9, w: CW, h: 0.34,
-        schritte: ["Zuordnung", "Prüfbitte", "Fachergebnis", "Vormerkung anlegen: nächster Schritt"],
+        x: LM, y: 5.98, w: CW, h: 0.32,
+        schritte: ["Zuordnung", "Prüfbitte", "Fachergebnis", "Vormerkung anlegen"],
         zustand: ["voll", "voll", "voll", "rand"],
       });
-      B.chip(s, "hypothese", LM, 6.3);
-      T(s, "Erwarteter Nutzen: früh sehen, was frei wird · Zeit mit Begründung prüfen · nächster Schritt statt Freigabe", { x: LM + 1.65, y: 6.3, w: CW - 1.65, h: 0.36, fontSize: 14, valign: "middle" });
+      B.chip(s, "hypothese", LM, 6.36);
+      T(s, "Erwarteter Nutzen: früh sehen, was frei wird · Zeit mit Begründung prüfen · nächster Schritt statt Freigabe", { x: LM + 1.65, y: 6.36, w: CW - 1.65, h: 0.36, fontSize: 14, valign: "middle" });
     },
     notiz: {
       spricht: "Houssam",
