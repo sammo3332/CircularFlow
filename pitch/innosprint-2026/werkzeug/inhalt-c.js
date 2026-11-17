@@ -100,7 +100,7 @@ function folien() {
     chips: ["beispiel", "simulation", "vorschlag"], fuss: "Quelle: PA; Bildschirmfotos aus Fassung 2 (Code 2121b92), Stichtag der Demo Mi 18.11.2026, 14:00 (Simulation)",
     zeichne: (s) => {
       const zellen = [
-        ["k2-paarliste.jpg", { x: 0.19, y: 0.165, w: 0.61, h: 0.21 }, "8 Paare, 2 prüfbar", "K2 · Paare derselben Gruppe", "Bildschirmfoto der Paarliste: 8 Paare derselben Gruppe, davon 2 prüfbar, Filter nach Ergebnis (Beispieldaten)"],
+        ["k2-paarliste.jpg", { x: 0.19, y: 0.165, w: 0.61, h: 0.32 }, "8 Paare, 2 prüfbar", "K2 · Paarliste", "Bildschirmfoto der Paarliste: 8 Paare derselben Gruppe, davon 2 prüfbar, Filter nach Ergebnis (Beispieldaten)"],
         ["k3-zu-spaet.jpg", { x: 0.19, y: 0.33, w: 0.47, h: 0.34 }, "Zu spät: 5 Tage nach der Bestellfrist", "K3 · TW-01 → BD-23", "Ausschnitt des Abgleichs TW-01 und BD-23: Für diese Entscheidung zu spät, Prüfbitte gesperrt (Beispieldaten)"],
         ["k4-weiter-pruefen.jpg", { x: 0.19, y: 0.31, w: 0.47, h: 0.365 }, "Weiter prüfen: 123 Tage davor", "K4 · TW-05 → BD-22", "Ausschnitt des Abgleichs TW-05 und BD-22: Weiter prüfen, Prüfende 123 Tage vor der Bestellfrist (Beispieldaten)"],
         ["k6-vormerkung-anlegen.jpg", { x: 0.19, y: 0.27, w: 0.485, h: 0.355 }, "Nächster Schritt: Vormerkung anlegen", "K6 · TW-05 → BD-22", "Ausschnitt: Kasten Nächster fachlicher Schritt, Vormerkung anlegen, laut Eintrag in der Simulation (Beispieldaten)"],
@@ -156,7 +156,7 @@ function folien() {
     zeichne: (s) => {
       const w = 2.6, g = 0.25, y = 2.15, h = 2.4;
       const k = [
-        ["1 · Fall rekonstruieren", "Einen Fall mit einer zuständigen Person entlang der vier Zeitpunkte rekonstruieren."],
+        ["1 · Rekonstruieren", "Einen Fall mit einer zuständigen Person entlang der vier Zeitpunkte rekonstruieren."],
         ["2 · Prüfzeit klären", "Mindestprüfzeit klären: bestätigt oder ersetzt sie die 14 Tage?"],
         ["3 · Karte zeigen", "Angebotskarte zuerst ohne Erklärung zeigen. Frage: „Welchen nächsten Schritt wählen Sie, und warum?“"],
       ];

@@ -105,7 +105,7 @@ function folien() {
         karte(s, x, y, w, h, { fill, line: fill === COL.papier ? COL.rahmen : fill });
         T(s, kopf, { x: x + 0.25, y: y + 0.2, w: w - 0.5, h: 0.4, fontSize: 20, bold: true, color: COL.gruen });
         const runs = absaetze.map(([t, o], j) => ({ text: t, options: Object.assign({}, o, { breakLine: j < absaetze.length - 1 }) }));
-        T(s, runs, { x: x + 0.25, y: y + 0.75, w: w - 0.5, h: h - 0.9, fontSize: i === 2 ? 14 : 16, paraSpaceAfter: 8 });
+        T(s, runs, { x: x + 0.25, y: y + 0.75, w: w - 0.5, h: h - 0.9, fontSize: i === 2 ? 16 : 20, paraSpaceAfter: 10 });
       });
     },
     notiz: {
