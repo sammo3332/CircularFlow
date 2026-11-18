@@ -38,7 +38,7 @@ bereitgestellt. Der Canva-Entwurf ist privat im Konto des Teams gespeichert.
 |---|---|---|---|
 | 1 · Einstieg | Warum geht eine brauchbare Tür verloren? | Sechs angebotene Türen vor dem Haus Lindenhof, sechs leere Türumrisse am Umbau am Kanal. Der Weg dazwischen bricht an einer Uhr ab („zu spät erfahren“, die Uhr steht auf fünf nach zwölf). Darunter die Folgen: Türen können im Container landen, der Umbau bestellt neu. | unverändert aus dem geprüften Pitch, Folie 1 (Feyrouz, 55 Wörter, 31 s) |
 | 2 · Problemgröße | Wie groß ist der Abfallstrom, und was davon sagt etwas über Bauteile? | 182,8 Millionen Tonnen Bau- und Abbruchabfälle, Deutschland 2024, vorläufig. Kästchenbild: 50 von 100 Kästchen aller Abfälle, davon 28 Boden, Steine und Baggergut. Getrennt davon ein Kasten mit Tür und Fragezeichen: Wiederverwendbare Bauteile sind in diesen Zahlen nicht eigens ausgewiesen; keine Einsparung abgeleitet. | **Vorschlag**, 32 Wörter, etwa 18 s. Diese Folie gibt es im geprüften Pitch nicht. |
-| 3 · Produktnutzen | Reicht die Zeit, und was kann die Projektleitung jetzt tun? | Links ein maßstäblicher Zeitstrahl: 10 Tage angenommene Prüfzeit, danach 123 Tage bis zur Bestellfrist. Rechts groß die echte Ergebniskarte der Vorschau („Weiter prüfen“), der begründende Satz hinterlegt, der Knopf „Prüfbitte anlegen“ umrandet. | unverändert aus dem geprüften Pitch, Folie 3 (Houssam, 44 Wörter, 27 s) |
+| 3 · Produktnutzen | Reicht die Zeit, und was kann die Projektleitung jetzt tun? | Links ein maßstäblicher Zeitstrahl: 10 Tage angenommene Prüfzeit, danach 123 Tage bis zur Bestellfrist. Rechts groß die echte Ergebniskarte der Vorschau („Weiter prüfen“), der begründende Satz hinterlegt, der Knopf „Prüfbitte anlegen“ umrandet. | unverändert aus dem geprüften Pitch, Folie 3 (Houssam, 44 Wörter, 27 s). Die Notiz enthält zusätzlich einen Absatz „Zur Ansicht“ als Hinweis für Rückfragen; er wird nicht gesprochen. |
 
 Die Sprechtexte stehen in den Notizen der Canva-Seiten.
 
@@ -72,7 +72,7 @@ Einzelheiten in [`pruefbericht.md`](pruefbericht.md).
 | Prüfung | Ergebnis |
 |---|---|
 | Canva-Export gegen lokale Vorschau aus derselben Folienbeschreibung | nach Glättung 0, 0 und 36 abweichende Pixel von 2 073 600 |
-| Schärfe der Plattformaufnahme im Canva-Export | 1391,9 gegenüber 1421,7 in der lokalen Vorschau; als gewöhnliches PNG 522,3 |
+| Schärfe der Plattformaufnahme im Canva-Export | 1391,9 gegenüber 1421,7 in der lokalen Vorschau; in der ersten Fassung als gewöhnliches PNG 522,3 (`pruefung/05-canva-messungen.txt`, Nachtrag) |
 | Lesbarkeit: Schriftgrößen und Kontraste | keine Schrift unter 20 px (10 pt); alle Kontraste über den Schwellen |
 | Wortlaute gegen den geprüften Pitch | 11 von 11 Prüfungen bestanden |
 | Zahlen der Datenfolie gegen die gelesenen Quellen | 13 von 13 bestanden |
@@ -84,8 +84,9 @@ Einzelheiten in [`pruefbericht.md`](pruefbericht.md).
 Die Herkunft jeder inhaltlichen Abweichung steht in
 [`herkunft-und-abweichungen.md`](herkunft-und-abweichungen.md). Die wichtigsten:
 
-1. **Die Datenfolie ist neu.** Im geprüften Pitch steht keine Abfallzahl; der Folienplan hielt fest: „Wir nennen
-   keine Zahlen.“ Die Zahl kam mit ChatGPTs Gestaltungsfassung v0.2 und ist jetzt an der Quelle nachgelesen. Mit dem
+1. **Die Datenfolie ist neu.** Im geprüften Pitch steht keine Abfallzahl. Der Folienplan nennt zur Rückfrage nach
+   Einsparungen keine Zahlen, und die Übersicht der Plattform zeigt keine Abfallwerte. Eine Abfallzahl als Einordnung
+   widerspricht dem nicht, solange keine Einsparung behauptet wird. Die Zahl kam mit ChatGPTs Gestaltungsfassung v0.2 und ist jetzt an der Quelle nachgelesen. Mit dem
    vorgeschlagenen Sprechtext steigt die rechnerische Dauer von 4:19 auf etwa 4:37. Das ist nicht geprobt.
 2. **Der Satz aus v0.2 „Wir setzen bei einem kleinen Teil an“ ist nicht belegt** und wurde nicht übernommen.
 3. **Musterfolie 3 zeigt eine echte Ansicht statt des Schemas** der bisherigen Folie 3. Zu sehen ist nur der Fall
@@ -98,8 +99,12 @@ Die Herkunft jeder inhaltlichen Abweichung steht in
   Geprüft sind die Antworten der Schnittstelle und die Exporte.
 - Ob sich die Farben der SVG-Grafiken im Canva-Editor ändern lassen, ist nicht geprüft.
 - Die Dauer mit Datenfolie ist gerechnet, nicht gestoppt.
+- Ob die Zahlen für 2024 am 18.11.2026 noch vorläufig sind, ist nicht geprüft. Die Pressemitteilung kündigt den
+  Bericht „Abfallbilanz“ für Juli 2026 an; er wurde nicht gelesen. Die Pille „vorläufig“ folgt der Pressemitteilung.
 - Der frühere Stay-Safe-&-Brave-Pitch lag nicht vor: nicht im Auftrag angehängt, in Canva nicht gefunden. Als
   Gestaltungsreferenz dienten deshalb nur die fünf Fotos.
+- Auf Musterfolie 3 kann „123 Tage vor der Bestellfrist“ wegen seiner Lage am Zeitstrahl als 65 Tage missverstanden
+  werden (`gestaltungskonzept.md`, Abschnitt 6). Noch nicht geändert.
 - Keine unabhängige fachliche Prüfung der Fallannahmen; sie stammen unverändert aus dem geprüften Pitch.
 
 ## 7. Offene Entscheidungen des Teams

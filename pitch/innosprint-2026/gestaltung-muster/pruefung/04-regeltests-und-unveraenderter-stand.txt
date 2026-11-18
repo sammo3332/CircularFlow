@@ -16,3 +16,12 @@ $ git diff --stat 2121b92 HEAD -- plattform/
 
 $ git diff --stat fbd6cff -- . ":(exclude)pitch/innosprint-2026/gestaltung-muster"   (Änderungen außerhalb des neuen Ordners)
 geänderte oder neue Dateien außerhalb des Ordners: 0
+
+## Nachtrag: Rohausgaben zum unveränderten Stand (2026-11-18T11:11Z, HEAD d86562a)
+$ git status --short
+ M pitch/innosprint-2026/gestaltung-muster/pruefung/04-regeltests-und-unveraenderter-stand.txt
+(Ende der Ausgabe)
+$ git diff --stat fbd6cff..HEAD -- . ":(exclude)pitch/innosprint-2026/gestaltung-muster"
+(Ende der Ausgabe; leer bedeutet: keine Änderung außerhalb des Ordners)
+$ git merge-base --is-ancestor fbd6cff HEAD && echo Vorfahre
+Vorfahre

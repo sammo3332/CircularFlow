@@ -20,3 +20,8 @@ SVG-Hülle mit eingebettetem PNG      1316,6
 Original lokal (1:1)                 1452,6
 
 Ergebnis: Gewöhnliche PNG-Bilder zeichnet Canva im Export weich. Die Aufnahme ist deshalb als SVG-Hülle mit eingebettetem PNG (2734 x 1440) eingesetzt; im fertigen Export erreicht sie 1391,9 gegenüber 1421,7 in der lokalen Vorschau (siehe 01-nachbau-und-vergleich.txt). Bild dazu: schaerfe-vier-varianten.png (von oben: 1:1, 1,55-fach, 2-fach, SVG-Hülle; doppelt vergrößert).
+
+## Nachtrag: Schärfe der Aufnahme auf Musterfolie 3, Ausschnitt (500,290)-(1400,520) der ganzen Folie
+erste Fassung des Canva-Exports (Aufnahme als gewöhnliches PNG): 522.3
+endgültiger Canva-Export (SVG-Hülle): 1391.9
+Hinweis: Die Werte der Vier-Varianten-Probe oben stammen von einem anderen Ausschnitt (Probeseite) und sind mit diesen nicht direkt vergleichbar.

@@ -49,9 +49,11 @@ node werkzeug/pruefen.js canva/stand-final.json ../../.. quellen aufnahmen/karte
   auf `#96590A` abgedunkelt (4,8:1) und die Folie neu exportiert.
 - Die Schrift in der Plattformaufnahme ist auf der Folie etwa 28 px hoch (14,5 px in der Plattform mal 1,93), die
   Zeile unter dem Knopf etwa 25 px.
-- Schärfe der Aufnahme im Export: 1391,9 gegenüber 1421,7 in der lokalen Vorschau (Laplace-Varianz, gleicher
-  Ausschnitt). Als gewöhnliches PNG waren es in der ersten Fassung 522,3. Vier Varianten wurden auf einer Probeseite
-  verglichen: `pruefung/05-canva-messungen.txt`, Bild `pruefung/schaerfe-vier-varianten.png`.
+- Schärfe der Aufnahme im Export: 1391,9 gegenüber 1421,7 in der lokalen Vorschau (Laplace-Varianz, Ausschnitt
+  (500,290) bis (1400,520) der Folie). In der ersten Fassung, als gewöhnliches PNG, waren es im selben Ausschnitt
+  522,3 (`pruefung/05-canva-messungen.txt`, Nachtrag). Davor wurden vier Varianten auf einer Probeseite verglichen;
+  deren Werte (511,5 bis 665,0 für PNG, 1316,6 für die SVG-Hülle, 1452,6 lokal) gehören zu einem anderen Ausschnitt.
+  Bild: `pruefung/schaerfe-vier-varianten.png`.
 
 Nicht geprüft: Lesbarkeit an einem Beamer, bei Raumlicht und aus der letzten Reihe.
 
@@ -60,9 +62,11 @@ Nicht geprüft: Lesbarkeit an einem Beamer, bei Raumlicht und aus der letzten Re
 Mit demselben Befehl wie in Abschnitt 2. Ausgabe: `pruefung/02-lesbarkeit-quellen-produkt.txt`.
 
 **Wortlaute gegen den geprüften Pitch (11 Prüfungen, alle bestanden).** Titel der Folien 1 und 3 wörtlich;
-„Haus Lindenhof: 6 von 12 Türen angeboten“, „Umbau am Kanal: braucht 6 Türen“, „zu spät erfahren“, „neu bestellt“,
+„Haus Lindenhof“ mit „6 von 12 Türen angeboten“ und „Umbau am Kanal“ mit „braucht 6 Türen“ (auf der Folie je zwei
+Zeilen, im geprüften Pitch je eine Zeile mit Doppelpunkt; die Prüfung setzt sie zusammen), „zu spät erfahren“, „neu bestellt“,
 „Fiktiver Fall“, Fußzeile und Teamzeile wie in `pitch/innosprint-2026/werkzeug/inhalt-p5.js`; „können im Container
-landen“ aus dem geprüften Sprechtext; die Sprechtexte der Folien 1 und 3 in den Notizen wörtlich.
+landen“ aus dem geprüften Sprechtext; die Sprechtexte der Folien 1 und 3 in den Notizen wörtlich. Die Notiz der
+Musterfolie 3 enthält danach einen zusätzlichen Absatz „Zur Ansicht“, der nicht aus dem geprüften Pitch stammt.
 
 **Zahlen der Datenfolie (13 Prüfungen, alle bestanden).**
 
@@ -87,8 +91,10 @@ nicht vor.
 **11 Prüfungen, alle bestanden.** Ausgabe wie oben.
 
 - Die Aufnahme entstand mit `werkzeug/karte-fuer-folie.js` in einem frischen Browser ohne gespeicherte Daten:
-  Fenster 1000 × 800, Sprache Deutsch, Zeitzone Europe/Berlin. Die Startbedingung des Demoablaufs war erfüllt
-  (8 Paare, 2 prüfbar, 2 Vorgänge, Stichtag Mi 18.11., 14:00); keine Konsolenfehler. Messdaten:
+  Fenster 1000 × 800. Sprache Deutsch und Zeitzone Europe/Berlin sind in der Aufnahmeroutine fest eingestellt und
+  stehen nicht in der Messdatei. Die Startbedingung des Demoablaufs war erfüllt: Die Routine sucht auf der Übersicht
+  die Texte „8 Paare“, „davon 2 prüfbar“, „2 Vorgänge“ und „Mi 18.11., 14:00“ und schreibt je ein Ja oder Nein in die
+  Messdatei; alle vier sind Ja, der Speicher war leer, es gab keine Konsolenfehler. Messdaten:
   `aufnahmen/karte-k4.json`.
 - Ansicht: „TW-05 und BD-22: Weiter prüfen“, Schritt K4 des Demoablaufs in `docs/pitch-ablauf.md`.
 - Markierter Satz: „Prüfende 28.11.2026 liegt 123 Tage vor der Bestellfrist 31.03.2027.“ Markierter Knopf:
@@ -108,7 +114,7 @@ nicht vor.
 | Prüfung | Befehl | Ergebnis |
 |---|---|---|
 | Regeltests | `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs` im Wurzelordner | 46 Tests, 46 bestanden |
-| Unveränderter Stand außerhalb des Ordners | `git status --short` ohne den neuen Ordner | 0 geänderte oder neue Dateien |
+| Unveränderter Stand außerhalb des Ordners | `git status --short` und `git diff --stat fbd6cff..HEAD` ohne den neuen Ordner; Rohausgaben im Nachtrag von `pruefung/04-regeltests-und-unveraenderter-stand.txt` | keine Änderung außerhalb des Ordners; `fbd6cff` ist Vorfahre des Branchstands |
 | Farben des Kästchenbilds | Palettenprüfung, siehe `pruefung/03-farben-kaestchenbild.txt` | Unterscheidbarkeit bei Farbfehlsichtigkeit bestanden; Helligkeitsband und Buntheit für gleichrangige Kategorien nicht bestanden (hier bewusst: eine Kategorie hervorgehoben, Rest neutral); Kontrast der hellen Kästchen zur Fläche unter 3:1, ausgeglichen durch direkte Beschriftung |
 | Zeichenbreiten und Textlage in Canva | Probeseite, `werkzeug/textlage-messen.py` | Textbreite 1389,17 px gemeldet, 1389,16 px berechnet; Grundlinie 0,9465 × Schriftgröße unter der Oberkante |
 
@@ -117,8 +123,25 @@ nicht vor.
 - Beamer, Raum, Entfernung.
 - Canva-Editor und Präsentationsmodus; Änderbarkeit der Farben in den SVG-Grafiken.
 - Dauer des Vortrags mit Datenfolie (gerechnet 4:37, nicht gestoppt).
-- Eine unabhängige Zweitprüfung dieser Unterlagen ist in Abschnitt 7 vermerkt, sobald sie gelaufen ist.
+- Ob die Zahlen für 2024 inzwischen endgültig vorliegen.
 
 ## 7. Unabhängige Durchsicht
 
-Noch nicht eingetragen.
+Ein lesender Prüflauf (cf-review) am 18.11.2026 auf Commit `d86562a`. Ergebnis: keine Zahl und kein Zitat der
+Datenfolie falsch; zehn Befunde zu den Unterlagen.
+
+| Nr. | Befund | Erledigt |
+|---|---|---|
+| 1 | Satz zu den Schriftgrößen im Gestaltungskonzept falsch: Auch die Pillen liegen unter 14 pt | berichtigt, mit Vorschlag 28 px |
+| 2 | Schärfewert 522,3 ohne Messausgabe | Messung nachgetragen in `pruefung/05` |
+| 3 | Nachweis des unveränderten Stands schwach | Rohausgaben nachgetragen in `pruefung/04` |
+| 4 | Zahlen der Startbedingung stehen nicht in der Messdatei | im Bericht klargestellt |
+| 5 | Notiz der Musterfolie 3 hat einen zusätzlichen Absatz | als Abweichung aufgenommen; in Canva nicht geändert |
+| 6 | „Wir nennen keine Zahlen“ aus dem Zusammenhang gelöst | in README und Herkunftsnachweis berichtigt |
+| 7 | „vorläufig“ nicht auf Aktualität geprüft | als nicht geprüft aufgenommen |
+| 8 | „123 Tage vor der Bestellfrist“ kann als 65 Tage gelesen werden | als offener Punkt mit Vorschlag aufgenommen; Folie nicht geändert |
+| 9 | Ort und Angabe auf Folie 1 in zwei Zeilen, Pfeil als Form | als Abweichung aufgenommen |
+| 10 | Foliennummern im Konzept uneinheitlich | auf P4 bis P7 mit Foliennummer umgestellt |
+
+Vom Prüflauf nicht prüfbar: alle Angaben zur Gestaltungsfassung v0.2 (das Paket liegt nicht im Repository), die
+Pixel- und Schärfemessungen (kein Ausführen von Programmen), die Zugehörigkeit der Exporte zum Canva-Entwurf.

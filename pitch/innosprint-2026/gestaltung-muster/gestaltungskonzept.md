@@ -49,11 +49,14 @@ Regel: Bernstein steht immer für das Bauteil oder für die Stelle, auf die man 
 - **Schrift:** die Standardschrift, die Canva über die Schnittstelle setzt (Zeichenbreiten wie Arial). Die Schriftart
   lässt sich dort nicht wählen. Das Team kann in Canva eine andere Schrift setzen.
 - **Größen auf 1920 × 1080** (2 px entsprechen 1 pt in der bisherigen PowerPoint-Fassung): Titel 56 bis 68 px fett;
-  große Zahl 208 px; Beschriftungen 28 bis 48 px; Kennzeichnungen in Pillen 23 bis 27 px fett; Quellen- und Fußzeilen
-  20 bis 22 px. Drei erläuternde Angaben liegen mit 24 bis 27 px knapp unter 14 pt: „heute“ am Zeitstrahl, die Zeile
-  „100 Kästchen = …“ und der zweizeilige Text im Bernstein-Kasten. Nichts ist kleiner als 20 px (10 pt). Die bisherige
-  Regel aus `pitch/innosprint-2026/werkzeug/GESTALTUNG.md` (Inhalt nicht unter 14 pt, Fußnoten nicht unter 10 pt) ist
-  damit bis auf diese drei Angaben eingehalten.
+  große Zahl 208 px; Beschriftungen 28 bis 48 px; Quellen- und Fußzeilen 20 bis 22 px. Nichts ist kleiner als 20 px
+  (10 pt).
+- **Unter 14 pt (28 px) liegen:** die Kennzeichnungen in Pillen („Fiktiver Fall“, „Beispieldaten“, „Simulation“ mit
+  26 px; „Deutschland“, „2024“, „vorläufig“ mit 27 px; „Echte Ansicht der Vorschau“ mit 23 px, alle fett) sowie drei
+  erläuternde Angaben („heute“ und „100 Kästchen = …“ mit 24 px, der Text im Bernstein-Kasten mit 27 px). Die
+  bisherige Regel aus `pitch/innosprint-2026/werkzeug/GESTALTUNG.md` lautet „Nicht unter 14 pt für Inhalte und nicht
+  unter 10 pt für Fußnoten“. Die Pillen und diese drei Angaben halten sie nicht ein, wenn man sie als Inhalt zählt.
+  Vorschlag für die Übertragung: Pillen und diese Angaben auf 28 px setzen.
 - **Titel:** eine Aussage in ein bis zwei Zeilen; der zweite Teil farbig.
 - **Produktzeichen** oben links: das Zeichen der Plattform (abgerundetes Quadrat mit Kreislaufsymbol) und die
   Wortmarke.
@@ -93,11 +96,11 @@ Sprechtexte, Demoablauf und Ersatzbilder bleiben inhaltlich, wie sie sind.
 | neu · Problemgröße | wie Musterfolie 2, **nur wenn das Team sie aufnimmt** | Wie groß ist der Abfallstrom? |
 | 2 · Spätestens am 5. Februar die Prüfung anfragen | maßstäblicher Zeitstrahl wie auf Musterfolie 3, hier waagerecht und groß: Die Prüfzeit als Block muss vor die Bestellfrist passen. Fall der Türen, 14 Tage angenommene Prüfzeit. | Bis wann muss die Prüfung angefragt sein? |
 | 3 · CircularFlow zeigt, ob die Zeit für die Prüfung reicht | wie Musterfolie 3 | Reicht die Zeit, und was ist der nächste Schritt? |
-| 4 · Live-Demo | ruhige Folie mit den beiden Paaren als große Karten und den Wegen zu den Ersatzbildern; Klickweg nur in den Notizen | Was sehen wir gleich? |
+| P4 (Foliennummer 4) · Live-Demo | ruhige Folie mit den beiden Paaren als große Karten und den Wegen zu den Ersatzbildern; Klickweg nur in den Notizen | Was sehen wir gleich? |
 | Ersatzfolien K3 und K4 | je eine neu aufgenommene, scharfe Ergebniskarte in derselben Art wie auf Musterfolie 3 (K3 „zu spät“ mit gesperrter Prüfbitte, K4 „weiter prüfen“); Inhalt und Reihenfolge unverändert | Was hätte die Demo gezeigt? |
-| 5 · Dortmunder Pilot | Kette „angeboten → rechtzeitig geprüft → wieder eingebaut“ als Bildfolge mit den Türen; das Zitat des Umweltamts groß | Was wollen wir im Pilot zählen? |
-| 6 · Prototyp, Angebot, Team | links kleine echte Ansicht der Übersicht, rechts zwei Personenkarten; die Lücke „Uns fehlt …“ als Bernstein-Kasten | Wer sind wir, und was fehlt uns? |
-| 7 · Schluss | dunkle Folie wie der Einstieg; die Bitte groß, die Tür als Motiv | Was brauchen wir von der Jury? |
+| P5 (Foliennummer 7) · Dortmunder Pilot | Kette „angeboten → rechtzeitig geprüft → wieder eingebaut“ als Bildfolge mit den Türen; das Zitat des Umweltamts groß | Was wollen wir im Pilot zählen? |
+| P6 (Foliennummer 8) · Prototyp, Angebot, Team | links kleine echte Ansicht der Übersicht, rechts zwei Personenkarten; die Lücke „Uns fehlt …“ als Bernstein-Kasten | Wer sind wir, und was fehlt uns? |
+| P7 (Foliennummer 9) · Schluss | dunkle Folie wie der Einstieg; die Bitte groß, die Tür als Motiv | Was brauchen wir von der Jury? |
 | Anhang | gleiche Farben und Elemente, sonst sachlich und textnah | – |
 
 Offen für die Übertragung: Musterfolie 3 zeigt dieselbe Ansicht, die kurz danach live vorgeführt wird (K4). Das Team
@@ -109,4 +112,8 @@ entscheidet, ob das als Vorbereitung gewollt ist oder ob Folie 3 eine andere Ans
 - Die Farben des Kästchenbilds folgen der Regel „eine Kategorie hervorheben, ihre Teilmenge heller, der Rest
   neutral“. Ein Prüfwerkzeug für gleichrangige Kategorien meldet deshalb zu geringe Buntheit und Helligkeit außerhalb
   seines Bandes; die Unterscheidbarkeit bei Farbfehlsichtigkeit besteht es (`pruefung/03-farben-kaestchenbild.txt`).
+- Auf Musterfolie 3 steht „123 Tage vor der Bestellfrist“ neben dem oberen Teil des grünen Strichs, vor der Marke
+  „Bauteil frei ab“. Gemeint ist der ganze Strich bis zur Bestellfrist. Das kann als 65 Tage missverstanden werden.
+  Vorschlag: eine Klammer über den ganzen Strich oder die Beschriftung „123 Tage bis zur Bestellfrist“. Noch nicht
+  geändert.
 - Das Deck als Ganzes ist noch nicht gestaltet. Dieser Abschnitt 5 ist ein Vorschlag.
