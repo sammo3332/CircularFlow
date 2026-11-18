@@ -1,6 +1,6 @@
 # CircularFlow Plattform · Fassung 2
 
-Stand 16.11.2026 (Fassung 2, Plan und Regeln: [`docs/plattform-v2.md`](../docs/plattform-v2.md)). Fassung 1 war der erste durchgehende Klickablauf der Arbeitsplattform für Bauteilmanagement und
+Stand 16.11.2026, Entwicklungsstand „Prüfbitte spätestens“ vom 18.11.2026 (Fassung 2, Plan und Regeln: [`docs/plattform-v2.md`](../docs/plattform-v2.md)). Fassung 1 war der erste durchgehende Klickablauf der Arbeitsplattform für Bauteilmanagement und
 Wiederverwendung: Dortmund-Karte mit Projekten, Gebäude mit Etagen und Räumen, Bauteilbestand,
 Bauteilpass, mobile Erfassung, Zuordnung zu Zielöffnung oder Bedarf, nächster fachlicher Schritt,
 Projektradar und Gebäudeansicht. Plan, Entscheidungen und Recherche: [`docs/plattform-v1.md`](../docs/plattform-v1.md).
@@ -17,7 +17,7 @@ Abgleichregel, Vorgangsstatus, Beispieldaten und Speicher bleiben unverändert; 
 
 **Starten:** Statischen Server vom Repository-Wurzelverzeichnis starten (`python3 -m http.server 8000`) und `http://localhost:8000/plattform/` öffnen.
 
-**Neue Anzeige sehen** (Klickpfad BA-3, Kurzform): „Bedarfe“ → „Bedarf erfassen“ mit Projekt „SB“, Gruppe „Systemtrennwände“, Titel „Fristtest“, Menge 30, Bestellfrist 30.11.2026, Mindestprüfzeit 6 mit „geschätzt (Annahme)“, Annahmefenster 01.02.2027 bis 31.03.2027, „Speichern“. Dann „Übersicht“: Unter „Zeitkritisch (7 Tage)“ steht „Prüfbitte spätestens · BD-24 · Fristtest“ (Di 24.11., 23:59), die Kopfzeile zählt „5 Fristen“, und die Bedarfsseite BD-24 zeigt den 24.11.2026 mit dem Chip „geschätzt“. Danach den „Stichtag der Demo“ auf „Fr 20.11., 09:00“ stellen: Der Chip der Zeile zählt auf „noch 4 Tg. 14 Std.“. Zum Aufräumen: Erfassen → „In diesem Browser gespeichert“ → „Zurücksetzen“.
+**Neue Anzeige sehen** (Klickpfad BA-3, Kurzform): „Bedarfe“ → „Bedarf erfassen“ mit Projekt „SB“, Gruppe „Systemtrennwände“, Titel „Fristtest“, Menge 30, Bestellfrist 30.11.2026, Mindestprüfzeit 6 mit „geschätzt (Annahme)“, Annahmefenster 01.02.2027 bis 31.03.2027, „Speichern“ (die Eingabe der Datumsfelder folgt der Browsersprache, bei Englisch zum Beispiel MM/TT/JJJJ). Dann „Übersicht“: Unter „Zeitkritisch (7 Tage)“ steht „Prüfbitte spätestens · BD-24 · Fristtest“ (Di 24.11., 23:59), die Kopfzeile zählt „5 Fristen“, und die Bedarfsseite BD-24 zeigt den 24.11.2026 mit dem Chip „geschätzt“. Danach den „Stichtag der Demo“ auf „Fr 20.11., 09:00“ stellen: Der Chip der Zeile zählt auf „noch 4 Tg. 14 Std.“. Zum Aufräumen: Erfassen → „In diesem Browser gespeichert“ → „Zurücksetzen“.
 
 **Tests ausführen:** `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs`
 
@@ -116,4 +116,5 @@ node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform
 | `fonts/` | Archivo und JetBrains Mono, SIL Open Font License 1.1 |
 | `test/regeln.test.mjs` | Regeltests für `app/regeln.js` |
 | `test/abgleich.test.mjs`, `vorgang`, `kennzahlen`, `bedarf`, `projektanlage`, `zustand`, `befunde` | Tests des Fachkerns der Fassung 2 und der Review-Befunde; `_hilfe.mjs` baut den Prüfkontext |
+| `test/pruefbittefrist.test.mjs` | Tests der Frist „Prüfbitte spätestens“ (Regel, Gleichlauf mit dem Abgleich, Übersicht, Bedarfsseite, Demo-Stichtag) |
 | `bauen-artifact.mjs` | erzeugt die Fassung für eine Veröffentlichung als claude.ai-Seite |

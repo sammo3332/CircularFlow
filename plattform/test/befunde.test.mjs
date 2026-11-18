@@ -99,7 +99,7 @@ test('Befund 2 und 3: Nach der Übergabe kein Ziel mehr, Bedarf belegt, nicht me
   assert.ok(!abgleichListe(c).some((a) => a.bedarf.id === 'BD-22'));
   // Zum Vergleich: ohne Übergabe war der Bedarf offen und zeitkritisch
   const k0 = kennzahlen(kontext(leerePersistenz(), '2027-02-06T10:00'), { kritischTage: 90 });
-  assert.ok(k0.bedarfeOffen.eintraege.some((d) => d.id === 'BD-22')); assert.ok(k0.zeitkritisch.eintraege.some((f) => f.art === 'bedarf' && f.id === 'BD-22'));
+  assert.ok(k0.bedarfeOffen.eintraege.some((d) => d.id === 'BD-22')); assert.ok(k0.zeitkritisch.eintraege.some((f) => f.art === 'bedarf' && f.id === 'BD-22' && f.name === 'Bestellfrist'));
   // Abbruch gibt den Bedarf wieder frei
   const b = ablauf(); b.tu('2026-11-18T14:30', 'abbruch', { grund: 'Test' });
   assert.equal(bedarfBelegt(b.ctx('2026-11-19T10:00'), 'SB', 'BD-22'), false);

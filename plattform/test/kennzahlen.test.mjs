@@ -90,9 +90,9 @@ test('Zeitkritisch: Fristen der nächsten 7 Tage, nach Zeit sortiert, Überfäll
   // Bestellfrist eines Bedarfs: BD-23 am 27.11. liegt 9 Tage voraus (außerhalb), bei 14 Tagen Horizont enthalten.
   assert.ok(!z.eintraege.some((f) => f.art === 'bedarf'));
   const weit = kennzahlen(kontext(), { kritischTage: 14 }).zeitkritisch;
-  const bd23 = weit.eintraege.find((f) => f.art === 'bedarf');
+  const bd23 = weit.eintraege.find((f) => f.art === 'bedarf' && f.name === 'Bestellfrist');
   assert.equal(bd23.id, 'BD-23'); assert.equal(bd23.name, 'Bestellfrist'); assert.equal(bd23.ueberfaellig, false);
-  const nachBestellfrist = kennzahlen(kontext(leerePersistenz(), '2026-11-28T09:00')).zeitkritisch.eintraege.find((f) => f.id === 'BD-23');
+  const nachBestellfrist = kennzahlen(kontext(leerePersistenz(), '2026-11-28T09:00')).zeitkritisch.eintraege.find((f) => f.id === 'BD-23' && f.name === 'Bestellfrist');
   assert.equal(nachBestellfrist.ueberfaellig, true);
 });
 

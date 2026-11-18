@@ -55,6 +55,7 @@ function ausgangsstand() {
   const entwurfBedarf = {
     projekt: projekt.kurz, gruppe: 'tuer', titel: 'Bürotüren 1. OG', menge: '6', bestellfrist: A.bestellfrist, pruefzeitTage: A.pruefzeitTage,
     annahmeVon: A.annahmeVon, annahmeBis: A.annahmeBis, zustaendig: 'planung',
+    geschaetzt: { pruefzeitTage: true }, // „geschätzt (Annahme)“ im Formular: Die 14 Tage sind nicht belegt (Fallakte A5)
     anforderungen: 'Türblatt ca. 860 × 1985 mm, Zarge passend zur Wand, keine Brand- oder Schallschutzanforderung (Annahme)',
   };
   assert.deepEqual(pruefeBedarf(entwurfBedarf, { daten: baueDaten(p) }), {}, 'Bedarfsformular meldet Fehler');

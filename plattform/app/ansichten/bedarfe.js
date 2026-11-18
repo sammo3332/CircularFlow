@@ -73,6 +73,7 @@ function pruefbitteAngabe(ctx, d) {
   const f = pruefbitteFrist(d);
   if (f.status !== 'ok') return angabe(FRIST_PRUEFBITTE, `${chip('nicht berechenbar', f.status === 'klaerung' ? 'warn' : 'info')}<small>${esc(f.text)}</small>`);
   const verstrichen = f.tag < String(ctx.at).slice(0, 10);
+  // „7 Tagen“ im Text = Standardfenster von kennzahlen() (kritischTage = 7); bei einer Änderung dort auch hier anpassen.
   return angabe(FRIST_PRUEFBITTE, `<span class="mono">${tagText(f.tag)}</span>${f.geschaetzt.length ? ` ${chip('geschätzt', 'warn')}` : ''}${verstrichen ? ` ${chip('verstrichen', 'crit')}` : ''}<small>${esc(f.text)}</small>`
     + `${verstrichen ? '' : '<small>In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft.</small>'}`);
 }
