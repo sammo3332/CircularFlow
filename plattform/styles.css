@@ -639,6 +639,22 @@ legend { font-size: var(--t-s); font-weight: 620; color: var(--tinte-2); margin-
 .gespeichert p { margin: 0; }
 .gesp-icon .ic { width: 36px; height: 36px; color: var(--ok); }
 .meine .block-kopf { align-items: center; }
+.foto-aktionen { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.lokal-hinweis { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; margin: 0; font-size: var(--t-s); color: var(--tinte-2); }
+.lokal-hinweis > span:last-child { flex: 1 1 220px; }
+.kompaktliste.meine-liste a { grid-template-columns: 56px minmax(0, 1fr) auto; min-height: 64px; }
+.kl-bild { width: 56px; height: 56px; border-radius: var(--r); object-fit: cover; display: block; background: var(--flaeche-3); }
+.kl-bild-leer { border: 1px dashed var(--linie-2); }
+.meine-liste .ic { color: var(--tinte-3); }
+
+/* Installationshilfe */
+.inst { display: grid; gap: var(--s-4); max-width: 760px; width: 100%; }
+.inst h2 { margin: 0 0 var(--s-2); font-size: 18px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.inst ol, .inst ul { margin: 0; padding-left: 22px; display: grid; gap: 8px; }
+.inst-lage { margin-top: 0; } .inst-lage p:last-child { margin-bottom: 0; } .inst-lage .ic { width: 18px; height: 18px; vertical-align: -3px; color: var(--ok); }
+.inst-lage .knopf .ic { color: inherit; }
+.inst-eigen { border-color: var(--gruen); }
+.inst-weg .hinweisbox { margin-top: var(--s-3); }
 .reset-frage { display: inline-flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: var(--t-s); color: var(--crit); }
 
 /* Radar */
@@ -686,13 +702,20 @@ legend { font-size: var(--t-s); font-weight: 620; color: var(--tinte-2); margin-
   .kachelraster > .kachel, .kachelraster > .kachel:nth-child(n+4) { grid-column: auto; }
 }
 @media (max-width: 860px) {
+  /* Bedienung mit dem Finger: Ziele mindestens 44 px hoch; Felder mit 16 px Schrift, damit iOS beim Antippen nicht vergrößert. */
+  :root { --ziel: 48px; }
+  select, input[type="text"], input:not([type]), input[type="search"], input[type="date"], input[type="datetime-local"], textarea { font-size: 16px; }
+  .knopf, .knopf-zweit, .knopf-leise { font-size: 15px; }
+  .knopf-klein { min-height: 44px; font-size: 14px; }
+  .schritte li > span, .schritte li > button { min-height: 44px; }
+  .foto-aktionen > * { flex: 1 1 100%; }
   .shell { grid-template-columns: minmax(0, 1fr); }
   .rail { display: none; }
   .kopf-mobil { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding-block: 6px; padding-left: max(var(--s-4), env(safe-area-inset-left, 0px)); padding-right: max(var(--s-4), env(safe-area-inset-right, 0px)); background: color-mix(in srgb, var(--flaeche) 94%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--linie); }
   .kopf-mobil .marke-zeichen { width: 30px; height: 30px; }
   .kopf-mobil .marke b { font-size: 15px; }
   .kopf-mobil .projektzeit { gap: 2px; font-size: var(--t-xs); text-align: right; }
-  .kopf-mobil select { height: var(--ziel); font-size: 13.5px; }
+  .kopf-mobil select { height: 44px; font-size: 16px; padding-left: 8px; padding-right: 28px; background-position: right 8px center; }
   .tabbar { position: fixed; z-index: 25; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; padding: 4px max(4px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(4px, env(safe-area-inset-left, 0px)); background: var(--flaeche); border-top: 1px solid var(--linie); min-height: calc(var(--tabbar) + env(safe-area-inset-bottom, 0px)); }
   .tabbar a { display: grid; justify-items: center; align-content: center; gap: 2px; min-height: 56px; padding: 6px 2px; border-radius: var(--r); color: var(--tinte-2); text-decoration: none; font-size: var(--t-xs); font-weight: 620; }
   .tabbar a .ic { width: 22px; height: 22px; }
@@ -746,7 +769,7 @@ legend { font-size: var(--t-s); font-weight: 620; color: var(--tinte-2); margin-
   .quelle-werte > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   .hinweis-quelle > div:first-child { grid-column: 1 / -1; }
   .rn-name { display: none; }
-  .kompaktliste a, .kl-zeile { grid-template-columns: 52px minmax(0, 1fr); } .kl-schritt { grid-column: 2; justify-self: start; text-align: left; max-width: none; }
+  .kompaktliste:not(.meine-liste) a, .kl-zeile { grid-template-columns: 52px minmax(0, 1fr); } .kl-schritt { grid-column: 2; justify-self: start; text-align: left; max-width: none; }
   .fakten > div { grid-template-columns: 112px minmax(0, 1fr); }
   .kachelraster, .bt-raster { grid-template-columns: minmax(0, 1fr); }
   .kachelraster > .kachel, .kachelraster > .kachel:nth-child(n+4) { grid-column: auto; }

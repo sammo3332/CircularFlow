@@ -37,7 +37,7 @@ Kein echtes Gerät. Testbild: gezeichnet und als Testbild beschriftet.
 3. **Erfassung am Handy:** Bis 860 px Breite sind Felder, Auswahllisten und Knöpfe mindestens 44 px hoch, Felder
    haben 16 px Schrift. Schritt „Foto“ bietet „Foto aufnehmen“ (Kamera) und „Vorhandenes Bild wählen“ getrennt an.
 4. **Speichern und wieder öffnen:** Nach dem Speichern führt „Bauteilpass öffnen“ zum Datensatz; die Liste
-   „Auf diesem Gerät gespeichert“ zeigt jede eigene Erfassung mit Vorschaubild und führt zum Pass. Der Datensatz
+   „In diesem Browser gespeichert“ zeigt jede eigene Erfassung mit Vorschaubild und führt zum Pass. Der Datensatz
    ist nach dem Neuladen mit Foto wieder da.
 5. **Kennzeichnung:** Lokale Speicherung steht im Foto-Schritt, im Prüfschritt, nach dem Speichern und in der
    Installationshilfe. Die simulierte Erkennung bleibt wie bisher gekennzeichnet.

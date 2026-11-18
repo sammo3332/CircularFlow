@@ -17,4 +17,6 @@ CircularFlow untersucht, wie Angebot und Bedarf für Wiederverwendung frühzeiti
 
 Der [Prototyp](prototype/README.md) ist eine statische Browseranwendung. Für die Regelprüfung im Repository-Verzeichnis `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs` ausführen. `prototype/dist/` enthält die Website mit fiktiven Testdaten.
 
+Die [Plattform](plattform/README.md) (Entwicklungsbranches) startet mit `python3 -m http.server 8000` vom Repository-Wurzelverzeichnis unter `http://localhost:8000/plattform/`; Tests: `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs`. Der Branch `claude/bold-fermat-t1ngwv` (18.11.2026) macht sie als Web-App installierbar; Installation, geprüfte Umgebungen und Grenzen stehen im Plattform-README.
+
 Vor der ersten Prototypaufgabe festlegen: operative Zielrolle, konkreter Problemfall, erwartetes Bildschirmverhalten und überprüfbare Akzeptanzkriterien. Eine Aufgabe auf einem eigenen Branch bearbeiten; Änderungen und tatsächlich ausgeführte Prüfungen nachvollziehbar zurückgeben. Ausgaben, Veröffentlichung und externe Zusagen benötigen einen entsprechenden Auftrag.

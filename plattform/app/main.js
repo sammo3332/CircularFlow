@@ -15,6 +15,7 @@ import { gebaeudeAnsicht } from './ansichten/gebaeude.js';
 import { bestand, pass } from './ansichten/bauteile.js';
 import { entscheidungsListe, entscheidungsSeite } from './ansichten/entscheidung.js';
 import { erfassung, leererEntwurf } from './ansichten/erfassung.js';
+import { installieren, geraeteArt } from './ansichten/installieren.js';
 import { radar, leereMeldung } from './ansichten/radar.js';
 import { uebersicht } from './ansichten/uebersicht.js';
 import { katalog } from './ansichten/katalog.js';
@@ -36,6 +37,22 @@ const ui = neuerUiZustand();
 const schmalMedium = window.matchMedia ? window.matchMedia('(max-width: 640px)') : null;
 ui.schmal = Boolean(schmalMedium?.matches);
 schmalMedium?.addEventListener?.('change', (ev) => { ui.schmal = ev.matches; if (R) render(); });
+
+// Installation als Web-App (CF-PWA-01): Lage des Geräts und, falls der Browser es anbietet, das Installationsangebot.
+const alsApp = () => Boolean(window.matchMedia?.('(display-mode: standalone)').matches || navigator.standalone);
+let installAngebot = null;
+ui.installation = { art: geraeteArt(navigator.userAgent, navigator.maxTouchPoints), laeuftAlsApp: alsApp(), angebot: false, sicher: window.isSecureContext, manifest: Boolean(document.querySelector('link[rel="manifest"]')), ergebnis: '' };
+window.addEventListener('beforeinstallprompt', (ev) => { ev.preventDefault(); installAngebot = ev; ui.installation.angebot = true; if (R && route().view === 'installieren') render(); });
+window.addEventListener('appinstalled', () => { installAngebot = null; ui.installation.angebot = false; ui.installation.ergebnis = 'installiert'; if (R) render(); });
+window.matchMedia?.('(display-mode: standalone)').addEventListener?.('change', () => { ui.installation.laeuftAlsApp = alsApp(); if (R) render(); });
+async function appInstallieren() {
+  if (!installAngebot) return;
+  const angebot = installAngebot; installAngebot = null; ui.installation.angebot = false; // ein Angebot gilt nur einmal
+  angebot.prompt();
+  const { outcome } = await angebot.userChoice;
+  ui.installation.ergebnis = outcome === 'accepted' ? 'installiert' : 'abgelehnt';
+  render();
+}
 
 const toast = document.createElement('div');
 toast.className = 'toast'; toast.setAttribute('role', 'status'); toast.setAttribute('aria-live', 'polite');
@@ -87,6 +104,7 @@ function route() {
     const e = db.entscheidungen.find((x) => x.projekt === pr.kurz && slug(x.id) === id); return e ? { view, p: pr, e } : { view: 'fehlt', art: 'Entscheidung', id };
   }
   if (h === 'erfassung') return { view: 'erfassung' };
+  if (h === 'installieren') return { view: 'installieren' };
   if (h === 'radar') return { view: 'radar', tab: 'hinweise' };
   if (h === 'radar-quellen') return { view: 'radar', tab: 'quellen' };
   if (h === 'radar-melden') return { view: 'radar', tab: 'melden' };
@@ -101,7 +119,7 @@ const BEREICH = {
   start: 'projekte', projekt: 'projekte', gebaeude: 'projekte', bestand: 'projekte', entscheidungen: 'projekte', entscheidung: 'projekte', radar: 'projekte', projektneu: 'projekte',
   katalog: 'bauteile', pass: 'bauteile',
   bedarfe: 'bedarfe', bedarf: 'bedarfe', bedarfneu: 'bedarfe', bedarfergaenzen: 'bedarfe', abgleichliste: 'bedarfe', abgleich: 'bedarfe',
-  erfassung: 'erfassen',
+  erfassung: 'erfassen', installieren: 'erfassen',
 };
 const HAUPT = [['uebersicht', '#uebersicht', 'Übersicht', 'uebersicht'], ['projekte', '#projekte', 'Projekte', 'karte'], ['bauteile', '#bauteile', 'Bauteile', 'bauteil'], ['bedarfe', '#bedarfe', 'Bedarfe', 'bedarf'], ['erfassen', '#erfassung', 'Erfassen', 'kamera']];
 function rahmen(r, inhalt) {
@@ -116,7 +134,7 @@ function rahmen(r, inhalt) {
       <a class="marke" href="#uebersicht"><span class="marke-zeichen" aria-hidden="true">${icon('kreislauf')}</span><span><b>CircularFlow</b><small>Bauteile im Kreislauf</small></span></a>
       <nav class="nav" aria-label="Hauptnavigation">${HAUPT.map(navLink).join('')}</nav>
       ${pr ? `<div class="kontext"><span class="label">Projekt</span><a href="#projekt-${slug(pr.kurz)}" class="kontext-titel">${pchip(pr)}<b>${esc(pr.name)}</b></a></div>` : ''}
-      <div class="rail-fuss">${zeitwahl('projektzeit')}<p><span class="chip chip-sim">Beispieldaten</span> Projekte, Personen und Bauteile sind fiktiv. Eigene Erfassungen bleiben in diesem Browser.</p></div>
+      <div class="rail-fuss">${zeitwahl('projektzeit')}<p><span class="chip chip-sim">Beispieldaten</span> Projekte, Personen und Bauteile sind fiktiv. Eigene Erfassungen bleiben in diesem Browser.</p>${ui.installation.laeuftAlsApp ? '' : '<p><a href="#installieren">Als App installieren</a></p>'}</div>
     </aside>
     <div class="arbeitsflaeche">
       <header class="kopf-mobil"><a class="marke" href="#uebersicht"><span class="marke-zeichen" aria-hidden="true">${icon('kreislauf')}</span><b>CircularFlow</b></a>${zeitwahl('projektzeit-m')}</header>
@@ -173,12 +191,13 @@ function render() {
               : r.view === 'entscheidungen' ? entscheidungsListe(c, r.p)
                 : r.view === 'entscheidung' ? entscheidungsSeite(c, r.p, r.e)
                   : r.view === 'erfassung' ? erfassung(c)
+                    : r.view === 'installieren' ? installieren(c)
                     : r.view === 'radar' ? radar(c, r)
                       : nichtGefunden(r.art, r.id);
   const aktiv = document.activeElement; const sel = fokusSelektor(aktiv); const pos = aktiv?.id ? aktiv.selectionStart : null;
   if (document.getElementById('karte')) karteEntfernen(ui.start.ansicht || (ui.start.ansicht = {}));
   app.innerHTML = rahmen(r, inhalt);
-  document.title = `${{ uebersicht: 'Übersicht', katalog: 'Bauteile', bedarfe: 'Bedarfe', bedarf: `Bedarf ${r.d?.id}`, bedarfneu: 'Bedarf erfassen', bedarfergaenzen: `Bedarf ${r.d?.id} ergänzen`, abgleichliste: 'Passende Paare', abgleich: `Abgleich ${r.bauteil?.id} und ${r.bedarf?.id}`, vorgaenge: 'Arbeitsliste', projektneu: 'Projekt erfassen', start: 'Projekte', projekt: r.p?.name, gebaeude: `Gebäude ${r.p?.kurz}`, bestand: `Bestand ${r.p?.kurz}`, pass: `${r.b?.id} Bauteilpass`, entscheidungen: `Entscheidungen ${r.p?.kurz}`, entscheidung: `Entscheidung ${r.e?.id}`, erfassung: 'Erfassung', radar: 'Projektradar' }[r.view] || 'Nicht gefunden'} · CircularFlow`;
+  document.title = `${{ uebersicht: 'Übersicht', katalog: 'Bauteile', bedarfe: 'Bedarfe', bedarf: `Bedarf ${r.d?.id}`, bedarfneu: 'Bedarf erfassen', bedarfergaenzen: `Bedarf ${r.d?.id} ergänzen`, abgleichliste: 'Passende Paare', abgleich: `Abgleich ${r.bauteil?.id} und ${r.bedarf?.id}`, vorgaenge: 'Arbeitsliste', projektneu: 'Projekt erfassen', start: 'Projekte', projekt: r.p?.name, gebaeude: `Gebäude ${r.p?.kurz}`, bestand: `Bestand ${r.p?.kurz}`, pass: `${r.b?.id} Bauteilpass`, entscheidungen: `Entscheidungen ${r.p?.kurz}`, entscheidung: `Entscheidung ${r.e?.id}`, erfassung: 'Erfassung', installieren: 'App installieren', radar: 'Projektradar' }[r.view] || 'Nicht gefunden'} · CircularFlow`;
   if (r.view === 'start' && R) karteAnzeigen(c);
   letzteRoute = location.hash;
   if (neu) {
@@ -250,6 +269,7 @@ app.addEventListener('click', (ev) => {
     case 'import-scan-sim': ui.importe.scanSim = !ui.importe.scanSim; break;
     case 'erf-gehe': ent.schritt = Number(a.dataset.schritt); ent.fehler = {}; ui.fokus = 'h-erf'; break;
     case 'erf-zurueck': ent.schritt = Math.max(1, ent.schritt - 1); ent.fehler = {}; ui.fokus = 'erf-zurueck'; break;
+    case 'installieren': appInstallieren(); return;
     case 'erf-weiter': erfWeiter(); return;
     case 'erf-speichern': erfSpeichern(); return;
     case 'erf-uebernehmen': { const w = ent.werte[a.dataset.key]; ent.werte[a.dataset.key] = { ...w, status: 'bestaetigt', quelle: 'Erkennung (Simulation), von Hand geprüft' }; ui.fokus = `w-${a.dataset.key}`; break; }
@@ -321,7 +341,7 @@ app.addEventListener('change', async (ev) => {
   else if (t.name === 'erf-zustand') ent.zustand = t.value;
   else if (t.id === 'erf-verfuegbar') { ent.verfuegbarAb = t.value; delete ent.fehler.verfuegbarAb; }
   else if (t.dataset.wert && t.tagName === 'SELECT') { ent.werte[t.dataset.wert] = { eingabe: t.value, status: t.value ? 'bestaetigt' : 'fehlt', quelle: t.value ? 'Auswahl vor Ort' : '' }; }
-  else if (t.id === 'erf-foto') { await fotoAufnehmen(t.files?.[0]); return; }
+  else if (t.id === 'erf-foto' || t.id === 'erf-foto-wahl') { await fotoAufnehmen(t.files?.[0]); return; }
   else if (t.id === 'ifc-datei') { await ifcPruefen(t.files?.[0]); return; }
   else if (t.dataset.meldung) { ui.radar.meldung[t.dataset.meldung] = t.type === 'checkbox' ? t.checked : t.value; delete ui.radar.meldungFehler[t.dataset.meldung]; }
   else if (t.dataset.radarBezirk) { ui.radar.bezirk[t.dataset.radarBezirk] = t.value; delete ui.radar.fehler[t.dataset.radarBezirk]?.bezirk; }
