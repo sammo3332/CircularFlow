@@ -1,11 +1,12 @@
 # Abschlussbericht · Nacht vom 17. auf den 18.11.2026
 
-Dokumentversion 1.0 · Stand 18.11.2026 · Pitch-Branch `codex/plattform-v1`, Ausgangscommit `2add671` · Entwicklungsbranch
-`codex/plattform-entwicklung-20261118`, Stand `92391c3` · Berichtscommit: dieser Commit
+Dokumentversion 1.0 · Stand 18.11.2026 · Pitch-Branch `codex/plattform-v1`, Ausgangscommit `c5f2d23` · Entwicklungsbranch
+`codex/plattform-entwicklung-20261118`, geprüfter Code-Stand `92391c3` (danach nur Dokumente) · Berichtscommit: dieser Commit
 
 Dieser Bericht fasst den selbstständig ausgeführten Abschlussauftrag zusammen. **Eingereicht, versendet oder veröffentlicht
-wurde nichts.** Es wurde kein Gespräch geführt und niemand angeschrieben. Die veröffentlichte Vorschau wurde nur gelesen,
-nicht verändert. Der Entwicklungsbranch ist nicht gemergt und nicht bereitgestellt. Es gibt keine Pull Requests.
+wurde nichts.** Es wurde kein Gespräch geführt und keine neue Nachricht versendet. Die veröffentlichte Vorschau wurde nur
+gelesen, nicht verändert. Der Entwicklungsbranch ist nicht in den Pitch-Branch gemergt und nicht bereitgestellt; er enthält die
+Dokumente des Pitch-Branches (Merge der Dokumente in den Entwicklungsbranch). In dieser Runde wurde kein Pull Request angelegt.
 
 ## 1. Die Abgabedateien (unverändert seit `b647ea3`)
 
@@ -41,16 +42,17 @@ als Eingabe gewertet, nicht als Anweisung, und gegen die Dateien geprüft.
 
 | Ort | Inhalt | Branch |
 |---|---|---|
-| `pitch/innosprint-2026/generalprobe/` | Probenanleitung 1.1 (Sprecherwechsel, Zeitkontrollen, Demoausfall), Prüfprotokoll 1.1, vier Ersatzbilder (`bilder/`), Prüfskripte (`pruefskripte/`), gespeicherte Ausgaben (`ergebnisse/`) | `codex/plattform-v1` |
+| `pitch/innosprint-2026/generalprobe/` | Probenanleitung 1.1 (Sprecherwechsel, Zeitkontrollen, Demoausfall; Druckfassung `probenanleitung-druck.pdf`), Prüfprotokoll 1.1, vier Ersatzbilder (`bilder/`), Prüfskripte (`pruefskripte/`), gespeicherte Ausgaben (`ergebnisse/`) | `codex/plattform-v1` |
 | `pitch/innosprint-2026/juryfragen/juryantworten.md` | zehn sprechbare Antworten mit Status (belegt, gezeigt, Hypothese), Hypothesen H1 bis H10 mit Prüfschritten, Quellenprüfung | `codex/plattform-v1` |
-| `docs/praxistest/` | Kurzcheck-Einseiter (eine Seite, PDF), 15-Minuten-Gesprächsleitfaden, Gesprächsnotiz-Vorlage, README mit Entscheidungen des Teams | `codex/plattform-v1` |
+| `docs/praxistest/` | Kurzcheck-Einseiter (eine Seite, PDF), 15-Minuten-Gesprächsleitfaden, Gesprächsnotiz-Vorlage (PDFs jeweils neben den Markdown-Dateien), README mit den offenen Entscheidungen des Teams | `codex/plattform-v1` |
 | `docs/priorisierung-nach-dem-pitch.md`, `docs/plan-pruefbitte-spaetestens.md` | Abgleich der Pläne, höchstens drei Verbesserungen, Plan mit Abnahmekriterien vor der Umsetzung | `codex/plattform-v1` |
-| `docs/pruefungen/` | dieser Bericht, Prüflauf `cf-test` Runde 1 (Zusammenfassung, Rohausgaben, Werkzeuge) | beide |
+| `docs/pruefungen/` | dieser Bericht, Prüfläufe `cf-test` Runde 1 und 2 (Zusammenfassung, Rohausgaben, Werkzeuge) | beide |
 | `plattform/`, `docs/pilot/cf-pilot-01-simulation.mjs` | Frist „Prüfbitte spätestens“, 20 neue Tests, Startanleitung in `plattform/README.md` | `codex/plattform-entwicklung-20261118` |
 
 ## 4. Ausgeführte Prüfungen und Ergebnisse
 
-Alles in dieser Tabelle wurde in dieser Sitzung ausgeführt. Die Ausgaben stehen, wo angegeben, im Repository.
+Die Prüfungen in dieser Tabelle wurden in dieser Sitzung ausgeführt. Die Spalte „Beleg“ nennt die gespeicherte Ausgabe im
+Repository. Wo keine Datei steht, ist die Ausgabe nicht gespeichert und das dort vermerkt.
 
 | Prüfung | Befehl oder Weg | Ergebnis | Codestand | Beleg |
 |---|---|---|---|---|
@@ -61,18 +63,45 @@ Alles in dieser Tabelle wurde in dieser Sitzung ausgeführt. Die Ausgaben stehen
 | Ersatzbilder gegen frische Aufnahme | `…/pruefskripte/bildvergleich.py` | gleiche Größe, 0,03 bis 0,21 % der Pixel weichen ab, mittlerer Unterschied unter 0,7 von 255 | `bilder/k1` bis `k4` | `ergebnisse/bildvergleich.txt` |
 | Regeltests, Pitch-Stand | `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs` | 190 von 190 (46 + 144), 0 Fehler (von mir und von `cf-test`) | `23dc050`, `plattform/` und `prototype/` unverändert | `ergebnisse/regeltests.txt` |
 | Regeltests, Entwicklungsstand (`cf-test`, Runde 1) | derselbe Befehl | 210 von 210 (20 neue Tests), neue Testdatei allein 20 von 20 | `dca307f` | `cf-test-runde-1/rohausgaben/B1-*` |
-| Regeltests und Pilot-Nachrechnung, Endstand (von mir) | derselbe Befehl, `node docs/pilot/cf-pilot-01-simulation.mjs` | 210 von 210; Pilot-Skript Exitcode 0 („Prüfbitte spätestens“ BD-24 am 05.02.2027, erstmals sichtbar am 30.01.2027) | `92391c3` | nicht gespeichert, siehe Runde 2 |
+| Regeltests, Pilot-Nachrechnung und Browserabläufe, Endstände (`cf-test`, Runde 2; von mir zusätzlich auf dem Entwicklungsstand) | dieselben Befehle und Skripte wie in Runde 1 | Pitch `2add671`: 190 von 190, 23 von 23, Demo 28 von 28. Entwicklung `92391c3`: 210 von 210, 20 von 20, Pilot-Skript Exitcode 0 mit „(geschätzt)“, BA-1 bis BA-5 61 Prüfungen ohne Abweichung, Zusatzabläufe, Pitch-Demo 28 von 28 mit 7 byte-gleichen Bildern, 1280 × 720 13 von 13, Stichproben und Mutationsprobe gleich wie in Runde 1 | `2add671`, `92391c3` | `cf-test-runde-2/rohausgaben/` |
 | Mutationsprobe der neuen Tests (`cf-test`) | Kopien außerhalb des Repositorys, `mutationen.py` | 12 Mutationen der Regel und der Anzeige, alle von den neuen Tests erkannt | `dca307f` | `cf-test-runde-1/rohausgaben/B1-mutationsprobe.txt` |
 | Browserabläufe BA-1 bis BA-5 aus dem Plan (`cf-test`) | `ba-1-bis-5.js`, je Ablauf ein frischer Kontext | 61 Prüfungen, 0 Abweichungen; drei Zusatzabläufe (Fristtag, Bedarf ergänzen, ohne Annahmefenster) 16, 8 und 5 Prüfungen bestanden; 390 × 844 und 1280 × 720 ohne seitliches Scrollen | `dca307f` | `cf-test-runde-1/rohausgaben/B2-*`, `B4-*` |
 | Pitch-Demo auf dem Entwicklungsstand (`cf-test`) | `demo-pruefung.js` | 28 von 28, alle 7 Bildschirmfotos byte-gleich zum Pitch-Stand | `dca307f` | `cf-test-runde-1/rohausgaben/B3-*` |
 | Eigene Stichproben der Regel (`cf-test`) | Handrechnung gegen `pruefbitteFrist` und Abgleich, vier Zeitzonen | je 57 Prüfungen, 0 Fehler, in allen Zeitzonen gleich | `dca307f` | `cf-test-runde-1/rohausgaben/B6-*` |
-| Unabhängige Prüfung der Unterlagen (`cf-review`, Runde 1) | lesend gegen Quellen, Oberfläche und Dateien | Befunde zu Uhrzeiten, Belegen, Überzeichnungen und Einverständnis, alle eingearbeitet (`1ce2db2`) | Pitch-Branch | Abschnitt 6 |
-| Code-Review des Entwicklungsstands (`cf-review`) | lesend gegen den Plan | kein wesentlicher Befund, sechs Hinweise (Abschnitt 7.5) | `dca307f` | Rückgabe des Agenten, hier zusammengefasst |
-| Zweite, gebündelte Prüfrunde (`cf-review` Unterlagen und Nacharbeiten, `cf-test` Wiederholung der Läufe auf dem Endstand) | siehe Abschnitt 4.1 | zum Zeitpunkt dieser Fassung in Arbeit | Pitch-Branch `2add671`, Entwicklungsbranch `92391c3` | Abschnitt 4.1 |
+| Unabhängige Prüfung der Unterlagen (`cf-review`, Runde 1) | lesend gegen Quellen, Oberfläche und Dateien | Befunde zu Uhrzeiten, Belegen, Überzeichnungen und Einverständnis, eingearbeitet in `1ce2db2` und `2add671` (Nachbesserungen aus Runde 2: Abschnitt 4.1) | Pitch-Branch | Rückgabe des Agenten, nicht als Datei gespeichert |
+| Code-Review des Entwicklungsstands (`cf-review`) | lesend gegen den Plan | kein wesentlicher Befund, sechs Hinweise (Abschnitt 7.5) | `dca307f` | Rückgabe des Agenten, nicht als Datei gespeichert; Umgang mit den Hinweisen in Abschnitt 7.5 |
+| Unabhängige Prüfung der Unterlagen und der Nacharbeiten (`cf-review`, Runde 2) | lesend gegen Quellen, gespeicherte Ausgaben und das Diff `dca307f` zu `92391c3` | drei wesentliche Befunde und Nebenbefunde, alle belegten eingearbeitet (Abschnitt 4.1) | Pitch `2add671`, Entwicklung `92391c3` | Abschnitt 4.1 |
+| Auslesung der Oberflächentexte (K2, K3, K4, BD-21) | `node …/pruefskripte/abgleich-texte.js` | Exitcode 0; Texte stehen in der Ausgabe | `plattform/` Code `2121b92` | `generalprobe/ergebnisse/abgleich-texte.txt` |
+| Änderungen am Anwendungscode seit dem Pitch-Stand | `git diff --stat 2121b92 23dc050 -- plattform prototype` | nur `plattform/README.md`, 2 Zeilen | `23dc050` | `generalprobe/ergebnisse/diff-anwendungscode.txt` |
+| Zählung der Regeltests getrennt | zwei Aufrufe von `node --test` | 46 von 46 (Prototyp), 144 von 144 (Plattform) | `75fd769` | `generalprobe/ergebnisse/regeltests-getrennt.txt` |
+| Unterschied von `index.html` (Download gegen Nachbau) | `diff -u` | nur Seitentitel und HTML-Rahmen | siehe oben | `generalprobe/ergebnisse/index-html-diff.txt` |
 
 ### 4.1 Zweite Prüfrunde
 
-Ergebnis wird nach Abschluss der Runde in diesem Abschnitt eingetragen.
+**`cf-test` (Wiederholung auf den Endständen `2add671` und `92391c3`):** Alle Läufe aus Runde 1 wurden wiederholt und bestanden,
+kein blockierender Befund (`docs/pruefungen/cf-test-runde-2/`). Die Ausgaben sind gegenüber Runde 1 gleich, mit einer erwarteten
+Ausnahme: Das Pilot-Skript nennt jetzt „(geschätzt)“ und zeigt einen vierten Prüfpunkt. Die Anwendungslogik ist gegenüber dem in
+Runde 1 geprüften Commit `dca307f` unverändert (nur ein Kommentar, zwei Testfilter, README). Befunde: V1 toter Verweis auf diesen
+Bericht im Entwicklungsstand (behoben durch den Merge), V2 „belegt“ bei BD-23 (offen für das Team), H1 Fallakte nachgeführt.
+
+**`cf-review` (Unterlagen, Entwurf dieses Berichts, Nacharbeiten):** Drei wesentliche Befunde, alle belegt und behoben:
+
+| Befund | Behebung |
+|---|---|
+| Praxistest: Die Verwendung der Angaben wurde zu Beginn als gegeben angekündigt, am Ende aber erst erfragt. Bei „nein“ zu den Notizen widersprachen sich „Datum, Rolle“ und „nichts weiter eintragen“. | Einstieg, Einseiter und README sagen gleichlautend: Nutzung zur Prüfung der Idee; ob die Angaben ohne Namen für Vorträge und Folien verwendet werden dürfen, wird am Ende erfragt. Bei „nein“ nur Datum und Rolle, die Einverständniszeile steht jetzt zuerst. Ausgefüllte Notizen nicht im Git-Repository. Eingabespalten der Notiz verbreitert. |
+| Dieser Bericht: Sätze, die nicht stimmten oder nicht belegt waren (Branches „entfernt“, „keine Pull Requests“, „alle eingearbeitet“, „zwei Wege“ beim SDG-Abruf, Kürzungsstelle bei Zeitdruck). | Berichtigt in dieser Fassung; die temporären Branches und Arbeitsverzeichnisse sind vor diesem Commit entfernt worden. |
+| Prüfaussagen ohne gespeicherte Ausgabe („im Browser ausgelesen“, `git diff`, getrennte Testzählung, Unterschied von `index.html`, Lauf auf dem Endstand). | Skript und Ausgabe bzw. Ausgaben gespeichert (Abschnitt 4, unterste vier Zeilen); die Läufe auf dem Endstand stehen in `cf-test-runde-2/`. Die Postfach-Aussage wurde auf die dokumentierte Prüfung der Pitch-README zurückgeführt. |
+
+Nebenbefunde, ebenfalls umgesetzt: Antwort 2 (fehlende Angaben zeigt K2, nicht K3 und K4), Antwort 1 (Herstellerangabe), Antwort 3
+und 9 (Folieninhalt ist nicht „gezeigt“), Antwort 6 (Wortlaut nach der Concular-Seite), Antwort 9 gekürzt, SDG ohne erfundenes Zitat,
+Madaster-Zitat und Seitenangabe der Concular-Handlungsempfehlung (PDF-Seite 3, gedruckte Seite 5), Pfade im Leitfaden, Platzhalter,
+„Teil B“ in der Priorisierung, Ausgangscommit, Liste der Nachführung, Fallakte §1 im Entwicklungsstand, Hinweis zu den Beispieldaten
+von BD-23 in der Probenanleitung und in Antwort 1, Druckfassung der Probenanleitung, „vermutlich JPEG-Rauschen“, Spätfall-Zeiten als
+Annahme gekennzeichnet. **Nicht umgesetzt** (kein belegter Fehler): Der Name „Claude Code“ in den Unterlagen bleibt, ob Werkzeugnamen
+in den Unterlagen stehen, entscheidet das Team. Die wörtlichen Steckbrief-Zitate und der Wortlaut des Nachtauftrags waren für den
+Reviewer nicht prüfbar.
+
+Die Korrekturen der zweiten Runde wurden von mir durchgesehen, aber nicht von `cf-review` erneut geprüft (höchstens zwei Runden).
 
 ## 5. Nicht ausgeführt und Unsicherheiten
 
@@ -83,7 +112,11 @@ Ergebnis wird nach Abschluss der Runde in diesem Abschnitt eingetragen.
   Sichtbarkeit der Vorschau sind nicht geprüft.
 - **Alle Zeiten sind gerechnet, keine ist gestoppt** (4:19 ruhig, etwa 3:25 zügig, 64 s Demo, 4:27 im Spätfall).
 - **SDG 12.5:** Der Wortlaut des Unterziels konnte nicht an der Primärquelle gelesen werden. Die Hosts der Vereinten Nationen
-  und weitere Quellen waren aus der Arbeitsumgebung nicht erreichbar (zwei Wege versucht). Antwort 7 benennt das.
+  und weitere Quellen waren aus der Arbeitsumgebung nicht erreichbar (curl über den Proxy für mehrere Adressen und ein
+  Abruf-Agent für zwei Adressen, alle ohne Verbindung; Einzelheiten in `juryantworten.md`, Abschnitt 3). Antwort 7 benennt das.
+- **Beispieldaten BD-23:** Die Oberfläche kennzeichnet die 14 Tage Prüfzeit bei BD-23 nicht als „geschätzt“ (`daten.js` Z. 164
+  „belegt“), obwohl sie eine Beispielannahme ist. Im Vortrag „angenommene Prüfzeit“ sagen (so steht es im K3-Satz). Daten nicht
+  geändert, siehe Plan E10 und Probenanleitung, Abschnitt 2.
 - **Concular und Madaster:** Aussagen stammen aus Herstellerseiten und Folien. Ob und wie viele Bauteile in der
   Universitätsbibliothek wieder eingebaut wurden, ist nicht belegt. Die Pressemeldung des BLB NRW nennt Concular nicht.
 - **Praxis:** Es gibt kein Gespräch, keine Praxisbestätigung, keinen Partner und keine bestätigte Prüfzeit. Die 14 Tage
@@ -189,7 +222,7 @@ Bildschirmfotos sind auf dem Entwicklungsstand byte-gleich zum Pitch-Stand.
 - **F-2 Restmenge** (Plan Restmenge 1.1, offene Fragen F1 bis F6): ändert denselben Block „Zeitkritisch“.
 - **F-3 Herkunft der Prüfzeit** erst nach dem Praxisgespräch (Idee N2).
 
-## 8. Höchstens drei Aufgaben für die morgendliche Generalprobe
+## 8. Höchstens drei Aufgaben für die morgendliche Generalprobe (Wortlaut des Auftrags)
 
 Die Zuständigkeiten und Fristen sind Vorschläge, das Team bestätigt sie.
 
@@ -198,15 +231,17 @@ Die Zuständigkeiten und Fristen sind Vorschläge, das Team bestätigt sie.
    4 → 5 → 6 → 7 und 4 → 6 → 7, Foliennummer + Enter, Alt+Tab (Mac: Cmd+Tab) zum Browser im Vollbild, Online-Vorschau öffnen
    oder die lokale Variante starten. Abschlusskriterium: Die Punkte „PowerPoint am Vortragsrechner“, „Links im
    Vortragsmodus“, „Umschalten“ und „Vorschau am Veranstaltungsort“ in `pitch/innosprint-2026/generalprobe/probenanleitung.md`,
-   Abschnitt 5, sind abgehakt, Abweichungen stehen in der Datei.
+   Abschnitt 5, sind abgehakt, Abweichungen stehen in der Datei. Zum Mitnehmen: `probenanleitung-druck.pdf`.
 2. **Zeitprobe mit Stoppuhr.** Vorschlag: Feyrouz führt die Uhr, Houssam bedient die Demo. Ganzer Vortrag zweimal im ruhigen
    Tempo mit allen Übergaben, Demo allein dreimal, einmal der Spätfall mit Ausfall um 2:10. Abschlusskriterium: Die
    gemessenen Zeiten stehen in Abschnitt 1 der Probenanleitung neben den gerechneten, beide Gesamtläufe liegen unter 5:00.
-   Sonst wird gekürzt, die Zeile „Bei Zeitdruck“ der Notizen zeigt, wo.
+   Sonst ist zu kürzen. Eine Kürzungsstelle ist im Deck nicht vorgesehen (die Zeilen „Bei Zeitdruck“ der Notizen regeln nur den
+   Rückfall auf die Bildschirmfotos), das Team legt sie fest.
 3. **Jurysätze laut sprechen und Entscheidungen festhalten.** Vorschlag: beide, danach spätestens vor dem Technik-Check am
    20.11. Die zehn Antworten aus `pitch/innosprint-2026/juryfragen/juryantworten.md` laut lesen (jede unter 30 Sekunden),
    „Das wissen wir noch nicht“ dort stehen lassen, wo die Hypothese steht, und den Wortlaut von SDG 12.5 an der Quelle der
-   Vereinten Nationen nachlesen (von hier nicht erreichbar). Dazu drei Entscheidungen für den Praxistest: Kontakt im Einseiter,
-   Speicherort und Löschfrist der Notizen, Zusage eines Ergebnisblatts (`docs/praxistest/README.md`), und die
+   Vereinten Nationen nachlesen (von hier nicht erreichbar). Dazu die offenen Entscheidungen für den Praxistest: Kontakt im Einseiter,
+   Speicherort und Löschfrist der Notizen, Zusage eines Ergebnisblatts (`docs/praxistest/README.md`), ob BD-23 vor dem Pitch auf
+   „geschätzt“ gestellt wird (dann Ersatzbilder neu aufnehmen) oder „angenommene Prüfzeit“ im Vortrag genügt, und die
    Produktentscheidungen (unter anderem E2) in `00_START_HIER/ENTSCHEIDUNGEN.md` eintragen. Abschlusskriterium: jede Antwort
    ohne Ablesen unter 30 Sekunden, die drei Entscheidungen stehen schriftlich im Team-Protokoll.
