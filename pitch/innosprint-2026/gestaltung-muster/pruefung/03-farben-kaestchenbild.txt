@@ -1,0 +1,16 @@
+# Ausgeführt am 2026-11-18T10:48Z, Branch codex/pitch-gestaltung-20261118, Ausgangscommit fbd6cff
+
+$ node <dataviz>/scripts/validate_palette.js "#86BFAE,#0E5546,#C4BAA3" --mode light
+
+Palette (light, surface #fcfcfb, categorical): 3 slots
+  [FAIL] Lightness band         outside band: [["#0E5546",0.404],["#C4BAA3",0.791]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#86BFAE",0.064],["#0E5546",0.071],["#C4BAA3",0.034]]
+  [PASS] CVD separation         worst adjacent #0E5546↔#86BFAE ΔE 35.5 (protan) · tritan 35.0
+  [PASS] Normal-vision floor    worst adjacent #0E5546↔#86BFAE ΔE 35.7 (normal)
+  [WARN] Contrast vs surface    below 3:1 — relief required (visible labels or table view): [["#86BFAE",2.03],["#C4BAA3",1.88]]
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+
+Einordnung: Das Werkzeug prüft Paletten für gleichrangige Kategorien. Die Datenfolie hebt bewusst eine Kategorie hervor (dunkles Grün), zeigt ihre Teilmenge im selben Farbton heller und alle übrigen Abfälle in neutralem Grau. Deshalb schlagen die Bänder für Helligkeit und Buntheit an. Maßgeblich hier: Unterscheidbarkeit auch bei Farbfehlsichtigkeit bestanden; der schwache Kontrast der hellen Kästchen zur Fläche ist durch direkte Beschriftung und Abstände zwischen den Kästchen ausgeglichen.

@@ -1,0 +1,18 @@
+# Ausgeführt am 2026-11-18T10:48Z, Branch codex/pitch-gestaltung-20261118, Ausgangscommit fbd6cff, im Wurzelordner des Repositorys
+$ node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs
+1..46
+# tests 46
+# suites 0
+# pass 46
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 114.997428
+
+$ git diff --stat 2121b92 HEAD -- plattform/
+ plattform/README.md | 2 ++
+ 1 file changed, 2 insertions(+)
+
+$ git diff --stat fbd6cff -- . ":(exclude)pitch/innosprint-2026/gestaltung-muster"   (Änderungen außerhalb des neuen Ordners)
+geänderte oder neue Dateien außerhalb des Ordners: 0

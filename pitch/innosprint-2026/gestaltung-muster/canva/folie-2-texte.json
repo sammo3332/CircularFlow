@@ -1,0 +1,222 @@
+[
+ {
+  "name": "Wortmarke",
+  "text": "CircularFlow",
+  "formatting": {
+   "font_size": 32,
+   "font_weight": "bold",
+   "color": "#FFFFFF",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Angabe Deutschland",
+  "text": "Deutschland",
+  "formatting": {
+   "font_size": 27,
+   "font_weight": "bold",
+   "color": "#0E5546",
+   "line_height": 1.2,
+   "text_align": "center"
+  }
+ },
+ {
+  "name": "Angabe 2024",
+  "text": "2024",
+  "formatting": {
+   "font_size": 27,
+   "font_weight": "bold",
+   "color": "#0E5546",
+   "line_height": 1.2,
+   "text_align": "center"
+  }
+ },
+ {
+  "name": "Angabe vorläufig",
+  "text": "vorläufig",
+  "formatting": {
+   "font_size": 27,
+   "font_weight": "bold",
+   "color": "#594810",
+   "line_height": 1.2,
+   "text_align": "center"
+  }
+ },
+ {
+  "name": "Zahl",
+  "text": "182,8",
+  "formatting": {
+   "font_size": 208,
+   "font_weight": "bold",
+   "color": "#FFFFFF",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Einheit",
+  "text": "Millionen Tonnen",
+  "formatting": {
+   "font_size": 50,
+   "font_weight": "bold",
+   "color": "#F2A33A",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Kategorie",
+  "text": "Bau- und Abbruchabfälle",
+  "formatting": {
+   "font_size": 42,
+   "font_weight": "bold",
+   "color": "#FFFFFF",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Quelle 1",
+  "text": "Quelle: Statistisches Bundesamt (Destatis),\nPressemitteilung Nr. 185 vom 1. Juni 2026,\nvorläufige Ergebnisse für 2024",
+  "formatting": {
+   "font_size": 22,
+   "font_weight": "normal",
+   "color": "#E0EEE8",
+   "line_height": 1.36,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Titel Zeile 1",
+  "text": "Die Hälfte aller Abfälle sind",
+  "formatting": {
+   "font_size": 56,
+   "font_weight": "bold",
+   "color": "#17201D",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Titel Zeile 2",
+  "text": "Bau- und Abbruchabfälle",
+  "formatting": {
+   "font_size": 56,
+   "font_weight": "bold",
+   "color": "#0E5546",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Beschriftung Bau",
+  "text": "Bau- und Abbruchabfälle",
+  "formatting": {
+   "font_size": 32,
+   "font_weight": "bold",
+   "color": "#17201D",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Beschriftung Anteil",
+  "text": "50 % aller Abfälle",
+  "formatting": {
+   "font_size": 30,
+   "font_weight": "normal",
+   "color": "#3F4A45",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Beschriftung Boden",
+  "text": "darunter Boden, Steine und\nBaggergut: 102,9 Mio. t",
+  "formatting": {
+   "font_size": 28,
+   "font_weight": "normal",
+   "color": "#3F4A45",
+   "line_height": 1.28,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Beschriftung übrige Bau- und Abbruchabfälle",
+  "text": "übrige Bau- und Abbruchabfälle",
+  "formatting": {
+   "font_size": 28,
+   "font_weight": "normal",
+   "color": "#3F4A45",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Beschriftung andere",
+  "text": "alle anderen Abfälle",
+  "formatting": {
+   "font_size": 30,
+   "font_weight": "normal",
+   "color": "#3F4A45",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Gesamtmenge",
+  "text": "100 Kästchen = 362,7 Mio. t Abfälle insgesamt",
+  "formatting": {
+   "font_size": 24,
+   "font_weight": "normal",
+   "color": "#59655F",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Fragezeichen",
+  "text": "?",
+  "formatting": {
+   "font_size": 86,
+   "font_weight": "bold",
+   "color": "#C97F1A",
+   "line_height": 1.2,
+   "text_align": "center"
+  }
+ },
+ {
+  "name": "Wiederverwendung Titel",
+  "text": "Wiederverwendbare Bauteile wie Türen",
+  "formatting": {
+   "font_size": 34,
+   "font_weight": "bold",
+   "color": "#17201D",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Wiederverwendung Text",
+  "text": "sind in diesen Zahlen nicht eigens ausgewiesen.\nWir leiten daraus keine Einsparung ab.",
+  "formatting": {
+   "font_size": 27,
+   "font_weight": "normal",
+   "color": "#3F4A45",
+   "line_height": 1.3,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Quelle 2",
+  "text": "Boden, Steine und Baggergut: Umweltbundesamt, Tabelle „Abfallaufkommen“ (nach Abfallbilanz des\nStatistischen Bundesamts), abgerufen am 18.11.2026 · 1 Kästchen = 1 % aller Abfälle, gerundet",
+  "formatting": {
+   "font_size": 20,
+   "font_weight": "normal",
+   "color": "#59655F",
+   "line_height": 1.36,
+   "text_align": "start"
+  }
+ }
+]

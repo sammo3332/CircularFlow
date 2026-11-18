@@ -1,0 +1,145 @@
+[
+ {
+  "name": "Wortmarke",
+  "text": "CircularFlow",
+  "formatting": {
+   "font_size": 32,
+   "font_weight": "bold",
+   "color": "#FFFFFF",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Kennzeichnung Fiktiver Fall",
+  "text": "Fiktiver Fall",
+  "formatting": {
+   "font_size": 26,
+   "font_weight": "bold",
+   "color": "#594810",
+   "line_height": 1.2,
+   "text_align": "center"
+  }
+ },
+ {
+  "name": "Titel Zeile 1",
+  "text": "Eine brauchbare Tür kann verloren gehen,",
+  "formatting": {
+   "font_size": 68,
+   "font_weight": "bold",
+   "color": "#FFFFFF",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Titel Zeile 2",
+  "text": "weil die Information zu spät kommt",
+  "formatting": {
+   "font_size": 68,
+   "font_weight": "bold",
+   "color": "#F2A33A",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "zu spät erfahren",
+  "text": "zu spät erfahren",
+  "formatting": {
+   "font_size": 30,
+   "font_weight": "bold",
+   "color": "#FFFFFF",
+   "line_height": 1.2,
+   "text_align": "center"
+  }
+ },
+ {
+  "name": "Ort links",
+  "text": "Haus Lindenhof",
+  "formatting": {
+   "font_size": 36,
+   "font_weight": "bold",
+   "color": "#FFFFFF",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Angebot",
+  "text": "6 von 12 Türen angeboten",
+  "formatting": {
+   "font_size": 30,
+   "font_weight": "normal",
+   "color": "#E0EEE8",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Ort rechts",
+  "text": "Umbau am Kanal",
+  "formatting": {
+   "font_size": 36,
+   "font_weight": "bold",
+   "color": "#FFFFFF",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Bedarf",
+  "text": "braucht 6 Türen",
+  "formatting": {
+   "font_size": 30,
+   "font_weight": "normal",
+   "color": "#E0EEE8",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Folge links",
+  "text": "können im Container landen",
+  "formatting": {
+   "font_size": 34,
+   "font_weight": "bold",
+   "color": "#F2A33A",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Folge rechts",
+  "text": "neu bestellt",
+  "formatting": {
+   "font_size": 34,
+   "font_weight": "bold",
+   "color": "#FFFFFF",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Fußzeile Fall",
+  "text": "Fiktiver Pilotfall CF-PILOT-01; Gebäude und Projekte ausgedacht",
+  "formatting": {
+   "font_size": 22,
+   "font_weight": "normal",
+   "color": "#E0EEE8",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Fußzeile Team",
+  "text": "Feyrouz Chahed · Houssam Taleb · INNOSPRINT Zirkuläres Bauen · Dortmund · 20.11.2026",
+  "formatting": {
+   "font_size": 22,
+   "font_weight": "normal",
+   "color": "#E0EEE8",
+   "line_height": 1.2,
+   "text_align": "end"
+  }
+ }
+]

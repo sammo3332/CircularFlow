@@ -1,0 +1,189 @@
+[
+ {
+  "name": "Wortmarke",
+  "text": "CircularFlow",
+  "formatting": {
+   "font_size": 32,
+   "font_weight": "bold",
+   "color": "#17201D",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Kennzeichnung Beispieldaten",
+  "text": "Beispieldaten",
+  "formatting": {
+   "font_size": 26,
+   "font_weight": "bold",
+   "color": "#594810",
+   "line_height": 1.2,
+   "text_align": "center"
+  }
+ },
+ {
+  "name": "Kennzeichnung Simulation",
+  "text": "Simulation",
+  "formatting": {
+   "font_size": 26,
+   "font_weight": "bold",
+   "color": "#594810",
+   "line_height": 1.2,
+   "text_align": "center"
+  }
+ },
+ {
+  "name": "Titel Teil 1",
+  "text": "CircularFlow zeigt,",
+  "formatting": {
+   "font_size": 58,
+   "font_weight": "bold",
+   "color": "#17201D",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Titel Teil 2",
+  "text": "ob die Zeit für die Prüfung reicht",
+  "formatting": {
+   "font_size": 58,
+   "font_weight": "bold",
+   "color": "#0E5546",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Zeitstrahl · Frage",
+  "text": "Reicht die Zeit?",
+  "formatting": {
+   "font_size": 30,
+   "font_weight": "bold",
+   "color": "#0E5546",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Zeitstrahl · heute",
+  "text": "heute",
+  "formatting": {
+   "font_size": 22,
+   "font_weight": "normal",
+   "color": "#59655F",
+   "line_height": 1.2,
+   "text_align": "center"
+  }
+ },
+ {
+  "name": "Zeitstrahl · Prüfzeit · Zeile 1",
+  "text": "10 Tage",
+  "formatting": {
+   "font_size": 34,
+   "font_weight": "bold",
+   "color": "#17201D",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Zeitstrahl · Prüfzeit · Zeile 2",
+  "text": "angenommene Prüfzeit",
+  "formatting": {
+   "font_size": 23,
+   "font_weight": "normal",
+   "color": "#3F4A45",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Zeitstrahl · Abstand · Zeile 1",
+  "text": "123 Tage",
+  "formatting": {
+   "font_size": 48,
+   "font_weight": "bold",
+   "color": "#0E5546",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Zeitstrahl · Abstand · Zeile 2",
+  "text": "vor der Bestellfrist",
+  "formatting": {
+   "font_size": 23,
+   "font_weight": "normal",
+   "color": "#3F4A45",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Zeitstrahl · Bauteil · Zeile 1",
+  "text": "Bauteil frei ab",
+  "formatting": {
+   "font_size": 23,
+   "font_weight": "normal",
+   "color": "#3F4A45",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Zeitstrahl · Bauteil · Zeile 2",
+  "text": "01.02.2027",
+  "formatting": {
+   "font_size": 30,
+   "font_weight": "bold",
+   "color": "#17201D",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Zeitstrahl · Bestellfrist · Zeile 1",
+  "text": "Bestellfrist",
+  "formatting": {
+   "font_size": 23,
+   "font_weight": "normal",
+   "color": "#3F4A45",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Zeitstrahl · Bestellfrist · Zeile 2",
+  "text": "31.03.2027",
+  "formatting": {
+   "font_size": 30,
+   "font_weight": "bold",
+   "color": "#17201D",
+   "line_height": 1.2,
+   "text_align": "start"
+  }
+ },
+ {
+  "name": "Kennzeichnung echte Ansicht",
+  "text": "Echte Ansicht der Vorschau",
+  "formatting": {
+   "font_size": 23,
+   "font_weight": "bold",
+   "color": "#FFFFFF",
+   "line_height": 1.2,
+   "text_align": "center"
+  }
+ },
+ {
+  "name": "Fußzeile",
+  "text": "Echte Ansicht der Vorschau (Fassung 2, Code 2121b92): Abgleich TW-05 und BD-22, Systemtrennwände statt Türen · Stichtag der Demo Mi 18.11.2026, 14:00 (Simulation)\nDer Abgleich ist ein Vorschlag zur Prüfung, keine fachliche Freigabe. Es wird nichts versendet.",
+  "formatting": {
+   "font_size": 20,
+   "font_weight": "normal",
+   "color": "#59655F",
+   "line_height": 1.36,
+   "text_align": "start"
+  }
+ }
+]

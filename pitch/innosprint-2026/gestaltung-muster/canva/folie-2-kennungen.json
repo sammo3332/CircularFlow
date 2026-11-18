@@ -1,0 +1,102 @@
+[
+ {
+  "name": "Wortmarke",
+  "kennung": "PBWWzDvbx4fTBRtB-LBGdXjkXWDJhwj9T",
+  "text": "CircularFlow"
+ },
+ {
+  "name": "Angabe Deutschland",
+  "kennung": "PBWWzDvbx4fTBRtB-LBs09QcYcNqmX0n3",
+  "text": "Deutschland"
+ },
+ {
+  "name": "Angabe 2024",
+  "kennung": "PBWWzDvbx4fTBRtB-LBwd5Z01g8q0tp0V",
+  "text": "2024"
+ },
+ {
+  "name": "Angabe vorläufig",
+  "kennung": "PBWWzDvbx4fTBRtB-LB0YJVGRPlz1xg3g",
+  "text": "vorläufig"
+ },
+ {
+  "name": "Zahl",
+  "kennung": "PBWWzDvbx4fTBRtB-LBZHGBVPMCP0xb5D",
+  "text": "182,8"
+ },
+ {
+  "name": "Einheit",
+  "kennung": "PBWWzDvbx4fTBRtB-LB5Ln5TyNxz8NmpN",
+  "text": "Millionen Tonnen"
+ },
+ {
+  "name": "Kategorie",
+  "kennung": "PBWWzDvbx4fTBRtB-LB42G4sWC1sNxMgV",
+  "text": "Bau- und Abbruchabfälle"
+ },
+ {
+  "name": "Quelle 1",
+  "kennung": "PBWWzDvbx4fTBRtB-LBpvmyBFz9jl9ygF",
+  "text": "Quelle: Statistisches Bundesamt (Destatis),\nPressemitteilung Nr. 185 vom 1. Juni 2026,\nvorläufige Ergebnisse für 2024"
+ },
+ {
+  "name": "Titel Zeile 1",
+  "kennung": "PBWWzDvbx4fTBRtB-LBwJRXHV0s0G9LK2",
+  "text": "Die Hälfte aller Abfälle sind"
+ },
+ {
+  "name": "Titel Zeile 2",
+  "kennung": "PBWWzDvbx4fTBRtB-LBQJf5C6K9kwgP9c",
+  "text": "Bau- und Abbruchabfälle"
+ },
+ {
+  "name": "Beschriftung Bau",
+  "kennung": "PBWWzDvbx4fTBRtB-LBgSQmGqMvTb4wTv",
+  "text": "Bau- und Abbruchabfälle"
+ },
+ {
+  "name": "Beschriftung Anteil",
+  "kennung": "PBWWzDvbx4fTBRtB-LBhFf6XwpPTsrrp5",
+  "text": "50 % aller Abfälle"
+ },
+ {
+  "name": "Beschriftung Boden",
+  "kennung": "PBWWzDvbx4fTBRtB-LBHcxlTwkr2SW4qV",
+  "text": "darunter Boden, Steine und\nBaggergut: 102,9 Mio. t"
+ },
+ {
+  "name": "Beschriftung übrige Bau- und Abbruchabfälle",
+  "kennung": "PBWWzDvbx4fTBRtB-LBNDhCcbtjknWfmk",
+  "text": "übrige Bau- und Abbruchabfälle"
+ },
+ {
+  "name": "Beschriftung andere",
+  "kennung": "PBWWzDvbx4fTBRtB-LB2jFlTTYKvC01nC",
+  "text": "alle anderen Abfälle"
+ },
+ {
+  "name": "Gesamtmenge",
+  "kennung": "PBWWzDvbx4fTBRtB-LBFj26Wps6dYCsgZ",
+  "text": "100 Kästchen = 362,7 Mio. t Abfälle insgesamt"
+ },
+ {
+  "name": "Fragezeichen",
+  "kennung": "PBWWzDvbx4fTBRtB-LBP0nKmD8pVTPfGH",
+  "text": "?"
+ },
+ {
+  "name": "Wiederverwendung Titel",
+  "kennung": "PBWWzDvbx4fTBRtB-LBNZq0zNwM6ySh5S",
+  "text": "Wiederverwendbare Bauteile wie Türen"
+ },
+ {
+  "name": "Wiederverwendung Text",
+  "kennung": "PBWWzDvbx4fTBRtB-LBqgBYNDfH4g981y",
+  "text": "sind in diesen Zahlen nicht eigens ausgewiesen.\nWir leiten daraus keine Einsparung ab."
+ },
+ {
+  "name": "Quelle 2",
+  "kennung": "PBWWzDvbx4fTBRtB-LBLkhLkjjKZTByCp",
+  "text": "Boden, Steine und Baggergut: Umweltbundesamt, Tabelle „Abfallaufkommen“ (nach Abfallbilanz des\nStatistischen Bundesamts), abgerufen am 18.11.2026 · 1 Kästchen = 1 % aller Abfälle, gerundet"
+ }
+]

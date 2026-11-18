@@ -1,0 +1,22 @@
+# Messungen an Probeseiten des Canva-Arbeitsentwurfs, 18.11.2026 (Exporte 1920 x 1080 über die Canva-Schnittstelle)
+
+## Textlage (werkzeug/textlage-messen.py am Export der Probeseite)
+Bild 1920 1080
+T1 H (Versaloberkante, Grundlinie): (106.0, 175.0) erwartet Versalhöhe 71.6
+T1 gesamte Zeile (mit Unterlängen): (103.0, 196.0) Spalten (107.0, 1488.0)
+T2 Zeile 1 (Z von Zeile): (310.0, 345.0) Spalten (449.0, 651.0)
+T2 Zeile 2: (367.0, 417.0) Spalten (232.0, 868.0)
+Pille Text: (467.0, 497.0) Spalten (1110.0, 1390.0)
+rechts: (448.0, 481.0) Spalten (646.0, 1038.0)
+Linie: (963.0, 965.0) Spalten (100.0, 500.0)
+
+Ergebnis: Die Zeichenbreiten der Canva-Standardschrift stimmen mit Arial überein (Textbreite 1389,17 px gemeldet, 1389,16 px berechnet). Die Grundlinie der ersten Zeile liegt 0,9465 x Schriftgröße unter der Oberkante des Textkastens (gemessen 0,93 bis 0,96).
+
+## Schärfe der Produktaufnahme in vier Varianten (Laplace-Varianz, gleicher Ausschnitt; höher ist schärfer)
+PNG mit 1367 px Breite (1:1)          646,8
+PNG mit 2124 px Breite (1,55-fach)    511,5
+PNG mit 2734 px Breite (2-fach)       665,0
+SVG-Hülle mit eingebettetem PNG      1316,6
+Original lokal (1:1)                 1452,6
+
+Ergebnis: Gewöhnliche PNG-Bilder zeichnet Canva im Export weich. Die Aufnahme ist deshalb als SVG-Hülle mit eingebettetem PNG (2734 x 1440) eingesetzt; im fertigen Export erreicht sie 1391,9 gegenüber 1421,7 in der lokalen Vorschau (siehe 01-nachbau-und-vergleich.txt). Bild dazu: schaerfe-vier-varianten.png (von oben: 1:1, 1,55-fach, 2-fach, SVG-Hülle; doppelt vergrößert).

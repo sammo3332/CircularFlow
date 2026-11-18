@@ -1,0 +1,59 @@
+# Ausgeführt am 2026-11-18T10:48Z, Branch codex/pitch-gestaltung-20261118, Ausgangscommit fbd6cff
+$ node werkzeug/pruefen.js canva/stand-final.json ../../.. quellen aufnahmen/karte-k4.json
+== 1 · Lesbarkeit: Schriftgrößen und Kontraste (Folie 1920 x 1080; 2 px = 1 pt) ==
+Folie 1: 13 Texte, Schrift 22 bis 68 px
+  unter 28 px (14 pt): Kennzeichnung Fiktiver Fall 26 px; Fußzeile Fall 22 px; Fußzeile Team 22 px
+ok     Folie 1: keine Schrift unter 20 px (10 pt)
+ok     Folie 1: Kontrast normale Schrift mindestens 4,5:1, große Schrift mindestens 3:1 (kleinster Wert: Titel Zeile 2 4.2:1, #F2A33A auf #0E5546)
+Folie 2: 19 Texte, Schrift 20 bis 208 px
+  unter 28 px (14 pt): Angabe Deutschland 27 px; Angabe 2024 27 px; Angabe vorläufig 27 px; Quelle 1 22 px; Gesamtmenge 24 px; Wiederverwendung Text 27 px; Quelle 2 20 px
+ok     Folie 2: keine Schrift unter 20 px (10 pt)
+ok     Folie 2: Kontrast normale Schrift mindestens 4,5:1, große Schrift mindestens 3:1 (kleinster Wert: Einheit 4.2:1, #F2A33A auf #0E5546)
+Folie 3: 17 Texte, Schrift 20 bis 58 px
+  unter 28 px (14 pt): Kennzeichnung Beispieldaten 26 px; Kennzeichnung Simulation 26 px; Zeitstrahl · heute 24 px; Kennzeichnung echte Ansicht 23 px; Fußzeile 20 px
+ok     Folie 3: keine Schrift unter 20 px (10 pt)
+ok     Folie 3: Kontrast normale Schrift mindestens 4,5:1, große Schrift mindestens 3:1 (kleinster Wert: Fußzeile 5.4:1, #59655F auf #F6F2EA)
+
+== 2 · Wortlaute gegen den geprüften Pitch (pitch/innosprint-2026/werkzeug/inhalt-p5.js) ==
+ok     Folie 1 Titel wörtlich: „Eine brauchbare Tür kann verloren gehen, weil die Information zu spät kommt“
+ok     Folie 1: „Haus Lindenhof: 6 von 12 Türen angeboten“
+ok     Folie 1: „Umbau am Kanal: braucht 6 Türen“
+ok     Folie 1: „zu spät erfahren“, „neu bestellt“, „Fiktiver Fall“ stehen so im geprüften Pitch
+ok     Folie 1: „können im Container landen“ stammt aus dem geprüften Sprechtext der Folie 1
+ok     Folie 1 Fußzeile wörtlich: „Fiktiver Pilotfall CF-PILOT-01; Gebäude und Projekte ausgedacht“
+ok     Folie 1 Teamzeile wörtlich (ohne das vorangestellte „CircularFlow ·“, dafür steht das Produktzeichen)
+ok     Folie 3 Titel wörtlich: „CircularFlow zeigt, ob die Zeit für die Prüfung reicht“
+ok     Folie 3: Angaben „Bauteil frei ab“, „Bestellfrist“, „Prüfzeit“ wie auf der geprüften Folie 3
+ok     Sprechtext Folie 1 in den Notizen wörtlich wie TXT.p1 (55 Wörter)
+ok     Sprechtext Folie 3 in den Notizen wörtlich wie TXT.p3 (44 Wörter)
+
+== 3 · Zahlen der Datenfolie gegen die gelesenen Quellen ==
+ok     Destatis PM 185: „insgesamt 362,7 Millionen Tonnen Abfälle“
+ok     Destatis PM 185: „Im Jahr 2024 … nach vorläufigen Ergebnissen“
+ok     Destatis PM 185, Überschrift: „Die Hälfte aller Abfälle im Jahr 2024 waren Bau- und Abbruchabfälle“
+ok     Destatis PM 185: „mit 50 % (182,8 Millionen Tonnen)“
+ok     Destatis PM 185: „Nr. 185 vom 1. Juni 2026“
+ok     Destatis PM 185 nennt Boden, Steine und Baggergut nicht (nur die andere Abfallart „Bodenschätze“); deshalb zweite Quelle auf der Folie
+ok     UBA-Tabelle 2024: Bau- und Abbruchabfälle (einschließlich Straßenaufbruch) 182.769 Tsd. t
+ok     UBA-Tabelle 2024: darunter Boden, Steine und Baggergut 102.887 Tsd. t -> 102,9 Mio. t
+ok     UBA-Tabelle 2024: Abfallaufkommen insgesamt 362.719 Tsd. t
+ok     UBA-Tabelle: „Quelle: Statistisches Bundesamt, Abfallbilanz“
+ok     Kästchen: 50.4 % -> 50 von 100; Boden, Steine und Baggergut 28.4 % -> 28 von 100; übrige 22
+ok     In beiden Quellen kommt „Bauteil“ beziehungsweise Wiederverwendung nicht als eigene Angabe vor (Aussage im gelben Kasten)
+ok     Folie 2 zeichnet 28 + 22 + 50 Kästchen
+
+== 4 · Übereinstimmung der Produktfolie mit dem tatsächlichen Produkt ==
+ok     Aufnahme: frischer Browser, Startbedingung erfüllt (8 Paare, 2 prüfbar, 2 Vorgänge, Stichtag Mi 18.11., 14:00), keine Konsolenfehler
+ok     Ansicht: „TW-05 und BD-22: Weiter prüfen“
+ok     Markierter Satz in der Aufnahme: „Prüfende 28.11.2026 liegt 123 Tage vor der Bestellfrist 31.03.2027.“
+ok     Markierter Knopf in der Aufnahme: „Prüfbitte anlegen“, nicht gesperrt
+ok     Aufnahme enthält „Vorschlag zur Prüfung, keine fachliche Freigabe“ und „Simulation, es wird nichts versendet“
+ok     Beispieldaten: TW-05 verfügbar ab 2027-02-01 („Bauteil frei ab 01.02.2027“)
+ok     Beispieldaten: BD-22 Bestellfrist 2027-03-31, Prüfzeit 10 Tage, als geschätzt gekennzeichnet („angenommene Prüfzeit 10 Tage“)
+ok     Zeitstrahl nachgerechnet: 18.11. + 10 Tage = 28.11.2026; bis 31.03.2027 sind es 123 Tage; 01.02.2027 liegt bei Tag 75 von 133
+ok     Zeitstrahl ist mit 133, 10 und 75 Tagen maßstäblich gezeichnet
+ok     Geprüfter Pitch (Anhang AX2): „BD-22 mit 10 Tagen Prüfzeit liegt 123 Tage vor der Bestellfrist“
+ok     Demoablauf (docs/pitch-ablauf.md): Schritt K4 zeigt TW-05 → BD-22, Schritt K5 „Prüfbitte anlegen“
+
+Alle Prüfungen bestanden.
+Rückgabewert 0

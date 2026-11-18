@@ -1,0 +1,16 @@
+# Ausgeführt am 2026-11-18T10:48Z im Ordner pitch/innosprint-2026/gestaltung-muster, Branch codex/pitch-gestaltung-20261118, Ausgangscommit fbd6cff
+
+$ node werkzeug/bauen.js vorschau <temp> aufnahmen/karte-k4.json aufnahmen/karte-k4.png
+Folie 1: 26 Elemente (13 Texte, 8 Bilder, 5 Formen); kleinste Schrift 22 px; Wörter sichtbar: 53
+Folie 2: 33 Elemente (19 Texte, 2 Bilder, 12 Formen); kleinste Schrift 20 px; Wörter sichtbar: 96
+Folie 3: 33 Elemente (17 Texte, 6 Bilder, 10 Formen); kleinste Schrift 20 px; Wörter sichtbar: 71
+
+$ node werkzeug/bauen.js stand <temp> aufnahmen/karte-k4.json aufnahmen/karte-k4.png stand.json  und Vergleich mit canva/stand-final.json
+Stand geschrieben
+Stand der Elemente stimmt mit canva/stand-final.json überein
+
+$ python3 -I werkzeug/vergleich.py vorschau <temp>/vorschau-lokal
+Folie 1: Export 1920 x 1080 · abweichende Pixel hart 12833 (0.62 %) · nach Glättung 0 (0.000 %)
+Folie 2: Export 1920 x 1080 · abweichende Pixel hart 48238 (2.33 %) · nach Glättung 0 (0.000 %)
+Folie 3: Export 1920 x 1080 · abweichende Pixel hart 26264 (1.27 %) · nach Glättung 36 (0.002 %)
+Schärfemaß der Produktaufnahme (Laplace-Varianz, Ausschnitt 900 x 230): Canva-Export 1391.9 · lokale Vorschau 1421.7

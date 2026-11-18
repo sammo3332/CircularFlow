@@ -1,0 +1,67 @@
+{
+  "url": "http://127.0.0.1:8150/plattform/",
+  "aufgenommen": "2026-11-18T10:21:30.969Z",
+  "viewport": {
+    "breite": 1000,
+    "hoehe": 800,
+    "skalierung": 3.86158
+  },
+  "startbedingung": {
+    "paare": true,
+    "pruefbar": true,
+    "vorgaenge": true,
+    "stichtag": true,
+    "speicher": 0
+  },
+  "mess": {
+    "karte": {
+      "w": 708,
+      "h": 371.5,
+      "radius": "8px",
+      "rand": "1px rgb(220, 223, 216)",
+      "flaeche": "rgb(255, 255, 255)",
+      "seitenflaeche": "rgb(242, 243, 240)"
+    },
+    "titel": {
+      "x": 19,
+      "y": 44,
+      "w": 162.22,
+      "h": 24.75
+    },
+    "grund1": {
+      "x": 37,
+      "y": 144,
+      "w": 422.69,
+      "h": 16
+    },
+    "grund2": {
+      "x": 37,
+      "y": 169.75,
+      "w": 602.08,
+      "h": 37.75
+    },
+    "naechster": {
+      "x": 19,
+      "y": 221.25,
+      "w": 670,
+      "h": 41.75
+    },
+    "knopf": {
+      "x": 19,
+      "y": 285,
+      "w": 169.83,
+      "h": 40
+    },
+    "texte": {
+      "titel": "Weiter prüfen",
+      "grund1": "Prüfende 28.11.2026 liegt 123 Tage vor der Bestellfrist 31.03.2027.",
+      "grund2": "Frühester Übergabetag 01.02.2027; im Annahmefenster 01.02.2027 bis 31.03.2027 bleiben ab 01.02.2027 59 Tage für die Übergabe.",
+      "naechster": "NÄCHSTER SCHRITT · PLANUNG Prüfbitte an die Fachprüfung anlegen",
+      "knopf": "Prüfbitte anlegen",
+      "gesamt": "ERGEBNIS Weiter prüfen Vorschlag zur Prüfung, keine fachliche Freigabe. Entwurfsregel, fachlich nicht geprüft. Die Angaben sind Beispiele, die Lage ist symbolisch. Prüfende 28.11.2026 liegt 123 Tage vor der Bestellfrist 31.03.2027. Frühester Übergabetag 01.02.2027; im Annahmefenster 01.02.2027 bis 31.03.2027 bleiben ab 01.02.2027 59 Tage für die Übergabe. NÄCHSTER SCHRITT · PLANUNG Prüfbitte an die Fachprüfung anlegen Prüfbitte anlegen Legt einen Vorgang an und bittet die Fachprüfung um Eignungsprüfung. Simulation, es wird nichts versendet."
+    },
+    "knopfGesperrt": null,
+    "seitentitel": "TW-05 und BD-22: Weiter prüfen"
+  },
+  "fehler": []
+}

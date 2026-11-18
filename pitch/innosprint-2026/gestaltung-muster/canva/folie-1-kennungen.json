@@ -1,0 +1,67 @@
+[
+ {
+  "name": "Wortmarke",
+  "kennung": "PB80P6WPVypw9pt6-LBbsyPsvr7nzlPZv",
+  "text": "CircularFlow"
+ },
+ {
+  "name": "Kennzeichnung Fiktiver Fall",
+  "kennung": "PB80P6WPVypw9pt6-LBbjlrmHhcrtv349",
+  "text": "Fiktiver Fall"
+ },
+ {
+  "name": "Titel Zeile 1",
+  "kennung": "PB80P6WPVypw9pt6-LBM8rCNYGSmWsqf0",
+  "text": "Eine brauchbare Tür kann verloren gehen,"
+ },
+ {
+  "name": "Titel Zeile 2",
+  "kennung": "PB80P6WPVypw9pt6-LBdttpgpQ4Q28x5J",
+  "text": "weil die Information zu spät kommt"
+ },
+ {
+  "name": "zu spät erfahren",
+  "kennung": "PB80P6WPVypw9pt6-LByTjqXGkpRjNbYH",
+  "text": "zu spät erfahren"
+ },
+ {
+  "name": "Ort links",
+  "kennung": "PB80P6WPVypw9pt6-LBwqWBxqvydM14M0",
+  "text": "Haus Lindenhof"
+ },
+ {
+  "name": "Angebot",
+  "kennung": "PB80P6WPVypw9pt6-LBSZxgFTjht5py2F",
+  "text": "6 von 12 Türen angeboten"
+ },
+ {
+  "name": "Ort rechts",
+  "kennung": "PB80P6WPVypw9pt6-LBp76czHBGq4JcdJ",
+  "text": "Umbau am Kanal"
+ },
+ {
+  "name": "Bedarf",
+  "kennung": "PB80P6WPVypw9pt6-LBqdJg1Z5hNxrTF3",
+  "text": "braucht 6 Türen"
+ },
+ {
+  "name": "Folge links",
+  "kennung": "PB80P6WPVypw9pt6-LBR8GtlDwLZSkGbK",
+  "text": "können im Container landen"
+ },
+ {
+  "name": "Folge rechts",
+  "kennung": "PB80P6WPVypw9pt6-LBNgDpcLWKXcmNv6",
+  "text": "neu bestellt"
+ },
+ {
+  "name": "Fußzeile Fall",
+  "kennung": "PB80P6WPVypw9pt6-LBFmfgh5hkRKBM6s",
+  "text": "Fiktiver Pilotfall CF-PILOT-01; Gebäude und Projekte ausgedacht"
+ },
+ {
+  "name": "Fußzeile Team",
+  "kennung": "PB80P6WPVypw9pt6-LBQWDQCdRJPzVVP7",
+  "text": "Feyrouz Chahed · Houssam Taleb · INNOSPRINT Zirkuläres Bauen · Dortmund · 20.11.2026"
+ }
+]
