@@ -16,6 +16,13 @@
 Bestellfrist für die offene Tür soll sichtbar bleiben. Plane den zweiten Vorgang für die Restmenge als nächsten
 Schritt.“ Und: „Für jetzt genügt die Dokumentation.“
 
+**Nachtrag vom 18.11.2026:** Der Nachtauftrag vom 17./18.11.2026 verlangt, aus den Plänen zu Restmenge und „Prüfbitte
+spätestens“ die kleinste sinnvolle Verbesserung zu wählen und umzusetzen. Für diese eine Umsetzung gilt die Reihenfolge
+vom 16.11.2026 deshalb nicht: Zuerst wird „Prüfbitte spätestens“ auf `codex/plattform-entwicklung-20261118` umgesetzt
+(`docs/priorisierung-nach-dem-pitch.md`, Abschnitt 5). Dieser Plan bleibt unverändert gültig. Wer die Restmenge danach
+umsetzt, ändert denselben Block „Zeitkritisch“ (`kennzahlen.js`, `ansichten/uebersicht.js`): Einträge je Bedarf nach
+`name` unterscheiden, nicht nach `art` und `id`.
+
 Daraus folgen zwei Stufen:
 
 - **Stufe 1:** Die Restmenge wird sichtbar. Das hat die erste Priorität nach dem Pitch.

@@ -1,0 +1,41 @@
+Vergleich der heruntergeladenen veröffentlichten Plattform mit dem Repository
+Dateien im Download: 35
+gleich wie plattform/ im Repository: 31 von 35; abweichend: app/door-rules.mjs, app/main.js, index.html, styles.css
+gleich wie der Nachbau aus bauen-artifact.mjs: 34 von 35; abweichend: index.html
+Spalten: SHA-256 der heruntergeladenen Datei | Größe in Bytes | gegen plattform/ | gegen Nachbau | Pfad
+
+31ea3bac1c367525373be95b85e443125a5127284d02af91c5df658ec5013009     26015  gleich   gleich   app/abgleich.js
+dbe7efd48854c7bbcedc26f39c11be214576836e996c5c0b6d2d17b953930973     14893  gleich   gleich   app/ansichten/abgleich.js
+bc2ac64a8873e074309a0750672995946e96776f7f64db199db6d1f820119072     21093  gleich   gleich   app/ansichten/bauteile.js
+852193387158632f60d5b83a106b42e4c38ae42504b8652a8ed645e2dff8041b     11338  gleich   gleich   app/ansichten/bedarfe.js
+8f793e418b3398dc70788840c59d163723f89bf1597a749ef194f45fd0a27709      7905  gleich   gleich   app/ansichten/bedarfform.js
+40f41de79e7d43c5b358506295505f83ae4c5c82e53cc51994daaa23d7a266d1      6495  gleich   gleich   app/ansichten/diagramm.js
+b05f1ca4244bbd2038d9f8987d5365adbcb6eafaa99c2b7ed259c07fde621c50     21702  gleich   gleich   app/ansichten/entscheidung.js
+a8682160b804cbaf184dac88cb8d62284a14afe0e98eeb84f276787511c303e7     14372  gleich   gleich   app/ansichten/erfassung.js
+ca903c0bd05485506b911921ed495c86308f0cba4b2cc18ded84a5709b94784a     11323  gleich   gleich   app/ansichten/gebaeude.js
+31447d60c57c8e77f0c42035248517b3ea9e84dddc0c8c976b050a3560282d34      6739  gleich   gleich   app/ansichten/katalog.js
+349b89158ee1726f1593e99b13fbe6ea1a24d287d76c5c4708b97700336afd30     14102  gleich   gleich   app/ansichten/projekte.js
+36d300f6c950a36a170a8d51dba453d468eb2c9bcc9aeede473d9af409571b3e      4747  gleich   gleich   app/ansichten/projektform.js
+71e07adbbd41cd41c06cf52d2c3125e9d9fa5c355dbd4186cdc2c99875c13342     13291  gleich   gleich   app/ansichten/radar.js
+9fb9ea3e543e9e25207b7d945ce024a05e70525633eb1462c0b4c0b452036a45      7653  gleich   gleich   app/ansichten/uebersicht.js
+21f94a98f5fd48b6168b6018c20a631e228797785110f90c473c55e32113affe      4152  gleich   gleich   app/ansichten/vorgaenge.js
+3df0d8a99e612df66c068fc4ae30f7f90fbcaa06c4fc78e247e734223ccb3eb6     14371  gleich   gleich   app/ansichten/vorgangsteil.js
+2c6f7fad2a62e6114b8abd784061f7516613b86c719d1d74c35b12e60f327b82      5979  gleich   gleich   app/bedarf.js
+7fd42d3c31f8ffcf732e18a208ccac9731d04c77f7c23f6c90711e63aa349a2a     30490  gleich   gleich   app/daten.js
+b2800369d33bd1a12a6b6ff68bcc8e1eaf18b75e06a83196c01417faec6f9682     11042  ABWEICHT gleich   app/door-rules.mjs
+7cba5f3aec3c8d8bbdb1bc9689b8456df058649a9990b89546b515ba89f9a4ce      3998  gleich   gleich   app/karte.js
+2c5462c5a3837976e7238c4a95a7b459604a4548dd3f37a12df5bab1271e1439      7459  gleich   gleich   app/kennzahlen.js
+a7a71a93c3d29d92bae8932a96555ff2a5690a9f5e1046232e8dc79aa51f7b98     47287  ABWEICHT gleich   app/main.js
+1540e06cc15daaae8e5ad8d7357a1377cc5156c8987cd30c19091ab4e6c77453      6190  gleich   gleich   app/projektanlage.js
+0091b1c4f02506c79ea73bf7a3356d6f8aa2e6fcb9b23249ae4a611e64c69dec     22019  gleich   gleich   app/radar-daten.js
+e79229de48cbb5095474b9de901c2768fc9054bd96aed2dd0b64dd0474ff723a     36880  gleich   gleich   app/regeln.js
+2c54f670867164aa86a7ceeafd34f8cd48f203a16f84373319d4a4891dd8ab86      8564  gleich   gleich   app/ui.js
+a9c1dbea4c7729b117c8bf162c650de95c5983b4f5416ea347ee95cfda49435c      2939  gleich   gleich   app/uizustand.js
+44e8276ab261dc762783d0fffe41cf1b2e7db15f9aa8e57eca239efda19a1ff0     18518  gleich   gleich   app/vorgang.js
+d6d14fb76abf9028bfc4b7f714bf4fa6d2ce6f8be0fa7123fc31deb3115647ee      2565  gleich   gleich   app/zeit.js
+da6007747d7dd0654c472f6094f53cdab0e4bfc0303fb781d5d5d007ed64a962      6750  gleich   gleich   app/zustand.js
+17cce57e8f717e5ee2370d98b694f1a02e75357698386b191aaf8853e651bc8e     23580  gleich   gleich   daten/dortmund-stadtbezirke.geojson
+fb3f6271f7b3a7ba279ef1f916f61cbf825146d511c7e896ee239010b927a4d0       918  ABWEICHT ABWEICHT index.html
+ddee1542e6f8954f4375aa4efd8adb9944237d8f5b82fa3ec2ce8121e924e5b6    230140  ABWEICHT gleich   styles.css
+a7837102824184820dfa198d1ebcd109ff6d0ff9a2672a074b9a1b4d147d04c6     14806  gleich   gleich   vendor/leaflet/leaflet.css
+db49d009c841f5ca34a888c96511ae936fd9f5533e90d8b2c4d57596f4e5641a    147552  gleich   gleich   vendor/leaflet/leaflet.js

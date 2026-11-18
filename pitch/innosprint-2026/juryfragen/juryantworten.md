@@ -1,12 +1,12 @@
 # Juryantworten · 5-Minuten-Pitch INNOSPRINT 2026
 
-Dokumentversion 1.0 · Stand 18.11.2026, 01:00 Uhr (Berlin) · Branch `codex/plattform-v1` · Ausgangscommit `e244fc4` ·
+Dokumentversion 1.1 · Stand 18.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `23dc050` ·
 Deck-Stand `b647ea3` · Rückfragerunde laut Veranstalter: fünf Minuten (Tag 5, S. 11 und 17).
 
-Zehn kurze Antworten zum Sprechen, je etwa 15 bis 25 Sekunden. Jede nennt, **was belegt ist**, **was die Demo zeigt** und **was
+Zehn kurze Antworten zum Sprechen, je etwa 15 bis 30 Sekunden. Jede nennt, **was belegt ist**, **was die Demo zeigt** und **was
 nur Hypothese** ist, und verweist auf den Prüfschritt dafür. Es gilt nur, was in den Quellen steht. Es gibt keinen Kunden,
 keinen Partner, keine Einsparung und keine Praxisbestätigung. Praxisfeedback liegt nicht vor (Postfach des Teamkontos am
-18.11.2026, 00:30 Uhr, nur lesend geprüft: keine Antwort auf die Anfragen vom 17.11.2026).
+18.11.2026 nur lesend geprüft: keine Antwort auf die Anfragen vom 17.11.2026).
 
 **Status:**
 - **belegt:** Die Aussage steht in einer genannten Quelle. Die Quelle ist hier im Original gelesen (Abschnitt 3).
@@ -22,15 +22,15 @@ steht. Bei einer Frage, die hier fehlt: „Das haben wir nicht geprüft. Wir pr�
 ### 1 · Problem
 **Frage:** Welches Problem löst ihr?
 
-**Antwort:** „Wer einen Umbau plant, erfährt von angebotenen Bauteilen oft zu spät. Vor der Bestellung muss eine Fachperson
-prüfen, ob sie passen. Das dauert. Wird die Prüfung nicht rechtzeitig angefragt, wird neu bestellt. CircularFlow zeigt, ob
+**Antwort:** „Wer einen Umbau plant, kann von angebotenen Bauteilen zu spät erfahren. Vor der Bestellung muss eine Fachperson
+prüfen, ob sie passen. Das braucht Zeit. Reicht sie nicht, wird nach unserer Annahme neu bestellt. CircularFlow zeigt, ob
 die Zeit noch reicht.“
 
 | Teil der Antwort | Status | Beleg |
 |---|---|---|
 | Bei Bauentscheidungen zählen meist Zeit und Kosten. Es gibt zeitliche Unterschiede zwischen Angebot und Nachfrage. | belegt | Stadt Dortmund, Umweltamt, INNOSPRINT, Folie 11 („Bei Bauentscheidungen zählen meist Zeit und Kosten“); Concular, Workshop, Folie 49 („Zeitliche Unterschiede in Nachfrage und Angebot“) |
 | Die Zeitprüfung „reicht die Zeit?“ | gezeigt | Demo K3 und K4 (Beispieldaten) |
-| Es wird dann neu bestellt. Die Prüfung dauert 14 Tage. | **Hypothese** | Steckbrief („nach unserer Annahme“); Annahme A5 der Fallakte. Der Pitch zeigt einen **ausgedachten** Fall. |
+| Die Prüfung braucht Zeit (im Pitch 14 Tage angenommen). Reicht die Zeit nicht, wird neu bestellt. Wie oft das vorkommt, ist offen. | **Hypothese** | Steckbrief („Fehlen sie bis zur Frist, wird nach unserer Annahme neu gekauft“); Annahme A5 der Fallakte. Der Pitch zeigt einen **ausgedachten** Fall (Folie 1: „kann verloren gehen“). |
 
 **Wenn die Jury nachhakt („Gibt es das Problem wirklich?“):** „Das wissen wir noch nicht. Die Stadt sagt, bei
 Bauentscheidungen zählen meist Zeit und Kosten. Concular nennt zeitliche Unterschiede zwischen Angebot und Nachfrage. Ob
@@ -98,6 +98,7 @@ die Fachprüfung? Ob andere das ebenso abbilden, haben wir nicht geprüft.“
 **Wenn die Jury nachhakt („Was können die nicht?“):** „Das wissen wir nicht. Concular nennt die Zeitlücke selbst als
 Herausforderung. Bei Madaster nennt die Dokumentation keine Bestellfrist und keine Prüfzeit, aber ob das Produkt es kann,
 haben wir nicht ausprobiert.“ **Nicht sagen:** Concular sei „nur ein Marktplatz“ oder könne keine Zeit koordinieren.
+**Hinweis:** Madaster Germany pitcht laut Tag 5 (S. 11) als fünftes Team nach uns. Über deren Pitch keine Aussage machen.
 **Prüfschritt:** H9, Leitfaden F5 („Nutzen Sie dafür schon eine Plattform oder Liste?“).
 
 ### 6 · Dortmund-Bezug
@@ -113,11 +114,17 @@ suchen wir einen echten Dortmunder Umbau.“
 | „Es gibt kaum Daten zu Baustoffströmen.“ „Das Rückbau- und Entsorgungskonzept fragt nach Abfällen und Entsorgungswegen, nicht nach Bauteilen zur Wiederverwendung.“ | belegt | Umweltamt, INNOSPRINT, 13.11.2026, Folie 11, Spalte „Was fehlt“ |
 | Dortmunder Umbau als Pilot | **Hypothese** (Ziel) | Folie 9 („Wir suchen einen echten Umbaufall in Dortmund“). Es gibt **keinen** Partner. |
 
-**Wenn die Jury nachhakt:** „In Dortmund gab es schon ein Beispiel für Wiederverwendung: Bei der Universitätsbibliothek der
-TU Dortmund hat Concular im Auftrag des BLB NRW Inventar erfasst und vermittelt. Das ist ein anderes Vorhaben als unseres.“
-Quellen: Concular, Referenz „Universitätsbibliothek TU Dortmund: Re-Use des Inventars“; BLB NRW, Pressemeldung vom
-02.12.2024. **Nicht sagen:** Mengen oder Quoten, denn beide Seiten nennen für die Vermittlung keine Zahlen („Ein großer Teil der
-identifizierten Materialien wurde extern vermittelt“).
+**Wenn die Jury nachhakt:** „Concular schreibt auf seiner Webseite, dass es für die Universitätsbibliothek der TU Dortmund
+im Auftrag des BLB NRW Materialien erfasst und das Inventar vermittelt hat, zum Beispiel Leuchten, Regale und
+Hörsaalklappstühle. Ein großer Teil sei extern vermittelt worden. Das ist eine Angabe des Anbieters, nachgeprüft haben wir
+sie nicht. Es ist ein anderes Vorhaben als unseres.“
+
+| Teil der Nachfrage | Status | Beleg |
+|---|---|---|
+| Concular hat im Auftrag des BLB NRW für die Universitätsbibliothek TU Dortmund Materialien erfasst und das Inventar vermittelt (genannt: Leuchten, Regale, Deckenelemente, Holzbänke, Hörsaalklappstühle). „Ein großer Teil der identifizierten Materialien wurde extern vermittelt.“ Zahlreiche Elemente der Inneneinrichtung „werden an anderer Stelle weitergenutzt“. | belegt (Herstellerangabe), **Umfang, Einbau und Weiternutzung nicht belegt** | Concular, Referenz „Universitätsbibliothek TU Dortmund: Re-Use des Inventars“, am 18.11.2026 abgerufen. Die Seite nennt keine Zahlen zur Vermittlung. |
+| Der Rückbau der Universitätsbibliothek erfolgt „erst, nachdem alle demontierbaren Baustoffe vollständig ausgebaut wurden“. | belegt | BLB NRW, Pressemeldung vom 02.12.2024. Die Meldung nennt **weder Concular noch Inventar noch eine Vermittlung**. Ihre Zahlen betreffen das Recycling (zum Beispiel rund 21.000 Tonnen Stahlbeton). |
+
+**Nicht sagen:** Mengen oder Quoten zur Vermittlung, und nicht, dass Teile „wieder eingebaut“ wurden.
 **Prüfschritt:** Kontakt zu einem Umbauprojekt (Bitte auf Folie 9).
 
 ### 7 · Wirkung
@@ -148,7 +155,8 @@ fehlt und wer es liefern soll. Eine Anbindung an vorhandene Listen gibt es noch 
 | Teil der Antwort | Status | Beleg |
 |---|---|---|
 | Eingabe, Vorschläge simuliert, nur gemessene Maße zählen bei Türen | gezeigt (Vorschau, **nicht** in der Pitch-Demo) | Fallakte CF-PILOT-01, Abschnitt 4 („Wertstatus beim Scan und beim Aufmaß“: vorgeschlagen, gemessen, bestätigt); Folie 14 |
-| Fehlende Angaben und Zuständige werden gezeigt | gezeigt | Demo K3 und K4: „Fehlende und geschätzte Angaben“, „Prüfpunkte“ |
+| Prüfpunkte mit zuständiger Rolle und geschätzte Angaben werden gezeigt | gezeigt | Demo K3 und K4, Abschnitt „Prüfpunkte“: jeder Punkt mit einer Rolle, zum Beispiel „2 offene Nachweise am Bauteil klären (siehe Bauteilakte)“. K4 zusätzlich „Geschätzte Angaben bestätigen: Mindestprüfzeit, Annahmefenster“. Beide Seiten sagen „Nichts fehlt.“ Am 18.11.2026 im Browser ausgelesen. |
+| Fehlende Angaben werden benannt | in der Vorschau gezeigt, **nicht** in der Pitch-Demo | Abgleichseite des Paares LH·T-03 → BD-21, Abschnitt „Fehlende und geschätzte Angaben“: „Fehlt“ mit Bestellfrist, Mindestprüfzeit, Annahmefenster (Beginn), Annahmefenster (Ende); nächster Schritt „Fehlende Angaben ergänzen“, Rolle Planung. Am 18.11.2026 im Browser ausgelesen. Außerdem Entscheidungsseite E-01 („Ohne verwertbares Aufmaß bleibt die Breite offen“). |
 | Kein Import aus Excel oder CSV, keine Ablage für Unterlagen | belegt (eigene Lücke) | Fallakte, Abschnitt 4, Schritt 2 |
 | Die Projektleitung kann die Angaben beschaffen | **Hypothese** | – |
 
@@ -160,13 +168,15 @@ Entscheidung?
 
 **Antwort:** „CircularFlow macht einen Vorschlag zur Prüfung, keine Freigabe. Fachleute beurteilen die Eignung, die
 Projektleitung entscheidet die Bestellung. Welche Prüfungen und Nachweise erforderlich sind, klären Fachplanung und
-gegebenenfalls zuständige Prüfstellen für das konkrete Bauteil und den vorgesehenen Einbau. Rechtsberatung geben wir nicht.“
+gegebenenfalls zuständige Prüfstellen für das konkrete Bauteil und den vorgesehenen Einbau. Rechtsberatung geben wir nicht.
+Wer haftet, haben wir nicht geklärt. Das muss ein reales Projekt mit dem Eigentümer und den Fachleuten klären.“
 
 | Teil der Antwort | Status | Beleg |
 |---|---|---|
 | Vorschlag, keine Freigabe; Fachleute beurteilen, Projektleitung entscheidet | gezeigt | Folie 3; Demo K4 („Vorschlag zur Prüfung, keine fachliche Freigabe“); Fachergebnis ist in der Vorschau nur ein Eintrag (Folie 14) |
-| Prüfungen und Nachweise klären Fachplanung und Prüfstellen für das konkrete Bauteil und den Einbau | teilweise belegt | Das ist die Formulierung des Teams (Folie 14). Gestützt wird nur „projektweise zu prüfen, keine Rechtsberatung“: Concular, Handlungsempfehlung für die öffentliche Hand, Dezember 2024, S. 3, im Original gelesen. Wer im Einzelfall zuständig ist, hängt vom Bauteil ab (Fallakte, Abschnitt 6). |
-| Haftungsfragen | **offen** | Nicht geprüft. Die Fallakte nennt die Rolle der „Inverkehrbringenden“ für die Übertragung auf den Pilot als offen. |
+| Prüfungen und Nachweise klären Fachplanung und Prüfstellen für das konkrete Bauteil und den Einbau | Formulierung des Teams, **nicht durch eine Quelle belegt** | Folie 14. Wer im Einzelfall zuständig ist, hängt vom Bauteil ab (Fallakte, Abschnitt 6). |
+| Concular nennt seine Handlungsempfehlung keine Rechtsberatung, alle Empfehlungen seien „projektweise zu prüfen“ | belegt (Herstellerangabe, nur für Conculars eigene Empfehlung) | Concular, Handlungsempfehlung für die öffentliche Hand, Dezember 2024, S. 3, im Original gelesen |
+| Wer haftet | **offen** | Nicht geklärt. Die Fallakte führt „Zustimmung des Eigentümers, Übergabevereinbarung, Eigentumsübergang und Haftung“ als Aufgabe eines realen Projekts (Abschnitt 6, „Was ein reales Projekt bestätigen müsste“). Offen ist auch, wer bei einer Vermittlung zwischen zwei Projekten die Rolle der „Inverkehrbringenden“ übernimmt. |
 
 **Nicht sagen:** Aussagen zu Verwendbarkeitsnachweisen einzelner Türen. Die Folie 14 enthält sie nicht mehr.
 **Prüfschritt:** H10, Leitfaden F3: Wer prüft heute, mit welchen Unterlagen, wie lange?
@@ -174,14 +184,14 @@ gegebenenfalls zuständige Prüfstellen für das konkrete Bauteil und den vorges
 ### 10 · Realisierbarkeit
 **Frage:** Ist das realistisch umsetzbar?
 
-**Antwort:** „Der Prototyp läuft schon im Browser, mit Beispieldaten, und seine Regeln sind getestet. Es fehlen echte Daten,
-Fachwissen aus Bau und Rückbau und ein Pilotprojekt. Der nächste Schritt ist klein: ein Kurzcheck für eine Bauteilgruppe in
+**Antwort:** „Der Prototyp läuft schon im Browser, mit Beispieldaten. Seine Regeln sind automatisch getestet, aber fachlich noch
+nicht geprüft. Es fehlen echte Daten, Fachwissen aus Bau und Rückbau und ein Pilotprojekt. Der nächste Schritt ist klein: ein Kurzcheck für eine Bauteilgruppe in
 einem echten Umbau.“
 
 | Teil der Antwort | Status | Beleg |
 |---|---|---|
 | Der Prototyp läuft im Browser. | gezeigt | Live-Demo. Am 18.11.2026 im frischen Chromium-Kontext geprüft, 28 von 28 Prüfungen (`generalprobe/pruefprotokoll-2026-11-18.md`) |
-| Die Regeln sind getestet. | belegt (nur die Prüffälle) | 190 von 190 Tests am 18.11.2026 ausgeführt. Das belegt keine Fehlerfreiheit und keine fachliche Eignung. |
+| Die Regeln sind automatisch getestet, aber fachlich nicht geprüft. | belegt (nur die Prüffälle) | 190 von 190 Tests am 18.11.2026 ausgeführt (`generalprobe/ergebnisse/regeltests.txt`). Das belegt keine Fehlerfreiheit und keine fachliche Eignung. Die Vorschau nennt die Regel selbst „Entwurfsregel, fachlich nicht geprüft“. |
 | Fachwissen und Pilot fehlen. | belegt (Eigenangabe) | Folie 8 („Uns fehlt: Fachwissen aus Bau und Rückbau …“); Folie 9 |
 | Ein echter Umbau steht zur Verfügung. | **Hypothese** | Es gibt keinen Partner und keine Zusage. |
 
@@ -190,28 +200,29 @@ einem echten Umbau.“
 ## 2. Offene Hypothesen und konkrete Prüfschritte
 
 Entscheidungsregeln, **vor** den Gesprächen festgelegt. Sie sind ein Vorschlag, das Team bestätigt sie. Mit wenigen Gesprächen
-beweisen sie nichts, sie entscheiden nur, ob und wie es weitergeht.
+beweisen sie nichts, sie entscheiden nur, ob und wie es weitergeht. Liegt ein Ergebnis zwischen „Weiter“ und „Überdenken“, gilt die
+Hypothese als **offen** und wird im nächsten Gespräch gezielt nachgefragt. Ob die Idee geändert oder abgebrochen wird,
+entscheidet das Team nach drei Gesprächen.
 
 | Nr | Hypothese | Prüfschritt | Weiter, wenn … | Überdenken, wenn … |
 |---|---|---|---|---|
-| H1 | Zu späte Information führt zu Neubestellungen. | Leitfaden F1, F2, F4: einen **vergangenen** Fall mit Daten schildern lassen | in mindestens einem von drei Gesprächen kam die Information später als nötig oder die Prüfung wurde nicht rechtzeitig angefragt (mit Datum) | in drei von drei Gesprächen gab es kein Zeitproblem |
+| H1 | Zu späte Information führt zu Neubestellungen. | Leitfaden F1, F2, F4: einen **vergangenen** Fall mit Daten schildern lassen | in mindestens einem von drei Gesprächen kam die Information später als nötig oder die Prüfung wurde nicht rechtzeitig angefragt (mit Datum). Das belegt, dass es vorkommt, nicht wie oft. | in drei von drei Gesprächen gab es kein Zeitproblem |
 | H2 | Die Prüfzeit beträgt etwa 14 Tage. | F3: Prüfdauer in Tagen, wer prüft, belegt oder geschätzt | mindestens ein Wert in Tagen von einer prüfenden Person; die Annahme in der Simulation wird ersetzt | kein Wert zu bekommen |
 | H3 | Erster Nutzer ist die Projektleitung im Planungsbüro. | F5, F8: Rolle, die Fristen und Bauteile pflegt | eine Rolle wird genannt, die ein Fristenproblem selbst bearbeitet | die Aufgabe liegt immer bei einer anderen Rolle (dann diese testen) |
-| H4 | Budget liegt bei Büroleitung, Bauherrschaft oder Bestandsorganisation. | F8, F9: Rolle, die über Ausgaben entscheidet, **ohne** Preis vorzugeben | eine Rolle und eine Größenordnung für Planungswerkzeuge werden genannt | niemand will oder kann dafür zahlen |
+| H4 | Budget liegt bei Büroleitung, Bauherrschaft oder Bestandsorganisation. | F8, F9: Rolle, die über Ausgaben entscheidet, **ohne** Preis vorzugeben | eine Rolle und eine Größenordnung für Planungswerkzeuge werden genannt | in allen Gesprächen wird keine budgetverantwortliche Rolle genannt oder Ausgaben dafür werden ausgeschlossen |
 | H5 | Der Kurzcheck ist das erste bezahlbare Angebot. | F7, F9: Einseiter vorlegen, Nutzen und Einsatzzeitpunkt erfragen | mindestens eine Person würde ihn in einem Projekt einsetzen und nennt den Zeitpunkt | niemand sieht einen Einsatz |
-| H6 | Die nötigen Angaben (Zeiten, Maße) sind beschaffbar. | F5, F6: Wo stehen sie, wer pflegt sie, was fehlt | mindestens drei der vier Zeitangaben (verfügbar ab, Bestellfrist, Prüfzeit, Annahmefenster) liegen vor oder sind schnell zu erfragen | die Angaben sind nicht zu bekommen |
-| H7 | Die Entscheidungskarte hilft, die Fachprüfung rechtzeitig anzustoßen. | F7: Bildschirm „zu spät“ und „Weiter prüfen“ zeigen, erfragen, was die Person damit tun würde | die Person nennt eine Handlung vor der Frist | sie sagt, sie wüsste dies ohnehin und früher |
+| H6 | Die nötigen Angaben (Zeiten, Maße) sind beschaffbar. | F5, F6: Wo stehen sie, wer pflegt sie, was fehlt | mindestens drei der vier Zeitangaben (verfügbar ab, Bestellfrist, Prüfzeit, Annahmefenster) liegen vor oder sind schnell zu erfragen | höchstens eine der vier Zeitangaben ist zu beschaffen |
+| H7 | Die Entscheidungskarte hilft, die Fachprüfung rechtzeitig anzustoßen. | F7: Bildschirm „zu spät“ und „Weiter prüfen“ zeigen, erfragen, was die Person damit **im vergangenen Fall** getan hätte | die Person nennt eine Handlung vor der Frist | sie sagt, sie wüsste dies ohnehin und früher |
 | H8 | Wirkung ist zählbar (angeboten, geprüft, eingebaut). | F4, F10: an einem Fall je Bauteil Status und Grund festhalten | alle Bauteile eines Falls haben einen dokumentierten Status | der Status ist nicht ermittelbar |
-| H9 | Andere Plattformen bilden die Frist vor der Prüfung nicht ab. | F5: „Nutzen Sie dafür schon eine Plattform oder Liste?“ Danach die genannten Produkte ansehen. Keine Behauptung ohne Beleg. | keine genannte Lösung deckt die Frist ab (Beleg notiert) | eine Lösung deckt sie ab: Abgrenzung ändern |
+| H9 | Andere Plattformen bilden die Frist vor der Prüfung nicht ab. | F5: „Nutzen Sie dafür schon eine Plattform oder Liste?“ Danach die genannten Produkte ansehen. Keine Behauptung ohne Beleg. | die genannten Lösungen wurden angesehen, und keine deckt die Frist vor der Prüfung ab (Beleg notiert). Wird keine Lösung genannt, bleibt H9 offen. | eine genannte Lösung deckt sie ab: Abgrenzung ändern |
 | H10 | Fachleute nehmen den Vorschlag als Vorbereitung an. | F3, F7: eine prüfende Person fragen, was sie vor der Zusage braucht | die Angaben aus dem Kurzcheck sind eine brauchbare Vorbereitung | sie braucht grundsätzlich andere Angaben |
 
 Zusätzliche Aufgabe (2 Minuten, Team): den Zieltext **SDG 12.5** einmal auf der Seite der Vereinten Nationen gegenlesen,
 bevor Folie 7 vorgetragen wird.
 
-## 3. Quellenprüfung (18.11.2026, 00:15 bis 00:50 Uhr)
+## 3. Quellenprüfung (18.11.2026)
 
-Prüfende: Koordination (Claude, Modell Sonnet). Abruf über den Proxy der Arbeitsumgebung am 18.11.2026 zwischen 00:10 und
-00:20 Uhr (Berlin).
+Prüfende: Koordination (Claude Code). Abruf über den Proxy der Arbeitsumgebung am 18.11.2026, vor dem Commit dieser Datei.
 Die Prüfsummen (SHA-256, Anfang) gelten für die abgerufenen Dateien.
 
 | Aussage | Quelle | Prüfweg | Ergebnis |

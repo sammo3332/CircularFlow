@@ -1,0 +1,7 @@
+BYTE-GLEICH  01-start-uebersicht.png (dff42217d89bd011)
+BYTE-GLEICH  01b-e01-aufmass.png (71f60d11aba02bbf)
+BYTE-GLEICH  02-k2-paarliste.png (a41fb10497b37129)
+BYTE-GLEICH  03-k3-zu-spaet.png (51c0259c40fde6b1)
+BYTE-GLEICH  03b-k3-ergebnisblock.png (e04bd7cb88f73f74)
+BYTE-GLEICH  04-k4-weiter-pruefen.png (58a0407eb65e9176)
+BYTE-GLEICH  04b-k4-ergebnisblock.png (9cdca7b8f7eba57c)

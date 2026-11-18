@@ -1,6 +1,6 @@
 # Gesprächsnotiz · Vorlage
 
-Dokumentversion 1.0 · Stand 18.11.2026 · Zu `gespraechsleitfaden-15-minuten.md`. Für jedes Gespräch eine Kopie anlegen. Nur
+Dokumentversion 1.1 · Stand 18.11.2026 · Zu `gespraechsleitfaden-15-minuten.md`. Für jedes Gespräch eine Kopie anlegen. Nur
 eintragen, was die Person gesagt hat. Eigene Deutung steht getrennt unten. Nichts erfinden, nichts ergänzen.
 
 | | |
@@ -9,12 +9,14 @@ eintragen, was die Person gesagt hat. Eigene Deutung steht getrennt unten. Nicht
 | Geführt von / notiert von | |
 | Rolle der Person (kein Name ohne Zustimmung) | |
 | Art des Büros oder Projekts (keine Namen ohne Zustimmung) | |
+| **Einverständnis zu Notizen (zu Beginn erfragt, ja / nein).** Bei „nein“ nichts weiter eintragen. | |
+| Speicherort dieser Notiz und Löschen bis (das Team legt beides vor dem ersten Gespräch fest) | |
 
-## Einverständnis (am Ende erfragt)
+## Einverständnis zur Verwendung (am Ende erfragt)
 
 | Frage | Antwort (ja / nein) |
 |---|---|
-| Notizen ohne Namen verwenden | |
+| Antworten ohne Namen und Büro für Vorträge und Folien verwenden | |
 | Zitate mit Büro oder Namen nennen | |
 | Foto oder Bildschirmfoto mit Bezug zur Person verwenden | |
 | Wieder melden dürfen | |
@@ -43,10 +45,10 @@ eintragen, was die Person gesagt hat. Eigene Deutung steht getrennt unten. Nicht
 
 | Frage | Notiz |
 |---|---|
-| Genannte Handlung vor der Frist, und zu welchem Zeitpunkt | |
+| Handlung, die die Person im **vergangenen Fall** mit so einer Ansicht getan hätte, und zu welchem Zeitpunkt | |
 | Unklar oder fehlend | |
 | Wörtliche Reaktion | |
-| Rolle der Nutzenden, der Zustimmenden, der Budgetverantwortlichen | |
+| Rolle, die Fristen nachhielt; Rolle der Zustimmenden; Rolle der Budgetverantwortlichen | |
 
 ## Geld und nächster Schritt (F9, F10)
 

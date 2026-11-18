@@ -1,7 +1,8 @@
 # Prüfprotokoll · Pitch-Dateien und Demo · 18.11.2026
 
-Dokumentversion 1.0 · Stand 18.11.2026, 00:40 Uhr (Berlin) · Branch `codex/plattform-v1` · Ausgangscommit `da85183` ·
-geprüfter Deck-Stand `b647ea3`. Prüfende: Koordination (Claude, Modell Sonnet), alle Befehle selbst ausgeführt.
+Dokumentversion 1.1 · Stand 18.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `23dc050` ·
+geprüfter Deck-Stand `b647ea3` (Pitch-Dateien seitdem unverändert). Prüfende: Koordination (Claude Code), alle Befehle selbst ausgeführt.
+Die Ausgaben der Prüfungen liegen in `ergebnisse/`. Uhrzeiten der Ausführung werden nicht angegeben, maßgeblich ist der Commit.
 Umgebung: Linux, Chromium über Playwright, Python 3, Node.js, Poppler, LibreOffice nur für die frühere Erzeugung der PDFs.
 
 Dieses Protokoll übernimmt keine Angabe aus früheren Prüfberichten. Was hier steht, wurde in dieser Runde gerechnet,
@@ -34,15 +35,17 @@ ausgelesen oder angesehen. Früher geprüfte Punkte, die hier nicht wiederholt w
 
 - Die veröffentlichte Vorschau „CircularFlow Fassung 2“ (Version `1794826502-00b9`) wurde **weder verändert noch neu
   veröffentlicht**. Mit dem Werkzeug „Artifact“ wurden ihre 35 Dateien aufgelistet und lesend heruntergeladen.
-- **Vergleich mit dem Repository:**
+- **Vergleich mit dem Repository** (`python3 -I pruefskripte/dateivergleich.py`, Ausgabe und SHA-256 aller 35 Dateien in
+  `ergebnisse/dateivergleich.txt`):
   - Lokale Dateien in `plattform/` gegen den Download: 31 von 35 Dateien byte-gleich. Die vier Abweichungen
     (`app/main.js`, `index.html`, `styles.css`, `app/door-rules.mjs`) sind der Bauschritt der Veröffentlichung
     (Schriften als `data:`-URI, Türregel neben den Modulen, HTML-Rahmen).
   - Darum zusätzlich `node plattform/bauen-artifact.mjs <Zielordner außerhalb des Repositorys>`: Der Nachbau und der
     Download sind in 34 von 35 Dateien byte-gleich. Nur `index.html` weicht ab, und zwar im Seitentitel („CircularFlow
     Fassung 2“ gegen „CircularFlow Plattform“) und durch den vom Dienst ergänzten HTML-Rahmen.
-- **Folgerung:** Die veröffentlichte Vorschau enthält denselben Code wie `plattform/` in diesem Repository (Code `2121b92`,
-  seitdem nur die README geändert).
+- **Folgerung** (aus dem Dateivergleich, nicht aus dem Öffnen der Seite): Die heruntergeladenen Dateien der veröffentlichten
+  Vorschau entsprechen `plattform/` in diesem Repository nach dem Bauschritt der Veröffentlichung (Code `2121b92`, seitdem
+  nur die README geändert).
 - **Nicht geprüft:** Die Seite auf claude.ai selbst wurde nicht in einem Browser geöffnet (kein Zugang von hier). Die
   Freigabe und die Sichtbarkeit der Vorschau sind nicht geprüft.
 
@@ -53,7 +56,8 @@ ausgelesen oder angesehen. Früher geprüfte Punkte, die hier nicht wiederholt w
   `node pitch/innosprint-2026/generalprobe/pruefskripte/demo-pruefung.js <Startadresse> <Ausgabeordner> <Bezeichnung>`.
 - **Einstellungen:** Chromium, neuer Kontext je Lauf (nichts gespeichert), Fenster 1440 × 810 bei Skalierung 1,5 für die
   Bilder, danach 1280 × 720 für die Scroll-Prüfung, Sprache de-DE, Zeitzone Europe/Berlin.
-- **Ergebnis:** 28 von 28 Prüfungen im lokalen Stand und 28 von 28 in der veröffentlichten Auslieferung
+- **Ergebnis:** 28 von 28 Prüfungen im lokalen Stand und 28 von 28 in der **lokal geöffneten Kopie** der veröffentlichten
+  Auslieferung, also den heruntergeladenen Dateien, nicht der Seite auf claude.ai
   (`ergebnisse/demo-lokal.json`, `ergebnisse/demo-veroeffentlicht.json`), keine Konsolenfehler und keine
   fehlgeschlagenen Netzanfragen.
   - Startbedingung: „8 Paare davon 2 prüfbar“, „2 Vorgänge“, Stichtag „Mi 18.11., 14:00 (Simulation)“, „Zeitkritisch
@@ -76,16 +80,18 @@ ausgelesen oder angesehen. Früher geprüfte Punkte, die hier nicht wiederholt w
 - Die Bilder `bilder/k1-uebersicht.jpg` bis `k4-weiter-pruefen.jpg` (Quelle der Ersatzfolien 5 und 6) wurden gegen eine
   neue Aufnahme mit denselben Einstellungen verglichen: gleiche Größe (2160 × 1215), 0,03 bis 0,21 % der Pixel weichen um
   mehr als 24 von 255 ab, die mittlere Abweichung liegt unter 0,7. Das ist JPEG-Rauschen. Die Ersatzfolien zeigen also,
-  was die Demo heute liefert.
+  was die Demo heute liefert. Befehl: `python3 -I pruefskripte/bildvergleich.py`, Ausgabe in `ergebnisse/bildvergleich.txt`.
+  Die Wirkung der Bilder auf den Folien am Beamer ist nicht geprüft.
 - Als Rückfall außerhalb von PowerPoint liegen vier Bilder der neuen Aufnahme (veröffentlichte Auslieferung) in
   `generalprobe/bilder/`: Übersicht, Paarliste, „fünf Tage zu spät“, „Weiter prüfen“.
 
 ## 5. Regeltests
 
 - **Befehl:** `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs`
-- **Ergebnis:** 190 von 190 bestanden (46 in `prototype/test/`, 144 in `plattform/test/`), 0 fehlgeschlagen, Dauer etwa
-  1 Sekunde, ausgeführt am 18.11.2026 gegen `da85183`. Das belegt die geprüften Fälle der Regeln und der Vorschau,
-  keine allgemeine Fehlerfreiheit.
+- **Ergebnis:** 190 von 190 bestanden (46 in `prototype/test/`, 144 in `plattform/test/`, getrennt nachgezählt), 0
+  fehlgeschlagen, Dauer 0,95 Sekunden, ausgeführt gegen `23dc050`, Arbeitsbaum ohne Änderung an `plattform/` und
+  `prototype/`. Die vollständige Ausgabe steht in `ergebnisse/regeltests.txt`. Das belegt die geprüften Fälle der Regeln
+  und der Vorschau, keine allgemeine Fehlerfreiheit und keine fachliche Eignung.
 
 ## 6. Primärquellen
 

@@ -1,6 +1,6 @@
 # Gesprächsleitfaden · 15 Minuten · Projektleitung im Umbau
 
-Dokumentversion 1.0 · Stand 18.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `e244fc4` · Entwurf, das Team
+Dokumentversion 1.1 · Stand 18.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `23dc050` · Entwurf, das Team
 bestätigt ihn vor dem ersten Gespräch. Gehört zu `juryfragen/juryantworten.md` (Hypothesen H1 bis H10).
 
 **Ziel:** Von einer echten Projektleitung im Umbau erfahren, wie Angebote für gebrauchte Bauteile, Fristen und Prüfzeiten
@@ -31,9 +31,12 @@ Gesprächsnotiz (`gespraechsnotiz-vorlage.md`) steht.
 | 14:00 bis 15:00 | Abschluss | siehe unten |
 
 **Einstieg (1 Minute):** „Danke für Ihre Zeit. Wir sind zwei Studierende der TU Dortmund und testen eine Idee für Umbauten.
-Wir wollen von Ihnen lernen, wie das heute läuft. Es gibt keine falschen Antworten, und wir verkaufen nichts. Dürfen wir
-Notizen machen? Namen, Büro oder Zitate verwenden wir nur, wenn Sie am Ende ausdrücklich zustimmen.“
-Danach zuerst das Einverständnis für **Notizen** klären. Eine Aufnahme gibt es nicht.
+Wir wollen von Ihnen lernen, wie das heute läuft. Es gibt keine falschen Antworten, und wir verkaufen nichts. Wir
+schreiben von Hand mit und nehmen nichts auf. Wir verwenden Ihre Angaben, um unsere Idee zu prüfen und für Vorträge und
+Folien unseres Teams, zunächst ohne Namen und Büro. Namen, Büro, Zitate oder Fotos nur, wenn Sie am Ende ausdrücklich
+zustimmen. Dürfen wir Notizen machen?“
+Die Antwort **sofort** in der Notiz eintragen („Einverständnis zu Notizen“). Bei „nein“ wird nicht mitgeschrieben und
+nichts aus dem Gespräch festgehalten, nur dass es stattfand (Datum, Rolle). Eine Aufnahme gibt es nie.
 
 ## Die zehn Fragen
 
@@ -48,17 +51,20 @@ Wünschen („Wie war es beim letzten Mal?“ statt „Würden Sie …?“).
 | F4 | „Was wurde am Ende bestellt oder eingebaut, und warum?“ | „Woran ist es gescheitert, wenn es scheiterte?“ | Ausgang je Bauteil (neu bestellt, wiederverwendet, anders) und Grund | H1, H8 |
 | F5 | „Wo stehen bei Ihnen Fristen und Angaben zu Bauteilen? Wer pflegt das? Nutzen Sie dafür schon eine Plattform oder Liste?“ | „Welche genau?“ | Ort (Liste, Plan, E-Mail, Software), Rolle der pflegenden Person, genannte Produkte | H3, H6, H9 |
 | F6 | „Welche Angaben fehlen typischerweise, wenn die Entscheidung ansteht?“ | „Wer müsste sie liefern?“ | fehlende Angaben, Rollen | H6 |
-| F7 | Einseiter und Bild „fünf Tage zu spät“ zeigen: „Was würden Sie damit in Ihrem Ablauf tun, und wann? Was ist unklar oder fehlt?“ Danach das Bild „Weiter prüfen“. | „Hätten Sie das vorher gewusst?“ | genannte Handlung vor der Frist, Zeitpunkt, Unklarheiten, wörtliche Reaktion | H5, H7, H10 |
-| F8 | „Wer in Ihrem Büro oder Projekt würde so etwas nutzen? Wer müsste zustimmen?“ | „Und wer entscheidet über Ausgaben dafür?“ | Rolle der Nutzenden, der Zustimmenden, der Budgetverantwortlichen | H3, H4 |
+| F7 | Einseiter und Bild „fünf Tage zu spät“ zeigen (ausgedachte Daten) und auf den **vergangenen Fall** von vorhin beziehen: „Was hätten Sie damals mit so einer Ansicht getan, und zu welchem Zeitpunkt? Was ist unklar oder fehlt?“ Danach das Bild „Weiter prüfen“. | „Wann hätten Sie es damals gebraucht?“ | genannte Handlung vor der Frist, Zeitpunkt, Unklarheiten, wörtliche Reaktion | H5, H7, H10 |
+| F8 | „Wer hat in dem vergangenen Fall die Fristen im Blick gehalten und die Prüfung angestoßen? Wer musste zustimmen?“ | „Und wer entscheidet in Ihrem Büro oder Projekt über Ausgaben für Hilfsmittel?“ | Rolle, die Fristen nachhielt, Rolle der Zustimmenden, Rolle der Budgetverantwortlichen | H3, H4 |
 | F9 | „Wie beschaffen Sie heute Werkzeuge dieser Art, und in welcher Größenordnung liegen Ausgaben dafür pro Projekt oder Jahr?“ | **keinen Preis vorgeben** | Beschaffungsweg, Größenordnung wörtlich, bei Weigerung „keine Angabe“ | H4, H5 |
 | F10 | „Dürfen wir uns einen konkreten, laufenden oder vergangenen Fall in einem Kurztest ansehen? Wer wäre dafür die Ansprechperson?“ | „Was bräuchten Sie dafür von uns?“ | ja, nein oder vielleicht, Bedingungen. **Eine Zusage nur notieren, wenn sie ausdrücklich fällt.** | H8 |
 
-**Abschluss (1 Minute):** „Danke. Dürfen wir Ihre Antworten ohne Namen verwenden? Dürfen wir Zitate mit Büro oder Namen
-nennen? Dürfen wir uns noch einmal melden?“ Drei Fragen, drei Antworten in die Notiz.
+**Abschluss (1 Minute):** „Danke. Dürfen wir Ihre Antworten ohne Namen und Büro verwenden, für unsere Vorträge und Folien?
+Dürfen wir Zitate mit Büro oder Namen nennen? Dürfen wir ein Foto oder Bildschirmfoto mit Bezug zu Ihnen verwenden?
+Dürfen wir uns noch einmal melden?“ Vier Fragen, vier Antworten (ja oder nein) in die Notiz.
 
 ## Regeln
 
 - Offene Fragen stellen, nicht suggerieren. Die Antwort nicht vorsprechen. Schweigen aushalten.
+- Die Reaktion auf den Kurzcheck (F7) ist eine Reaktion auf ein Bild mit ausgedachten Daten. Sie ist **kein Beleg**, dass die
+  Person den Kurzcheck nutzen würde.
 - **Keine Fachaussagen** zur Eignung eines Bauteils machen, keine Rechtsauskunft geben.
 - **Keinen Preis nennen**, nichts versprechen, kein Angebot machen. Die Frage nach Geld ist eine Frage, kein Angebot.
 - Nichts als „bestätigt“ notieren, was die Person nicht gesagt hat. Eigene Deutung getrennt von wörtlichen Aussagen.
@@ -77,4 +83,5 @@ nennen? Dürfen wir uns noch einmal melden?“ Drei Fragen, drei Antworten in di
 ## Was daraus verwendet werden darf
 
 Für den Pitch und für Folien nur **dokumentierte Beobachtungen**, als **Einzelaussage** gekennzeichnet („Eine Projektleitung
-berichtet …“). Namen, Zitate und Fotos nur im freigegebenen Umfang der Notiz. Keine Verallgemeinerung aus einem Gespräch.
+berichtet …“). Namen, Zitate und Fotos nur im freigegebenen Umfang der Notiz. Ohne „ja“ zu „Antworten ohne Namen verwenden“ wird nichts
+aus dem Gespräch außerhalb des Teams verwendet. Keine Verallgemeinerung aus einem Gespräch.

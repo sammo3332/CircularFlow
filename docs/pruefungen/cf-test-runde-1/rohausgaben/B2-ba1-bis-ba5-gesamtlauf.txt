@@ -1,0 +1,105 @@
+
+===== BA-1 =====
+OK         BA-1 · Stichtag der Demo: Mi 18.11., 14:00
+OK         BA-1 · Kachel „Paare derselben Gruppe“: 8 Paare, davon 2 prüfbar
+   IST BA-1 · Kachel Paare (Text): 8 Paare davon 2 prüfbar
+OK         BA-1 · Kachel „Vorgänge je Status“: 2 Vorgänge
+   IST BA-1 · Kachel Vorgänge (Text): 2 Vorgänge
+OK         BA-1 · „Zeitkritisch (7 Tage)“: 4 Fristen
+OK         BA-1 · Zahl der Fristzeilen = 4
+OK         BA-1 · erste Zeile: Chip „noch 2 Std.“
+OK         BA-1 · erste Zeile: „Aufmaßfrist · E-01 · T-07 → B-02“
+OK         BA-1 · keine Zeile „Prüfbitte spätestens“ (in keiner Fristzeile)
+OK         BA-1 · der Text „Prüfbitte spätestens“ steht nirgends auf der Übersicht
+   IST BA-1 · alle Fristzeilen: [{"chip":"noch 2 Std.","titel":"Aufmaßfrist · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Mi 18.11., 16:00","href":"#entscheidung-lh-e-01"},{"chip":"noch 20 Std.","titel":"Nachweisfrist · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 10:00","href":"#entscheidung-lh-e-02"},{"chip":"noch 22 Std.","titel":"Ersatzentscheidung · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 12:00","href":"#entscheidung-lh-e-01"},{"chip":"noch 1 Tg. 22 Std.","titel":"Ersatzentscheidung · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Fr 20.11., 12:00","href":"#entscheidung-lh-e-02"}]
+OK         BA-1 · keine Konsolen- oder Seitenfehler
+
+===== BA-2 =====
+   IST BA-2 · BD-22 Zeile: {"anzahl":1,"voll":"Prüfbitte spätestens 21.03.2027 geschätzt Bestellfrist 31.03.2027 minus 10 Tage Mindestprüfzeit (geschätzt) In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft.","wert":"21.03.2027","chips":["geschätzt"],"klein":["Bestellfrist 31.03.2027 minus 10 Tage Mindestprüfzeit (geschätzt)","In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft."]}
+OK         BA-2 · BD-22: genau eine Zeile „Prüfbitte spätestens“
+OK         BA-2 · BD-22: „21.03.2027“
+OK         BA-2 · BD-22: Chip „geschätzt“ (nur dieser)
+OK         BA-2 · BD-22: „Bestellfrist 31.03.2027 minus 10 Tage Mindestprüfzeit (geschätzt)“
+OK         BA-2 · BD-22: „In den 7 Tagen davor …“ steht da
+   IST BA-2 · BD-23 Zeile: {"anzahl":1,"voll":"Prüfbitte spätestens 13.11.2026 verstrichen Bestellfrist 27.11.2026 minus 14 Tage Mindestprüfzeit","wert":"13.11.2026","chips":["verstrichen"],"klein":["Bestellfrist 27.11.2026 minus 14 Tage Mindestprüfzeit"]}
+OK         BA-2 · BD-23: genau eine Zeile
+OK         BA-2 · BD-23: „13.11.2026“
+OK         BA-2 · BD-23: Chip „verstrichen“ (nur dieser, kein „geschätzt“)
+OK         BA-2 · BD-23: „Bestellfrist 27.11.2026 minus 14 Tage Mindestprüfzeit“ (ohne „(geschätzt)“)
+OK         BA-2 · BD-23: ohne „In den 7 Tagen davor …“
+   IST BA-2 · BD-21 Zeile: {"anzahl":1,"voll":"Prüfbitte spätestens nicht berechenbar Bestellfrist fehlt. Mindestprüfzeit fehlt.","wert":null,"chips":["nicht berechenbar"],"klein":["Bestellfrist fehlt. Mindestprüfzeit fehlt."]}
+OK         BA-2 · BD-21: genau eine Zeile
+OK         BA-2 · BD-21: „nicht berechenbar“
+OK         BA-2 · BD-21: „Bestellfrist fehlt. Mindestprüfzeit fehlt.“
+OK         BA-2 · BD-21: kein Datum
+OK         BA-2 · keine Konsolen- oder Seitenfehler
+
+===== BA-3 =====
+   IST BA-3 · Formularwerte vor „Speichern“: {"projekt":"SB","gruppe":"Systemtrennwände","titel":"Fristtest","menge":"30","bestellfrist":"2026-11-30","pruefzeit":"6","art":"geschätzt (Annahme)","von":"2027-02-01","bis":"2027-03-31"}
+   IST BA-3 · Hinweis nach dem Speichern: Bedarf BD-24 gespeichert. Die passenden Angebote sind berechnet (2 Angebote).
+   IST BA-3 · BD-24 Zeile: {"anzahl":1,"voll":"Prüfbitte spätestens 24.11.2026 geschätzt Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt) In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft.","wert":"24.11.2026","chips":["geschätzt"],"klein":["Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt)","In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft."]}
+OK         BA-3 · BD-24: „24.11.2026“
+OK         BA-3 · BD-24: Chip „geschätzt“ (nur dieser)
+OK         BA-3 · BD-24: „Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt)“
+OK         BA-3 · BD-24: „In den 7 Tagen davor …“ steht da (Tag liegt nach dem Stichtag)
+OK         BA-3 · BD-24: „2 Angebote, davon 2 prüfbar“
+   IST BA-3 · Übersicht Kopf: Zeitkritisch (7 Tage) 5 Fristen · Überfälliges zuerst
+   IST BA-3 · alle Fristzeilen: [{"chip":"noch 2 Std.","titel":"Aufmaßfrist · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Mi 18.11., 16:00","href":"#entscheidung-lh-e-01"},{"chip":"noch 20 Std.","titel":"Nachweisfrist · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 10:00","href":"#entscheidung-lh-e-02"},{"chip":"noch 22 Std.","titel":"Ersatzentscheidung · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 12:00","href":"#entscheidung-lh-e-01"},{"chip":"noch 1 Tg. 22 Std.","titel":"Ersatzentscheidung · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Fr 20.11., 12:00","href":"#entscheidung-lh-e-02"},{"chip":"noch 6 Tg. 9 Std.","titel":"Prüfbitte spätestens · BD-24 · Fristtest","klein":"SB Bedarf · 2 prüfbare Paare · Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt)","zeit":"Di 24.11., 23:59","href":"#bedarf-sb-bd-24"}]
+OK         BA-3 · Übersicht: „5 Fristen“
+OK         BA-3 · letzte Zeile: Chip „noch 6 Tg. 9 Std.“
+OK         BA-3 · letzte Zeile: „Prüfbitte spätestens · BD-24 · Fristtest“
+OK         BA-3 · letzte Zeile: „Di 24.11., 23:59“
+OK         BA-3 · letzte Zeile: Detailzeile laut Plan 3.2/3.4 („SB Bedarf · 2 prüfbare Paare · Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt)“)
+OK         BA-3 · letzte Zeile verlinkt auf #bedarf-sb-bd-24
+OK         BA-3 · die vier bisherigen Zeilen bleiben davor, unverändert
+   IST BA-3 · Fr 20.11., 09:00: Kopf: Zeitkritisch (7 Tage) 5 Fristen, davon 3 überfällig · Überfälliges zuerst
+   IST BA-3 · Fr 20.11., 09:00: alle Fristzeilen: [{"chip":"Überfällig","titel":"Aufmaßfrist · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Mi 18.11., 16:00","href":"#entscheidung-lh-e-01"},{"chip":"Überfällig","titel":"Nachweisfrist · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 10:00","href":"#entscheidung-lh-e-02"},{"chip":"Überfällig","titel":"Ersatzentscheidung · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 12:00","href":"#entscheidung-lh-e-01"},{"chip":"noch 3 Std.","titel":"Ersatzentscheidung · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Fr 20.11., 12:00","href":"#entscheidung-lh-e-02"},{"chip":"noch 4 Tg. 14 Std.","titel":"Prüfbitte spätestens · BD-24 · Fristtest","klein":"SB Bedarf · 2 prüfbare Paare · Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt)","zeit":"Di 24.11., 23:59","href":"#bedarf-sb-bd-24"}]
+OK         BA-3 · Stichtag „Fr 20.11., 09:00“: Chip „noch 4 Tg. 14 Std.“
+OK         BA-3 · Zusatz Rücksprung der Betrachtungszeit auf „Mi 18.11., 14:00“: wieder „noch 6 Tg. 9 Std.“ und 5 Fristen
+OK         BA-3 · keine Konsolen- oder Seitenfehler
+
+===== BA-4 =====
+   IST BA-4 · Formularwerte vor „Speichern“: {"projekt":"SB","gruppe":"Systemtrennwände","titel":"Fristtest","menge":"30","bestellfrist":"2026-11-30","pruefzeit":"6","art":"geschätzt (Annahme)","von":"2027-02-01","bis":"2027-03-31"}
+   IST BA-4 · 1440: Fokus auf der Zeile nach Tab-Tastendrücken: {"tabs":5,"tag":"A","text":"Prüfbitte spätestens · BD-24 · Fristtest","href":"#bedarf-sb-bd-24","inZeile":true}
+OK         BA-4 · 1440: Tab erreicht die Zeile „Prüfbitte spätestens“
+   IST BA-4 · 1440: Fokus nach Enter: {"tag":"MAIN","id":"inhalt","text":"Bedarfe / BD-24 BEDARF · SYSTEMTRENNWÄNDE SB BD-24 Fristtest 30 lfm Ze","imMain":true,"imApp":true,"istBody":false,"hash":"#bedarf-sb-bd-24"}
+OK         BA-4 · 1440: Enter öffnet #bedarf-sb-bd-24
+OK         BA-4 · 1440: Fokus liegt im Inhalt (nicht auf <body>, im Hauptbereich)
+OK         BA-4 · 390: Übersicht ohne seitliches Scrollen
+OK         BA-4 · 390: Übersicht, Fristzeilen ohne abgeschnittenen Text
+OK         BA-4 · 390: Übersicht, Fristzeilen liegen innerhalb des Fensters
+   IST BA-4 · 390: Fokus auf der Zeile: {"tabs":1,"tag":"A","text":"Prüfbitte spätestens · BD-24 · Fristtest","href":"#bedarf-sb-bd-24","inZeile":true}
+OK         BA-4 · 390: Tab erreicht die Zeile „Prüfbitte spätestens“
+   IST BA-4 · 390: Fokus nach Enter: {"tag":"MAIN","id":"inhalt","text":"Bedarfe / BD-24 BEDARF · SYSTEMTRENNWÄNDE SB BD-24 Fristtest 30 lfm Ze","imMain":true,"imApp":true,"istBody":false,"hash":"#bedarf-sb-bd-24"}
+OK         BA-4 · 390: Enter öffnet #bedarf-sb-bd-24
+OK         BA-4 · 390: Fokus liegt im Inhalt
+OK         BA-4 · 390: BD-24 ohne seitliches Scrollen
+OK         BA-4 · 390: BD-24 Angaben ohne abgeschnittenen Text
+OK         BA-4 · 390: BD-24 Angaben liegen innerhalb des Fensters
+   IST BA-4 · 390: BD-24 Zeile: {"anzahl":1,"voll":"Prüfbitte spätestens 24.11.2026 geschätzt Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt) In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft.","wert":"24.11.2026","chips":["geschätzt"],"klein":["Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt)","In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft."]}
+OK         BA-4 · 390: BD-24 zeigt Tag, Chip, Rechnung und Satz vollständig
+OK         BA-4 · keine Konsolen- oder Seitenfehler
+
+===== BA-5 =====
+   IST BA-5 · Formularwerte vor „Speichern“: {"projekt":"SB","gruppe":"Systemtrennwände","titel":"Fristtest","menge":"30","bestellfrist":"2026-11-30","pruefzeit":"6","art":"geschätzt (Annahme)","von":"2027-02-01","bis":"2027-03-31"}
+   IST BA-5 · Zeile TW-05 auf BD-24: Weiter prüfen KB TW-05 Systemtrennwand mit Glasfeldern 120 lfm · ab 01.02.2027 Prüfende 24.11.2026 liegt 6 Tage vor der Bestellfrist 30.11.2026.
+   IST BA-5 · Abgleichseite: SB BD-24 Fristtest
+   IST BA-5 · „Prüfbitte anlegen“ aria-disabled: null
+OK         BA-5 · „Prüfbitte anlegen“ ist bedienbar (nicht gesperrt)
+   IST BA-5 · Adresse nach „Prüfbitte anlegen“: #entscheidung-kb-e-01
+   IST BA-5 · Überschrift danach: KB TW-05 Systemtrennwand mit Glasfeldern → SB Bedarf BD-24
+   IST BA-5 · Übersicht Kopf: Zeitkritisch (7 Tage) 4 Fristen · Überfälliges zuerst
+   IST BA-5 · alle Fristzeilen: [{"chip":"noch 2 Std.","titel":"Aufmaßfrist · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Mi 18.11., 16:00","href":"#entscheidung-lh-e-01"},{"chip":"noch 20 Std.","titel":"Nachweisfrist · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 10:00","href":"#entscheidung-lh-e-02"},{"chip":"noch 22 Std.","titel":"Ersatzentscheidung · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 12:00","href":"#entscheidung-lh-e-01"},{"chip":"noch 1 Tg. 22 Std.","titel":"Ersatzentscheidung · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Fr 20.11., 12:00","href":"#entscheidung-lh-e-02"}]
+   IST BA-5 · Kachel Vorgänge: 3 Vorgänge
+OK         BA-5 · Zeitkritisch: „4 Fristen“
+OK         BA-5 · keine Zeile „Prüfbitte spätestens“
+OK         BA-5 · „Vorgänge je Status“: 3 Vorgänge
+   IST BA-5 · Zusatz: BD-24 nach Prüfbitte: {"anzahl":1,"voll":"Prüfbitte spätestens 24.11.2026 geschätzt Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt) In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft.","wert":"24.11.2026","chips":["geschätzt"],"klein":["Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt)","In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft."]}
+   IST BA-5 · nach Zurücksetzen: Kopf: Zeitkritisch (7 Tage) 4 Fristen · Überfälliges zuerst
+   IST BA-5 · nach Zurücksetzen: Fristzeilen: ["Aufmaßfrist · E-01 · T-07 → B-02","Nachweisfrist · E-02 · DB-01 → BD-01","Ersatzentscheidung · E-01 · T-07 → B-02","Ersatzentscheidung · E-02 · DB-01 → BD-01"]
+OK         BA-5 · Zurücksetzen: Übersicht wieder wie BA-1 (8 Paare, davon 2 prüfbar; 2 Vorgänge; 4 Fristen ohne Prüfbitte spätestens)
+   IST BA-5 · Adresse #bedarf-sb-bd-24 nach dem Zurücksetzen (Seitentext, Anfang): {"hash":"#bedarf-sb-bd-24","text":"Zum Inhalt springen CircularFlow Bauteile im Kreislauf Übersicht Projekte Bauteile Bedarfe Erfassen Stichtag der Demo (Simulation) Mi 18.11., 14:00 Mi 18.11., 1"}
+OK         BA-5 · Zurücksetzen: Bedarfsliste enthält BD-24 „Fristtest“ nicht mehr
+OK         BA-5 · keine Konsolen- oder Seitenfehler
+
+ZUSAMMENFASSUNG je Ablauf: {"BA-1":{"ok":10,"abw":0},"BA-2":{"ok":15,"abw":0},"BA-3":{"ok":15,"abw":0},"BA-4":{"ok":14,"abw":0},"BA-5":{"ok":7,"abw":0}} | Skriptfehler: 0

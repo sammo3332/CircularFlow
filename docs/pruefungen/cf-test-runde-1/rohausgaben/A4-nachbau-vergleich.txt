@@ -1,0 +1,36 @@
+GLEICH   app/abgleich.js  31ea3bac1c367525
+GLEICH   app/ansichten/abgleich.js  dbe7efd48854c7bb
+GLEICH   app/ansichten/bauteile.js  bc2ac64a8873e074
+GLEICH   app/ansichten/bedarfe.js  852193387158632f
+GLEICH   app/ansichten/bedarfform.js  8f793e418b3398dc
+GLEICH   app/ansichten/diagramm.js  40f41de79e7d43c5
+GLEICH   app/ansichten/entscheidung.js  b05f1ca4244bbd20
+GLEICH   app/ansichten/erfassung.js  a8682160b804cbaf
+GLEICH   app/ansichten/gebaeude.js  ca903c0bd0548550
+GLEICH   app/ansichten/katalog.js  31447d60c57c8e77
+GLEICH   app/ansichten/projekte.js  349b89158ee1726f
+GLEICH   app/ansichten/projektform.js  36d300f6c950a36a
+GLEICH   app/ansichten/radar.js  71e07adbbd41cd41
+GLEICH   app/ansichten/uebersicht.js  9fb9ea3e543e9e25
+GLEICH   app/ansichten/vorgaenge.js  21f94a98f5fd48b6
+GLEICH   app/ansichten/vorgangsteil.js  3df0d8a99e612df6
+GLEICH   app/bedarf.js  2c6f7fad2a62e611
+GLEICH   app/daten.js  7fd42d3c31f8ffcf
+GLEICH   app/door-rules.mjs  b2800369d33bd1a1
+GLEICH   app/karte.js  7cba5f3aec3c8d8b
+GLEICH   app/kennzahlen.js  2c5462c5a3837976
+GLEICH   app/main.js  a7a71a93c3d29d92
+GLEICH   app/projektanlage.js  1540e06cc15daaae
+GLEICH   app/radar-daten.js  0091b1c4f02506c7
+GLEICH   app/regeln.js  e79229de48cbb509
+GLEICH   app/ui.js  2c54f670867164aa
+GLEICH   app/uizustand.js  a9c1dbea4c7729b1
+GLEICH   app/vorgang.js  44e8276ab261dc76
+GLEICH   app/zeit.js  d6d14fb76abf9028
+GLEICH   app/zustand.js  da6007747d7dd065
+GLEICH   daten/dortmund-stadtbezirke.geojson  17cce57e8f717e5e
+ABWEICHT index.html  veroeffentlicht=fb3f6271f7b3a7ba nachbau=adfdd7df5dccae82
+GLEICH   styles.css  ddee1542e6f8954f
+GLEICH   vendor/leaflet/leaflet.css  a783710282418482
+GLEICH   vendor/leaflet/leaflet.js  db49d009c841f5ca
+Von 35 veröffentlichten Dateien: byte-gleich=34, abweichend=1, im Nachbau fehlend=0

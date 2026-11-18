@@ -1,0 +1,1156 @@
+Regeltests · Befehl: node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs
+Ausführung gegen Commit 23dc050 (Arbeitsbaum ohne Änderungen an plattform/ und prototype/: 0 Abweichungen), Node v22.23.4
+Ausgabe des Testläufers (Standardausgabe):
+
+TAP version 13
+# Subtest: Demo 1: TW-05 → BD-22 ist „Weiter prüfen“ mit Reserve, Prüfpunkten und symbolischer Entfernung
+ok 1 - Demo 1: TW-05 → BD-22 ist „Weiter prüfen“ mit Reserve, Prüfpunkten und symbolischer Entfernung
+  ---
+  duration_ms: 13.095776
+  type: 'test'
+  ...
+# Subtest: Demo 2: TW-01 → BD-23 ist zu spät, genaue Tageszahl, Zwischenlagerung als Prüfpunkt, Prüfbitte gesperrt
+ok 2 - Demo 2: TW-01 → BD-23 ist zu spät, genaue Tageszahl, Zwischenlagerung als Prüfpunkt, Prüfbitte gesperrt
+  ---
+  duration_ms: 0.710882
+  type: 'test'
+  ...
+# Subtest: Demo 3: T-31 → BD-21 nennt alle fehlenden Angaben, Prüfbitte gesperrt
+ok 3 - Demo 3: T-31 → BD-21 nennt alle fehlenden Angaben, Prüfbitte gesperrt
+  ---
+  duration_ms: 0.503447
+  type: 'test'
+  ...
+# Subtest: Ergebnis-Bezeichnungen und Töne sind als Konstante vorhanden
+ok 4 - Ergebnis-Bezeichnungen und Töne sind als Konstante vorhanden
+  ---
+  duration_ms: 0.131909
+  type: 'test'
+  ...
+# Subtest: Grenze: Prüfende = Bestellfrist ist knapp (0 Tage Reserve), einen Tag später zu spät
+ok 5 - Grenze: Prüfende = Bestellfrist ist knapp (0 Tage Reserve), einen Tag später zu spät
+  ---
+  duration_ms: 0.990583
+  type: 'test'
+  ...
+# Subtest: Grenze: ein Überlappungstag genügt (knapp); kein Tag ist zu spät
+ok 6 - Grenze: ein Überlappungstag genügt (knapp); kein Tag ist zu spät
+  ---
+  duration_ms: 0.629667
+  type: 'test'
+  ...
+# Subtest: Prüfbeginn: spätester Tag aus Stichtag, Erfassung des Angebots und Anlage des Bedarfs
+ok 7 - Prüfbeginn: spätester Tag aus Stichtag, Erfassung des Angebots und Anlage des Bedarfs
+  ---
+  duration_ms: 1.396534
+  type: 'test'
+  ...
+# Subtest: Zwischenlagerung ist ein Prüfpunkt mit Dauer, kein Ausschluss
+ok 8 - Zwischenlagerung ist ein Prüfpunkt mit Dauer, kein Ausschluss
+  ---
+  duration_ms: 0.641772
+  type: 'test'
+  ...
+# Subtest: Endet die Verfügbarkeit vor dem Prüfende, entsteht ein Prüfpunkt
+ok 9 - Endet die Verfügbarkeit vor dem Prüfende, entsteht ein Prüfpunkt
+  ---
+  duration_ms: 0.794526
+  type: 'test'
+  ...
+# Subtest: Widersprüche gehen vor jedem Zeitergebnis (Klärung nötig)
+ok 10 - Widersprüche gehen vor jedem Zeitergebnis (Klärung nötig)
+  ---
+  duration_ms: 1.322292
+  type: 'test'
+  ...
+# Subtest: Andere Gruppe oder Einheit: Klärung nötig, keine Umrechnung
+ok 11 - Andere Gruppe oder Einheit: Klärung nötig, keine Umrechnung
+  ---
+  duration_ms: 0.695152
+  type: 'test'
+  ...
+# Subtest: Zu spät ist auch bei sonst fehlenden Angaben sicher; fehlende Angaben werden vollständig genannt
+ok 12 - Zu spät ist auch bei sonst fehlenden Angaben sicher; fehlende Angaben werden vollständig genannt
+  ---
+  duration_ms: 0.735157
+  type: 'test'
+  ...
+# Subtest: Menge: gedeckt, teilweise mit Lücke, fehlend; Einheit aus der Gruppe
+ok 13 - Menge: gedeckt, teilweise mit Lücke, fehlend; Einheit aus der Gruppe
+  ---
+  duration_ms: 0.663346
+  type: 'test'
+  ...
+# Subtest: Geschätzte Angaben werden am Ergebnis genannt
+ok 14 - Geschätzte Angaben werden am Ergebnis genannt
+  ---
+  duration_ms: 0.480323
+  type: 'test'
+  ...
+# Subtest: Doppelboden: Deckung aus der Bodenregel, nur im selben Projekt
+ok 15 - Doppelboden: Deckung aus der Bodenregel, nur im selben Projekt
+  ---
+  duration_ms: 4.718487
+  type: 'test'
+  ...
+# Subtest: abgleichListe: gleiche Gruppe, ohne „nicht“ und ohne aktive Vorgänge, sinnvoll sortiert
+ok 16 - abgleichListe: gleiche Gruppe, ohne „nicht“ und ohne aktive Vorgänge, sinnvoll sortiert
+  ---
+  duration_ms: 3.715241
+  type: 'test'
+  ...
+# Subtest: Abgleich-Schlüssel: bilden und auflösen, auch mit Bindestrichen in den IDs
+ok 17 - Abgleich-Schlüssel: bilden und auflösen, auch mit Bindestrichen in den IDs
+  ---
+  duration_ms: 0.344776
+  type: 'test'
+  ...
+# Subtest: Prüfbitte: legt Zuordnung und Ereignis mit Schnappschuss an; gesperrte Fälle liefern einen Fehler
+ok 18 - Prüfbitte: legt Zuordnung und Ereignis mit Schnappschuss an; gesperrte Fälle liefern einen Fehler
+  ---
+  duration_ms: 2.913838
+  type: 'test'
+  ...
+# Subtest: Parität: CF-DEMO-01 bis -03 liefern dieselbe Einordnung wie evaluateCase
+ok 19 - Parität: CF-DEMO-01 bis -03 liefern dieselbe Einordnung wie evaluateCase
+  ---
+  duration_ms: 2.329724
+  type: 'test'
+  ...
+# Subtest: Parität: Grenztag, zu kurze Prüfzeit und Widerspruch wie in evaluateCase
+ok 20 - Parität: Grenztag, zu kurze Prüfzeit und Widerspruch wie in evaluateCase
+  ---
+  duration_ms: 0.855754
+  type: 'test'
+  ...
+# Subtest: Parität: dokumentierte Abweichungen (Erweiterungen gegenüber evaluateCase)
+ok 21 - Parität: dokumentierte Abweichungen (Erweiterungen gegenüber evaluateCase)
+  ---
+  duration_ms: 0.585933
+  type: 'test'
+  ...
+# Subtest: Schlüssel: nur ASCII, Doppelbindestrich als Trenner, Rundreise für alle Kombinationen
+ok 22 - Schlüssel: nur ASCII, Doppelbindestrich als Trenner, Rundreise für alle Kombinationen
+  ---
+  duration_ms: 1.455794
+  type: 'test'
+  ...
+# Subtest: Übersicht, Katalog, Bedarfe und Arbeitsliste rendern ohne Fehler
+ok 23 - Übersicht, Katalog, Bedarfe und Arbeitsliste rendern ohne Fehler
+  ---
+  duration_ms: 177.094128
+  type: 'test'
+  ...
+# Subtest: Bedarf-Detail für jeden Bedarf
+ok 24 - Bedarf-Detail für jeden Bedarf
+  ---
+  duration_ms: 12.637244
+  type: 'test'
+  ...
+# Subtest: Abgleichseite für alle Paare und auch für unpassende Kombinationen
+ok 25 - Abgleichseite für alle Paare und auch für unpassende Kombinationen
+  ---
+  duration_ms: 85.845978
+  type: 'test'
+  ...
+# Subtest: Abgleichseite zeigt Gründe, Sperrgrund und erklärte Zeitrechnung
+ok 26 - Abgleichseite zeigt Gründe, Sperrgrund und erklärte Zeitrechnung
+  ---
+  duration_ms: 2.021471
+  type: 'test'
+  ...
+# Subtest: Projekt-, Gebäude-, Bestand-, Pass-, Entscheidungs-, Erfassungs- und Radaransichten
+ok 27 - Projekt-, Gebäude-, Bestand-, Pass-, Entscheidungs-, Erfassungs- und Radaransichten
+  ---
+  duration_ms: 78.28678
+  type: 'test'
+  ...
+# Subtest: Pass: Passende Bedarfe mit Ergebnis-Chip und Link, verfügbar von bis
+ok 28 - Pass: Passende Bedarfe mit Ergebnis-Chip und Link, verfügbar von bis
+  ---
+  duration_ms: 1.907846
+  type: 'test'
+  ...
+# Subtest: Kachel „Bald verfügbar“ und Diagramm: Zahl gleich Zahl der Katalogkarten
+ok 29 - Kachel „Bald verfügbar“ und Diagramm: Zahl gleich Zahl der Katalogkarten
+  ---
+  duration_ms: 366.150489
+  type: 'test'
+  ...
+# Subtest: Kachel „Passende Paare“ und „Vorgänge je Status“: Zahl gleich Zeilen im Ziel
+ok 30 - Kachel „Passende Paare“ und „Vorgänge je Status“: Zahl gleich Zeilen im Ziel
+  ---
+  duration_ms: 51.995414
+  type: 'test'
+  ...
+# Subtest: Kachel „Offene Prüfpunkte“ und „Bedarfe offen“ und „Zeitkritisch“: Zahl gleich Einträge im Ziel
+ok 31 - Kachel „Offene Prüfpunkte“ und „Bedarfe offen“ und „Zeitkritisch“: Zahl gleich Einträge im Ziel
+  ---
+  duration_ms: 36.398603
+  type: 'test'
+  ...
+# Subtest: Zeitkritisch zeigt Überfälliges zuerst und führt zu Entscheidung oder Bedarf
+ok 32 - Zeitkritisch zeigt Überfälliges zuerst und führt zu Entscheidung oder Bedarf
+  ---
+  duration_ms: 3.749384
+  type: 'test'
+  ...
+# Subtest: Navigation: Bedarfs-Links und Kennzahlen enthalten keine erfundenen Wirkungszahlen
+ok 33 - Navigation: Bedarfs-Links und Kennzahlen enthalten keine erfundenen Wirkungszahlen
+  ---
+  duration_ms: 1.86218
+  type: 'test'
+  ...
+# Subtest: Bedarfsformular: neu und Ergänzung rendern, mit und ohne Fehler, Felder mit stabilen IDs
+ok 34 - Bedarfsformular: neu und Ergänzung rendern, mit und ohne Fehler, Felder mit stabilen IDs
+  ---
+  duration_ms: 7.199331
+  type: 'test'
+  ...
+# Subtest: Projektformular rendert leer und mit Fehlern; eigenes Projekt erscheint überall
+ok 35 - Projektformular rendert leer und mit Fehlern; eigenes Projekt erscheint überall
+  ---
+  duration_ms: 7.392631
+  type: 'test'
+  ...
+# Subtest: Entscheidungsseite: Statuskette, nur erlaubte Formulare, Kasten stimmt mit Pass und Arbeitsliste überein
+ok 36 - Entscheidungsseite: Statuskette, nur erlaubte Formulare, Kasten stimmt mit Pass und Arbeitsliste überein
+  ---
+  duration_ms: 7.788574
+  type: 'test'
+  ...
+# Subtest: Entscheidungsseite: Beenden durch „ungeeignet“ und Abbruch; Fehler am Feld bei ungültiger Eingabe
+ok 37 - Entscheidungsseite: Beenden durch „ungeeignet“ und Abbruch; Fehler am Feld bei ungültiger Eingabe
+  ---
+  duration_ms: 5.72138
+  type: 'test'
+  ...
+# Subtest: Entscheidungsseite: E-01 und E-02 bleiben wie bisher bedienbar
+ok 38 - Entscheidungsseite: E-01 und E-02 bleiben wie bisher bedienbar
+  ---
+  duration_ms: 3.047725
+  type: 'test'
+  ...
+# Subtest: Abgleichseite: Prüfbitte-Knopf mit Sperrgrund ist fokussierbar
+ok 39 - Abgleichseite: Prüfbitte-Knopf mit Sperrgrund ist fokussierbar
+  ---
+  duration_ms: 0.865676
+  type: 'test'
+  ...
+# Subtest: Pflichtfelder: Projekt, Gruppe, Titel, Menge; ein Fehler je Feld
+ok 40 - Pflichtfelder: Projekt, Gruppe, Titel, Menge; ein Fehler je Feld
+  ---
+  duration_ms: 3.338493
+  type: 'test'
+  ...
+# Subtest: Menge: größer als 0, höchstens zwei Nachkommastellen, Komma erlaubt
+ok 41 - Menge: größer als 0, höchstens zwei Nachkommastellen, Komma erlaubt
+  ---
+  duration_ms: 0.633692
+  type: 'test'
+  ...
+# Subtest: Optionale Angaben: gültige Daten, Annahme von ≤ bis, Prüfzeit 0 bis 365, Bestellfrist
+ok 42 - Optionale Angaben: gültige Daten, Annahme von ≤ bis, Prüfzeit 0 bis 365, Bestellfrist
+  ---
+  duration_ms: 1.04426
+  type: 'test'
+  ...
+# Subtest: Eigener Bedarf: unvollständig speicherbar, als „Angaben fehlen“ erkennbar, Zeitangaben als belegt oder geschätzt
+ok 43 - Eigener Bedarf: unvollständig speicherbar, als „Angaben fehlen“ erkennbar, Zeitangaben als belegt oder geschätzt
+  ---
+  duration_ms: 20.217464
+  type: 'test'
+  ...
+# Subtest: Nächste Bedarfsnummer über alle Projekte
+ok 44 - Nächste Bedarfsnummer über alle Projekte
+  ---
+  duration_ms: 0.46579
+  type: 'test'
+  ...
+# Subtest: Beispielbedarfe ergänzen über Überlagerung: Ergebnis wechselt, Beispielwerte bleiben erhalten
+ok 45 - Beispielbedarfe ergänzen über Überlagerung: Ergebnis wechselt, Beispielwerte bleiben erhalten
+  ---
+  duration_ms: 4.93718
+  type: 'test'
+  ...
+# Subtest: Überlagerung gilt auch für eigene Bedarfe; Entwurf aus Bedarf ist rückführbar
+ok 46 - Überlagerung gilt auch für eigene Bedarfe; Entwurf aus Bedarf ist rückführbar
+  ---
+  duration_ms: 1.941554
+  type: 'test'
+  ...
+# Subtest: Befund 1: Prüfbitte nach Zuordnung im Pass nur mit erlaubtem Abgleich (zu spät, Angaben fehlen gesperrt)
+ok 47 - Befund 1: Prüfbitte nach Zuordnung im Pass nur mit erlaubtem Abgleich (zu spät, Angaben fehlen gesperrt)
+  ---
+  duration_ms: 19.967931
+  type: 'test'
+  ...
+# Subtest: Befund 1: erlaubter Abgleich TW-05 → BD-22 aus dem Pass bleibt möglich, der eigene Vorgang zählt nicht als Sperrgrund
+ok 48 - Befund 1: erlaubter Abgleich TW-05 → BD-22 aus dem Pass bleibt möglich, der eigene Vorgang zählt nicht als Sperrgrund
+  ---
+  duration_ms: 3.777702
+  type: 'test'
+  ...
+# Subtest: Befund 1: Türregel – Prüfbitte erst bei Rang 6 (E-01); Ersatz bleibt über „zur Fachprüfung vorlegen“
+ok 49 - Befund 1: Türregel – Prüfbitte erst bei Rang 6 (E-01); Ersatz bleibt über „zur Fachprüfung vorlegen“
+  ---
+  duration_ms: 1.868244
+  type: 'test'
+  ...
+# Subtest: Befund 2 und 3: Nach der Übergabe kein Ziel mehr, Bedarf belegt, nicht mehr offen oder zeitkritisch
+ok 50 - Befund 2 und 3: Nach der Übergabe kein Ziel mehr, Bedarf belegt, nicht mehr offen oder zeitkritisch
+  ---
+  duration_ms: 11.162544
+  type: 'test'
+  ...
+# Subtest: Befund 4: Überfällige Fristen nach dem Fachergebnis stehen in „Zeitkritisch“
+ok 51 - Befund 4: Überfällige Fristen nach dem Fachergebnis stehen in „Zeitkritisch“
+  ---
+  duration_ms: 9.049338
+  type: 'test'
+  ...
+# Subtest: Befund 5, 9 und 10: „zu spät“ mit negativer Reserve, Übergabe und Lager; nächster Schritt; fehlende Menge in den Gründen
+ok 52 - Befund 5, 9 und 10: „zu spät“ mit negativer Reserve, Übergabe und Lager; nächster Schritt; fehlende Menge in den Gründen
+  ---
+  duration_ms: 5.144367
+  type: 'test'
+  ...
+# Subtest: Befund 11: Leertext der Prüfpunkte nennt den wahren Grund
+ok 53 - Befund 11: Leertext der Prüfpunkte nennt den wahren Grund
+  ---
+  duration_ms: 0.916061
+  type: 'test'
+  ...
+# Subtest: Befund 6: Kürzel kollidiert nicht mit festen Routen
+ok 54 - Befund 6: Kürzel kollidiert nicht mit festen Routen
+  ---
+  duration_ms: 0.722718
+  type: 'test'
+  ...
+# Subtest: Befund 7: Projektseite zeigt beendete Vorgänge nicht als „zugeordnet“
+ok 55 - Befund 7: Projektseite zeigt beendete Vorgänge nicht als „zugeordnet“
+  ---
+  duration_ms: 6.711246
+  type: 'test'
+  ...
+# Subtest: Befund 8: „Paare derselben Gruppe“ und „davon prüfbar“ entsprechen den Listen
+ok 56 - Befund 8: „Paare derselben Gruppe“ und „davon prüfbar“ entsprechen den Listen
+  ---
+  duration_ms: 19.430925
+  type: 'test'
+  ...
+# Subtest: Befund 13: Fehler der Ergebnisauswahl über aria-describedby am Fieldset und aria-invalid an den Radios
+ok 57 - Befund 13: Fehler der Ergebnisauswahl über aria-describedby am Fieldset und aria-invalid an den Radios
+  ---
+  duration_ms: 2.221783
+  type: 'test'
+  ...
+# Subtest: Befund 14: gespeicherte Schlüsselfelder werden geprüft, doppelte Kennungen ausgelassen
+ok 58 - Befund 14: gespeicherte Schlüsselfelder werden geprüft, doppelte Kennungen ausgelassen
+  ---
+  duration_ms: 0.699035
+  type: 'test'
+  ...
+# Subtest: Befund 15: Rückdatierte Einträge werden abgelehnt
+ok 59 - Befund 15: Rückdatierte Einträge werden abgelehnt
+  ---
+  duration_ms: 1.860736
+  type: 'test'
+  ...
+# Subtest: Nachprüfung: Im Pass ist ein Bedarf mit „zu spät“ nicht zuordenbar, „Angaben fehlen“ schon
+ok 60 - Nachprüfung: Im Pass ist ein Bedarf mit „zu spät“ nicht zuordenbar, „Angaben fehlen“ schon
+  ---
+  duration_ms: 1.858414
+  type: 'test'
+  ...
+# Subtest: Nachprüfung: Die Kartenseite zeigt wieder zwei offene Entscheidungen mit Frist und Zuständigkeit (Fassung 1.1)
+ok 61 - Nachprüfung: Die Kartenseite zeigt wieder zwei offene Entscheidungen mit Frist und Zuständigkeit (Fassung 1.1)
+  ---
+  duration_ms: 1.69982
+  type: 'test'
+  ...
+# Subtest: Nachprüfung: Der Pass nennt gesperrte Bedarfe am Feld und zeigt ohne wählbares Ziel keinen Knopf
+ok 62 - Nachprüfung: Der Pass nennt gesperrte Bedarfe am Feld und zeigt ohne wählbares Ziel keinen Knopf
+  ---
+  duration_ms: 4.552253
+  type: 'test'
+  ...
+# Subtest: Zahl und mitgelieferte Liste stimmen bei jeder Kennzahl überein
+ok 63 - Zahl und mitgelieferte Liste stimmen bei jeder Kennzahl überein
+  ---
+  duration_ms: 5.954468
+  type: 'test'
+  ...
+# Subtest: Bald verfügbar: Horizont 90 Tage, umschaltbar auf 30; ohne „nicht“ und ohne festes Ziel
+ok 64 - Bald verfügbar: Horizont 90 Tage, umschaltbar auf 30; ohne „nicht“ und ohne festes Ziel
+  ---
+  duration_ms: 7.462266
+  type: 'test'
+  ...
+# Subtest: Mengen nie über Einheiten addiert
+ok 65 - Mengen nie über Einheiten addiert
+  ---
+  duration_ms: 0.792929
+  type: 'test'
+  ...
+# Subtest: Verfügbarkeit im Zeitverlauf: Monate aufsteigend, nach Gruppe getrennt
+ok 66 - Verfügbarkeit im Zeitverlauf: Monate aufsteigend, nach Gruppe getrennt
+  ---
+  duration_ms: 0.144878
+  type: 'test'
+  ...
+# Subtest: Bedarfe offen, passende Paare je Ergebnis und Vorgänge je Status in der Ausgangslage
+ok 67 - Bedarfe offen, passende Paare je Ergebnis und Vorgänge je Status in der Ausgangslage
+  ---
+  duration_ms: 0.185036
+  type: 'test'
+  ...
+# Subtest: Offene Prüfpunkte: Bauteile mit mindestens einem offenen Nachweis, dazu die Zahl der Punkte
+ok 68 - Offene Prüfpunkte: Bauteile mit mindestens einem offenen Nachweis, dazu die Zahl der Punkte
+  ---
+  duration_ms: 0.090603
+  type: 'test'
+  ...
+# Subtest: Zeitkritisch: Fristen der nächsten 7 Tage, nach Zeit sortiert, Überfälliges gekennzeichnet
+ok 69 - Zeitkritisch: Fristen der nächsten 7 Tage, nach Zeit sortiert, Überfälliges gekennzeichnet
+  ---
+  duration_ms: 6.119953
+  type: 'test'
+  ...
+# Subtest: Nach einer Prüfbitte zählen die Kennzahlen mit
+ok 70 - Nach einer Prüfbitte zählen die Kennzahlen mit
+  ---
+  duration_ms: 7.718366
+  type: 'test'
+  ...
+# Subtest: Bezirke: zwölf Dortmunder Stadtbezirke
+ok 71 - Bezirke: zwölf Dortmunder Stadtbezirke
+  ---
+  duration_ms: 0.716934
+  type: 'test'
+  ...
+# Subtest: Prüfung: leerer Name, Art, Bezirk, Daten, Etagen 1–6, Räume 1–8
+ok 72 - Prüfung: leerer Name, Art, Bezirk, Daten, Etagen 1–6, Räume 1–8
+  ---
+  duration_ms: 1.227387
+  type: 'test'
+  ...
+# Subtest: Projekt: Eigene Eingabe, Lage = Bezirksmitte, Kürzel und Farbe
+ok 73 - Projekt: Eigene Eingabe, Lage = Bezirksmitte, Kürzel und Farbe
+  ---
+  duration_ms: 0.807484
+  type: 'test'
+  ...
+# Subtest: Kürzel: eindeutig, zwei bis drei Großbuchstaben, keine Kollision (auch nicht mit R1, R2 …)
+ok 74 - Kürzel: eindeutig, zwei bis drei Großbuchstaben, keine Kollision (auch nicht mit R1, R2 …)
+  ---
+  duration_ms: 0.877561
+  type: 'test'
+  ...
+# Subtest: Gebäude A mit Etagen und Räumen: IDs, Grundriss im 100×60-Raster
+ok 75 - Gebäude A mit Etagen und Räumen: IDs, Grundriss im 100×60-Raster
+  ---
+  duration_ms: 0.567567
+  type: 'test'
+  ...
+# Subtest: Eigene Projekte bekommen eindeutige Kennungen und wechselnde Farben
+ok 76 - Eigene Projekte bekommen eindeutige Kennungen und wechselnde Farben
+  ---
+  duration_ms: 1.666467
+  type: 'test'
+  ...
+# Subtest: Fachergebnis: ohne Prüfbitte weder Formular noch Eintrag, zu jeder Projektzeit
+ok 77 - Fachergebnis: ohne Prüfbitte weder Formular noch Eintrag, zu jeder Projektzeit
+  ---
+  duration_ms: 25.730281
+  type: 'test'
+  ...
+# Subtest: Fachergebnis: gespeicherte Einträge ohne vorherige Prüfbitte zählen nicht
+ok 78 - Fachergebnis: gespeicherte Einträge ohne vorherige Prüfbitte zählen nicht
+  ---
+  duration_ms: 2.750415
+  type: 'test'
+  ...
+# Subtest: Fachergebnis: eine Prüfbitte nach dem Stichtag zählt nicht, davor lässt sich nichts eintragen
+ok 79 - Fachergebnis: eine Prüfbitte nach dem Stichtag zählt nicht, davor lässt sich nichts eintragen
+  ---
+  duration_ms: 2.857867
+  type: 'test'
+  ...
+# Subtest: Prüfbitte: Erfüllte Bodenregel ersetzt sie nicht; E-02 bleibt gesperrt, bis der Abgleich sie erlaubt
+ok 80 - Prüfbitte: Erfüllte Bodenregel ersetzt sie nicht; E-02 bleibt gesperrt, bis der Abgleich sie erlaubt
+  ---
+  duration_ms: 5.566819
+  type: 'test'
+  ...
+# Subtest: Fristablauf: Bestellfrist läuft während der Prüfbitte ab; sichtbar, und der Vorgang bleibt dokumentierbar
+ok 81 - Fristablauf: Bestellfrist läuft während der Prüfbitte ab; sichtbar, und der Vorgang bleibt dokumentierbar
+  ---
+  duration_ms: 7.681265
+  type: 'test'
+  ...
+# Subtest: Fristablauf: E-01 nach der Aufmaßfrist nennt die Frist und lässt Vermerk und Abbruch zu
+ok 82 - Fristablauf: E-01 nach der Aufmaßfrist nennt die Frist und lässt Vermerk und Abbruch zu
+  ---
+  duration_ms: 0.898077
+  type: 'test'
+  ...
+# Subtest: Fristablauf: abgelaufene Vormerkung lässt sich erneuern oder abbrechen
+ok 83 - Fristablauf: abgelaufene Vormerkung lässt sich erneuern oder abbrechen
+  ---
+  duration_ms: 2.667706
+  type: 'test'
+  ...
+# Subtest: Doppelboden 7 m² gegen 57,2 m²: mindestens 50,2 m² fehlen an jeder Stelle, auch bei unbekannter Schadfläche
+ok 84 - Doppelboden 7 m² gegen 57,2 m²: mindestens 50,2 m² fehlen an jeder Stelle, auch bei unbekannter Schadfläche
+  ---
+  duration_ms: 9.648803
+  type: 'test'
+  ...
+# Subtest: Prüfbitte-Sperre: Überschrift folgt dem Grund (zu spät nach Fristablauf, Bedarf belegt)
+ok 85 - Prüfbitte-Sperre: Überschrift folgt dem Grund (zu spät nach Fristablauf, Bedarf belegt)
+  ---
+  duration_ms: 4.480296
+  type: 'test'
+  ...
+# Subtest: „Zur Fachprüfung vorlegen“: Vorlage nur mit Freigabe der Prüfbitte, sonst Vermerk; keine Rückdatierung
+ok 86 - „Zur Fachprüfung vorlegen“: Vorlage nur mit Freigabe der Prüfbitte, sonst Vermerk; keine Rückdatierung
+  ---
+  duration_ms: 5.559142
+  type: 'test'
+  ...
+# Subtest: Zeitkritisch: Die Bestellfrist eines laufenden Vorgangs erscheint genau einmal
+ok 87 - Zeitkritisch: Die Bestellfrist eines laufenden Vorgangs erscheint genau einmal
+  ---
+  duration_ms: 3.704733
+  type: 'test'
+  ...
+# Subtest: Arbeitsliste und Karten: Eine verstrichene, nicht erfüllte Frist steht vor der nächsten
+ok 88 - Arbeitsliste und Karten: Eine verstrichene, nicht erfüllte Frist steht vor der nächsten
+  ---
+  duration_ms: 2.306064
+  type: 'test'
+  ...
+# Subtest: Doppelboden nach Ablauf der Ersatzentscheidung: Einträge vermerken, dass sie danach kamen
+ok 89 - Doppelboden nach Ablauf der Ersatzentscheidung: Einträge vermerken, dass sie danach kamen
+  ---
+  duration_ms: 0.689006
+  type: 'test'
+  ...
+# Subtest: Wert: Maßeingabe zählt als gemessen, leere Eingabe als fehlt, ungültige Zahl als Fehler
+ok 90 - Wert: Maßeingabe zählt als gemessen, leere Eingabe als fehlt, ungültige Zahl als Fehler
+  ---
+  duration_ms: 1.461391
+  type: 'test'
+  ...
+# Subtest: Tür: B-02 nutzt unverändert die geprüfte Anforderung aus Rev. 2
+ok 91 - Tür: B-02 nutzt unverändert die geprüfte Anforderung aus Rev. 2
+  ---
+  duration_ms: 0.211796
+  type: 'test'
+  ...
+# Subtest: Tür: B-04 bekommt eigene Grenzen und Messstelle, der Messauftrag nennt B-04 und P-04
+ok 92 - Tür: B-04 bekommt eigene Grenzen und Messstelle, der Messauftrag nennt B-04 und P-04
+  ---
+  duration_ms: 0.889128
+  type: 'test'
+  ...
+# Subtest: Entscheidung E-01 (T-07 → B-02) entspricht der geprüften Regel und wartet nach Vorlage auf die Fachprüfung
+ok 93 - Entscheidung E-01 (T-07 → B-02) entspricht der geprüften Regel und wartet nach Vorlage auf die Fachprüfung
+  ---
+  duration_ms: 3.33488
+  type: 'test'
+  ...
+# Subtest: Boden: fehlende beschädigte Fläche bleibt offen und ist nicht null
+ok 94 - Boden: fehlende beschädigte Fläche bleibt offen und ist nicht null
+  ---
+  duration_ms: 10.464049
+  type: 'test'
+  ...
+# Subtest: Boden: Mengengrenze eingeschlossen und in Hundertstel gerechnet
+ok 95 - Boden: Mengengrenze eingeschlossen und in Hundertstel gerechnet
+  ---
+  duration_ms: 0.89456
+  type: 'test'
+  ...
+# Subtest: Boden: Nachweise rechtzeitig und alles passend führt zur Vorlage, Nachweise erst nach der Projektzeit zählen nicht
+ok 96 - Boden: Nachweise rechtzeitig und alles passend führt zur Vorlage, Nachweise erst nach der Projektzeit zählen nicht
+  ---
+  duration_ms: 0.473802
+  type: 'test'
+  ...
+# Subtest: Boden: ein nur vorgeschlagenes Rastermaß zählt nicht, auch wenn sonst alles passt
+ok 97 - Boden: ein nur vorgeschlagenes Rastermaß zählt nicht, auch wenn sonst alles passt
+  ---
+  duration_ms: 0.273382
+  type: 'test'
+  ...
+# Subtest: Boden: Entscheidung E-02 nimmt Werte nur mit Status gemessen oder bestätigt
+ok 98 - Boden: Entscheidung E-02 nimmt Werte nur mit Status gemessen oder bestätigt
+  ---
+  duration_ms: 1.616124
+  type: 'test'
+  ...
+# Subtest: Boden: verspätete Nachweise führen zu Rang 4, verstrichene Ersatzfrist zu Rang 1
+ok 99 - Boden: verspätete Nachweise führen zu Rang 4, verstrichene Ersatzfrist zu Rang 1
+  ---
+  duration_ms: 0.819098
+  type: 'test'
+  ...
+# Subtest: Einfacher Abgleich: fehlende Angaben vor fachlicher Prüfung, verstrichene Frist zuerst
+ok 100 - Einfacher Abgleich: fehlende Angaben vor fachlicher Prüfung, verstrichene Frist zuerst
+  ---
+  duration_ms: 0.409187
+  type: 'test'
+  ...
+# Subtest: Nächste Handlung: ohne Ziel zuordnen, ausgeschlossen keine Wiederverwendung, mit Entscheidung deren Schritt
+ok 101 - Nächste Handlung: ohne Ziel zuordnen, ausgeschlossen keine Wiederverwendung, mit Entscheidung deren Schritt
+  ---
+  duration_ms: 1.568885
+  type: 'test'
+  ...
+# Subtest: Zuordnung: belegte Ziele fallen weg, Türen sehen Öffnungen im Projekt und Türbedarfe der Region, Böden nur Bedarfe im Projekt
+ok 102 - Zuordnung: belegte Ziele fallen weg, Türen sehen Öffnungen im Projekt und Türbedarfe der Region, Böden nur Bedarfe im Projekt
+  ---
+  duration_ms: 0.7805
+  type: 'test'
+  ...
+# Subtest: Erkennung (Simulation): nur Seitenverhältnis, Hochformat schlägt Tür vor
+ok 103 - Erkennung (Simulation): nur Seitenverhältnis, Hochformat schlägt Tür vor
+  ---
+  duration_ms: 0.101432
+  type: 'test'
+  ...
+# Subtest: Erfassung: Prüfung des Entwurfs nennt jedes Problem am Feld
+ok 104 - Erfassung: Prüfung des Entwurfs nennt jedes Problem am Feld
+  ---
+  duration_ms: 0.273987
+  type: 'test'
+  ...
+# Subtest: Erfassung: neues Bauteil behält den Status jedes Werts, bekommt die nächste Nummer und eigene offene Nachweise
+ok 105 - Erfassung: neues Bauteil behält den Status jedes Werts, bekommt die nächste Nummer und eigene offene Nachweise
+  ---
+  duration_ms: 1.234761
+  type: 'test'
+  ...
+# Subtest: Radar: Hinweis erst prüfen, dann mit Notiz bestätigen, ohne Bezirk nicht auf die Karte
+ok 106 - Radar: Hinweis erst prüfen, dann mit Notiz bestätigen, ohne Bezirk nicht auf die Karte
+  ---
+  duration_ms: 0.226108
+  type: 'test'
+  ...
+# Subtest: Radar: Meldung braucht Titel, Art, Bezirk, meldende Stelle und Bestätigung
+ok 107 - Radar: Meldung braucht Titel, Art, Bezirk, meldende Stelle und Bestätigung
+  ---
+  duration_ms: 0.173364
+  type: 'test'
+  ...
+# Subtest: Radardaten: jede Quelle bewertet, echte Hinweise belegt und ungeprüft, Beispiele erkennbar, keine Kontaktdaten
+ok 108 - Radardaten: jede Quelle bewertet, echte Hinweise belegt und ungeprüft, Beispiele erkennbar, keine Kontaktdaten
+  ---
+  duration_ms: 0.562917
+  type: 'test'
+  ...
+# Subtest: Radar: bestätigter Beispielhinweis führt zum Beispielprojekt, Sortierung zeigt offene echte Hinweise zuerst
+ok 109 - Radar: bestätigter Beispielhinweis führt zum Beispielprojekt, Sortierung zeigt offene echte Hinweise zuerst
+  ---
+  duration_ms: 0.454376
+  type: 'test'
+  ...
+# Subtest: Speichern: kaputter oder fremder Stand wird verworfen, bei vollem Speicher ohne Fotos gespeichert
+ok 110 - Speichern: kaputter oder fremder Stand wird verworfen, bei vollem Speicher ohne Fotos gespeichert
+  ---
+  duration_ms: 0.644295
+  type: 'test'
+  ...
+# Subtest: Speichern: bei vollem Speicher fällt nur das neueste Foto weg, ältere bleiben
+ok 111 - Speichern: bei vollem Speicher fällt nur das neueste Foto weg, ältere bleiben
+  ---
+  duration_ms: 0.511203
+  type: 'test'
+  ...
+# Subtest: Speichern: Felder mit falscher Form werden einzeln verworfen
+ok 112 - Speichern: Felder mit falscher Form werden einzeln verworfen
+  ---
+  duration_ms: 0.992569
+  type: 'test'
+  ...
+# Subtest: Datenstand: eigene Werte, Radarstatus und Meldungen überlagern die Beispieldaten
+ok 113 - Datenstand: eigene Werte, Radarstatus und Meldungen überlagern die Beispieldaten
+  ---
+  duration_ms: 0.564907
+  type: 'test'
+  ...
+# Subtest: IFC-Vorprüfung: zählt Einträge genau, ohne Typen mitzuzählen, und lehnt Nicht-IFC ab
+ok 114 - IFC-Vorprüfung: zählt Einträge genau, ohne Typen mitzuzählen, und lehnt Nicht-IFC ab
+  ---
+  duration_ms: 0.550957
+  type: 'test'
+  ...
+# Subtest: Zeit: echte Berliner Uhrzeit für den Radar, mit Sommerzeit und Jahreswechsel
+ok 115 - Zeit: echte Berliner Uhrzeit für den Radar, mit Sommerzeit und Jahreswechsel
+  ---
+  duration_ms: 3.478578
+  type: 'test'
+  ...
+# Subtest: Boden 1.1: 7 m² gegen 57,2 m² Bedarf ist sicher nicht gedeckt, auch ohne Angabe zur Schadfläche
+ok 116 - Boden 1.1: 7 m² gegen 57,2 m² Bedarf ist sicher nicht gedeckt, auch ohne Angabe zur Schadfläche
+  ---
+  duration_ms: 0.429772
+  type: 'test'
+  ...
+# Subtest: Boden 1.1: reicht die erfasste Fläche, bleibt die Deckung bei unbekannter Schadfläche offen
+ok 117 - Boden 1.1: reicht die erfasste Fläche, bleibt die Deckung bei unbekannter Schadfläche offen
+  ---
+  duration_ms: 0.556427
+  type: 'test'
+  ...
+# Subtest: Boden 1.1: mobil erfasste 7 m², zugeordnet zu BD-02, zeigen in Entscheidung und Pass zuerst die Teilmenge
+ok 118 - Boden 1.1: mobil erfasste 7 m², zugeordnet zu BD-02, zeigen in Entscheidung und Pass zuerst die Teilmenge
+  ---
+  duration_ms: 1.355882
+  type: 'test'
+  ...
+# Subtest: Startseite 1.1: zwei offene Entscheidungen, dringendste zuerst, mit Frist und Zuständigkeit
+ok 119 - Startseite 1.1: zwei offene Entscheidungen, dringendste zuerst, mit Frist und Zuständigkeit
+  ---
+  duration_ms: 2.847407
+  type: 'test'
+  ...
+# Subtest: Türdemo 1.1: ein Klick liefert einen rechtzeitigen Aufmaßeingang und, falls nötig, die passende Projektzeit
+ok 120 - Türdemo 1.1: ein Klick liefert einen rechtzeitigen Aufmaßeingang und, falls nötig, die passende Projektzeit
+  ---
+  duration_ms: 0.558728
+  type: 'test'
+  ...
+# Subtest: E-01 und E-02 verhalten sich ohne neue Ereignisse wie bisher
+ok 121 - E-01 und E-02 verhalten sich ohne neue Ereignisse wie bisher
+  ---
+  duration_ms: 15.663696
+  type: 'test'
+  ...
+# Subtest: Die bestehende Vorlage zählt wie eine Prüfbitte; vor ihrem Zeitpunkt nicht
+ok 122 - Die bestehende Vorlage zählt wie eine Prüfbitte; vor ihrem Zeitpunkt nicht
+  ---
+  duration_ms: 1.374029
+  type: 'test'
+  ...
+# Subtest: Prüfbitte: Status, „wartet“ in der nächsten Handlung, Bauteilstatus Fachprüfung
+ok 123 - Prüfbitte: Status, „wartet“ in der nächsten Handlung, Bauteilstatus Fachprüfung
+  ---
+  duration_ms: 3.851059
+  type: 'test'
+  ...
+# Subtest: Übergänge: nur erlaubte Schritte, keine Rückwärtsübergänge
+ok 124 - Übergänge: nur erlaubte Schritte, keine Rückwärtsübergänge
+  ---
+  duration_ms: 6.789024
+  type: 'test'
+  ...
+# Subtest: Fachergebnis: Validierung je Feld, Notiz bei bedingt und ungeeignet, Beschriftung
+ok 125 - Fachergebnis: Validierung je Feld, Notiz bei bedingt und ungeeignet, Beschriftung
+  ---
+  duration_ms: 1.48802
+  type: 'test'
+  ...
+# Subtest: Vormerkung: Menge in der Einheit des Bauteils, Ablauf nicht vor dem Stichtag, Beschriftung unverbindlich
+ok 126 - Vormerkung: Menge in der Einheit des Bauteils, Ablauf nicht vor dem Stichtag, Beschriftung unverbindlich
+  ---
+  duration_ms: 2.224143
+  type: 'test'
+  ...
+# Subtest: Übergabe geplant: Termin im Annahmefenster, ab verfügbar, nicht nach Vormerkungsablauf; Ort und Rolle Pflicht
+ok 127 - Übergabe geplant: Termin im Annahmefenster, ab verfügbar, nicht nach Vormerkungsablauf; Ort und Rolle Pflicht
+  ---
+  duration_ms: 3.24874
+  type: 'test'
+  ...
+# Subtest: Übergeben: Datum nicht nach dem Stichtag; Status wird beendet und gibt das Bauteil frei
+ok 128 - Übergeben: Datum nicht nach dem Stichtag; Status wird beendet und gibt das Bauteil frei
+  ---
+  duration_ms: 5.640557
+  type: 'test'
+  ...
+# Subtest: Nächste Handlung folgt dem Vorgangsschritt nach dem Fachergebnis
+ok 129 - Nächste Handlung folgt dem Vorgangsschritt nach dem Fachergebnis
+  ---
+  duration_ms: 5.307103
+  type: 'test'
+  ...
+# Subtest: Status hängt von der Projektzeit ab: spätere Ereignisse zählen noch nicht
+ok 130 - Status hängt von der Projektzeit ab: spätere Ereignisse zählen noch nicht
+  ---
+  duration_ms: 2.282405
+  type: 'test'
+  ...
+# Subtest: Abgelaufene Vormerkung wird als abgelaufen angezeigt und kann erneuert werden
+ok 131 - Abgelaufene Vormerkung wird als abgelaufen angezeigt und kann erneuert werden
+  ---
+  duration_ms: 3.002624
+  type: 'test'
+  ...
+# Subtest: Ungeeignet beendet den Vorgang, gibt das Bauteil frei, sperrt aber dieses Ziel für dieses Bauteil
+ok 132 - Ungeeignet beendet den Vorgang, gibt das Bauteil frei, sperrt aber dieses Ziel für dieses Bauteil
+  ---
+  duration_ms: 4.556052
+  type: 'test'
+  ...
+# Subtest: Abbruch braucht einen Grund, beendet den Vorgang und gibt Bauteil und Ziel wieder frei
+ok 133 - Abbruch braucht einen Grund, beendet den Vorgang und gibt Bauteil und Ziel wieder frei
+  ---
+  duration_ms: 4.327989
+  type: 'test'
+  ...
+# Subtest: Bauteile mit aktivem Vorgang: Ziele sind belegt, andere Bauteile sehen den belegten Bedarf nicht
+ok 134 - Bauteile mit aktivem Vorgang: Ziele sind belegt, andere Bauteile sehen den belegten Bedarf nicht
+  ---
+  duration_ms: 1.769314
+  type: 'test'
+  ...
+# Subtest: Checkliste: sechs Punkte, nur Eignung sperrt, gespeicherter Stand wird gelesen
+ok 135 - Checkliste: sechs Punkte, nur Eignung sperrt, gespeicherter Stand wird gelesen
+  ---
+  duration_ms: 6.536064
+  type: 'test'
+  ...
+# Subtest: Ungeeignet: Eignung bleibt offen und sperrend
+ok 136 - Ungeeignet: Eignung bleibt offen und sperrend
+  ---
+  duration_ms: 1.130554
+  type: 'test'
+  ...
+# Subtest: Ungültige gespeicherte Ereignisse werden übergangen
+ok 137 - Ungültige gespeicherte Ereignisse werden übergangen
+  ---
+  duration_ms: 1.076377
+  type: 'test'
+  ...
+# Subtest: Neue Schlüssel in der leeren Persistenz
+ok 138 - Neue Schlüssel in der leeren Persistenz
+  ---
+  duration_ms: 0.936
+  type: 'test'
+  ...
+# Subtest: Alte gespeicherte Stände (Fassung 1.1, ohne neue Schlüssel) laden weiter
+ok 139 - Alte gespeicherte Stände (Fassung 1.1, ohne neue Schlüssel) laden weiter
+  ---
+  duration_ms: 0.97803
+  type: 'test'
+  ...
+# Subtest: Beschädigte Einträge der neuen Schlüssel werden ausgelassen, ein beschädigter Stand blockiert nicht
+ok 140 - Beschädigte Einträge der neuen Schlüssel werden ausgelassen, ein beschädigter Stand blockiert nicht
+  ---
+  duration_ms: 1.326996
+  type: 'test'
+  ...
+# Subtest: baueDaten: Bedarfe (Beispiel + Überlagerung + eigene) und Projekte (Beispiel + Radar + eigene)
+ok 141 - baueDaten: Bedarfe (Beispiel + Überlagerung + eigene) und Projekte (Beispiel + Radar + eigene)
+  ---
+  duration_ms: 0.797376
+  type: 'test'
+  ...
+# Subtest: Beispieldaten: Bauteil TW-01 mit verfuegbarBis, Bedarfe BD-22 und BD-23 als Beispiel gekennzeichnet
+ok 142 - Beispieldaten: Bauteil TW-01 mit verfuegbarBis, Bedarfe BD-22 und BD-23 als Beispiel gekennzeichnet
+  ---
+  duration_ms: 0.353624
+  type: 'test'
+  ...
+# Subtest: anzahlEigeneAenderungen zählt alle Schlüssel
+ok 143 - anzahlEigeneAenderungen zählt alle Schlüssel
+  ---
+  duration_ms: 0.115334
+  type: 'test'
+  ...
+# Subtest: Speichern und Laden: neue Schlüssel überstehen den Rundweg, Zurücksetzen leert sie
+ok 144 - Speichern und Laden: neue Schlüssel überstehen den Rundweg, Zurücksetzen leert sie
+  ---
+  duration_ms: 0.293831
+  type: 'test'
+  ...
+# Subtest: 01: kein Aufmaß, Start
+ok 145 - 01: kein Aufmaß, Start
+  ---
+  duration_ms: 1.761867
+  type: 'test'
+  ...
+# Subtest: 02: 890 mm rechtzeitig, Fachprüfung
+ok 146 - 02: 890 mm rechtzeitig, Fachprüfung
+  ---
+  duration_ms: 0.372165
+  type: 'test'
+  ...
+# Subtest: 03: 870 mm verfehlt, 15 mm unter der Untergrenze
+ok 147 - 03: 870 mm verfehlt, 15 mm unter der Untergrenze
+  ---
+  duration_ms: 0.157531
+  type: 'test'
+  ...
+# Subtest: 04a: Bezug „lichte Breite“ lässt die Breite offen und nennt beide Bezüge
+ok 148 - 04a: Bezug „lichte Breite“ lässt die Breite offen und nennt beide Bezüge
+  ---
+  duration_ms: 0.204855
+  type: 'test'
+  ...
+# Subtest: 04b: Bezug „Türblattmaß“ lässt die Breite offen und nennt beide Bezüge
+ok 149 - 04b: Bezug „Türblattmaß“ lässt die Breite offen und nennt beide Bezüge
+  ---
+  duration_ms: 0.12585
+  type: 'test'
+  ...
+# Subtest: 04c: vorgeschlagen, geschätzt und fehlende Quelle lassen die Breite offen
+ok 150 - 04c: vorgeschlagen, geschätzt und fehlende Quelle lassen die Breite offen
+  ---
+  duration_ms: 0.395517
+  type: 'test'
+  ...
+# Subtest: 04d: leerer, ungültiger, nicht positiver oder nicht endlicher Wert lässt die Breite offen
+ok 151 - 04d: leerer, ungültiger, nicht positiver oder nicht endlicher Wert lässt die Breite offen
+  ---
+  duration_ms: 1.333366
+  type: 'test'
+  ...
+# Subtest: 05: 19.11. 09:00 ohne Aufmaß, Prüfvorlauf, Messauftrag bleibt offen
+ok 152 - 05: 19.11. 09:00 ohne Aufmaß, Prüfvorlauf, Messauftrag bleibt offen
+  ---
+  duration_ms: 0.188072
+  type: 'test'
+  ...
+# Subtest: 06: verspätet eingegangenes, verwertbares Aufmaß
+ok 153 - 06: verspätet eingegangenes, verwertbares Aufmaß
+  ---
+  duration_ms: 0.241283
+  type: 'test'
+  ...
+# Subtest: 07: rechtzeitiger Eingang bleibt rechtzeitig, Entscheidungsfrist verstrichen
+ok 154 - 07: rechtzeitiger Eingang bleibt rechtzeitig, Entscheidungsfrist verstrichen
+  ---
+  duration_ms: 0.267116
+  type: 'test'
+  ...
+# Subtest: 08: Fristwiderspruch, Termine klären vor Messauftrag, keine Fachprüfung
+ok 155 - 08: Fristwiderspruch, Termine klären vor Messauftrag, keine Fachprüfung
+  ---
+  duration_ms: 0.204705
+  type: 'test'
+  ...
+# Subtest: 08c: Fristwiderspruch mit verfehlter Breite, Rang 3 bleibt unter „Weiterhin offen“
+ok 156 - 08c: Fristwiderspruch mit verfehlter Breite, Rang 3 bleibt unter „Weiterhin offen“
+  ---
+  duration_ms: 0.145577
+  type: 'test'
+  ...
+# Subtest: 08b: Fristwiderspruch verhindert die Fachprüfung auch bei gutem Aufmaß
+ok 157 - 08b: Fristwiderspruch verhindert die Fachprüfung auch bei gutem Aufmaß
+  ---
+  duration_ms: 0.067115
+  type: 'test'
+  ...
+# Subtest: 09a: 885 und 895 mm erfüllen die Breite
+ok 158 - 09a: 885 und 895 mm erfüllen die Breite
+  ---
+  duration_ms: 0.085986
+  type: 'test'
+  ...
+# Subtest: 09b: Eingang genau zur Aufmaßfrist ist rechtzeitig
+ok 159 - 09b: Eingang genau zur Aufmaßfrist ist rechtzeitig
+  ---
+  duration_ms: 0.050406
+  type: 'test'
+  ...
+# Subtest: 09c: genau zur Ersatzfrist ist die Entscheidungsfrist noch offen
+ok 160 - 09c: genau zur Ersatzfrist ist die Entscheidungsfrist noch offen
+  ---
+  duration_ms: 0.043768
+  type: 'test'
+  ...
+# Subtest: 10: Türblattmaß, 19.11. 09:00, Aufmaß überfällig, Messauftrag bleibt
+ok 161 - 10: Türblattmaß, 19.11. 09:00, Aufmaß überfällig, Messauftrag bleibt
+  ---
+  duration_ms: 0.091446
+  type: 'test'
+  ...
+# Subtest: 11: Eingang vor Messdatum ist widersprüchlich
+ok 162 - 11: Eingang vor Messdatum ist widersprüchlich
+  ---
+  duration_ms: 0.077286
+  type: 'test'
+  ...
+# Subtest: 12: Eingang nach der Betrachtungszeit gilt als noch nicht eingegangen, ohne Widerspruch
+ok 163 - 12: Eingang nach der Betrachtungszeit gilt als noch nicht eingegangen, ohne Widerspruch
+  ---
+  duration_ms: 0.05152
+  type: 'test'
+  ...
+# Subtest: 13: Fristwiderspruch nach Ablauf der Ersatzfrist
+ok 164 - 13: Fristwiderspruch nach Ablauf der Ersatzfrist
+  ---
+  duration_ms: 0.054566
+  type: 'test'
+  ...
+# Subtest: 12b: „noch nicht eingegangen“ hat Vorrang vor „Eingang vor Messdatum“
+ok 165 - 12b: „noch nicht eingegangen“ hat Vorrang vor „Eingang vor Messdatum“
+  ---
+  duration_ms: 0.050786
+  type: 'test'
+  ...
+# Subtest: Rundung: Regel und Anzeige verwenden dieselbe auf 0,001 mm gerundete Zahl
+ok 166 - Rundung: Regel und Anzeige verwenden dieselbe auf 0,001 mm gerundete Zahl
+  ---
+  duration_ms: 0.156993
+  type: 'test'
+  ...
+# Subtest: Z1: ungültiges Kalenderdatum im Eingang erfordert Termine klären, fehlendes Messdatum lässt Breite offen
+ok 167 - Z1: ungültiges Kalenderdatum im Eingang erfordert Termine klären, fehlendes Messdatum lässt Breite offen
+  ---
+  duration_ms: 0.122079
+  type: 'test'
+  ...
+# Subtest: Z2: Ergebnis hängt nicht von der Gerätezeitzone ab; Regel nutzt kein Date
+ok 168 - Z2: Ergebnis hängt nicht von der Gerätezeitzone ab; Regel nutzt kein Date
+  ---
+  duration_ms: 0.840728
+  type: 'test'
+  ...
+# Subtest: Z7: 884,9 und 895,1 mm verfehlen die Breite um 0,1 mm
+ok 169 - Z7: 884,9 und 895,1 mm verfehlen die Breite um 0,1 mm
+  ---
+  duration_ms: 0.120217
+  type: 'test'
+  ...
+# Subtest: Z8: genau zur Aufmaßfrist ist das fehlende Aufmaß noch ausstehend
+ok 170 - Z8: genau zur Aufmaßfrist ist das fehlende Aufmaß noch ausstehend
+  ---
+  duration_ms: 0.058518
+  type: 'test'
+  ...
+# Subtest: Z9: Eingang 16:01 ist verspätet, Prüfvorlauf klären
+ok 171 - Z9: Eingang 16:01 ist verspätet, Prüfvorlauf klären
+  ---
+  duration_ms: 0.048345
+  type: 'test'
+  ...
+# Subtest: Z10: 12:01 am 19.11. ist die Entscheidungsfrist verstrichen
+ok 172 - Z10: 12:01 am 19.11. ist die Entscheidungsfrist verstrichen
+  ---
+  duration_ms: 0.064831
+  type: 'test'
+  ...
+# Subtest: Z11: Einheitenzusatz und falsche Einheit lassen die Breite offen
+ok 173 - Z11: Einheitenzusatz und falsche Einheit lassen die Breite offen
+  ---
+  duration_ms: 0.084022
+  type: 'test'
+  ...
+# Subtest: Z12: kein Eignungs-, Freigabe-, Norm- oder Siegeltext in Regel und Ansicht
+ok 174 - Z12: kein Eignungs-, Freigabe-, Norm- oder Siegeltext in Regel und Ansicht
+  ---
+  duration_ms: 2.356695
+  type: 'test'
+  ...
+# Subtest: Ansicht: Belegquelle wird als Text ausgegeben, nicht als HTML
+ok 175 - Ansicht: Belegquelle wird als Text ausgegeben, nicht als HTML
+  ---
+  duration_ms: 0.236026
+  type: 'test'
+  ...
+# Subtest: Regel: ungültige Betrachtungszeit oder Fristen werden abgelehnt
+ok 176 - Regel: ungültige Betrachtungszeit oder Fristen werden abgelehnt
+  ---
+  duration_ms: 0.296072
+  type: 'test'
+  ...
+# Subtest: Regel: Zielöffnung und Planungsblatt aus der Anforderung (Plattform), Standard bleibt B-02/P-02
+ok 177 - Regel: Zielöffnung und Planungsblatt aus der Anforderung (Plattform), Standard bleibt B-02/P-02
+  ---
+  duration_ms: 0.10966
+  type: 'test'
+  ...
+# Subtest: CF-DEMO-01: review
+ok 178 - CF-DEMO-01: review
+  ---
+  duration_ms: 2.606805
+  type: 'test'
+  ...
+# Subtest: CF-DEMO-02: late
+ok 179 - CF-DEMO-02: late
+  ---
+  duration_ms: 0.298796
+  type: 'test'
+  ...
+# Subtest: CF-DEMO-03: clarify
+ok 180 - CF-DEMO-03: clarify
+  ---
+  duration_ms: 0.098373
+  type: 'test'
+  ...
+# Subtest: Fristtag zählt mit, der unmittelbar folgende Tag ist zu spät
+ok 181 - Fristtag zählt mit, der unmittelbar folgende Tag ist zu spät
+  ---
+  duration_ms: 0.491857
+  type: 'test'
+  ...
+# Subtest: fehlende Übergabe verdeckt eine eindeutige Verspätung nicht
+ok 182 - fehlende Übergabe verdeckt eine eindeutige Verspätung nicht
+  ---
+  duration_ms: 0.278323
+  type: 'test'
+  ...
+# Subtest: fehlende oder absichtlich unbekannte Prüfzeit ist keine Null
+ok 183 - fehlende oder absichtlich unbekannte Prüfzeit ist keine Null
+  ---
+  duration_ms: 0.25151
+  type: 'test'
+  ...
+# Subtest: ein gespeicherter unbekannter Eingangswert beeinflusst das Ergebnis nicht
+ok 184 - ein gespeicherter unbekannter Eingangswert beeinflusst das Ergebnis nicht
+  ---
+  duration_ms: 0.157306
+  type: 'test'
+  ...
+# Subtest: mehrere Klärungsgründe bleiben sichtbar
+ok 185 - mehrere Klärungsgründe bleiben sichtbar
+  ---
+  duration_ms: 0.119402
+  type: 'test'
+  ...
+# Subtest: ungültige oder widersprüchliche Angaben benötigen Klärung
+ok 186 - ungültige oder widersprüchliche Angaben benötigen Klärung
+  ---
+  duration_ms: 0.399511
+  type: 'test'
+  ...
+# Subtest: geschätzte Entscheidungsdaten sind im Ergebnis nachvollziehbar
+ok 187 - geschätzte Entscheidungsdaten sind im Ergebnis nachvollziehbar
+  ---
+  duration_ms: 0.310079
+  type: 'test'
+  ...
+# Subtest: ein einzelner gemeinsamer Kalendertag genügt für das Übergabefenster
+ok 188 - ein einzelner gemeinsamer Kalendertag genügt für das Übergabefenster
+  ---
+  duration_ms: 0.681905
+  type: 'test'
+  ...
+# Subtest: Berechnung bleibt beim Monatswechsel und bei Sommerzeit tagesgenau
+ok 189 - Berechnung bleibt beim Monatswechsel und bei Sommerzeit tagesgenau
+  ---
+  duration_ms: 0.174083
+  type: 'test'
+  ...
+# Subtest: unvollständiger neuer Fall kann als solcher ausgewertet werden
+ok 190 - unvollständiger neuer Fall kann als solcher ausgewertet werden
+  ---
+  duration_ms: 0.070247
+  type: 'test'
+  ...
+1..190
+# tests 190
+# suites 0
+# pass 190
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 953.948267
+
+Exitcode des Testläufers: 0

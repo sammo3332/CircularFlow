@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| Dokumentversion | 1.0 vom 18.11.2026. Entwurf der Planung (`cf-planung`), von der Koordination um Abschnitt 5 ergänzt. Keine Fortschreibung des Produktbriefs v0.2. |
-| Branch, Ausgangscommit | `codex/plattform-v1`, `da85183` (aus `.git` gelesen). Der Anwendungscode ist laut Plan Restmenge 1.1 seit `2121b92` unverändert (nicht selbst geprüft). |
+| Dokumentversion | 1.1 vom 18.11.2026. Entwurf der Planung (`cf-planung`), von der Koordination um Abschnitt 5 ergänzt und nach der ersten unabhängigen Prüfung berichtigt (Ausgangscommit, Auftragszitat, Fenster). Keine Fortschreibung des Produktbriefs v0.2. |
+| Branch, Ausgangscommit | `codex/plattform-v1`, `da85183` beim Schreiben (aus `.git` gelesen). Dass der Anwendungscode seit `2121b92` unverändert ist, steht im Plan Restmenge 1.1. Die Koordination hat es am 18.11.2026 nachgeprüft: `git diff --stat 2121b92 23dc050 -- plattform prototype` zeigt nur `plattform/README.md` (2 Zeilen). |
 | Gelesen, mit Fassung | Produktbrief v0.2 (08.11.2026) · Plan Restmenge 1.1 (16.11.) · Fallakte CF-PILOT-01 1.3 (16.11.), ganz · plattform-v2 2.0 (16.11.), ganz · Produktideen 1.3 (17.11.) · pitch-ablauf (Stand 16.11.) · claude-vor-entwicklung und agenten-start (14.11.) · AGENTS.md, CLAUDE.md, README · Code `plattform/app/*` und Tests · CF-UMBAU-01 Rev. 2 nur Z. 60–98 (Fristbegriffe). Softwareplanung v0.1 nicht gelesen (Stichwortsuche nach Prüfzeit, Prüfbitte, Restmenge ohne Treffer). |
 | Aussagenarten | **Vorgabe** = im Repository bestätigt · **Beobachtung** = von mir in Code oder Dokument gelesen, nicht ausgeführt · **Empfehlung** = mein Vorschlag |
 
@@ -14,7 +14,7 @@ Keiner der drei Kandidaten steht im Produktbrief v0.2, und keiner ist freigegebe
 | Nr. | Befund | Folge |
 |---|---|---|
 | 1 | **Reihenfolge.** Vorgabe: Der Auftrag vom 16.11. priorisiert zuerst die Restmenge, dann den zweiten Vorgang, und sagt „für jetzt genügt die Dokumentation“ (Plan Restmenge §1). Fallakte §9 und §11 stellen „Prüfbitte spätestens“ als späteren Kandidaten zurück („abgelöst“), Produktideen B2 ebenso. Der aktuelle Auftrag der Hauptsitzung („eine kleinste sinnvolle Verbesserung umsetzen“) steht nicht im Repository. | Widerspruch zwischen „nur Dokumentation“ und „umsetzen“, und zwischen „Restmenge zuerst“ und „kleinste zuerst“. Das Team entscheidet (Frage 1). Meine Empfehlung wählt nach Größe, nicht nach dem Auftrag vom 16.11. |
-| 2 | **Gleicher Code.** Beide Pläne ändern den Block „Zeitkritisch“ (`kennzahlen.js` Z. 82–105, `uebersicht.js` Z. 24–43). Die Restmenge ergänzt die Bestellfrist um „n Stk offen“, „Prüfbitte spätestens“ fügt je Bedarf einen eigenen Eintrag ein. | Kein inhaltlicher Konflikt, aber ein Merge-Konflikt. Einträge je Bedarf nach `name` unterscheiden, nicht nach `art` und `id`. |
+| 2 | **Gleicher Code.** Beide Pläne ändern den Block „Zeitkritisch“ (`kennzahlen.js` Z. 82–105, `uebersicht.js` Z. 24–43). Die Restmenge ergänzt die Bestellfrist um „n Stk offen“, „Prüfbitte spätestens“ fügt je Bedarf einen eigenen Eintrag ein. | Kein inhaltlicher Konflikt, aber ein Merge-Konflikt. Einträge je Bedarf nach `name` unterscheiden, nicht nach `art` und `id` (beide Eintragsarten tragen `art: 'bedarf'` und dieselbe `id`). |
 | 3 | **Nach dem Fristtag.** Restmenge A9: Die Bestellfrist bleibt überfällig („gewollt“). plattform-v2 §4: überfällig heißt verstrichen bei nicht erledigtem Vorgang. Für „Prüfbitte spätestens“ sagt kein Dokument, was nach dem Fristtag geschieht. | Empfehlung: nie überfällig, der Abgleich meldet dann „zu spät“. Sonst stünde BD-23 (Frist 13.11.2026) am Demo-Stichtag als fünfte Frist da. |
 | 4 | **Prüfzeit im Pilot.** Fallakte A5 nennt die 14 Tage „nicht belegt“. Klickpfad Schritt 6 und `cf-pilot-01-simulation.mjs` (Z. 33, 54) speichern sie als „belegt“, weil „belegt“ der Standard ist (`bedarf.js` Z. 53–55, `bedarfform.js` Z. 14). Beobachtung. | Der externe Hinweis „Prüfzeiten sind zu belegende Eingaben“ trifft das. Pilotdaten sollen „geschätzt“ tragen, die Fallakte ist nachzuführen. |
 | 5 | **Produktbrief.** v0.2 kennt weder Bedarf noch Vorgang noch Abgleich. plattform-v2 §9 Punkt 5 („Produktbrief fortschreiben?“) ist offen. Nur die Regel „Eingang plus Mindestprüfzeit darf auf den Fristtag fallen“ (Produktbrief, Abschnitt Regel) stützt die Formel von „Prüfbitte spätestens“. | Ausdrückliche Freigabe nötig, keine stillschweigende Fortschreibung. |
@@ -34,10 +34,10 @@ Keiner der drei Kandidaten steht im Produktbrief v0.2, und keiner ist freigegebe
 ## 3. Priorisierung (höchstens drei)
 
 **P1 · Frist „Prüfbitte spätestens“ (Bestellfrist minus Prüfzeit). Empfehlung: zuerst.**
-- **Nutzerproblem:** Die Planung sieht den letzten Tag für die Prüfbitte nirgends. Im Pilot ist es der 05.02.2027, „Zeitkritisch“ zeigt die Bestellfrist erst ab 13.02. Die Beispielbedarfe haben 10 und 14 Tage Prüfzeit, also mehr als die 7 Tage des Fensters.
+- **Nutzerproblem:** Die Planung sieht den letzten Tag für die Prüfbitte nirgends. Im Pilot ist es der 05.02.2027, „Zeitkritisch“ zeigt die Bestellfrist erst ab 13.02. Die Beispielbedarfe haben 10 und 14 Tage Prüfzeit, also mehr als die 7 Tage des Fensters. (Die Beispielbedarfe BD-22 und BD-23 sind ausgedachte Zeitangaben; BD-23 trägt in `daten.js` trotzdem „belegt“, siehe Plan E10.)
 - **Verhalten:** Unter „Zeitkritisch (7 Tage)“ steht für jeden Bedarf mit prüfbarem Paar und ohne laufenden Vorgang der Eintrag „Prüfbitte spätestens“, und die Bedarfsseite nennt den Tag samt Rechnung. Die Frist folgt dem Abgleich: bis zu diesem Tag „Weiter prüfen“ oder „Knapp“, danach „Für diese Entscheidung zu spät“.
 - **Ausgeschlossen:** Versand und Erinnerung, Änderung von Abgleichregel und Vorgangsfristen, neue Eingabefelder, Zeile auf der Abgleichseite, Wochenendregel, Kosten und CO₂.
-- **Abnahme:** (1) Pilot BD-24 ergibt den 05.02.2027. (2) Der Eintrag erscheint ab 30.01.2027, nicht am 29.01. (3) Der Demo-Stichtag bleibt unverändert (8 Paare, 2 prüfbar, 2 Vorgänge, 4 Fristen). (4) Kein Eintrag bei laufendem Vorgang, fehlender Prüfzeit oder ohne prüfbares Paar. (5) „geschätzt“ ist sichtbar. (6) Die bestehenden Tests bleiben grün. Ausführlich in Teil B, PS-1 bis PS-12.
+- **Abnahme:** (1) Pilot BD-24 ergibt den 05.02.2027. (2) Der Eintrag erscheint am 30.01.2027 um 09:00, am 29.01.2027 um 09:00 noch nicht. (3) Der Demo-Stichtag bleibt unverändert (8 Paare, 2 prüfbar, 2 Vorgänge, 4 Fristen). (4) Kein Eintrag bei laufendem Vorgang, fehlender Prüfzeit oder ohne prüfbares Paar. (5) „geschätzt“ ist sichtbar. (6) Die bestehenden Tests bleiben grün. Ausführlich in Teil B, PS-1 bis PS-12.
 - **Dateien:** `abgleich.js`, `kennzahlen.js`, `ansichten/uebersicht.js`, `ansichten/bedarfe.js`, neue Testdatei, `docs/pilot/cf-pilot-01-simulation.mjs`.
 - **Aufwand:** klein. Vier App-Dateien, geschätzt rund 60 Zeilen Code und 120 Zeilen Tests, keine Datenänderung.
 - **Risiko Demo:** gering. Am 18.–20.11.2026 entsteht kein neuer Eintrag (BD-22 hat die Frist 21.03.2027, BD-23 kein prüfbares Paar). Die geänderten Ansichten liegen nicht im Pitch-Pfad, und der Pitch-Stand bleibt eingefroren.
@@ -75,15 +75,25 @@ Empfehlung: P1 jetzt, nach der Freigabe. P2 danach, nachdem F1–F6 beantwortet 
 
 ## 5. Entscheidung der Koordination vom 18.11.2026
 
-Der Auftraggeber hat im Nachtauftrag vom 17./18.11.2026 ausdrücklich angeordnet, aus den Plänen zu Restmenge und „Prüfbitte
-spätestens“ „die kleinste sinnvolle, ausreichend beschriebene Verbesserung“ zu wählen und „vollständig“ umzusetzen,
-„umkehrbare Einzelheiten“ selbst zu entscheiden und auf einem getrennten Entwicklungsbranch zu arbeiten.
+Der Auftraggeber hat im Nachtauftrag vom 17./18.11.2026 den folgenden Absatz zur Plattform erteilt (wörtlich):
+
+> „Entwickle nach Abschluss des Pitch-Pakets auch die Plattform weiter. Arbeite dafür auf einem getrennten
+> Entwicklungsbranch und bewahre den geprüften Pitch-Stand einschließlich seiner Demo unverändert. Lies die bestehenden
+> Pläne zu Restmenge und „Prüfbitte spätestens“. Wähle daraus die kleinste sinnvolle, ausreichend beschriebene
+> Verbesserung und setze sie vollständig um. Dokumentiere erwartetes Verhalten und Abnahmekriterien vor der Umsetzung.
+> Entscheide umkehrbare Einzelheiten selbst. Lass cf-review die Änderung prüfen und cf-test die passenden Regeltests und
+> Browserabläufe ausführen. Behebe belegte Fehler. Push auf den getrennten Branch ist erlaubt; kein Merge, Deployment
+> oder Aktualisieren der geteilten Vorschau. Liefere einen funktionierenden Entwicklungsstand mit Startanleitung und
+> tatsächlichen Prüfergebnissen. Beginne keine weitere Funktion, wenn dadurch ein unfertiger Stand zurückbleiben würde.“
+
+Damit sind die Wahl der kleinsten Verbesserung, das Umsetzen „vollständig“, die Entscheidung über „umkehrbare
+Einzelheiten“ und der getrennte Entwicklungsbranch angeordnet.
 
 - **Frage 1 (Reihenfolge) ist damit beantwortet.** Die Reihenfolge vom 16.11.2026 („Restmenge zuerst, für jetzt genügt die
   Dokumentation“) gilt für diese eine Umsetzung nicht. **P1 „Prüfbitte spätestens“** wird umgesetzt, weil sie die kleinste
   ist. P2 und P3 bleiben unverändert in dieser Reihenfolge zurückgestellt. Die Restmenge bleibt im Plan Restmenge 1.1 so
   beschrieben, wie sie ist.
-- **Branch:** `codex/plattform-entwicklung-20261118`, Ausgangscommit `c584285`. Kein Merge und keine Veröffentlichung.
+- **Branch:** `codex/plattform-entwicklung-20261118`, Ausgangscommit `23dc050` (der Commit mit Priorisierung und Plan). Kein Merge und keine Veröffentlichung.
 - **Noch offen für das Team:** ein Eintrag in `00_START_HIER/ENTSCHEIDUNGEN.md` mit Datum, Umfang und offenen Punkten. Dieses
   Repository führt keine eigene Entscheidungsliste. Die Koordination hat dort nichts eingetragen.
 
