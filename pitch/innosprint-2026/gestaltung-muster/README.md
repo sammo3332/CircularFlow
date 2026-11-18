@@ -15,6 +15,29 @@ Der geprüfte Pitch bleibt unverändert: Außerhalb dieses Ordners ist auf dem B
 (`pruefung/04-regeltests-und-unveraenderter-stand.txt`). Nichts wurde veröffentlicht, eingereicht, gemergt oder
 bereitgestellt. Der Canva-Entwurf ist privat im Konto des Teams gespeichert.
 
+## Ergänzung 18.11.2026 · Gesamtfassung mit zehn Folien (Auftrag: „erstelle die Folien komplett in 5 Minuten“)
+
+Die Gestaltung wurde auf das ganze Deck übertragen. Der Canva-Entwurf `DAHbQg1-t6o` (gleicher Link) enthält jetzt
+zehn Seiten in Pitch-Reihenfolge: 1 Einstieg · 2 Problemgröße · 3 Frist · 4 Produktnutzen · 5 Demo-Übersicht ·
+6 Ersatzfolie „zu spät“ · 7 Ersatzfolie „weiter prüfen“ · 8 Pilot · 9 Team · 10 Schluss.
+Gerenderte Vorschau (1920 × 1080): [`vorschau-gesamt/`](vorschau-gesamt/), Übersicht [`uebersicht.png`](vorschau-gesamt/uebersicht.png).
+
+- Sprechtexte und Sprechernotizen stammen aus `pitch/innosprint-2026/werkzeug/inhalt-p5.js`; die Notizen von Frist,
+  Demo und Pilot wurden nach Abgleich korrigiert (Frist-Text, fehlende Zeitdruck-Absätze, Tippfehler „zzählen“).
+- Neu gegenüber den Mustern: Ersatzfolien 6 und 7 mit den echten Plattformaufnahmen (K3, K4), Pilot, Team, Schluss,
+  Frist, Demo-Übersicht. Werkzeug: `werkzeug/rest.js`, `werkzeug/karte-k3.js`, Canva-Befehle unter `canva/rest/`.
+- Auf Folie 1 saß die Uhr-Grafik zunächst außerhalb des Bildes über der Fußzeile; sie wurde auf ihre Sollposition
+  (x 570, y 356) gesetzt und neu exportiert.
+- Zeit: Mit Datenfolie berechnet etwa 4:37, **nicht gestoppt**.
+
+**Geprüft:** Alle zehn Seiten wurden als PNG exportiert (Größe 1920 × 1080 geprüft) und auf einer Übersicht
+angesehen; die Seitenreihenfolge wurde in Canva ausgelesen.
+**Nicht geprüft / offen:** Keine zeichengenaue Kontrolle der Folien 3 und 5 bis 10 gegen den Pitchtext, keine
+Kontrastmessung der neuen Folien, kein Test am Beamer und im Canva-Editor. Der Anhang (AX1 bis AX6) ist nicht
+gestaltet. Die Verknüpfungen der Demo-Folie zu den Ersatzfolien sind nicht gesetzt. Die Schriftart ließ sich nicht
+wählen. Das Pitch-Format der Veranstalter („Stay Safe & Brave“) lag nicht vor. Zwei Gestaltungspunkte aus der
+Prüfung bleiben offen: „123 Tage vor der Bestellfrist“ kann als 65 Tage gelesen werden; einige Pillen sind unter 28 px hoch.
+
 ## 1. Aufgabe
 
 - **Nutzerproblem:** Die Jury soll in fünf Minuten verstehen, warum brauchbare Bauteile verloren gehen und was
