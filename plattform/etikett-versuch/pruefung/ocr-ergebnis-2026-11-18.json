@@ -1,0 +1,110 @@
+{
+  "datum": "2026-11-18",
+  "engine": "Tesseract.js 7.0.0 / LSTM / eng",
+  "ausfuehrung": "Node.js, lokale CPU; kein Smartphone- oder Browsernachweis",
+  "initialisierungMs": 418,
+  "faelle": [
+    {
+      "datei": "testetikett.png",
+      "synthetisch": true,
+      "ocrMs": 376,
+      "rohtext": "TESTETIKETT - KEIN ECHTES BAUTEIL\nHERSTELLER: MUSTERWERK\n\nMODELL: TUER-17\n\nSERIENNUMMER: CF-2026-001\nBAUJAHR: 2020\n\nBREITE: 985 mm / BRANDSCHUTZ: T30\n",
+      "felder": {
+        "hersteller": {
+          "wert": "MUSTERWERK",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "HERSTELLER: MUSTERWERK"
+        },
+        "modell": {
+          "wert": "TUER-17",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "MODELL: TUER-17"
+        },
+        "seriennummer": {
+          "wert": "CF-2026-001",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "SERIENNUMMER: CF-2026-001"
+        },
+        "baujahr": {
+          "wert": "2020",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "BAUJAHR: 2020"
+        }
+      },
+      "hinweise": []
+    },
+    {
+      "datei": "testetikett-schief.png",
+      "synthetisch": true,
+      "ocrMs": 318,
+      "rohtext": "———————\nTESTETIKETT - KEIN ECHTES BAUTEIL\nHERSTELLER: MUSTERWERK\nMODELL: TUER-17\nSERIENNUMMER: CF-2026-001\nBAUJAHR: 2020\nBREITE: 985 mM / BRANDSCHUTZ: T30\n",
+      "felder": {
+        "hersteller": {
+          "wert": "MUSTERWERK",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "HERSTELLER: MUSTERWERK"
+        },
+        "modell": {
+          "wert": "TUER-17",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "MODELL: TUER-17"
+        },
+        "seriennummer": {
+          "wert": "CF-2026-001",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "SERIENNUMMER: CF-2026-001"
+        },
+        "baujahr": {
+          "wert": "2020",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "BAUJAHR: 2020"
+        }
+      },
+      "hinweise": []
+    },
+    {
+      "datei": "leer.png",
+      "synthetisch": true,
+      "ocrMs": 35,
+      "rohtext": "",
+      "felder": {
+        "hersteller": {
+          "wert": "",
+          "status": "fehlt",
+          "quelle": "",
+          "beleg": ""
+        },
+        "modell": {
+          "wert": "",
+          "status": "fehlt",
+          "quelle": "",
+          "beleg": ""
+        },
+        "seriennummer": {
+          "wert": "",
+          "status": "fehlt",
+          "quelle": "",
+          "beleg": ""
+        },
+        "baujahr": {
+          "wert": "",
+          "status": "fehlt",
+          "quelle": "",
+          "beleg": ""
+        }
+      },
+      "hinweise": [
+        "Keine eindeutig beschrifteten Metadaten erkannt. Näher und schärfer fotografieren oder manuell erfassen."
+      ]
+    }
+  ],
+  "grenze": "Synthetische Funktionsprüfung. Keine Aussage zur Erkennungsrate an echten Bauteilen oder zur Zeitersparnis."
+}
