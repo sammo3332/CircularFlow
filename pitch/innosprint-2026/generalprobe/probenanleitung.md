@@ -44,11 +44,14 @@ Eintrag „noch 2 Std. · Aufmaßfrist · E-01 · T-07 → B-02“. Stimmt etwas
 Die Prüfbitte wird in der Hauptdemo **nicht** angelegt. Wer es doch tut, muss die Vorschau danach zurücksetzen (neues
 Profil, oder Erfassen → In diesem Browser gespeichert → Zurücksetzen).
 
+**Sprechregel (Festlegung des Auftraggebers, 18.11.2026):** Für den Pitch gilt ausdrücklich „**angenommene Prüfzeit**“. Im
+Vortrag steht das so im K3-Satz („Mit der angenommenen Prüfzeit …“) und auf Folie 2 („Wir nehmen an, das dauert 14 Tage“). Bei
+Rückfragen zu Folie 11 sagt ihr ebenfalls „angenommene Prüfzeit“ („BD-23 mit 14 Tagen angenommener Prüfzeit“, „BD-22 mit 10 Tagen
+angenommener Prüfzeit“), auch wenn auf der Folie „Prüfzeit“ steht. Beispieldaten und Ersatzbilder bleiben unverändert.
+
 **Hinweis zu K3 (Beispieldaten):** Die Oberfläche kennzeichnet die 14 Tage Prüfzeit bei BD-23 nicht als „geschätzt“: In
-`plattform/app/daten.js` steht für BD-23 „belegt“ (Z. 164), obwohl Z. 162 beide Bedarfe als Beispielannahmen bezeichnet. Sagt
-deshalb wie im K3-Satz „mit der **angenommenen** Prüfzeit“, und auf Nachfrage: „Die 14 Tage sind eine Annahme in den
-Beispieldaten, nicht belegt.“ Die Daten wurden nicht geändert, damit Pitch-Stand und Ersatzbilder gleich bleiben. Ob BD-23 vor
-dem Pitch auf „geschätzt“ gestellt wird (dann Ersatzbilder neu aufnehmen), entscheidet das Team.
+`plattform/app/daten.js` steht für BD-23 „belegt“ (Z. 164), obwohl Z. 162 beide Bedarfe als Beispielannahmen bezeichnet. Auf
+Nachfrage: „Das ist eine angenommene Prüfzeit in den Beispieldaten, nicht belegt.“ Die Daten werden nicht geändert.
 
 **Mögliche Nachfrage zu K2 und K4:** „Warum steht in der Liste 58 Tage und auf der Seite 123 Tage?“ Antwort: Die Liste zeigt
 hier die Reserve im Annahmefenster, 58 Tage (verfügbar ab 01.02.2027, Annahmefenster bis 31.03.2027). Die Seite nennt beide

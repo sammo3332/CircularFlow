@@ -1,6 +1,6 @@
 # Gesprächsnotiz · Vorlage
 
-Dokumentversion 1.1 · Stand 18.11.2026 · Zu `gespraechsleitfaden-15-minuten.md`. Für jedes Gespräch eine Kopie anlegen und **nicht
+Dokumentversion 1.1 · Stand 18.11.2026 · Entwurf, **noch nicht extern verwenden** · Zu `gespraechsleitfaden-15-minuten.md`. Für jedes Gespräch eine Kopie anlegen und **nicht
 in das Git-Repository legen** (das Remote liegt auf GitHub). Nur eintragen, was die Person gesagt hat. Eigene Deutung steht getrennt unten. Nichts erfinden, nichts ergänzen.
 
 | | |
