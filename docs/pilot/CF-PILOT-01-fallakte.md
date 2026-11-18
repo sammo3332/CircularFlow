@@ -263,7 +263,8 @@ heißt in Fassung 2 nur: Eine Person hat den Wert eingetragen oder übernommen. 
 - **Klickpfad:**
   1. Navigation **Bedarfe**, **Bedarf erfassen**, dann ausfüllen:
      - **Projekt** UAK, **Bauteilgruppe** Innentüren, **Titel** „Bürotüren 1. OG“, **Menge** 6
-     - **Bestellfrist** 19.02.2027, **Mindestprüfzeit in Tagen** 14
+     - **Bestellfrist** 19.02.2027, **Mindestprüfzeit in Tagen** 14, markiert als „geschätzt (Annahme)“ (die 14 Tage
+       sind nicht belegt, Annahme A5)
      - **Annahmefenster von** 08.03.2027, **Annahmefenster bis** 12.03.2027
      - **Anforderungen** (Text), **Zuständig (Rolle)** Planung
   2. **Speichern**. Ergebnis: BD-24.
@@ -281,8 +282,8 @@ heißt in Fassung 2 nur: Eine Person hat den Wert eingetragen oder übernommen. 
   Die Werte für Januar und Februar 2027 stehen in Abschnitt 5.
 - **Stand:**
   - **Bedienbar:** Bedarf und Abgleich.
-  - **Fehlt:** Benachrichtigung der zuständigen Planung (bewusst: es wird nichts versendet) und eine Frist für den
-    spätesten Prüfbeginn (Abschnitt 9).
+  - **Fehlt:** Benachrichtigung der zuständigen Planung (bewusst: es wird nichts versendet) und in der Pitch-Vorschau eine
+    Frist für den spätesten Prüfbeginn (der Entwicklungsbranch hat sie, Abschnitt 9).
 
 ### Schritt 7 · Fachprüfung und Kostenvergleich
 
@@ -605,6 +606,10 @@ freigegeben hat.
     „Zeitkritisch“. Das folgt derselben Sieben-Tage-Regel wie die Bestellfrist.
   - Ab 06.02.2027 ist das Paar „zu spät“.
   - Der Aufwand ist klein. Der Produktbrief v0.2 nennt diese Frist nicht.
+  - **Stand 18.11.2026:** Auf dem Entwicklungsbranch `codex/plattform-entwicklung-20261118` umgesetzt und geprüft (Plan:
+    `docs/plan-pruefbitte-spaetestens.md`, Bericht: `docs/pruefungen/abschluss-2026-11-18.md`). Mit den Pilotdaten steht dort
+    „Prüfbitte spätestens 05.02.2027 · BD-24“ ab Samstag, 30.01.2027 unter „Zeitkritisch“. Nicht in der Pitch-Vorschau,
+    nicht gemergt und nicht vom Team freigegeben.
 - **Einbau dokumentieren** (Schritt 8): ein Schritt nach „übergeben“ mit Datum, Ort und Foto. Er ist wichtig für den
   Nachweis, aber nicht zeitkritisch.
 

@@ -121,7 +121,7 @@ Stichtag H = Projektzeit. Mengen nie über Einheiten addieren.
 | Passende Paare | Paare aus dem Abgleich nach Ergebnis; Bauteile mit aktivem Vorgang ausgenommen | Abgleichsliste gefiltert |
 | Vorgänge je Status | abgeleiteter Status aller Vorgänge, inklusive E-01 und E-02 | Arbeitsliste gefiltert |
 | Offene Prüfpunkte | Bauteile mit mindestens einem offenen Nachweis, dazu Zahl der Punkte | Bestand mit Filter „offen“ |
-| Zeitkritisch (7 Tage) | Fristen zwischen H und H + 7 Tagen; Überfälliges hervorgehoben | Entscheidung oder Bedarf |
+| Zeitkritisch (7 Tage) | Fristen zwischen H und H + 7 Tagen; Überfälliges hervorgehoben. Entwicklungsbranch (18.11.2026, nicht freigegeben): zusätzlich „Prüfbitte spätestens“ je Bedarf mit prüfbarem Paar, nie überfällig | Entscheidung oder Bedarf |
 
 Ein Vorgang mit dem Status „übergeben“ belegt seinen Bedarf: Der Bedarf zählt nicht mehr unter „Bedarfe offen“, wird im Abgleich nicht mehr angeboten, und seine Bestellfrist ist nicht mehr zeitkritisch. Erst „ungeeignet“ oder „abgebrochen“ geben ihn wieder frei. „Paare derselben Gruppe“ zählt alle Ergebnisse; daneben steht „davon prüfbar“ (weiter prüfen oder knapp). Überfällig ist eine Frist, die verstrichen ist, während der Vorgang nicht erledigt ist (zum Beispiel abgelaufene Vormerkung, Bestellfrist ohne Vormerkung, Übergabetermin vorbei). Eine Prüfbitte ist nur erlaubt, wenn der Abgleich des Paares sie erlaubt (Ziel Bedarf) oder die Türregel Rang 6 erreicht hat (Ziel Zielöffnung); sonst zeigt die Entscheidungsseite den Grund.
 
