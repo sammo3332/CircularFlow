@@ -1,0 +1,5 @@
+ plattform/README.md                | 7 ++++---
+ plattform/app/ansichten/bedarfe.js | 1 +
+ plattform/test/befunde.test.mjs    | 2 +-
+ plattform/test/kennzahlen.test.mjs | 4 ++--
+ 4 files changed, 8 insertions(+), 6 deletions(-)

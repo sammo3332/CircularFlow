@@ -1,0 +1,130 @@
+TAP version 13
+# Subtest: T1 Pilotbedarf BD-24: Prüfbitte spätestens 05.02.2027 (Bestellfrist 19.02.2027 minus 14 Tage)
+ok 1 - T1 Pilotbedarf BD-24: Prüfbitte spätestens 05.02.2027 (Bestellfrist 19.02.2027 minus 14 Tage)
+  ---
+  duration_ms: 1.692581
+  type: 'test'
+  ...
+# Subtest: T2 Beispielbedarfe BD-22 und BD-23: Tag, Grenze, Herkunft
+ok 2 - T2 Beispielbedarfe BD-22 und BD-23: Tag, Grenze, Herkunft
+  ---
+  duration_ms: 0.870306
+  type: 'test'
+  ...
+# Subtest: T3 Randfälle: Prüfzeit 0 und als Ziffernfolge, fehlende und ungültige Angaben
+ok 3 - T3 Randfälle: Prüfzeit 0 und als Ziffernfolge, fehlende und ungültige Angaben
+  ---
+  duration_ms: 0.790156
+  type: 'test'
+  ...
+# Subtest: T3 Herkunft „geschätzt“ nennt nur Angaben, die in die Rechnung eingehen; Doppelboden liest die Ersatzentscheidung
+ok 4 - T3 Herkunft „geschätzt“ nennt nur Angaben, die in die Rechnung eingehen; Doppelboden liest die Ersatzentscheidung
+  ---
+  duration_ms: 0.303067
+  type: 'test'
+  ...
+# Subtest: T4 Gleichlauf mit dem Abgleich: prüfbar genau bis einschließlich Prüfbitte spätestens (Bestellfrist)
+ok 5 - T4 Gleichlauf mit dem Abgleich: prüfbar genau bis einschließlich Prüfbitte spätestens (Bestellfrist)
+  ---
+  duration_ms: 15.591384
+  type: 'test'
+  ...
+# Subtest: T4 Gleichlauf mit dem Abgleich: endet das Annahmefenster vor der Bestellfrist, gilt dieser Tag
+ok 6 - T4 Gleichlauf mit dem Abgleich: endet das Annahmefenster vor der Bestellfrist, gilt dieser Tag
+  ---
+  duration_ms: 6.741543
+  type: 'test'
+  ...
+# Subtest: T5 Zeitkritisch: Eintrag ab 7 Tage vor dem Fristtag, einmal je Bedarf, nie überfällig
+ok 7 - T5 Zeitkritisch: Eintrag ab 7 Tage vor dem Fristtag, einmal je Bedarf, nie überfällig
+  ---
+  duration_ms: 92.933294
+  type: 'test'
+  ...
+# Subtest: T5 Zeitkritisch: Einzahl bei einem prüfbaren Paar; bei Prüfzeit 0 steht die Prüfbitte vor der Bestellfrist
+ok 8 - T5 Zeitkritisch: Einzahl bei einem prüfbaren Paar; bei Prüfzeit 0 steht die Prüfbitte vor der Bestellfrist
+  ---
+  duration_ms: 4.639492
+  type: 'test'
+  ...
+# Subtest: T6 Kein Eintrag bei laufendem Vorgang, auch „Angelegt“; nach Abbruch ist der Bedarf wieder frei
+ok 9 - T6 Kein Eintrag bei laufendem Vorgang, auch „Angelegt“; nach Abbruch ist der Bedarf wieder frei
+  ---
+  duration_ms: 7.913092
+  type: 'test'
+  ...
+# Subtest: T6 Kein Eintrag ohne Prüfzeit, ohne Zeitfelder oder bei ungültigen Angaben
+ok 10 - T6 Kein Eintrag ohne Prüfzeit, ohne Zeitfelder oder bei ungültigen Angaben
+  ---
+  duration_ms: 13.741141
+  type: 'test'
+  ...
+# Subtest: T6 Kein Eintrag ohne prüfbares Paar: Die Frist ist eine Eigenschaft des Bedarfs, „prüfbar“ sagt allein der Abgleich
+ok 11 - T6 Kein Eintrag ohne prüfbares Paar: Die Frist ist eine Eigenschaft des Bedarfs, „prüfbar“ sagt allein der Abgleich
+  ---
+  duration_ms: 6.214849
+  type: 'test'
+  ...
+# Subtest: T6 Beispieldaten: keine neue Frist zu allen vier Projektzeiten, die Startbedingung bleibt
+ok 12 - T6 Beispieldaten: keine neue Frist zu allen vier Projektzeiten, die Startbedingung bleibt
+  ---
+  duration_ms: 7.285183
+  type: 'test'
+  ...
+# Subtest: T7 Beispielbedarfe: BD-23 am 13.11.2026 knapp mit Eintrag, am 14.11.2026 zu spät ohne Eintrag
+ok 13 - T7 Beispielbedarfe: BD-23 am 13.11.2026 knapp mit Eintrag, am 14.11.2026 zu spät ohne Eintrag
+  ---
+  duration_ms: 2.991356
+  type: 'test'
+  ...
+# Subtest: T7 Beispielbedarfe: BD-22 erscheint ab 15.03.2027, nicht am 14.03.2027
+ok 14 - T7 Beispielbedarfe: BD-22 erscheint ab 15.03.2027, nicht am 14.03.2027
+  ---
+  duration_ms: 3.128
+  type: 'test'
+  ...
+# Subtest: T8 Übersicht: Zeile „Prüfbitte spätestens“ mit Detailzeile und Link zum Bedarf
+ok 15 - T8 Übersicht: Zeile „Prüfbitte spätestens“ mit Detailzeile und Link zum Bedarf
+  ---
+  duration_ms: 9.26604
+  type: 'test'
+  ...
+# Subtest: T8 Übersicht am Demo-Stichtag: keine Zeile „Prüfbitte spätestens“, 4 Fristen wie im Pitch-Stand
+ok 16 - T8 Übersicht am Demo-Stichtag: keine Zeile „Prüfbitte spätestens“, 4 Fristen wie im Pitch-Stand
+  ---
+  duration_ms: 9.236081
+  type: 'test'
+  ...
+# Subtest: T8 Bedarfsseite BD-24: Tag, Rechnung, Chip „geschätzt“, danach „verstrichen“
+ok 17 - T8 Bedarfsseite BD-24: Tag, Rechnung, Chip „geschätzt“, danach „verstrichen“
+  ---
+  duration_ms: 4.36375
+  type: 'test'
+  ...
+# Subtest: T8 Bedarfsseite der Beispielbedarfe: BD-22 geschätzt, BD-23 verstrichen, BD-21 nicht berechenbar
+ok 18 - T8 Bedarfsseite der Beispielbedarfe: BD-22 geschätzt, BD-23 verstrichen, BD-21 nicht berechenbar
+  ---
+  duration_ms: 2.643599
+  type: 'test'
+  ...
+# Subtest: T8 Bedarfsseite: jeder Bedarf in jedem Kontext enthält die Zeile und bleibt sauber
+ok 19 - T8 Bedarfsseite: jeder Bedarf in jedem Kontext enthält die Zeile und bleibt sauber
+  ---
+  duration_ms: 49.59627
+  type: 'test'
+  ...
+# Subtest: Abgleich bleibt unverändert: gleiche Paare, gleiche Ergebnisse wie im Pitch-Stand
+ok 20 - Abgleich bleibt unverändert: gleiche Paare, gleiche Ergebnisse wie im Pitch-Stand
+  ---
+  duration_ms: 1.248448
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 307.124253

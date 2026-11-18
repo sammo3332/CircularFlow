@@ -1,0 +1,31 @@
+Texte der Vorschau (K2, K3, K4 und ein Paar zu BD-21), ausgelesen mit pruefskripte/abgleich-texte.js
+Befehl: python3 -m http.server 8133 (Repository-Wurzel), node pitch/innosprint-2026/generalprobe/pruefskripte/abgleich-texte.js http://localhost:8133/plattform/
+Codestand: plattform/ Code 2121b92 (seitdem nur die README geändert), ausgeführt auf Repository-Commit 75fd769
+
+=== K2 Paarliste (eine Zeile je Paar)
+ERGEBNIS ANGEBOT BEDARF ZEIT UND MENGE ENTFERNUNG
+Weiter prüfen KB TW-05 Systemtrennwand mit Glasfeldern 120 lfm · ab 01.02.2027 SB BD-22 Systemtrennwände Gewerbe 60 lfm · Bestellfrist 31.03.2027 Reserve 58 Tage Menge gedeckt ca. 7,9 km Luftlinie (Lage symbolisch)
+Weiter prüfen LH TW-01 Systemtrennwand, Vollwandelemente 42 lfm · ab 25.11.2026 bis 31.03.2027 SB BD-22 Systemtrennwände Gewerbe 60 lfm · Bestellfrist 31.03.2027 Reserve 58 Tage, Zwischenlager 65 Tage Menge: es fehlen 18 lfm ca. 2,5 km Luftlinie (Lage symbolis
+Angaben fehlen KB T-31 Bürotüren, 14 Stück 14 Stk · ab 01.02.2027 SB BD-21 Innentüren Büroeinheiten 12 Stk Bestellfrist fehlt. Menge gedeckt ca. 7,9 km Luftlinie (Lage symbolisch)
+Angaben fehlen LH T-03 Innentür mit Holzzarge 1 Stk · ab 25.11.2026 SB BD-21 Innentüren Büroeinheiten 12 Stk Bestellfrist fehlt. Menge: es fehlen 11 Stk ca. 2,5 km Luftlinie (Lage symbolisch)
+Angaben fehlen LH T-05 Innentür samt Zarge 1 Stk · ab 25.11.2026 SB BD-21 Innentüren Büroeinheiten 12 Stk Bestellfrist fehlt. Menge: es fehlen 11 Stk ca. 2,5 km Luftlinie (Lage symbolisch)
+Angaben fehlen SL T-41 Klassenraumtüren, 6 Stück 6 Stk · ab 05.07.2027 SB BD-21 Innentüren Büroeinheiten 12 Stk Bestellfrist fehlt. Menge: es fehlen 6 Stk ca. 3,6 km Luftlinie (Lage symbolisch)
+Für diese Entscheidung zu spät KB TW-05 Systemtrennwand mit Glasfeldern 120 lfm · ab 01.02.2027 SB BD-23 Systemtrennwände Büroeinheit 1.02 30 lfm · Bestellfrist 27.11.2026 Reserve −5 Tage, zu spät Menge gedeckt ca. 7,9 km Luftlinie (Lage symbolisch)
+Für diese Entscheidung zu spät LH TW-01 Systemtrennwand, Vollwandelemente 42 lfm · ab 25.11.2026 bis 31.03.2027 SB BD-23 Systemtrennwände Büroeinheit 1.02 30 lfm · Bestellfrist 27.11.2026 Reserve −5 Tage, zu spät Menge gedeckt ca. 2,5 km Luftlinie (Lage symbol
+
+=== K3 TW-01 → BD-23
+Nächster Schritt: NÄCHSTER SCHRITT · PLANUNG Klären, ob die Bestellentscheidung noch offen ist oder ein späterer Bedarf passt Prüfbitte anlegen Gesperrt. Für diese Entscheidung zu spät: Prüfende 02.12.2026 liegt 5 Tage nach der Bestellfrist 27.11.2026. ANGEBOT LH TW-01 Systemtrennwand, Vollwandelemente Projekt Umbau 
+Zeitrechnung: Zeitrechnung Stichtag der Demo (Simulation) 18.11.2026 Prüfbeginn 18.11.2026 spätester Tag aus Stichtag, Erfassung des Angebots und Anlage des Bedarfs: Stichtag der Demo Mindestprüfzeit 14 Tage Prüfende 02.12.2026 Bestellfrist 27.11.2026 Reserve bis zur Bestellfrist −5 Tage, zu spät Verfügbar ab 25.11.2026 bis 31.03.2027 Annahmefenster 11.01.2027 bis 26.02.2027 Reserve im Annahmefenster 46 Tage Kalendertage, Berliner Zeit. Ein Grenztag zählt als rechtzeitig. Mindestprüfzeiten im Beispiel sind Annahmen. 
+Fehlende und geschätzte Angaben, Prüfpunkte: Fehlende und geschätzte Angaben Nichts fehlt. Prüfpunkte Zwischenlagerung klären: 40 Tage zwischen dem frühesten Übergabetag 02.12.2026 und dem Beginn des Annahmefensters 11.01.2027. Bauleitung 2 offene Nachweise am Bauteil klären (siehe Bauteilakte). Fachprüfung Eignung (Zustand, Maße, Nachweise) von einer Fachperson prüfen lassen. Fachprüfung
+
+=== K4 TW-05 → BD-22
+Nächster Schritt: NÄCHSTER SCHRITT · PLANUNG Prüfbitte an die Fachprüfung anlegen Prüfbitte anlegen Legt einen Vorgang an und bittet die Fachprüfung um Eignungsprüfung. Simulation, es wird nichts versendet. ANGEBOT KB TW-05 Systemtrennwand mit Glasfeldern Projekt Rückbau Bürohaus Kanalblick Huckarde · Lage symbolisch
+Zeitrechnung: Zeitrechnung Stichtag der Demo (Simulation) 18.11.2026 Prüfbeginn 18.11.2026 spätester Tag aus Stichtag, Erfassung des Angebots und Anlage des Bedarfs: Stichtag der Demo Mindestprüfzeit 10 Tage geschätzt Prüfende 28.11.2026 Bestellfrist 31.03.2027 Reserve bis zur Bestellfrist 123 Tage Verfügbar ab 01.02.2027 Annahmefenster 01.02.2027 bis 31.03.2027 geschätzt Reserve im Annahmefenster 58 Tage Kalendertage, Berliner Zeit. Ein Grenztag zählt als rechtzeitig. Mindestprüfzeiten im Beispiel sind Annahmen. 
+Fehlende und geschätzte Angaben, Prüfpunkte: Fehlende und geschätzte Angaben Nichts fehlt. GESCHÄTZT Mindestprüfzeit Annahmefenster Ergänzen oder bestätigen Sie die Angaben im Bedarf oder im Bauteilpass. Prüfpunkte Geschätzte Angaben bestätigen: Mindestprüfzeit, Annahmefenster. Planung 1 offener Nachweis am Bauteil klären (siehe Bauteilakte). Fachprüfung Eignung (Zustand, Maße, Nachweise) von einer Fachperson prüfen lassen. Fachprüfung
+
+=== Paar T-03 → BD-21
+Nächster Schritt: NÄCHSTER SCHRITT · PLANUNG Fehlende Angaben ergänzen: Bestellfrist, Mindestprüfzeit, Annahmefenster (Beginn), Annahmefenster (Ende) Prüfbitte anlegen Gesperrt. Angaben fehlen: Bestellfrist fehlt. ANGEBOT LH T-03 Innentür mit Holzzarge Projekt Umbau Haus Lindenhof Innenstadt-Ost · Lage symbolisch Gru
+Zeitrechnung: Zeitrechnung Stichtag der Demo (Simulation) 18.11.2026 Prüfbeginn 18.11.2026 spätester Tag aus Stichtag, Erfassung des Angebots und Anlage des Bedarfs: Stichtag der Demo Mindestprüfzeit fehlt Prüfende fehlt Bestellfrist fehlt Reserve bis zur Bestellfrist nicht berechenbar Verfügbar ab 25.11.2026 Annahmefenster fehlt Reserve im Annahmefenster nicht berechenbar Kalendertage, Berliner Zeit. Ein Grenztag zählt als rechtzeitig. Mindestprüfzeiten im Beispiel sind Annahmen. 
+Fehlende und geschätzte Angaben, Prüfpunkte: Fehlende und geschätzte Angaben FEHLT Bestellfrist Mindestprüfzeit Annahmefenster (Beginn) Annahmefenster (Ende) Ergänzen oder bestätigen Sie die Angaben im Bedarf oder im Bauteilpass. Prüfpunkte Teilmenge abstimmen: Es fehlen 11 Stk. Rest anders beschaffen oder weiteres Angebot suchen. Planung 4 offene Nachweise am Bauteil klären (siehe Bauteilakte). Fachprüfung Eignung (Zustand, Maße, Nachweise) von einer Fachperson prüfen lassen. Fachprüfung
+
+Exitcode des Skripts: 0

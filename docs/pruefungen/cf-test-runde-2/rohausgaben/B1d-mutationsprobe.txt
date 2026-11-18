@@ -1,0 +1,14 @@
+ERKANNT   M1 Regel: Fristtag um +1 Tag verschoben | fehlgeschlagene neue Tests: 16 (T1 Pilotbedarf BD-24: Prüfbitte spätes; T2 Beispielbedarfe BD-22 und BD-23: Ta; T3 Randfälle: Prüfzeit 0 und als Ziffe)
+ERKANNT   M2 Regel: Annahmefenster wird ignoriert | fehlgeschlagene neue Tests: 3 (T3 Randfälle: Prüfzeit 0 und als Ziffe; T3 Herkunft „geschätzt“ nennt nur Anga; T4 Gleichlauf mit dem Abgleich: endet )
+ERKANNT   M3 Regel: Annahmeende zählt auch bei Gleichstand (< wird <=) | fehlgeschlagene neue Tests: 4 (T2 Beispielbedarfe BD-22 und BD-23: Ta; T3 Randfälle: Prüfzeit 0 und als Ziffe; T7 Beispielbedarfe: BD-22 erscheint ab)
+ERKANNT   M4 Zeitkritisch: Fenster um einen Tag länger | fehlgeschlagene neue Tests: 2 (T5 Zeitkritisch: Eintrag ab 7 Tage vor; T7 Beispielbedarfe: BD-22 erscheint ab)
+ERKANNT   M5 Zeitkritisch: Eintrag auch ohne prüfbares Paar | fehlgeschlagene neue Tests: 1 (T6 Kein Eintrag ohne prüfbares Paar: D)
+ERKANNT   M6 Zeitkritisch: Tage aufgerundet statt abgerundet | fehlgeschlagene neue Tests: 3 (T5 Zeitkritisch: Eintrag ab 7 Tage vor; T7 Beispielbedarfe: BD-23 am 13.11.202; T7 Beispielbedarfe: BD-22 erscheint ab)
+ERKANNT   M7 Zeitkritisch: Fristende am Tagesanfang statt 23:59 | fehlgeschlagene neue Tests: 5 (T5 Zeitkritisch: Eintrag ab 7 Tage vor; T5 Zeitkritisch: Einzahl bei einem prü; T7 Beispielbedarfe: BD-23 am 13.11.202)
+ERKANNT   M8 Zeitkritisch: Einzahl/Mehrzahl vertauscht | fehlgeschlagene neue Tests: 4 (T5 Zeitkritisch: Eintrag ab 7 Tage vor; T5 Zeitkritisch: Einzahl bei einem prü; T7 Beispielbedarfe: BD-23 am 13.11.202)
+ERKANNT   M9 Bedarfsseite: Grenztag gilt schon als verstrichen (< wird <=) | fehlgeschlagene neue Tests: 1 (T8 Bedarfsseite BD-24: Tag, Rechnung, )
+ERKANNT   M10 Bedarfsseite: Chip „geschätzt“ entfällt | fehlgeschlagene neue Tests: 2 (T8 Bedarfsseite BD-24: Tag, Rechnung, ; T8 Bedarfsseite der Beispielbedarfe: B)
+ERKANNT   M11 Bedarfsseite: Satz „In den 7 Tagen davor“ immer anzeigen | fehlgeschlagene neue Tests: 2 (T8 Bedarfsseite BD-24: Tag, Rechnung, ; T8 Bedarfsseite der Beispielbedarfe: B)
+ERKANNT   M12 Übersicht: Detailzeile wird nicht benutzt | fehlgeschlagene neue Tests: 1 (T8 Übersicht: Zeile „Prüfbitte spätest)
+
+ÜBERLEBT (von der neuen Testdatei nicht erkannt): keine

@@ -25,10 +25,10 @@ Praxisbelege gibt es keine: Die Prüfzeiten von 14 und 10 Tagen bleiben Simulati
 | A3 | Demo, lokaler Stand | `demo-pruefung.js` | 28 von 28, keine Konsolen- und Netzfehler | `A3-demo-lokal-konsole.txt` |
 | A4 | Demo, heruntergeladene Auslieferung | `demo-pruefung.js` | 28 von 28 | `A4-demo-veroeffentlicht-konsole.txt` |
 | A4-N | Download gegen Nachbau aus `bauen-artifact.mjs` | `sha256sum` je Datei | 34 von 35 byte-gleich, nur `index.html` (Seitentitel und HTML-Rahmen) | `A4-nachbau-vergleich.txt` |
-| A5 | Pilot-Skript auf dem Pitch-Stand | `node docs/pilot/cf-pilot-01-simulation.mjs` | Exitcode 0, Bestellfrist BD-24 erstmals am 13.02.2027 | `A5-pilot-simulation-pitchstand.txt` |
+| A5 | Pilot-Skript auf dem Pitch-Stand | `node docs/pilot/cf-pilot-01-simulation.mjs` | Exitcode 0 (laut Bericht des Prüflaufs; die Rohausgabe enthält keine Exitcode-Zeile, in Runde 2 erneut ausgeführt), Bestellfrist BD-24 erstmals am 13.02.2027 | `A5-pilot-simulation-pitchstand.txt` |
 | B1a | Regeltests Entwicklungsstand | derselbe Befehl wie A1 | 210 von 210 (190 + 20 neue) | `B1-regeltests-rohausgabe.txt` |
 | B1b | neue Testdatei | `node --test plattform/test/pruefbittefrist.test.mjs` | 20 von 20, nichts übersprungen | `B1-pruefbittefrist-rohausgabe.txt` |
-| B1c | Pilot-Skript | `node docs/pilot/cf-pilot-01-simulation.mjs` | Exitcode 0; „Prüfbitte spätestens“ BD-24 am 05.02.2027, erstmals sichtbar am 30.01.2027; Bestellfrist erstmals am 13.02.2027 | `B1-pilot-simulation.txt` |
+| B1c | Pilot-Skript | `node docs/pilot/cf-pilot-01-simulation.mjs` | Exitcode 0 (siehe A5); „Prüfbitte spätestens“ BD-24 am 05.02.2027, erstmals sichtbar am 30.01.2027; Bestellfrist erstmals am 13.02.2027 | `B1-pilot-simulation.txt` |
 | B1d | Taugen die 20 Tests? (Mutationsprobe auf Kopien außerhalb des Repositorys) | `mutationen.py` | 12 Mutationen, alle erkannt, keine überlebt | `B1-mutationsprobe.txt` |
 | BA-1 bis BA-5 | Browserabläufe aus Plan Abschnitt 6, Gesamtlauf | `ba-1-bis-5.js` | 61 Prüfungen, 0 Abweichungen (10 + 15 + 15 + 14 + 7) | `B2-ba1-bis-ba5-gesamtlauf.txt` |
 | X1 bis X3 | Zusatzabläufe: Fristtag, Bedarf ergänzen, Bedarf ohne Annahmefenster | `ba-zusatz-*.js` | 16, 8 und 5 Prüfungen, alle bestanden | `B2-zusatz-*.txt` |
@@ -37,9 +37,13 @@ Praxisbelege gibt es keine: Die Prüfzeiten von 14 und 10 Tagen bleiben Simulati
 | B5 | Geänderte Dateien | `git diff --stat 23dc050 dca307f` | genau die sieben im Plan erlaubten Dateien; keine verbotenen Pfade | `B5-diff-stat.txt` |
 | B6 | Eigene Stichproben der Regel gegen Handrechnung (Schaltjahr, Jahreswechsel, Zeitumstellung, Prüfzeit 0 und 365, ungültige Angaben) | `b6-stichproben.mjs` | je 57 Prüfungen, 0 Fehler, in vier Zeitzonen identisch | `B6-stichproben-*.txt` |
 
-Zwei Läufe sind mit ihren ersten, fehlerhaften Ausgaben aufbewahrt (`…lauf1-mit-Skriptfehler`, `…lauf1-mit-Erwartungsfehler`).
-Die Fehler lagen in den Prüfskripten (falsche Erwartung des Prüfers), nicht in der Anwendung. Danach wurden die Skripte
-korrigiert und neu ausgeführt.
+Vorläufe und Einzelproben sind mit ihren ersten Ausgaben aufbewahrt: `B2-ba1-ba2-lauf1.txt`, `B2-ba3-probe.txt`,
+`B2-ba4-probe.txt`, `B2-ba5-probe.txt` (endet mit einem Timeout beim Warten auf eine Überschrift: Das Skript rief nach dem
+Zurücksetzen einen nicht mehr vorhandenen Bedarf auf, die Seite zeigt dann einen Hinweistext), `B6-…-lauf1-mit-Skriptfehler.txt`
+(60 Prüfungen mit 3 Fehlmeldungen durch eine falsche Variante im Skript, danach 57 Prüfungen) und
+`B2-zusatz-grenztag-konsole-lauf1-mit-Erwartungsfehler.txt` (2 Abweichungen durch die falsche Erwartung „noch 14 Std.“). Die
+Fehler lagen in den Prüfskripten, nicht in der Anwendung. Danach wurden die Skripte korrigiert und neu ausgeführt. Maßgeblich
+sind die Gesamtläufe.
 
 ## Hinweise des Prüflaufs und ihr Umgang
 

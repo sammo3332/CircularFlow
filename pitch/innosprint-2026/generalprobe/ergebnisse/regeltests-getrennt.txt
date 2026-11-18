@@ -1,0 +1,16 @@
+Regeltests getrennt nachgezählt (Zählzeilen des Testläufers)
+Codestand: 75fd769, plattform/ und prototype/ unverändert
+
+Befehl: node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs
+# tests 46
+# pass 46
+# fail 0
+# skipped 0
+# todo 0
+
+Befehl: node --test plattform/test/*.test.mjs
+# tests 144
+# pass 144
+# fail 0
+# skipped 0
+# todo 0
