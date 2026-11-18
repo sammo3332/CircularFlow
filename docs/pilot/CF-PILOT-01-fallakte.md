@@ -62,8 +62,9 @@ Zwei Befunde aus der Nachrechnung:
    Tür bleibt sichtbar.
 2. Als nächster Schritt der zweite Vorgang für die Restmenge.
 
-Der Plan steht in [`docs/plan-restmenge.md`](../plan-restmenge.md). Umgesetzt ist nichts davon. Die Frist „Prüfbitte
-spätestens“ bleibt ein späterer Kandidat (Abschnitt 9).
+Der Plan steht in [`docs/plan-restmenge.md`](../plan-restmenge.md). Davon ist nichts umgesetzt. Die Frist „Prüfbitte
+spätestens“ war ein späterer Kandidat und ist am 18.11.2026 auf dem Entwicklungsbranch umgesetzt (Abschnitt 9, Nachtrag
+in Abschnitt 11).
 
 ## 2. Annahmen
 
