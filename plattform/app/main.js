@@ -6,7 +6,7 @@ import { pruefeProjekt, projektAusEntwurf } from './projektanlage.js';
 import { vorgangSchritt, checklisteSetzen } from './vorgang.js';
 import { neuerUiZustand, leererKatalog, leereBedarfsliste, leererBestand, leereRadarFilter, leeresBedarfsformular, leeresProjektformular, leeresVorgangsformular, bedarfsformularStarten } from './uizustand.js';
 import { ladePersistenz, speichere, loesche, baueDaten, leerePersistenz, anzahlEigeneAenderungen } from './zustand.js';
-import { schluessel, moeglicheZiele, neueEntscheidung, bauteilAusErfassung, naechsteBauteilId, pruefeErfassung, erkennungSimulation, radarSchritt, pruefeMeldung, ifcVorpruefung, ZAHL, lage, vermerkSchritt, beispielAufmassRechtzeitig } from './regeln.js';
+import { schluessel, moeglicheZiele, neueEntscheidung, bauteilAusErfassung, naechsteBauteilId, pruefeErfassung, radarSchritt, pruefeMeldung, ifcVorpruefung, ZAHL, lage, vermerkSchritt, beispielAufmassRechtzeitig } from './regeln.js';
 import { esc, icon, slug, pchip, nichtGefunden, laedt, routeBedarf, routeEntscheidung } from './ui.js';
 import { zeit, jetztBerlin } from './zeit.js';
 import { karteMontieren, karteEntfernen, markerHervorheben } from './karte.js';
@@ -15,6 +15,7 @@ import { gebaeudeAnsicht } from './ansichten/gebaeude.js';
 import { bestand, pass } from './ansichten/bauteile.js';
 import { entscheidungsListe, entscheidungsSeite } from './ansichten/entscheidung.js';
 import { erfassung, leererEntwurf } from './ansichten/erfassung.js';
+import { etikettLesen } from './etikett-integration.js';
 import { radar, leereMeldung } from './ansichten/radar.js';
 import { uebersicht } from './ansichten/uebersicht.js';
 import { katalog } from './ansichten/katalog.js';
@@ -50,7 +51,7 @@ function uebernehmen(aenderung) {
   const r = speichere(speicher, p);
   if (!speicher) ui.speicherHinweis = 'Dieser Browser erlaubt keinen lokalen Speicher. Änderungen gehen beim Neuladen verloren.';
   else if (!r.ok) ui.speicherHinweis = 'Speichern im Browser ist fehlgeschlagen. Änderungen gehen beim Neuladen verloren.';
-  else if (r.fotosNichtGespeichert) ui.speicherHinweis = `Der Browserspeicher ist voll. ${r.fotosNichtGespeichert === 1 ? 'Ein Foto bleibt' : `${r.fotosNichtGespeichert} Fotos bleiben`} nur bis zum Neuladen erhalten. Diese Bauteile zeigen „Foto nicht gespeichert“ unter den offenen Nachweisen.`;
+  else if (r.fotosNichtGespeichert) ui.speicherHinweis = `Der Browserspeicher ist voll. ${r.fotosNichtGespeichert === 1 ? 'Ein Foto bleibt' : `${r.fotosNichtGespeichert} Fotos bleiben`} nur bis zum Neuladen erhalten. Fehlende Fotos sind im jeweiligen Bauteilpass gekennzeichnet.`;
   else ui.speicherHinweis = '';
 }
 
@@ -283,6 +284,7 @@ app.addEventListener('input', (ev) => {
   if (t.id === 'kat-menge') { ui.katalog.mindest = t.value; render(); return; }
   if (t.id === 'erf-menge') { ent.menge = t.value; delete ent.fehler.menge; render(); return; }
   if (t.id === 'erf-notiz') { ent.notiz = t.value; return; }
+  if (t.dataset.etikett) { ent.etikett.pruefung[t.dataset.etikett] = {wert:t.value,geprueft:false}; delete ent.fehler.etikett; const box=app.querySelector(`[data-etikett-check="${t.dataset.etikett}"]`); if(box)box.checked=false; return; }
   if (t.dataset.wert && t.tagName === 'INPUT') {
     const f = GRUPPEN[ent.gruppe].felder.find((x) => x.key === t.dataset.wert);
     const leer = !t.value.trim();
@@ -295,6 +297,14 @@ app.addEventListener('input', (ev) => {
 
 app.addEventListener('change', async (ev) => {
   const t = ev.target; const ent = ui.erfassung;
+  if (t.dataset.etikettCheck) { const p=ent.etikett.pruefung[t.dataset.etikettCheck]; p.geprueft=t.checked; delete ent.fehler.etikett; return; }
+  if (t.id === 'erf-etikett') {
+    const file=t.files?.[0]; if(!file||ent.etikettLaedt)return;
+    ent.etikettLaedt=true;ent.etikettFehler='';ent.etikett=null;render();
+    try {const result=await etikettLesen(file);if(ui.erfassung===ent)ent.etikett=result;}
+    catch(err){if(ui.erfassung===ent)ent.etikettFehler='Texterkennung nicht verfügbar: '+err.message;}
+    finally{ent.etikettLaedt=false;if(ui.erfassung===ent)render();}return;
+  }
   if (t.dataset.ff) { formEingabe(t); if (t.dataset.neuZeichnen) render(); return; }
   if (t.dataset.checkliste) { checklisteUmschalten(t); return; }
   if (t.id === 'projektzeit' || t.id === 'projektzeit-m') { ui.at = t.value; render(); melde(`Stichtag der Demo ${PROJEKTZEITEN.find((z) => z.at === t.value).label} (Simulation). Alle Ansichten zeigen diesen Stand.`); return; }
@@ -530,6 +540,7 @@ function gruppeWaehlen(g) {
 }
 
 function erfWeiter() {
+  if(ui.erfassung.etikettLaedt)return;
   const ent = ui.erfassung; const f = pruefeErfassung(ent);
   const relevant = { 1: ['ort'], 2: [], 3: ['gruppe', 'menge', 'verfuegbarAb'], 4: Object.keys(f).filter((x) => x.startsWith('wert-')) }[ent.schritt] || [];
   ent.fehler = Object.fromEntries(Object.entries(f).filter(([x]) => relevant.includes(x)));
@@ -542,6 +553,7 @@ function erfWeiter() {
 }
 
 function erfSpeichern() {
+  if(ui.erfassung.etikettLaedt)return;
   const ent = ui.erfassung; const f = pruefeErfassung(ent);
   if (Object.keys(f).length) { ent.fehler = f; ui.fokus = 'erf-fehler'; render(); return; }
   const pr = db.projekte.find((x) => x.kurz === ent.projekt);
@@ -570,9 +582,7 @@ async function fotoAufnehmen(datei) {
     const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth * s); c.height = Math.round(img.naturalHeight * s);
     c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
     ent.foto = { daten: c.toDataURL('image/jpeg', 0.78), breite: c.width, hoehe: c.height, name: datei.name };
-    ent.erkennung = erkennungSimulation({ breite: c.width, hoehe: c.height });
-    if (!ent.gruppe) gruppeWaehlen(ent.erkennung.gruppe);
-    else if (ent.gruppe === ent.erkennung.gruppe) for (const [key, wert] of Object.entries(GRUPPEN[ent.gruppe].vorschlag)) if (!ent.werte[key] || ent.werte[key].status === 'fehlt') ent.werte[key] = { eingabe: String(wert), status: 'vorgeschlagen', quelle: 'Erkennung (Simulation)' };
+    ent.erkennung = null; // Keine Erkennung oder Maße aus dem Fotoformat ableiten.
   } catch (err) { ent.fotoFehler = err.message; } finally { URL.revokeObjectURL(url); ent.fotoLaedt = false; }
   ui.fokus = 'erf-foto'; render();
 }
@@ -637,4 +647,5 @@ async function ladeGeo() {
 }
 Promise.all([ladeTuerregel(), ladeGeo()]).then(([mod, g]) => { R = mod; geo = g; render(); })
   .catch(() => { app.innerHTML = '<div class="leer"><b>Die Anwendung konnte nicht starten.</b><p>Bitte über einen lokalen Server vom Repository-Wurzelverzeichnis aus öffnen (siehe README).</p></div>'; });
+
 

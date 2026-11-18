@@ -1,0 +1,20 @@
+CircularFlow · lokaler Entwicklungsversuch · 18.11.2026
+
+Im entpackten Ordner mit plattform/ und prototype/ starten:
+python3 -m http.server 8000
+Windows gegebenenfalls: py -m http.server 8000
+
+Dann http://localhost:8000/plattform/#erfassung öffnen.
+Ort wählen. In Schritt 2 Typenschild wählen, auf die Texterkennung warten.
+Testbild: plattform/etikett-versuch/fixtures/testetikett.png (synthetisch).
+In Schritt 3 Angaben korrigieren und einzeln bestätigen. Bauteilgruppe selbst wählen.
+In Schritt 5 speichern, Bauteilpass öffnen und neu laden.
+
+Die benötigte Scan-Engine und Sprachdatei sind im Paket enthalten.
+Kein Doppelklick auf index.html. Ohne lokalen Webserver läuft der Versuch nicht.
+Die Plattform speichert lokal in diesem Browser, nicht gemeinsam zwischen Geräten.
+Kein bestätigter Handy-/Browserablauf in dieser Umgebung. Vor Live-Demo Geräteprobe!
+Keine Maße, Brandschutzprüfung oder Fachfreigabe aus dem Foto.
+
+Anleitung: plattform/README.md
+Prüfbericht: docs/pruefungen/uebernahme-2026-11-18.md

@@ -48,10 +48,16 @@ export function speichere(speicher, p) {
   // Ältere, bereits gespeicherte Fotos bleiben so erhalten. Weggelassene Fotos bleiben bis zum Neuladen sichtbar.
   const kopie = { ...p, erfassungen: [...p.erfassungen] };
   for (let i = kopie.erfassungen.length - 1; i >= 0; i -= 1) {
+    const e=kopie.erfassungen[i];
+    if(!e.etikett?.foto?.daten) continue;
+    kopie.erfassungen[i]={...e,etikett:{...e.etikett,foto:{...e.etikett.foto,daten:null,nichtGespeichert:true}}};
+    try {speicher.setItem(SPEICHERSCHLUESSEL,JSON.stringify(kopie));return {ok:true,fotosNichtGespeichert:kopie.erfassungen.filter(x=>x.etikett?.foto?.nichtGespeichert).length};} catch {}
+  }
+  for (let i = kopie.erfassungen.length - 1; i >= 0; i -= 1) {
     const e = kopie.erfassungen[i];
     if (!e.foto?.daten) continue;
     kopie.erfassungen[i] = { ...e, foto: { ...e.foto, daten: null, nichtGespeichert: true } };
-    try { speicher.setItem(SPEICHERSCHLUESSEL, JSON.stringify(kopie)); return { ok: true, fotosNichtGespeichert: kopie.erfassungen.filter((x) => x.foto?.nichtGespeichert).length }; } catch { /* nächstes Foto */ }
+    try { speicher.setItem(SPEICHERSCHLUESSEL, JSON.stringify(kopie)); return { ok: true, fotosNichtGespeichert: kopie.erfassungen.reduce((n,x)=>n+Number(Boolean(x.foto?.nichtGespeichert))+Number(Boolean(x.etikett?.foto?.nichtGespeichert)),0) }; } catch { /* nächstes Foto */ }
   }
   return { ok: false, grund: 'Speicher nicht verfügbar' };
 }
@@ -89,3 +95,4 @@ export function anzahlEigeneAenderungen(p) {
   return ['erfassungen', 'zuordnungen', 'ereignisse', 'meldungen', 'projekteAusRadar', 'ezustand', 'radar', 'werte', 'bedarfe', 'bedarfAenderungen', 'projekteEigen']
     .reduce((s, k) => s + n(p?.[k]), 0);
 }
+

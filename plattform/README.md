@@ -1,3 +1,25 @@
+# Entwicklungszusatz: Etikett in den Bauteilpass übernehmen
+
+Stand 18.11.2026 · Arbeitsstand, nicht veröffentlichte Pitch-Vorschau.
+
+Aus dem vollständigen Testpaket im Ordner mit `plattform/` und `prototype/` starten:
+
+```sh
+python3 -m http.server 8000
+```
+
+`http://localhost:8000/plattform/#erfassung` öffnen. Ort wählen, in Schritt 2 optional ein Typenschild fotografieren oder `plattform/etikett-versuch/fixtures/testetikett.png` wählen. Warten, dann in Schritt 3 jeden Wert am Foto prüfen und bestätigen. Bauteilgruppe, Maße und Verfügbarkeit bleiben getrennte Eingaben. In Schritt 5 speichern und den Bauteilpass öffnen. Hersteller, Modell, Seriennummer, Baujahr und Herkunft bleiben beim Neuladen erhalten. Bei vollem Browserspeicher können Fotos entfallen; die Oberfläche weist darauf hin.
+
+Aus dem Git-Quellstand zuerst im Unterordner `plattform/etikett-versuch` `npm install` und `npm run vendor` ausführen, dann zum Repository-Stamm zurückkehren und den Server starten. Im beigefügten Testpaket sind Engine und Sprachdatei schon enthalten.
+
+Die Foto-Texterkennung arbeitet lokal mit Tesseract.js 7.0.0. Das ist keine Objekterkennung und kein Aufmaß. Die frühere Vorschlagsbildung anhand des Bildformats wird in der Erfassungsoberfläche nicht mehr ausgelöst. Geprüft wurden Regeln, Speichern/Neuladen und HTML-Ausgabe in Node sowie echte OCR auf synthetischen Bildern. Interaktiver Browser, Smartphone, Kamera, App-Installation und reale Baustellen sind noch nicht geprüft. Die Anwendung bleibt ein Web-Prototyp ohne gemeinsame Serverdatenbank oder geräteübergreifende Synchronisation. Die bestehende Karte kann externe Kartenkacheln laden; die OCR sendet das Foto an keinen Dienst.
+
+Der bisherige `bauen-artifact.mjs`-Export wurde für OCR nicht erweitert oder geprüft. Für diesen Versuch die vollständige lokale Ordnerstruktur verwenden.
+
+Prüfbericht und Geräteprobe: `docs/pruefungen/uebernahme-2026-11-18.md`. Der folgende ursprüngliche README-Stand beschreibt die Basis einschließlich der getrennten Fristerweiterung.
+
+---
+
 # CircularFlow Plattform · Fassung 2
 
 Stand 16.11.2026, Entwicklungsstand „Prüfbitte spätestens“ vom 18.11.2026 (Fassung 2, Plan und Regeln: [`docs/plattform-v2.md`](../docs/plattform-v2.md)). Fassung 1 war der erste durchgehende Klickablauf der Arbeitsplattform für Bauteilmanagement und
@@ -118,3 +140,4 @@ node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform
 | `test/abgleich.test.mjs`, `vorgang`, `kennzahlen`, `bedarf`, `projektanlage`, `zustand`, `befunde` | Tests des Fachkerns der Fassung 2 und der Review-Befunde; `_hilfe.mjs` baut den Prüfkontext |
 | `test/pruefbittefrist.test.mjs` | Tests der Frist „Prüfbitte spätestens“ (Regel, Gleichlauf mit dem Abgleich, Übersicht, Bedarfsseite, Demo-Stichtag) |
 | `bauen-artifact.mjs` | erzeugt die Fassung für eine Veröffentlichung als claude.ai-Seite |
+

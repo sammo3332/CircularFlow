@@ -1,13 +1,14 @@
 // Mobile Erfassung: Ort → Foto → Bauteil → Angaben → Prüfen und Speichern.
-// Die Erkennung ist simuliert und sichtbar gekennzeichnet. Es findet keine Bildanalyse statt.
+// Etikett-Texterkennung ist echt. Bauteilgruppe und Aufmaß bleiben manuell.
 import { GRUPPEN, ZUSTAND, WERTSTATUS } from '../daten.js';
 import { esc, chip, wertChip, icon, slug, routePass, pchip, leer, seitenkopf } from '../ui.js';
 import { pruefeErfassung, wertText } from '../regeln.js';
 import { datum } from '../zeit.js';
+import { FELDER } from '../etikett-integration.js';
 import { raumVon } from './projekte.js';
 
 export const SCHRITTE = ['Ort', 'Foto', 'Bauteil', 'Angaben', 'Prüfen'];
-export const leererEntwurf = (projekt = '', raum = '') => ({ schritt: 1, projekt, raum, foto: null, fotoFehler: '', fotoLaedt: false, erkennung: null, gruppe: '', werte: {}, menge: '1', zustand: '', verfuegbarAb: '', notiz: '', fehler: {}, gespeichert: null });
+export const leererEntwurf = (projekt = '', raum = '') => ({ schritt: 1, projekt, raum, foto: null, fotoFehler: '', fotoLaedt: false, etikett: null, etikettLaedt: false, etikettFehler: '', erkennung: null, gruppe: '', werte: {}, menge: '1', zustand: '', verfuegbarAb: '', notiz: '', fehler: {}, gespeichert: null });
 
 export function erfassung(ctx) {
   const ent = ctx.ui.erfassung;
@@ -24,7 +25,7 @@ export function erfassung(ctx) {
     </section>
     <div class="erf-aktionen">
       ${ent.schritt > 1 ? `<button type="button" class="knopf-leise" id="erf-zurueck" data-action="erf-zurueck">${icon('zurueck')} Zurück</button>` : '<span></span>'}
-      ${ent.schritt < 5 ? `<button type="button" class="knopf" id="erf-weiter" data-action="erf-weiter">Weiter ${icon('pfeil')}</button>` : `<button type="button" class="knopf" id="erf-speichern" data-action="erf-speichern">${icon('haken')} Speichern</button>`}
+      ${ent.schritt < 5 ? `<button type="button" class="knopf" id="erf-weiter" ${ent.etikettLaedt ? 'disabled' : ''} data-action="erf-weiter">Weiter ${icon('pfeil')}</button>` : `<button type="button" class="knopf" id="erf-speichern" ${ent.etikettLaedt ? 'disabled' : ''} data-action="erf-speichern">${icon('haken')} Speichern</button>`}
     </div>
     ${meineErfassungen(ctx)}
   </div>`;
@@ -56,7 +57,14 @@ function schritt2(ctx, ent) {
     ${ent.foto ? `<p class="leise">${esc(ent.foto.name)} · ${ent.foto.breite} × ${ent.foto.hoehe} px nach Verkleinerung</p>` : ''}
     ${er ? `<div class="ergebnisbox sim" role="status"><p><b>Erkennung · Simulation</b> ${chip('keine echte Bildanalyse', 'sim')}</p>
       <p>Vorschlag: <b>${esc(GRUPPEN[er.gruppe].einzahl)}</b>, abgeleitet nur aus dem Seitenverhältnis (${esc(er.grund)}). Vorgeschlagene Werte erscheinen als „vorgeschlagen“ und müssen geprüft oder gemessen werden.</p></div>` : ''}
-    ${ent.foto ? '<button type="button" class="knopf-leise" data-action="erf-foto-weg">Foto entfernen</button>' : '<p class="klein">Ohne Foto weiter ist möglich. Das Foto fehlt dann als Nachweis.</p>'}`;
+    ${ent.foto ? '<button type="button" class="knopf-leise" data-action="erf-foto-weg">Foto entfernen</button>' : '<p class="klein">Ohne Foto weiter ist möglich. Das Foto fehlt dann als Nachweis.</p>'}
+    <hr><h3>Typenschild auslesen (Versuch)</h3>
+    <p>Optional: Etikett nah und scharf fotografieren. Die Texterkennung läuft lokal. Im nächsten Schritt Angaben korrigieren und einzeln bestätigen. Maße bleiben offen.</p>
+    <label for="erf-etikett">Foto des Typenschilds wählen</label>
+    <input id="erf-etikett" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" ${ent.etikettLaedt ? 'disabled' : ''}>
+    ${ent.etikettLaedt ? '<p role="status">Etikett wird gelesen … Bitte warten.</p>' : ''}
+    ${ent.etikettFehler ? `<p role="alert" class="feld-meldung">${esc(ent.etikettFehler)}</p>` : ''}
+    ${ent.etikett ? '<p role="status">Texterkennung fertig. Angaben in Schritt 3 prüfen.</p>' : ''}`;
 }
 
 function schritt3(ctx, ent) {
@@ -73,7 +81,19 @@ function schritt3(ctx, ent) {
     <fieldset class="zustandswahl"><legend>Zustand nach Sichtprüfung</legend>
       ${Object.entries(ZUSTAND).map(([k, t]) => `<label class="zustandschip"><input type="radio" name="erf-zustand" value="${k}" ${ent.zustand === k ? 'checked' : ''}><span><b class="zustand z-${k}">${k}</b>${esc(t)}</span></label>`).join('')}
     </fieldset>
-    <div class="feld"><label for="erf-notiz">Notiz zum Zustand</label><input id="erf-notiz" value="${esc(ent.notiz)}" placeholder="z. B. Kantenschaden unten links"></div>`;
+    <div class="feld"><label for="erf-notiz">Notiz zum Zustand</label><input id="erf-notiz" value="${esc(ent.notiz)}" placeholder="z. B. Kantenschaden unten links"></div>${etikettFelder(ent)}`;
+}
+
+function etikettFelder(ent) {
+ if (!ent.etikett) return '';
+ const e=ent.etikett;
+ return `<section aria-labelledby="etikett-titel"><h3 id="etikett-titel">Angaben vom Typenschild prüfen</h3>
+ <p>Jede übernommene Angabe am Foto prüfen und bestätigen. Falsche Vorschläge korrigieren oder leeren. Bestätigung betrifft nur den Text, keine technische Eignung.</p>
+ ${e.foto ? `<img src="${esc(e.foto.daten)}" alt="Gewähltes Typenschild als Prüfreferenz" style="max-width:100%;max-height:300px;object-fit:contain">` : ''}
+ <details><summary>Erkannten Text anzeigen</summary><pre style="white-space:pre-wrap">${esc(e.scan.rohtext)}</pre></details>
+ ${e.scan.hinweise.map(h=>`<p class="klein">${esc(h)}</p>`).join('')}
+ <div class="formular">${Object.entries(FELDER).map(([k,label])=>`<div class="feld"><label for="etikett-${k}">${esc(label)}</label><input id="etikett-${k}" data-etikett="${k}" maxlength="120" value="${esc(e.pruefung[k].wert)}"><label><input type="checkbox" data-etikett-check="${k}" ${e.pruefung[k].geprueft?'checked':''}> Am Foto geprüft</label><small>${esc(e.scan.felder[k].status==='vorgeschlagen'?'OCR-Vorschlag, ungeprüft':e.scan.felder[k].status==='uneindeutig'?'Uneindeutig, manuell klären':'Keine Angabe erkannt')}</small></div>`).join('')}</div>
+ ${fehlerText(ent,'etikett')}</section>`;
 }
 
 function schritt4(ctx, ent) {
@@ -119,6 +139,7 @@ function schritt5(ctx, ent, projekte, p, ort) {
         <div><dt>Verfügbar ab</dt><dd>${ent.verfuegbarAb ? datum(ent.verfuegbarAb + 'T00:00') : 'nicht angegeben'}</dd></div>
       </dl>
     </div>
+    ${ent.etikett ? etikettFelder(ent) : ''}
     ${g ? `<ul class="prueffelder" aria-label="Angaben mit Status">${g.felder.map((f) => { const w = ent.werte[f.key] || { status: 'fehlt' }; const anzeige = w.status === 'fehlt' ? '–' : wertText(f, { wert: w.eingabe }); return `<li><span class="pf-text"><span class="pf-name">${esc(f.label)}</span><span class="pf-wert mono">${esc(anzeige)}</span></span>${wertChip(w.status)}</li>`; }).join('')}</ul>` : ''}
     <p class="klein">Nach dem Speichern erscheint das Bauteil im Bestand von ${p ? esc(p.kurz) : 'diesem Projekt'} und hat einen eigenen Pass. Fehlende und vorgeschlagene Angaben stehen dort als offene Nachweise.</p>`;
 }
@@ -153,3 +174,4 @@ function meineErfassungen(ctx) {
     <p class="leise">${ctx.eigeneAenderungen} eigene ${ctx.eigeneAenderungen === 1 ? 'Änderung' : 'Änderungen'} (Erfassungen, Zuordnungen, Aufmaße, Radar-Prüfungen, Meldungen). Sie liegen nur in diesem Browser.</p>
   </section>`;
 }
+

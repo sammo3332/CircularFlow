@@ -1,0 +1,20 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {etikettStart,etikettUebernehmen} from '../app/etikett-integration.js';
+import {pruefeErfassung,bauteilAusErfassung} from '../app/regeln.js';
+import {leerePersistenz,speichere,ladePersistenz} from '../app/zustand.js';
+import {kontext,START} from './_hilfe.mjs';
+import {erfassung,leererEntwurf} from '../app/ansichten/erfassung.js';
+import {pass} from '../app/ansichten/bauteile.js';
+import {neuerUiZustand} from '../app/uizustand.js';
+const raw='Hersteller: MUSTERWERK\nModell: TUER-17\nSeriennummer: CF-001\nBaujahr: 2020\nBreite: 985 mm\nFeuerwiderstand: T30';
+function entwurf(){return {...leererEntwurf('LH','1.14'),gruppe:'tuer',etikett:etikettStart(raw)};}
+function bestaetigt(){const e=entwurf();Object.values(e.etikett.pruefung).forEach(p=>p.geprueft=true);return e;}
+function bauteil(e=bestaetigt()){return bauteilAusErfassung(e,{id:'T-13',at:START,etage:'1.OG'});}
+test('Ungeprüfte OCR-Vorschläge blockieren Speichern, auch direkt über die Erfassungsregel',()=>{const e=entwurf();assert.match(pruefeErfassung(e).etikett,/bestätigen/);assert.throws(()=>bauteil(e),/bestätigen/);});
+test('Bestätigte Etikettangaben bleiben von Aufmaß und Fachfreigabe getrennt',()=>{const e=bestaetigt();assert.deepEqual(pruefeErfassung(e),{});const b=bauteil(e);assert.equal(b.hersteller,'MUSTERWERK');assert.equal(b.baujahr,'2020');assert.equal(b.etikett.felder.seriennummer.wert,'CF-001');assert.equal(b.werte.breite.status,'fehlt');assert.equal(b.etikett.fachfreigabe,false);assert.equal(b.etikett.aufmass.status,'fehlt');assert.doesNotMatch(b.etikett.hinweis,/noch nicht im/);});
+test('Gelöschte Vorschläge brauchen keine Bestätigung, fehlendes Etikett bleibt optional',()=>{const e=entwurf();Object.values(e.etikett.pruefung).forEach(p=>p.wert='');assert.equal(etikettUebernehmen(e.etikett),null);assert.deepEqual(pruefeErfassung(e),{});assert.equal(bauteil({...e,etikett:null}).hersteller,'unbekannt');});
+test('Korrekturen behalten ihre Herkunft und unplausibles Baujahr wird abgewiesen',()=>{const e=bestaetigt();e.etikett.pruefung.modell.wert='KORREKTUR';assert.match(bauteil(e).etikett.felder.modell.quelle,/manuell/);e.etikett.pruefung.baujahr.wert='9999';assert.match(pruefeErfassung(e).etikett,/Baujahr/);});
+test('Speichern, Neuladen und Pass zeigen alle Etikettangaben und escapen Eingaben',()=>{const e=bestaetigt();e.etikett.pruefung.modell.wert='<script>alert(1)</script>';const p=leerePersistenz();p.erfassungen.push(bauteil(e));let data;const store={setItem:(k,v)=>data=v,getItem:()=>data};assert.equal(speichere(store,p).ok,true);const ctx={...kontext(ladePersistenz(store)),ui:neuerUiZustand()};const b=ctx.daten.bauteile.find(b=>b.id==='T-13');assert.equal(b.etikett.felder.seriennummer.wert,'CF-001');const html=pass(ctx,ctx.daten.projekte.find(p=>p.kurz==='LH'),b);assert.match(html,/&lt;script&gt;/);assert.doesNotMatch(html,/<script>alert/);assert.match(html,/CF-001/);assert.match(html,/keine Fachfreigabe/);});
+test('Bei Speicherknappheit entfällt das Etikettfoto, Metadaten bleiben erhalten',()=>{const e=bestaetigt();e.etikett.foto={daten:'data:groß',name:'etikett.png'};const p=leerePersistenz();p.erfassungen.push(bauteil(e));let data;const store={setItem:(k,v)=>{if(v.includes('data:groß'))throw Error('Quota');data=v;},getItem:()=>data};assert.equal(speichere(store,p).fotosNichtGespeichert,1);const b=ladePersistenz(store).erfassungen[0];assert.equal(b.etikett.foto.daten,null);assert.equal(b.etikett.felder.modell.wert,'TUER-17');assert.equal(p.erfassungen[0].etikett.foto.daten,'data:groß');});
+test('Erfassungsansicht zeigt OCR-Eingang, Prüfpflicht und eine Speichersperre während OCR',()=>{const ui=neuerUiZustand();ui.erfassung={...bestaetigt(),schritt:2,etikettLaedt:true};const ctx={...kontext(),ui,eigeneAenderungen:0};let html=erfassung(ctx);assert.match(html,/id="erf-etikett"/);assert.match(html,/id="erf-weiter" disabled/);ui.erfassung.schritt=3;html=erfassung(ctx);assert.match(html,/data-etikett-check="hersteller" checked/);assert.match(html,/Maße bleiben offen|keine technische Eignung/);});

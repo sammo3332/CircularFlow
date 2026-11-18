@@ -1,6 +1,7 @@
 // Reine Fachfunktionen der Plattform: kein DOM, kein Speicher, keine Systemuhr.
 // Die geprüfte Türregel (prototype/dist/door-rules.mjs) wird als Modul R übergeben und nicht verändert.
 import { GRUPPEN, PERSONEN } from './daten.js';
+import { etikettUebernehmen } from './etikett-integration.js';
 import { minuten, bis, istDatum, zeit, ausMinuten } from './zeit.js';
 import { vorgangStatus, naechsterVorgangsschritt, aktiverVorgang, uebergebenerVorgang, tagesende } from './vorgang.js';
 // Zirkulärer Import mit abgleich.js (das lage() nutzt): unbedenklich, weil keines der Module beim Laden Funktionen des anderen aufruft.
@@ -369,6 +370,7 @@ export function naechsteBauteilId(bauteile, projekt, gruppe) {
 // Prüft den Erfassungsentwurf. entwurf.werte: { key: { eingabe, status, quelle } }
 export function pruefeErfassung(entwurf) {
   const fehler = {};
+  try { etikettUebernehmen(entwurf.etikett); } catch (err) { fehler.etikett = err.message; }
   if (!entwurf.projekt || !entwurf.raum) fehler.ort = 'Bitte Projekt und Raum wählen.';
   if (!entwurf.gruppe || !GRUPPEN[entwurf.gruppe]?.erfassbar) fehler.gruppe = 'Bitte eine Bauteilgruppe wählen.';
   const g = GRUPPEN[entwurf.gruppe];
@@ -399,9 +401,10 @@ export function bauteilAusErfassung(entwurf, { id, at, von = 'browser', etage })
   const name = entwurf.gruppe === 'sonstig' ? (werte.bezeichnung?.wert || 'Bauteil') : g.einzahl;
   // Kennzeichnung „simulierte Erkennung“ nur, solange ein Wert noch aus der Simulation stammt.
   const ausSimulation = Object.values(werte).some((w) => /Simulation/.test(w.quelle || ''));
+  const etikett = etikettUebernehmen(entwurf.etikett);
   return {
     projekt: entwurf.projekt, id, gruppe: entwurf.gruppe, name, menge: Number(String(entwurf.menge).replace(',', '.')), etage, raum: entwurf.raum,
-    werte, zustand: entwurf.zustand || null, zustandText: entwurf.notiz || '', hersteller: 'unbekannt', baujahr: 'unbekannt',
+    werte, zustand: entwurf.zustand || null, zustandText: entwurf.notiz || '', hersteller: etikett?.felder.hersteller?.wert || 'unbekannt', baujahr: etikett?.felder.baujahr?.wert || 'unbekannt', etikett,
     status: 'erfasst', verfuegbarAb: entwurf.verfuegbarAb || null, foto: entwurf.foto ? { daten: entwurf.foto.daten, breite: entwurf.foto.breite, hoehe: entwurf.foto.hoehe } : null,
     erfassung: { art: 'Mobile Erfassung', am: at, von, erkennung: ausSimulation ? 'Simulation' : null },
     rueckbau: [['Schadstoffverdacht', 'nicht untersucht']],
@@ -457,3 +460,4 @@ export function ifcVorpruefung(text) {
   const z = (...namen) => namen.reduce((s, n) => s + (anzahl.get(n) || 0), 0);
   return { gueltig: true, schema, zaehlung: { Geschosse: z('IFCBUILDINGSTOREY'), Räume: z('IFCSPACE'), Türen: z('IFCDOOR', 'IFCDOORSTANDARDCASE'), Fenster: z('IFCWINDOW', 'IFCWINDOWSTANDARDCASE'), Wände: z('IFCWALL', 'IFCWALLSTANDARDCASE', 'IFCWALLELEMENTEDCASE') } };
 }
+

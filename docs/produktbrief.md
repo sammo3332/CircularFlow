@@ -1,3 +1,23 @@
+# Ergänzung zum Produktbrief · 18.11.2026 · Arbeitsentwurf
+
+Nur für den getrennten Übernahmebranch; der bisherige Pitch-Stand bleibt gültig. Diese Ergänzung erweitert den unten unverändert übernommenen Produktbrief 0.2 aufgrund des neuen Teamauftrags zur Scan-Erfassung.
+
+**Nutzerfall CF-SCAN-01 (Testannahme):** Eine erfassende Person im anbietenden Projekt fotografiert ein lesbares Typenschild. Sie will Hersteller, Modell/Typ, Seriennummer und Baujahr in den Bauteilpass übernehmen und ungeprüfte Vorschläge erkennen. Ein künstliches Etikett macht diesen Vorgang reproduzierbar. Ein realer Fall und der vermutete Zeitvorteil sind noch offen.
+
+**Erwartetes Verhalten und Abnahme:**
+
+1. Bildpixel werden lokal per OCR verarbeitet. Im Git-Quellstand sind vorher Engine und Sprachmodell bereitzustellen; das vollständige Testpaket enthält sie. Keine Ableitung von Bauteilgruppe oder Maßen allein aus dem Fotoformat.
+2. Beschriftete Metadaten bleiben Vorschläge. Alle nicht leeren Angaben verlangen Einzelbestätigung, Änderungen heben sie auf. Widersprüche und ungültige Jahre werden geklärt. Leere Felder dürfen fehlen.
+3. Nach Bestätigung und Speichern stehen Metadaten, Herkunft und Rohtext im Bauteilpass und bleiben nach Neuladen erhalten. Ein Etikettfoto kann bei Speicherknappheit entfallen; das wird sichtbar. Maße und Fachfreigabe bleiben getrennt.
+4. Automatisierte Regeln prüfen die Speicherung und Zustandsgrenzen. Echte OCR läuft auf markierten synthetischen Bildern. Erst ein gesondert protokollierter Geräteversuch belegt Browser/Kamera-Bedienung. Erst ein Vergleich einschließlich Korrekturzeit stützt eine Zeitaussage.
+
+Begründung: kleinster überprüfbarer Teil des gewünschten Scan-Ablaufs. Fachleute prüfen weiterhin das Bauteil und seine vorgesehene Nutzung. Kein Ersatz von A1–A5 der Zeitregel. Kein automatisch freigegebener Produktumfang, keine native App, keine Serverdatenbank und keine Veröffentlichung. Geschäftsmodell zur Erprobung: siehe Produktentscheidungen §6.
+
+Prüfweg und Grenzen: `docs/pruefungen/uebernahme-2026-11-18.md`.
+
+
+---
+
 # CircularFlow · Produktbrief
 
 **Fassung 0.2 · 08.11.2026 · Entwurf für den Prototyp**
@@ -40,3 +60,4 @@ Eine statische Oberfläche und lokaler Browserspeicher reichen für diese Simula
 ## Prüfung und Fortsetzung
 
 `node --test prototype/test/rules.test.mjs` prüft die Regel mit fiktiven Daten. Die wesentlichen Browserabläufe sind Öffnen, Bearbeiten, Auswerten, Speichern und Wiederöffnen. Der nächste Praxisversuch prüft an einer freigegebenen Fallnotiz, wer handeln kann, welche Felder erforderlich sind und welche Vorlaufannahme gilt.
+

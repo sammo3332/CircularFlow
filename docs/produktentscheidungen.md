@@ -63,3 +63,20 @@ hier keine zweite Liste zu führen. Die Anweisung vom 18.11.2026 geht vor, desha
 
 Plan und Priorisierung `23dc050`; Umsetzung `dca307f`, Nacharbeiten `995cfc1`, `154dfc2`; Dokumente und Berichte bis `6ea30e7` (Pitch-Branch)
 und `270e045` (Entwicklungsbranch). Der Commit dieser Datei steht im Git-Verlauf.
+
+
+## 6. Nachtrag 18.11.2026 · Übernahme durch ChatGPT
+
+**Festlegung des Auftraggebers:** ChatGPT übernimmt Claudes Arbeit und führt sie fort, weil Claude vorerst keine Tokens mehr hat. Quellen sind die bereitgestellten Projektunterlagen, die im Gespräch wiedergegebenen Claude-Berichte, die selbst gelesenen GitHub-Stände und der gelesene Canva-Entwurf. Kein Zugriff auf den vollständigen anderen Chat behauptet.
+
+**Änderung gegenüber A6:** Das damalige Verbot zusätzlicher Funktionen galt für die abgeschlossene Dokumentennachprüfung. Der neue Auftrag erlaubt die getrennte Weiterarbeit an Scan und Pitchentwurf. A1 und A3 bleiben für den freigegebenen Stand und externe Aktionen bestehen. Die zwei bisherigen Arbeitsbranches und die veröffentlichte Vorschau werden nicht verändert.
+
+**Gestaltung:** Wenig sichtbarer Text, große tatsächliche Produktansicht, Details im Sprechtext. Neue sieben Folien sind ein Arbeitsentwurf, keine Ersetzung der abgegebenen Dateien. Die frühere Freigabe nur dreier Muster wird durch den ausdrücklichen Fortsetzungsauftrag zum Entwurf des ganzen Decks erweitert.
+
+**Kleinster technischer Versuch (Empfehlung, umgesetzt im Arbeitsbranch):** Echte lokale Etikett-Texterkennung mit vier beschrifteten Metadaten. Korrektur und Einzelbestätigung vor Speicherung im Bauteilpass. Keine Maße, Materialzertifikate oder Freigabe aus dem Foto. Begründung: ein begrenzter, überprüfbarer Teil der gewünschten Erfassung. Offen: Browser-/Handyprobe und manuell-gegen-unterstützt-Vergleich.
+
+**Geschäftsmodellhypothese aus dem Teamgespräch:** Provisionen aus Bauteilgeschäften; zusätzlich eventuell Vermittlung von Fachleistungen und Transport. Gebühren bei beiden Projektseiten sowie Dienstleistern sind eine zu prüfende Variante, keine festgelegten Konditionen. Offen: Zahlungsbereitschaft, tatsächlicher Leistungsumfang, transparente Vereinbarung und Zuständigkeiten. Eine pauschale Haftungsfreiheit ist nicht festgestellt.
+
+**Umfang:** Türen bleiben konkreter Testfall. Fenster und Leuchten sind Beispiele der langfristigen Idee, keine nachgewiesenen Verkaufsschlager. Im Prototyp gibt es dafür noch keine eigenen Fachregeln. Fremde Eventfotos dienen als interne Gestaltungsreferenz; ihre Logos, Zahlen und Personen werden nicht in den neuen Pitch übernommen.
+
+Prüfweg, ausgeführte Tests, Grenzen und die nächsten drei Aufgaben stehen im Übernahmebericht, nicht in einer zweiten allgemeinen Entscheidungsliste.

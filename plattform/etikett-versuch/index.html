@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self'; img-src 'self' blob: data:; connect-src 'self'; style-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<title>CircularFlow · Etikett auslesen</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><a href="../" aria-label="Zurück">CircularFlow</a><span>Technischer Versuch · 18.11.2026</span></header>
+<main>
+<h1>Etikett fotografieren.<br>Angaben prüfen.</h1>
+<p class="lead">Hersteller, Modell und Seriennummer vom Typenschild übernehmen. Die Texterkennung läuft auf diesem Gerät.</p>
+<p class="boundary">Erkennt Schrift auf einem Etikett. Erkennt kein Bauteil und misst keine Abmessungen.</p>
+<section aria-labelledby="foto-title">
+<h2 id="foto-title">1. Typenschild aufnehmen</h2>
+<p>Das Schild möglichst nah, gerade und ohne Spiegelung fotografieren. Alle Zeichen sollten gut lesbar sein.</p>
+<label class="upload">Foto aufnehmen oder auswählen<input id="photo" type="file" accept="image/jpeg,image/png,image/webp" capture="environment"></label>
+<button id="fixture" class="secondary">Mit synthetischem Testetikett ausprobieren</button>
+<p id="origin" class="muted"></p><img id="preview" alt="Aufgenommenes Etikett" hidden>
+<button id="scan" disabled>Etikett auslesen</button><p id="progress" role="status" aria-live="polite"></p>
+<p id="error" role="alert" hidden></p>
+</section>
+<section id="result" aria-labelledby="result-title" hidden>
+<h2 id="result-title">2. Am Foto prüfen</h2><p>Vorschläge können falsch sein. Korrigiere jede übernommene Angabe und bestätige sie am Foto.</p>
+<form id="form"><div id="fields"></div><ul id="hints"></ul><p class="boundary">Maße, Brandschutz, Schadstoffe und Eignung werden nicht automatisch übernommen. Dafür bleiben Messung und Fachprüfung erforderlich.</p><button type="submit">Geprüften Entwurf lokal speichern</button><button id="export" type="button" class="secondary">Geprüften Entwurf als JSON herunterladen</button></form>
+<details><summary>Erkannten Originaltext ansehen</summary><pre id="raw"></pre></details><p id="duration" class="muted"></p>
+</section>
+<section aria-labelledby="saved-title"><h2 id="saved-title">3. Gespeicherte Entwürfe</h2><p>Nur in diesem Browser, getrennt vom CircularFlow-Bestand. Das Foto wird nicht mitgespeichert.</p><ul id="saved"></ul><button id="clear" class="secondary">Diese Etikettentwürfe löschen</button><p id="saved-status" role="status"></p></section>
+<footer>Keine API-Kosten, kein Foto-Upload. Benötigte Erkennungsdateien kommen vom selben Server. Smartphone-Bedienung und Zeitersparnis noch nicht in der Praxis geprüft.</footer>
+</main><script type="module" src="app.mjs"></script>
+</body></html>
