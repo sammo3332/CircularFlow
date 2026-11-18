@@ -277,6 +277,8 @@ heißt in Fassung 2 nur: Eine Person hat den Wert eingetragen oder übernommen. 
     die Übergabe.“
   - Prüfpunkt „Zwischenlagerung klären: 3 Tage zwischen dem frühesten Übergabetag 05.03.2027 und dem Beginn des
     Annahmefensters 08.03.2027.“
+  - Ist die Mindestprüfzeit als „geschätzt (Annahme)“ erfasst, kommt der Prüfpunkt „Geschätzte Angaben bestätigen:
+    Mindestprüfzeit.“ hinzu (so in der Nachrechnung, Variante 1).
   - „ca. 3,1 km Luftlinie (Lage symbolisch)“
 
   Die Werte für Januar und Februar 2027 stehen in Abschnitt 5.
@@ -381,6 +383,7 @@ Vorgang läuft. Der 13.02.2027 ist ein Samstag, im Büro fällt die Warnung also
     die Übergabe.“
 - **Prüfpunkte:**
   - Zwischenlagerung klären, 3 Tage zwischen 05.03. und 08.03.2027.
+  - Geschätzte Angaben bestätigen: Mindestprüfzeit (die 14 Tage sind als „geschätzt (Annahme)“ erfasst, siehe Schritt 6).
   - 1 offener Nachweis: Türblatt, Vorschlag prüfen.
   - Eignung von einer Fachperson prüfen lassen.
 - **Verlauf:**
