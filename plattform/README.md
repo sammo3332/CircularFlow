@@ -11,7 +11,7 @@ B-01 bis B-04 sind erfunden und zeigen den Prüfablauf.
 
 ## Entwicklungsstand: Prüfbitte spätestens
 
-Dieser Branch (`codex/plattform-entwicklung-20261118`) ergänzt die Frist „Prüfbitte spätestens“: den letzten Tag, an dem der Abgleich ein Angebot für einen Bedarf noch als prüfbar zeigt (der frühere Tag aus Bestellfrist und Ende des Annahmefensters, minus Mindestprüfzeit, in Kalendertagen).
+Dieser Branch (`codex/plattform-entwicklung-20261118`) ergänzt die Frist „Prüfbitte spätestens“: den letzten Tag, an dem der Abgleich ein Angebot für einen Bedarf bei vollständigen Zeitangaben noch als prüfbar zeigt (der frühere Tag aus Bestellfrist und Ende des Annahmefensters, minus Mindestprüfzeit, in Kalendertagen). Fehlt das Annahmefenster, meldet der Abgleich am Fristtag „Angaben fehlen“, die Bedarfsseite nennt den Tag trotzdem.
 Die Übersicht führt sie unter „Zeitkritisch (7 Tage)“, solange ein Angebot prüfbar ist und kein Vorgang läuft, und die Bedarfsseite nennt im Block „Angaben“ den Tag, seine Rechnung und die Herkunft („geschätzt“), bei fehlenden oder ungültigen Angaben „nicht berechenbar“ mit Grund.
 Abgleichregel, Vorgangsstatus, Beispieldaten und Speicher bleiben unverändert; Plan und Abnahmekriterien stehen in [`docs/plan-pruefbitte-spaetestens.md`](../docs/plan-pruefbitte-spaetestens.md).
 
