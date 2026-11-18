@@ -1,0 +1,14 @@
+   IST BD-21 vorher: {"wert":null,"chips":["nicht berechenbar"],"klein":["Bestellfrist fehlt. Mindestprüfzeit fehlt."]}
+OK         vorher: „nicht berechenbar“, „Bestellfrist fehlt. Mindestprüfzeit fehlt.“
+   IST BD-21 nachher: {"wert":"21.11.2026","chips":["geschätzt"],"klein":["Bestellfrist 24.11.2026 minus 3 Tage Mindestprüfzeit (geschätzt)","In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft."]}
+   IST Angebote auf der Bedarfsseite: 4 Angebote, davon 3 prüfbar
+OK         nachher: „21.11.2026“
+OK         nachher: Chip „geschätzt“, Rechnung „Bestellfrist 24.11.2026 minus 3 Tage Mindestprüfzeit (geschätzt)“
+   IST Kopf: Zeitkritisch (7 Tage) 6 Fristen · Überfälliges zuerst
+   IST Fristzeilen: [{"chip":"noch 2 Std.","titel":"Aufmaßfrist · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Mi 18.11., 16:00"},{"chip":"noch 20 Std.","titel":"Nachweisfrist · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 10:00"},{"chip":"noch 22 Std.","titel":"Ersatzentscheidung · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 12:00"},{"chip":"noch 1 Tg. 22 Std.","titel":"Ersatzentscheidung · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Fr 20.11., 12:00"},{"chip":"noch 3 Tg. 9 Std.","titel":"Prüfbitte spätestens · BD-21 · Innentüren Büroeinheiten","klein":"SB Bedarf · 3 prüfbare Paare · Bestellfrist 24.11.2026 minus 3 Tage Mindestprüfzeit (geschätzt)","zeit":"Sa 21.11., 23:59"},{"chip":"noch 6 Tg. 9 Std.","titel":"Bestellfrist · BD-21 · Innentüren Büroeinheiten","klein":"SB Bedarf, zum Bedarf","zeit":"Di 24.11., 23:59"}]
+OK         Zahl der Fristen = 4 + Prüfbitte (nur wenn 3 ≥ 1 prüfbare) + Bestellfrist BD-21 (24.11. liegt im Fenster)
+OK         Prüfbitte-Zeile: Chip „noch 3 Tg. 9 Std.“, Zeit „Sa 21.11., 23:59“ (Wochenende wird nicht verschoben, Plan E6)
+OK         Detailzeile nennt dieselbe Zahl wie die Bedarfsseite (3)
+OK         Reihenfolge nach Zeit: Prüfbitte (Sa 21.11., 23:59) vor der Bestellfrist (Di 24.11., 23:59)
+OK         keine Konsolen- oder Seitenfehler
+ZUSATZABLAUF ERGÄNZEN ALLES OK

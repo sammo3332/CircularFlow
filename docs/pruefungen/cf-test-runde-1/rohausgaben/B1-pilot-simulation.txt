@@ -1,0 +1,50 @@
+CF-PILOT-01 · Nachrechnung mit dem Fachkern von Fassung 2 (Simulation, fiktive Daten)
+Projekt: UAK · Umbau am Kanal · Bedarf BD-24 (6 Stk, Bestellfrist 19.02.2027, Mindestprüfzeit 14 Tage, Annahme 08.03.2027–12.03.2027)
+Angebot: LH · T-13 · 6 Stk, Raum 1.04, verfügbar ab 05.03.2027, erfasst 19.01.2027
+
+Wertstatus im Bauteilpass (aus der Erfassung):
+  breite   860                           gemessen     Messung vor Ort (mobile Erfassung)
+  hoehe    1985                          bestaetigt   Erkennung (Simulation), von Hand geprüft
+  anschlag DIN links                     bestaetigt   Eingabe vor Ort
+  material Holzwerkstoff                 vorgeschlagenErkennung (Simulation)
+  zarge    Stahlumfassungszarge          bestaetigt   Erkennung (Simulation), von Hand geprüft
+  schutz   keine Kennzeichnung gefunden  bestaetigt   Eingabe vor Ort
+
+Ergebnis des Abgleichs, wenn die Planung an diesem Tag reagiert (16:00, nach der Begehung):
+  ab 19.01.2027: Weiter prüfen · Prüfende 02.02.2027 · Prüfende 02.02.2027 liegt 17 Tage vor der Bestellfrist 19.02.2027.
+  ab 05.02.2027: Knapp · Prüfende 19.02.2027 · Prüfende 19.02.2027 liegt am Tag der Bestellfrist 19.02.2027.
+  ab 06.02.2027: Für diese Entscheidung zu spät · Prüfende 20.02.2027 · Prüfende 20.02.2027 liegt 1 Tag nach der Bestellfrist 19.02.2027.
+  Letzter Tag mit möglicher Prüfbitte: 05.02.2027
+  Prüfbitte spätestens BD-24: 05.02.2027 (Bestellfrist 19.02.2027 minus 14 Tage Mindestprüfzeit)
+  Prüfbitte spätestens BD-24 erscheint unter „Zeitkritisch (7 Tage)“ erstmals am 30.01.2027 (09:00), solange kein Vorgang läuft.
+  Bestellfrist BD-24 erscheint unter „Zeitkritisch (7 Tage)“ erstmals am 13.02.2027 (09:00), solange kein Vorgang läuft.
+
+Variante 1 · rechtzeitig
+  Angebot bekannt: 19.01.2027 · erreicht Planung: 20.01.2027 · Entscheidung bis: 19.02.2027 · Übergabe möglich: 08.03.2027
+  Abgleich: Weiter prüfen · Prüfende 03.02.2027 liegt 16 Tage vor der Bestellfrist 19.02.2027. Frühester Übergabetag 05.03.2027; im Annahmefenster 08.03.2027 bis 12.03.2027 bleiben ab 08.03.2027 5 Tage für die Übergabe.
+  Prüfpunkte: Zwischenlagerung klären: 3 Tage zwischen dem frühesten Übergabetag 05.03.2027 und dem Beginn des Annahmefensters 08.03.2027. | 1 offener Nachweis am Bauteil klären (siehe Bauteilakte). | Eignung (Zustand, Maße, Nachweise) von einer Fachperson prüfen lassen.
+  Ende: Übergeben (Simulation) · Übergeben am 08.03.2027 (Simulation, laut Eintrag). · nächster Schritt: Abgeschlossen
+
+Variante 2 · Angebot erreicht die Planung nach der Ersatzbestellung
+  Angebot bekannt: 19.01.2027 · erreicht Planung: 22.02.2027 · Entscheidung bis: 19.02.2027 · Übergabe für diesen Bedarf: keine
+  Abgleich: Für diese Entscheidung zu spät · Prüfbeginn 22.02.2027 (Stichtag der Demo) liegt 3 Tage nach der Bestellfrist 19.02.2027.
+  Nächster Schritt: Klären, ob die Bestellentscheidung noch offen ist oder ein späterer Bedarf passt · Prüfbitte gesperrt: Für diese Entscheidung zu spät: Prüfbeginn 22.02.2027 (Stichtag der Demo) liegt 3 Tage nach der Bestellfrist 19.02.2027.
+  Bauteilpass, Zuordnung zum Bedarf: Der Abgleich ergibt „Für diese Entscheidung zu spät“. Details im Abgleich.
+  Übersicht, Zeitkritisch: Bestellfrist BD-24 überfällig
+  Weitere Paare für das Angebot: SB BD-21: Angaben fehlen | UAK BD-24: Für diese Entscheidung zu spät
+
+Variante 3 · Probeausbau, 5 von 6
+  Angebot bekannt: 19.01.2027 · erreicht Planung: 20.01.2027 · Entscheidung bis: 19.02.2027 (Wiederverwendung 5 Stk, Neubestellung 1 Stk) · Übergabe möglich: 08.03.2027 (5 Stk)
+  Stand am 15.02.2027: Vorgemerkt (Simulation), Vormerkung 5 Stk, nächster Schritt: Übergabe planen
+  Menge im Abgleich: gedeckt (Angebot 6, Bedarf 6)
+  Bedarf belegt: ja · als offener Bedarf gezählt: nein · Bestellfrist unter Zeitkritisch: nein
+  Paare für BD-24 vor der Prüfbitte: 5 (KB T-31, LH T-03, LH T-05, LH T-13, SL T-41), nach der Vormerkung: 0
+  Zweites Angebot: KB T-31 → BD-24 am 04.02.2027: Weiter prüfen, Prüfbitte gesperrt: Der Bedarf gehört bereits zum laufenden Vorgang E-03.
+  Verlauf:
+    20.01.2027 Prüfbitte an die Fachprüfung angelegt (Simulation).
+    03.02.2027 Fachergebnis: bedingt geeignet. Eingetragen für Fachplanung (Beispiel), laut Eintrag (Simulation), keine Fachfreigabe. Probeausbau am 02.02.2027: eine Tür beim Ausbau beschädigt, 5 von 6 verwendbar. Eine Tür neu bestellen.
+    04.02.2027 Vormerkung (Simulation, unverbindlich): 5 Stk bis 12.03.2027.
+    04.02.2027 Übergabe geplant am 08.03.2027, Ort: Anlieferung Umbau am Kanal, 1. OG, zuständig: Bauleitung (Simulation).
+    08.03.2027 Übergeben am 08.03.2027 (Simulation, laut Eintrag).
+
+Alle erwarteten Ergebnisse eingetreten.

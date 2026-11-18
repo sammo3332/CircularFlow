@@ -1,0 +1,26 @@
+
+===== BA-3 =====
+   IST BA-3 · Formularwerte vor „Speichern“: {"projekt":"SB","gruppe":"Systemtrennwände","titel":"Fristtest","menge":"30","bestellfrist":"2026-11-30","pruefzeit":"6","art":"geschätzt (Annahme)","von":"2027-02-01","bis":"2027-03-31"}
+   IST BA-3 · Hinweis nach dem Speichern: Bedarf BD-24 gespeichert. Die passenden Angebote sind berechnet (2 Angebote).
+   IST BA-3 · BD-24 Zeile: {"anzahl":1,"voll":"Prüfbitte spätestens 24.11.2026 geschätzt Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt) In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft.","wert":"24.11.2026","chips":["geschätzt"],"klein":["Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt)","In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft."]}
+OK         BA-3 · BD-24: „24.11.2026“
+OK         BA-3 · BD-24: Chip „geschätzt“ (nur dieser)
+OK         BA-3 · BD-24: „Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt)“
+OK         BA-3 · BD-24: „In den 7 Tagen davor …“ steht da (Tag liegt nach dem Stichtag)
+OK         BA-3 · BD-24: „2 Angebote, davon 2 prüfbar“
+   IST BA-3 · Übersicht Kopf: Zeitkritisch (7 Tage) 5 Fristen · Überfälliges zuerst
+   IST BA-3 · alle Fristzeilen: [{"chip":"noch 2 Std.","titel":"Aufmaßfrist · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Mi 18.11., 16:00","href":"#entscheidung-lh-e-01"},{"chip":"noch 20 Std.","titel":"Nachweisfrist · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 10:00","href":"#entscheidung-lh-e-02"},{"chip":"noch 22 Std.","titel":"Ersatzentscheidung · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 12:00","href":"#entscheidung-lh-e-01"},{"chip":"noch 1 Tg. 22 Std.","titel":"Ersatzentscheidung · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Fr 20.11., 12:00","href":"#entscheidung-lh-e-02"},{"chip":"noch 6 Tg. 9 Std.","titel":"Prüfbitte spätestens · BD-24 · Fristtest","klein":"SB Bedarf · 2 prüfbare Paare · Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt)","zeit":"Di 24.11., 23:59","href":"#bedarf-sb-bd-24"}]
+OK         BA-3 · Übersicht: „5 Fristen“
+OK         BA-3 · letzte Zeile: Chip „noch 6 Tg. 9 Std.“
+OK         BA-3 · letzte Zeile: „Prüfbitte spätestens · BD-24 · Fristtest“
+OK         BA-3 · letzte Zeile: „Di 24.11., 23:59“
+OK         BA-3 · letzte Zeile: Detailzeile laut Plan 3.2/3.4 („SB Bedarf · 2 prüfbare Paare · Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt)“)
+OK         BA-3 · letzte Zeile verlinkt auf #bedarf-sb-bd-24
+OK         BA-3 · die vier bisherigen Zeilen bleiben davor, unverändert
+   IST BA-3 · Fr 20.11., 09:00: Kopf: Zeitkritisch (7 Tage) 5 Fristen, davon 3 überfällig · Überfälliges zuerst
+   IST BA-3 · Fr 20.11., 09:00: alle Fristzeilen: [{"chip":"Überfällig","titel":"Aufmaßfrist · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Mi 18.11., 16:00","href":"#entscheidung-lh-e-01"},{"chip":"Überfällig","titel":"Nachweisfrist · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 10:00","href":"#entscheidung-lh-e-02"},{"chip":"Überfällig","titel":"Ersatzentscheidung · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 12:00","href":"#entscheidung-lh-e-01"},{"chip":"noch 3 Std.","titel":"Ersatzentscheidung · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Fr 20.11., 12:00","href":"#entscheidung-lh-e-02"},{"chip":"noch 4 Tg. 14 Std.","titel":"Prüfbitte spätestens · BD-24 · Fristtest","klein":"SB Bedarf · 2 prüfbare Paare · Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt)","zeit":"Di 24.11., 23:59","href":"#bedarf-sb-bd-24"}]
+OK         BA-3 · Stichtag „Fr 20.11., 09:00“: Chip „noch 4 Tg. 14 Std.“
+OK         BA-3 · Zusatz Rücksprung der Betrachtungszeit auf „Mi 18.11., 14:00“: wieder „noch 6 Tg. 9 Std.“ und 5 Fristen
+OK         BA-3 · keine Konsolen- oder Seitenfehler
+
+ZUSAMMENFASSUNG je Ablauf: {"BA-3":{"ok":15,"abw":0}} | Skriptfehler: 0

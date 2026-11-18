@@ -1,0 +1,165 @@
+Prozess-Zeitzone TZ=Europe/Berlin | Intl: Europe/Berlin | Konstante: Prüfbitte spätestens
+
+=== F1 · Bestellfrist 2027-03-01, Prüfzeit 10, kein Annahmefenster
+Handrechnung: 01.03.2027 minus 10 Tage: 01.03. -> 28.02. (1 Tag, 2027 kein Schaltjahr), dann 9 weitere Tage -> 19.02.2027 => 2027-02-19 (Grenze: bestellfrist)
+pruefbitteFrist -> status=ok tag=2027-02-19 grenze=bestellfrist grenzTag=2027-03-01 pruefzeitTage=10 text="Bestellfrist 01.03.2027 minus 10 Tage Mindestprüfzeit"
+OK     F1 pruefbitteFrist.tag = Handrechnung 2027-02-19
+OK     F1 Grenze = bestellfrist
+  Variante (a) ohne Annahmefenster
+OK     F1(a) Regel am Bedarfsobjekt: ok 2027-02-19
+    2027-02-16: fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    2027-02-17: fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    2027-02-18: fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    2027-02-19 (Fristtag): fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    2027-02-20 (Tag danach): spaet | Für diese Entscheidung zu spät | Prüfende 02.03.2027 liegt 1 Tag nach der Bestellfrist 01.03.2027.
+    2027-02-21: spaet | Für diese Entscheidung zu spät | Prüfende 03.03.2027 liegt 2 Tage nach der Bestellfrist 01.03.2027.
+    BEOBACHTUNG am Fristtag ohne Annahmefenster: fehlt / Angaben fehlen
+OK     F1(a) am Tag danach 2027-02-20: „Für diese Entscheidung zu spät“ (ist: spaet / Für diese Entscheidung zu spät)
+OK     F1(a) alle späteren Tage „zu spät“
+  Variante (b) mit Annahmefenster 2027-03-08 bis 2027-03-12
+OK     F1(b) Regel am Bedarfsobjekt: ok 2027-02-19
+    2027-02-16: weiter | Weiter prüfen | Prüfende 26.02.2027 liegt 3 Tage vor der Bestellfrist 01.03.2027.
+    2027-02-17: weiter | Weiter prüfen | Prüfende 27.02.2027 liegt 2 Tage vor der Bestellfrist 01.03.2027.
+    2027-02-18: weiter | Weiter prüfen | Prüfende 28.02.2027 liegt 1 Tag vor der Bestellfrist 01.03.2027.
+    2027-02-19 (Fristtag): knapp | Knapp | Prüfende 01.03.2027 liegt am Tag der Bestellfrist 01.03.2027.
+    2027-02-20 (Tag danach): spaet | Für diese Entscheidung zu spät | Prüfende 02.03.2027 liegt 1 Tag nach der Bestellfrist 01.03.2027.
+    2027-02-21: spaet | Für diese Entscheidung zu spät | Prüfende 03.03.2027 liegt 2 Tage nach der Bestellfrist 01.03.2027.
+OK     F1(b) am Fristtag 2027-02-19: „Knapp“ (ist: knapp / Knapp)
+OK     F1(b) davor „Weiter prüfen“
+OK     F1(b) am Tag danach 2027-02-20: „Für diese Entscheidung zu spät“ (ist: spaet / Für diese Entscheidung zu spät)
+OK     F1(b) alle späteren Tage „zu spät“
+OK     F1(b) prüfbar genau bis einschließlich 2027-02-19
+
+=== F2 · Bestellfrist 2027-03-01, Annahmeende 2027-02-20, Prüfzeit 10
+Handrechnung: früherer Tag = Annahmeende 20.02.2027; 20.02. minus 10 Tage = 10.02.2027 => 2027-02-10 (Grenze: annahme)
+pruefbitteFrist -> status=ok tag=2027-02-10 grenze=annahme grenzTag=2027-02-20 pruefzeitTage=10 text="Ende des Annahmefensters 20.02.2027 minus 10 Tage Mindestprüfzeit"
+OK     F2 pruefbitteFrist.tag = Handrechnung 2027-02-10
+OK     F2 Grenze = annahme
+  Variante (a) ohne Annahmefenster
+FEHLER F2(a) Regel am Bedarfsobjekt: ok 2027-02-19
+    2027-02-07: fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    2027-02-08: fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    2027-02-09: fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    2027-02-10 (Fristtag): fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    2027-02-11 (Tag danach): fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    2027-02-12: fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    BEOBACHTUNG am Fristtag ohne Annahmefenster: fehlt / Angaben fehlen
+FEHLER F2(a) am Tag danach 2027-02-11: „Für diese Entscheidung zu spät“ (ist: fehlt / Angaben fehlen)
+FEHLER F2(a) alle späteren Tage „zu spät“
+  Variante (b) mit Annahmefenster 2027-02-15 bis 2027-02-20
+OK     F2(b) Regel am Bedarfsobjekt: ok 2027-02-10
+    2027-02-07: weiter | Weiter prüfen | Prüfende 17.02.2027 liegt 12 Tage vor der Bestellfrist 01.03.2027.
+    2027-02-08: weiter | Weiter prüfen | Prüfende 18.02.2027 liegt 11 Tage vor der Bestellfrist 01.03.2027.
+    2027-02-09: weiter | Weiter prüfen | Prüfende 19.02.2027 liegt 10 Tage vor der Bestellfrist 01.03.2027.
+    2027-02-10 (Fristtag): knapp | Knapp | Prüfende 20.02.2027 liegt 9 Tage vor der Bestellfrist 01.03.2027.
+    2027-02-11 (Tag danach): spaet | Für diese Entscheidung zu spät | Frühester Übergabetag 21.02.2027 liegt 1 Tag nach dem Ende des Annahmefensters 20.02.2027.
+    2027-02-12: spaet | Für diese Entscheidung zu spät | Frühester Übergabetag 22.02.2027 liegt 2 Tage nach dem Ende des Annahmefensters 20.02.2027.
+OK     F2(b) am Fristtag 2027-02-10: „Knapp“ (ist: knapp / Knapp)
+OK     F2(b) davor „Weiter prüfen“
+OK     F2(b) am Tag danach 2027-02-11: „Für diese Entscheidung zu spät“ (ist: spaet / Für diese Entscheidung zu spät)
+OK     F2(b) alle späteren Tage „zu spät“
+OK     F2(b) prüfbar genau bis einschließlich 2027-02-10
+
+=== F3 · Prüfzeit 0, Bestellfrist 2027-03-01
+Handrechnung: 01.03.2027 minus 0 Tage = 01.03.2027 (gleich der Bestellfrist) => 2027-03-01 (Grenze: bestellfrist)
+pruefbitteFrist -> status=ok tag=2027-03-01 grenze=bestellfrist grenzTag=2027-03-01 pruefzeitTage=0 text="Bestellfrist 01.03.2027 minus 0 Tage Mindestprüfzeit"
+OK     F3 pruefbitteFrist.tag = Handrechnung 2027-03-01
+OK     F3 Grenze = bestellfrist
+  Variante (a) ohne Annahmefenster
+OK     F3(a) Regel am Bedarfsobjekt: ok 2027-03-01
+    2027-02-26: fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    2027-02-27: fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    2027-02-28: fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    2027-03-01 (Fristtag): fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    2027-03-02 (Tag danach): spaet | Für diese Entscheidung zu spät | Prüfbeginn 02.03.2027 (Stichtag der Demo) liegt 1 Tag nach der Bestellfrist 01.03.2027.
+    2027-03-03: spaet | Für diese Entscheidung zu spät | Prüfbeginn 03.03.2027 (Stichtag der Demo) liegt 2 Tage nach der Bestellfrist 01.03.2027.
+    BEOBACHTUNG am Fristtag ohne Annahmefenster: fehlt / Angaben fehlen
+OK     F3(a) am Tag danach 2027-03-02: „Für diese Entscheidung zu spät“ (ist: spaet / Für diese Entscheidung zu spät)
+OK     F3(a) alle späteren Tage „zu spät“
+  Variante (b) mit Annahmefenster 2027-03-08 bis 2027-03-12
+OK     F3(b) Regel am Bedarfsobjekt: ok 2027-03-01
+    2027-02-26: weiter | Weiter prüfen | Prüfende 26.02.2027 liegt 3 Tage vor der Bestellfrist 01.03.2027.
+    2027-02-27: weiter | Weiter prüfen | Prüfende 27.02.2027 liegt 2 Tage vor der Bestellfrist 01.03.2027.
+    2027-02-28: weiter | Weiter prüfen | Prüfende 28.02.2027 liegt 1 Tag vor der Bestellfrist 01.03.2027.
+    2027-03-01 (Fristtag): knapp | Knapp | Prüfende 01.03.2027 liegt am Tag der Bestellfrist 01.03.2027.
+    2027-03-02 (Tag danach): spaet | Für diese Entscheidung zu spät | Prüfbeginn 02.03.2027 (Stichtag der Demo) liegt 1 Tag nach der Bestellfrist 01.03.2027.
+    2027-03-03: spaet | Für diese Entscheidung zu spät | Prüfbeginn 03.03.2027 (Stichtag der Demo) liegt 2 Tage nach der Bestellfrist 01.03.2027.
+OK     F3(b) am Fristtag 2027-03-01: „Knapp“ (ist: knapp / Knapp)
+OK     F3(b) davor „Weiter prüfen“
+OK     F3(b) am Tag danach 2027-03-02: „Für diese Entscheidung zu spät“ (ist: spaet / Für diese Entscheidung zu spät)
+OK     F3(b) alle späteren Tage „zu spät“
+OK     F3(b) prüfbar genau bis einschließlich 2027-03-01
+
+=== F4 · Schaltjahr: Bestellfrist 2028-03-01, Prüfzeit 1
+Handrechnung: 2028 ist Schaltjahr: 01.03.2028 minus 1 Tag = 29.02.2028 => 2028-02-29 (Grenze: bestellfrist)
+pruefbitteFrist -> status=ok tag=2028-02-29 grenze=bestellfrist grenzTag=2028-03-01 pruefzeitTage=1 text="Bestellfrist 01.03.2028 minus 1 Tag Mindestprüfzeit"
+OK     F4 pruefbitteFrist.tag = Handrechnung 2028-02-29
+OK     F4 Grenze = bestellfrist
+  Variante (a) ohne Annahmefenster
+OK     F4(a) Regel am Bedarfsobjekt: ok 2028-02-29
+    2028-02-26: fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    2028-02-27: fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    2028-02-28: fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    2028-02-29 (Fristtag): fehlt | Angaben fehlen | Annahmefenster (Beginn) fehlt.
+    2028-03-01 (Tag danach): spaet | Für diese Entscheidung zu spät | Prüfende 02.03.2028 liegt 1 Tag nach der Bestellfrist 01.03.2028.
+    2028-03-02: spaet | Für diese Entscheidung zu spät | Prüfbeginn 02.03.2028 (Stichtag der Demo) liegt 1 Tag nach der Bestellfrist 01.03.2028.
+    BEOBACHTUNG am Fristtag ohne Annahmefenster: fehlt / Angaben fehlen
+OK     F4(a) am Tag danach 2028-03-01: „Für diese Entscheidung zu spät“ (ist: spaet / Für diese Entscheidung zu spät)
+OK     F4(a) alle späteren Tage „zu spät“
+  Variante (b) mit Annahmefenster 2028-03-08 bis 2028-03-12
+OK     F4(b) Regel am Bedarfsobjekt: ok 2028-02-29
+    2028-02-26: weiter | Weiter prüfen | Prüfende 27.02.2028 liegt 3 Tage vor der Bestellfrist 01.03.2028.
+    2028-02-27: weiter | Weiter prüfen | Prüfende 28.02.2028 liegt 2 Tage vor der Bestellfrist 01.03.2028.
+    2028-02-28: weiter | Weiter prüfen | Prüfende 29.02.2028 liegt 1 Tag vor der Bestellfrist 01.03.2028.
+    2028-02-29 (Fristtag): knapp | Knapp | Prüfende 01.03.2028 liegt am Tag der Bestellfrist 01.03.2028.
+    2028-03-01 (Tag danach): spaet | Für diese Entscheidung zu spät | Prüfende 02.03.2028 liegt 1 Tag nach der Bestellfrist 01.03.2028.
+    2028-03-02: spaet | Für diese Entscheidung zu spät | Prüfbeginn 02.03.2028 (Stichtag der Demo) liegt 1 Tag nach der Bestellfrist 01.03.2028.
+OK     F4(b) am Fristtag 2028-02-29: „Knapp“ (ist: knapp / Knapp)
+OK     F4(b) davor „Weiter prüfen“
+OK     F4(b) am Tag danach 2028-03-01: „Für diese Entscheidung zu spät“ (ist: spaet / Für diese Entscheidung zu spät)
+OK     F4(b) alle späteren Tage „zu spät“
+OK     F4(b) prüfbar genau bis einschließlich 2028-02-29
+
+=== F5 · Jahreswechsel: Bestellfrist 2027-01-05, Prüfzeit 14
+Handrechnung: 05.01.2027 minus 5 Tage = 31.12.2026, minus 9 weitere = 22.12.2026 => 2026-12-22 (Grenze: bestellfrist)
+pruefbitteFrist -> status=ok tag=2026-12-22 grenze=bestellfrist grenzTag=2027-01-05 pruefzeitTage=14 text="Bestellfrist 05.01.2027 minus 14 Tage Mindestprüfzeit"
+OK     F5 pruefbitteFrist.tag = Handrechnung 2026-12-22
+OK     F5 Grenze = bestellfrist
+
+=== F6 · Obergrenze: Bestellfrist 2027-12-31, Prüfzeit 365
+Handrechnung: 2027 ist kein Schaltjahr: 365 Tage vor 31.12.2027 ist 31.12.2026 => 2026-12-31 (Grenze: bestellfrist)
+pruefbitteFrist -> status=ok tag=2026-12-31 grenze=bestellfrist grenzTag=2027-12-31 pruefzeitTage=365 text="Bestellfrist 31.12.2027 minus 365 Tage Mindestprüfzeit"
+OK     F6 pruefbitteFrist.tag = Handrechnung 2026-12-31
+OK     F6 Grenze = bestellfrist
+
+=== F7 · Zeitumstellung: Bestellfrist 2027-03-29 (Umstellung So 28.03.2027), Prüfzeit 10
+Handrechnung: 29.03.2027 minus 10 Kalendertage = 19.03.2027 (Wanduhrzeit, unabhängig von der Zeitumstellung) => 2027-03-19 (Grenze: bestellfrist)
+pruefbitteFrist -> status=ok tag=2027-03-19 grenze=bestellfrist grenzTag=2027-03-29 pruefzeitTage=10 text="Bestellfrist 29.03.2027 minus 10 Tage Mindestprüfzeit"
+OK     F7 pruefbitteFrist.tag = Handrechnung 2027-03-19
+OK     F7 Grenze = bestellfrist
+
+=== F8 · Gleichstand Annahmeende = Bestellfrist: 2027-03-31, Prüfzeit 10
+Handrechnung: bei Gleichstand gilt die Bestellfrist: 31.03.2027 minus 10 = 21.03.2027 => 2027-03-21 (Grenze: bestellfrist)
+pruefbitteFrist -> status=ok tag=2027-03-21 grenze=bestellfrist grenzTag=2027-03-31 pruefzeitTage=10 text="Bestellfrist 31.03.2027 minus 10 Tage Mindestprüfzeit"
+OK     F8 pruefbitteFrist.tag = Handrechnung 2027-03-21
+OK     F8 Grenze = bestellfrist
+
+=== Fehlende und ungültige Angaben
+U1 {"bestellfrist":"2027-03-01","pruefzeit":-1} -> status=klaerung tag=null fehlend=[] klaerung=["Die Mindestprüfzeit muss eine ganze Zahl von 0 bis 365 Tagen sein."] text="Die Mindestprüfzeit muss eine ganze Zahl von 0 bis 365 Tagen sein."
+OK     U1 Status klaerung, kein Tag
+U2 {"bestellfrist":"2027-03-01","pruefzeit":366} -> status=klaerung tag=null fehlend=[] klaerung=["Die Mindestprüfzeit muss eine ganze Zahl von 0 bis 365 Tagen sein."] text="Die Mindestprüfzeit muss eine ganze Zahl von 0 bis 365 Tagen sein."
+OK     U2 Status klaerung, kein Tag
+U3 {"bestellfrist":"2027-03-01","pruefzeit":1.5} -> status=klaerung tag=null fehlend=[] klaerung=["Die Mindestprüfzeit muss eine ganze Zahl von 0 bis 365 Tagen sein."] text="Die Mindestprüfzeit muss eine ganze Zahl von 0 bis 365 Tagen sein."
+OK     U3 Status klaerung, kein Tag
+U4 {"bestellfrist":"2027-03-01","pruefzeit":"abc"} -> status=klaerung tag=null fehlend=[] klaerung=["Die Mindestprüfzeit muss eine ganze Zahl von 0 bis 365 Tagen sein."] text="Die Mindestprüfzeit muss eine ganze Zahl von 0 bis 365 Tagen sein."
+OK     U4 Status klaerung, kein Tag
+U5 {"bestellfrist":"2027-02-30","pruefzeit":10} -> status=klaerung tag=null fehlend=[] klaerung=["Die Bestellfrist enthält ein ungültiges Datum."] text="Die Bestellfrist enthält ein ungültiges Datum."
+OK     U5 Status klaerung, kein Tag
+U6 {"bestellfrist":"2027-03-01","pruefzeit":null} -> status=fehlt tag=null fehlend=["Mindestprüfzeit"] klaerung=[] text="Mindestprüfzeit fehlt."
+OK     U6 Status fehlt, kein Tag
+U7 {"bestellfrist":null,"pruefzeit":10} -> status=fehlt tag=null fehlend=["Bestellfrist"] klaerung=[] text="Bestellfrist fehlt."
+OK     U7 Status fehlt, kein Tag
+U8 {"bestellfrist":"2027-03-01","pruefzeit":10,"annahmeBis":"2027-02-30"} -> status=klaerung tag=null fehlend=[] klaerung=["Das Ende des Annahmefensters enthält ein ungültiges Datum."] text="Das Ende des Annahmefensters enthält ein ungültiges Datum."
+OK     U8 Status klaerung, kein Tag
+
+SUMME 60 Prüfungen, 3 Fehler

@@ -1,0 +1,16 @@
+$ git -C /home/user/CircularFlow-entwicklung diff --stat 23dc050 dca307f
+ docs/pilot/cf-pilot-01-simulation.mjs   |  36 +++-
+ plattform/README.md                     |  14 ++
+ plattform/app/abgleich.js               |  27 +++
+ plattform/app/ansichten/bedarfe.js      |  13 +-
+ plattform/app/ansichten/uebersicht.js   |   2 +-
+ plattform/app/kennzahlen.js             |  13 +-
+ plattform/test/pruefbittefrist.test.mjs | 363 ++++++++++++++++++++++++++++++++
+ 7 files changed, 454 insertions(+), 14 deletions(-)
+M	docs/pilot/cf-pilot-01-simulation.mjs
+M	plattform/README.md
+M	plattform/app/abgleich.js
+M	plattform/app/ansichten/bedarfe.js
+M	plattform/app/ansichten/uebersicht.js
+M	plattform/app/kennzahlen.js
+A	plattform/test/pruefbittefrist.test.mjs

@@ -1,0 +1,37 @@
+
+===== BA-1 =====
+OK         BA-1 · Stichtag der Demo: Mi 18.11., 14:00
+OK         BA-1 · Kachel „Paare derselben Gruppe“: 8 Paare, davon 2 prüfbar
+   IST BA-1 · Kachel Paare (Text): Paare derselben Gruppe
+OK         BA-1 · Kachel „Vorgänge je Status“: 2 Vorgänge
+   IST BA-1 · Kachel Vorgänge (Text): Vorgänge je Status
+OK         BA-1 · „Zeitkritisch (7 Tage)“: 4 Fristen
+OK         BA-1 · Zahl der Fristzeilen = 4
+OK         BA-1 · erste Zeile: Chip „noch 2 Std.“
+OK         BA-1 · erste Zeile: „Aufmaßfrist · E-01 · T-07 → B-02“
+OK         BA-1 · keine Zeile „Prüfbitte spätestens“ (in keiner Fristzeile)
+OK         BA-1 · der Text „Prüfbitte spätestens“ steht nirgends auf der Übersicht
+   IST BA-1 · alle Fristzeilen: [{"chip":"noch 2 Std.","titel":"Aufmaßfrist · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Mi 18.11., 16:00","href":"#entscheidung-lh-e-01"},{"chip":"noch 20 Std.","titel":"Nachweisfrist · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 10:00","href":"#entscheidung-lh-e-02"},{"chip":"noch 22 Std.","titel":"Ersatzentscheidung · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 12:00","href":"#entscheidung-lh-e-01"},{"chip":"noch 1 Tg. 22 Std.","titel":"Ersatzentscheidung · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Fr 20.11., 12:00","href":"#entscheidung-lh-e-02"}]
+OK         BA-1 · keine Konsolen- oder Seitenfehler
+
+===== BA-2 =====
+   IST BA-2 · BD-22 Zeile: {"anzahl":1,"voll":"Prüfbitte spätestens 21.03.2027 geschätzt Bestellfrist 31.03.2027 minus 10 Tage Mindestprüfzeit (geschätzt) In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft.","wert":"21.03.2027","chips":["geschätzt"],"klein":["Bestellfrist 31.03.2027 minus 10 Tage Mindestprüfzeit (geschätzt)","In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft."]}
+OK         BA-2 · BD-22: genau eine Zeile „Prüfbitte spätestens“
+OK         BA-2 · BD-22: „21.03.2027“
+OK         BA-2 · BD-22: Chip „geschätzt“ (nur dieser)
+OK         BA-2 · BD-22: „Bestellfrist 31.03.2027 minus 10 Tage Mindestprüfzeit (geschätzt)“
+OK         BA-2 · BD-22: „In den 7 Tagen davor …“ steht da
+   IST BA-2 · BD-23 Zeile: {"anzahl":1,"voll":"Prüfbitte spätestens 13.11.2026 verstrichen Bestellfrist 27.11.2026 minus 14 Tage Mindestprüfzeit","wert":"13.11.2026","chips":["verstrichen"],"klein":["Bestellfrist 27.11.2026 minus 14 Tage Mindestprüfzeit"]}
+OK         BA-2 · BD-23: genau eine Zeile
+OK         BA-2 · BD-23: „13.11.2026“
+OK         BA-2 · BD-23: Chip „verstrichen“ (nur dieser, kein „geschätzt“)
+OK         BA-2 · BD-23: „Bestellfrist 27.11.2026 minus 14 Tage Mindestprüfzeit“ (ohne „(geschätzt)“)
+OK         BA-2 · BD-23: ohne „In den 7 Tagen davor …“
+   IST BA-2 · BD-21 Zeile: {"anzahl":1,"voll":"Prüfbitte spätestens nicht berechenbar Bestellfrist fehlt. Mindestprüfzeit fehlt.","wert":null,"chips":["nicht berechenbar"],"klein":["Bestellfrist fehlt. Mindestprüfzeit fehlt."]}
+OK         BA-2 · BD-21: genau eine Zeile
+OK         BA-2 · BD-21: „nicht berechenbar“
+OK         BA-2 · BD-21: „Bestellfrist fehlt. Mindestprüfzeit fehlt.“
+OK         BA-2 · BD-21: kein Datum
+OK         BA-2 · keine Konsolen- oder Seitenfehler
+
+ZUSAMMENFASSUNG je Ablauf: {"BA-1":{"ok":10,"abw":0},"BA-2":{"ok":15,"abw":0}} | Skriptfehler: 0

@@ -1,0 +1,24 @@
+
+===== BA-4 =====
+   IST BA-4 · Formularwerte vor „Speichern“: {"projekt":"SB","gruppe":"Systemtrennwände","titel":"Fristtest","menge":"30","bestellfrist":"2026-11-30","pruefzeit":"6","art":"geschätzt (Annahme)","von":"2027-02-01","bis":"2027-03-31"}
+   IST BA-4 · 1440: Fokus auf der Zeile nach Tab-Tastendrücken: {"tabs":5,"tag":"A","text":"Prüfbitte spätestens · BD-24 · Fristtest","href":"#bedarf-sb-bd-24","inZeile":true}
+OK         BA-4 · 1440: Tab erreicht die Zeile „Prüfbitte spätestens“
+   IST BA-4 · 1440: Fokus nach Enter: {"tag":"MAIN","id":"inhalt","text":"Bedarfe / BD-24 BEDARF · SYSTEMTRENNWÄNDE SB BD-24 Fristtest 30 lfm Ze","imMain":true,"imApp":true,"istBody":false,"hash":"#bedarf-sb-bd-24"}
+OK         BA-4 · 1440: Enter öffnet #bedarf-sb-bd-24
+OK         BA-4 · 1440: Fokus liegt im Inhalt (nicht auf <body>, im Hauptbereich)
+OK         BA-4 · 390: Übersicht ohne seitliches Scrollen
+OK         BA-4 · 390: Übersicht, Fristzeilen ohne abgeschnittenen Text
+OK         BA-4 · 390: Übersicht, Fristzeilen liegen innerhalb des Fensters
+   IST BA-4 · 390: Fokus auf der Zeile: {"tabs":5,"tag":"A","text":"Prüfbitte spätestens · BD-24 · Fristtest","href":"#bedarf-sb-bd-24","inZeile":true}
+OK         BA-4 · 390: Tab erreicht die Zeile „Prüfbitte spätestens“
+   IST BA-4 · 390: Fokus nach Enter: {"tag":"MAIN","id":"inhalt","text":"Bedarfe / BD-24 BEDARF · SYSTEMTRENNWÄNDE SB BD-24 Fristtest 30 lfm Ze","imMain":true,"imApp":true,"istBody":false,"hash":"#bedarf-sb-bd-24"}
+OK         BA-4 · 390: Enter öffnet #bedarf-sb-bd-24
+OK         BA-4 · 390: Fokus liegt im Inhalt
+OK         BA-4 · 390: BD-24 ohne seitliches Scrollen
+OK         BA-4 · 390: BD-24 Angaben ohne abgeschnittenen Text
+OK         BA-4 · 390: BD-24 Angaben liegen innerhalb des Fensters
+   IST BA-4 · 390: BD-24 Zeile: {"anzahl":1,"voll":"Prüfbitte spätestens 24.11.2026 geschätzt Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt) In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft.","wert":"24.11.2026","chips":["geschätzt"],"klein":["Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt)","In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft."]}
+OK         BA-4 · 390: BD-24 zeigt Tag, Chip, Rechnung und Satz vollständig
+OK         BA-4 · keine Konsolen- oder Seitenfehler
+
+ZUSAMMENFASSUNG je Ablauf: {"BA-4":{"ok":14,"abw":0}} | Skriptfehler: 0
