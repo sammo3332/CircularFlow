@@ -5,6 +5,11 @@ Dokumentversion 1.1 · Stand 18.11.2026 · Branch `codex/plattform-v1` · Ausgan
 **Status: Entwurf.** Für den Praxistest wurde kein Gespräch geführt und in dieser Runde nichts versendet. (Die neun Anfragen
 vom 17.11.2026 blieben laut Pitch-README bis 23:10 Uhr unbeantwortet.) Es gibt keine Praxisbestätigung und keinen Partner. Das Team bestätigt die Unterlagen, bevor es sie verwendet.
 
+**Nicht extern verwenden.** Die Unterlagen sind noch nicht freigegeben und werden nicht extern verwendet (Festlegung des
+Auftraggebers vom 18.11.2026, `docs/produktentscheidungen.md`). Vier Punkte bleiben im Entwurf **sichtbar offen**: Kontaktangaben,
+Speicherort, Löschfrist und die Zusage zum Ergebnisblatt (Platzhalter in `kurzcheck-einseiter.md` und `gespraechsnotiz-vorlage.md`,
+Einzelheiten unten).
+
 | Datei | Zweck |
 |---|---|
 | `kurzcheck-einseiter.md` / `.pdf` | Eine Seite für die Projektleitung: was der Kurzcheck zeigt, was er braucht, was er nicht ist |

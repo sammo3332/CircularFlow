@@ -1,7 +1,8 @@
 # Abschlussbericht · Nacht vom 17. auf den 18.11.2026
 
-Dokumentversion 1.0 · Stand 18.11.2026 · Pitch-Branch `codex/plattform-v1`, Ausgangscommit `c5f2d23` · Entwicklungsbranch
-`codex/plattform-entwicklung-20261118`, geprüfter Code-Stand `92391c3` (danach nur Dokumente) · Berichtscommit: dieser Commit
+Dokumentversion 1.1 · Stand 18.11.2026 · Pitch-Branch `codex/plattform-v1` · Fassung 1.0: Ausgangscommit `c5f2d23`,
+Berichtscommit `6ea30e7` · Nachtrag (Abschnitt 9): Ausgangscommit `6ea30e7` · Entwicklungsbranch
+`codex/plattform-entwicklung-20261118`, geprüfter Code-Stand `92391c3` (danach nur Dokumente)
 
 Dieser Bericht fasst den selbstständig ausgeführten Abschlussauftrag zusammen. **Eingereicht, versendet oder veröffentlicht
 wurde nichts.** Es wurde kein Gespräch geführt und keine neue Nachricht versendet. Die veröffentlichte Vorschau wurde nur
@@ -52,7 +53,7 @@ als Eingabe gewertet, nicht als Anweisung, und gegen die Dateien geprüft.
 ## 4. Ausgeführte Prüfungen und Ergebnisse
 
 Die Prüfungen in dieser Tabelle wurden in dieser Sitzung ausgeführt. Die Spalte „Beleg“ nennt die gespeicherte Ausgabe im
-Repository. Wo keine Datei steht, ist die Ausgabe nicht gespeichert und das dort vermerkt.
+Repository. Wo keine Datei steht, ist die Ausgabe nicht gespeichert, und das steht dort.
 
 | Prüfung | Befehl oder Weg | Ergebnis | Codestand | Beleg |
 |---|---|---|---|---|
@@ -115,8 +116,8 @@ Die Korrekturen der zweiten Runde wurden von mir durchgesehen, aber nicht von `c
   und weitere Quellen waren aus der Arbeitsumgebung nicht erreichbar (curl über den Proxy für mehrere Adressen und ein
   Abruf-Agent für zwei Adressen, alle ohne Verbindung; Einzelheiten in `juryantworten.md`, Abschnitt 3). Antwort 7 benennt das.
 - **Beispieldaten BD-23:** Die Oberfläche kennzeichnet die 14 Tage Prüfzeit bei BD-23 nicht als „geschätzt“ (`daten.js` Z. 164
-  „belegt“), obwohl sie eine Beispielannahme ist. Im Vortrag „angenommene Prüfzeit“ sagen (so steht es im K3-Satz). Daten nicht
-  geändert, siehe Plan E10 und Probenanleitung, Abschnitt 2.
+  „belegt“), obwohl sie eine Beispielannahme ist. Im Vortrag „angenommene Prüfzeit“ sagen (so steht es im K3-Satz, Festlegung des Auftraggebers vom
+  18.11.2026, Abschnitt 9). Daten nicht geändert, siehe Plan E10 und Probenanleitung, Abschnitt 2.
 - **Concular und Madaster:** Aussagen stammen aus Herstellerseiten und Folien. Ob und wie viele Bauteile in der
   Universitätsbibliothek wieder eingebaut wurden, ist nicht belegt. Die Pressemeldung des BLB NRW nennt Concular nicht.
 - **Praxis:** Es gibt kein Gespräch, keine Praxisbestätigung, keinen Partner und keine bestätigte Prüfzeit. Die 14 Tage
@@ -241,7 +242,20 @@ Die Zuständigkeiten und Fristen sind Vorschläge, das Team bestätigt sie.
    20.11. Die zehn Antworten aus `pitch/innosprint-2026/juryfragen/juryantworten.md` laut lesen (jede unter 30 Sekunden),
    „Das wissen wir noch nicht“ dort stehen lassen, wo die Hypothese steht, und den Wortlaut von SDG 12.5 an der Quelle der
    Vereinten Nationen nachlesen (von hier nicht erreichbar). Dazu die offenen Entscheidungen für den Praxistest: Kontakt im Einseiter,
-   Speicherort und Löschfrist der Notizen, Zusage eines Ergebnisblatts (`docs/praxistest/README.md`), ob BD-23 vor dem Pitch auf
-   „geschätzt“ gestellt wird (dann Ersatzbilder neu aufnehmen) oder „angenommene Prüfzeit“ im Vortrag genügt, und die
-   Produktentscheidungen (unter anderem E2) in `00_START_HIER/ENTSCHEIDUNGEN.md` eintragen. Abschlusskriterium: jede Antwort
+   Speicherort und Löschfrist der Notizen, Zusage eines Ergebnisblatts (`docs/praxistest/README.md`), und die
+   Produktentscheidungen (`docs/produktentscheidungen.md`, unter anderem E2) in `00_START_HIER/ENTSCHEIDUNGEN.md` eintragen. Im
+   Vortrag gilt „angenommene Prüfzeit“ (Festlegung vom 18.11.2026). Abschlusskriterium: jede Antwort
    ohne Ablesen unter 30 Sekunden, die drei Entscheidungen stehen schriftlich im Team-Protokoll.
+
+## 9. Nachtrag vom 18.11.2026 (Nachprüfung und Festlegungen)
+
+- **Nachprüfung:** Die drei korrigierten Befunde aus Dokumentenrunde 2 wurden an den Enddateien gezielt nachgeprüft, jeweils mit
+  Fundstelle und Ergebnis: `docs/pruefungen/nachpruefung-dokumentenrunde-2-2026-11-18.md`. Zwei kleine Reste wurden behoben
+  (Leitfaden „Direkt danach“ bei „nein“ zu den Notizen, ein Satzfehler in Abschnitt 4 dieses Berichts). Es war keine neue
+  allgemeine Prüfrunde.
+- **Festlegungen des Auftraggebers:** Im Pitch heißt es ausdrücklich „angenommene Prüfzeit“. Beispieldaten und Ersatzbilder bleiben
+  unverändert. Der Praxistest-Entwurf lässt Kontaktangaben, Speicherort, Löschfrist und die Zusage zum Ergebnisblatt sichtbar
+  offen und wird noch nicht extern verwendet. Pitch- und Entwicklungsstand bleiben bewahrt, es gibt keine weitere Funktion, keinen
+  Merge und kein Deployment.
+- **Entscheidungsdatei:** `docs/produktentscheidungen.md` hält die Produktentscheidungen mit Datum, Begründung und offenen Punkten
+  fest. Eigene Festlegungen der Koordination stehen dort als Vorschläge, solange die Freigabe des Teams fehlt.

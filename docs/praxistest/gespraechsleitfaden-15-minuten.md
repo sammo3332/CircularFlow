@@ -1,7 +1,7 @@
 # Gesprächsleitfaden · 15 Minuten · Projektleitung im Umbau
 
 Dokumentversion 1.1 · Stand 18.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `23dc050` · Entwurf, das Team
-bestätigt ihn vor dem ersten Gespräch. Gehört zu `pitch/innosprint-2026/juryfragen/juryantworten.md` (Hypothesen H1 bis H10).
+bestätigt ihn vor dem ersten Gespräch. **Noch nicht extern verwenden.** Gehört zu `pitch/innosprint-2026/juryfragen/juryantworten.md` (Hypothesen H1 bis H10).
 
 **Ziel:** Von einer echten Projektleitung im Umbau erfahren, wie Angebote für gebrauchte Bauteile, Fristen und Prüfzeiten
 **heute** laufen, und ob der Kurzcheck davor etwas verändern würde. Wir wollen **nichts verkaufen**, keinen **Preis** nennen
@@ -72,6 +72,8 @@ Dürfen wir uns noch einmal melden?“ Vier Fragen, vier Antworten (ja oder nein
 - Bei nur fünf Minuten: F2, F3, F7 und F10.
 
 ## Direkt danach (10 Minuten, beide gemeinsam)
+
+Bei „nein“ zu den Notizen entfällt dieser Abschnitt: Die Notiz enthält dann nur Datum und Rolle.
 
 1. Die Gesprächsnotiz vollständig ausfüllen, solange die Erinnerung frisch ist.
 2. Je Hypothese H1 bis H10 (Tabelle in `pitch/innosprint-2026/juryfragen/juryantworten.md`, Abschnitt 2) eintragen: **bestätigt**, **widerlegt** oder
