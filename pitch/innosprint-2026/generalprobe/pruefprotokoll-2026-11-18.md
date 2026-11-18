@@ -106,6 +106,8 @@ Einzelheiten und Reihenfolge: `probenanleitung.md`, Abschnitt 5.
 ## 8. Grenzen der Aussagen
 
 - „Bestanden“ gilt für die geprüften Fälle, nicht für allgemeine Fehlerfreiheit.
-- Alle Zeiten sind gerechnet und nicht gestoppt.
+- Alle Zeiten sind gerechnet und nicht gestoppt. Die Zeiten für den Spätfall (4:27 und 4:39) stammen aus dem Bauauftrag
+  (`plan/pitch-5min-bauauftrag.md`, „Annahmen von cf-test“) und wurden hier nur nachvollzogen: 259 s plus angenommene 8 s
+  Wechselaufwand = 267 s = 4:27; dazu 21 Wörter ÷ 1,8 = etwa 12 s = 279 s = 4:39. Die 8 Sekunden sind eine Annahme.
 - Die Prüfung der veröffentlichten Auslieferung belegt, dass die Dateien dem Repository entsprechen und im Chromium
   laufen. Sie belegt nicht, dass die Seite am Veranstaltungsort mit dessen Netz und Browser läuft.

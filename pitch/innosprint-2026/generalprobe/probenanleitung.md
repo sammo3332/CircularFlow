@@ -58,8 +58,9 @@ Profil, oder Erfassen → In diesem Browser gespeichert → Zurücksetzen).
    die Links „Bildschirmfoto: zu spät ›“ (Folie 5) und „Bildschirmfoto: weiter prüfen ›“ (Folie 6) nutzen. Auf Folie 5
    führt „weiter ›“ zu Folie 6, auf Folie 6 „zurück zum Vortrag“ zu Folie 7.
 2. **Spätfall (Ausfall um 2:10):** Waren K1 und K2 schon gesprochen, auf Folie 5 **nur den K3-Satz** sprechen. Das Ende
-   liegt dann gerechnet bei etwa 4:27. Wer auf Folie 5 auch Einleitung und K2 spricht, kommt auf etwa 4:39. Die
-   Regiezeilen in den Notizen werden nicht gesprochen.
+   liegt dann gerechnet bei etwa 4:27: 4:19 plus **angenommene** 8 Sekunden für das Zurückwechseln und zwei Klicks (nicht
+   gemessen). Wer auf Folie 5 auch Einleitung und K2 spricht (21 Wörter, bei 1,8 Wörtern je Sekunde etwa 12 Sekunden mehr),
+   kommt auf etwa 4:39. Die Regiezeilen in den Notizen werden nicht gesprochen.
 3. **Link funktioniert nicht:** Im Vortragsmodus die Foliennummer tippen und Enter drücken (5 oder 6). Ob das in der
    Version am Vortragsrechner klappt, ist **nicht geprobt** (Abschnitt 5).
 4. **PowerPoint fällt aus:** das PDF öffnen. Es enthält alle 15 Folien. Nach Seite 4 stehen die Ersatzfolien auf den
