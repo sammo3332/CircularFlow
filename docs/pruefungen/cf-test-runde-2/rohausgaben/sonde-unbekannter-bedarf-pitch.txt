@@ -1,0 +1,2 @@
+{"basis":"http://127.0.0.1:8140/plattform/","hash":"#bedarf-sb-bd-24","h1":[],"mainText":"Bedarf „sb-bd-24“ gibt es nicht. Der Link ist veraltet oder falsch geschrieben. Zu den Projekten","mainLeer":false,"meldungen":[]}
+{"basis":"http://127.0.0.1:8140/plattform/","hash":"#bedarf-sb-bd-99","h1":[],"mainText":"Bedarf „sb-bd-99“ gibt es nicht. Der Link ist veraltet oder falsch geschrieben. Zu den Projekten","mainLeer":false,"meldungen":[]}

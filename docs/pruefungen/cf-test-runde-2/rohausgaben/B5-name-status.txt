@@ -1,0 +1,4 @@
+M	plattform/README.md
+M	plattform/app/ansichten/bedarfe.js
+M	plattform/test/befunde.test.mjs
+M	plattform/test/kennzahlen.test.mjs

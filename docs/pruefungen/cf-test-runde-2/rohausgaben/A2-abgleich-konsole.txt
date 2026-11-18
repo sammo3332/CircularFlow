@@ -1,0 +1,25 @@
+OK     Prüfsumme pptx laut README 
+OK     Prüfsumme pdf laut README 
+OK     Prüfsumme sprechtext laut README 
+OK     Folienzahl PPTX 
+OK     Ausgeblendete Folien 
+OK     Links PPTX (Folie -> Ziele) 
+OK     Uhr am Ende je Folie = Summe der Zeitfenster 
+OK     Zeit ruhig (Wörter/1,8 + 18 s) gegen Summe der Zeitfenster 
+OK     README: Wörter gesamt 
+OK     README: Feyrouz 
+OK     README: Houssam 
+OK     README: Zeitfenster und Uhr je Folie 
+OK     README: Dauer ruhig 
+OK     README: Dauer zügig 
+OK     README: Rest bis 5:00 
+OK     Seitenzahl Folien-PDF 
+OK     Links PDF (Seite -> Zielseiten) 
+OK     PDF-Schriften eingebettet 
+OK     PDF-Seite enthält den Anfang des Titels der PPTX-Folie 
+OK     Seitenzahl Sprechtext-PDF 
+OK     Jeder Notizabsatz steht im Sprechtext-PDF 
+OK     Sprechtext-Deckblatt: Wörter, Summe, Uhr 
+OK     Sprechtext-Zeitsatz: zügig 
+Wörter: 433 | Sprecheranteil: {'Feyrouz': 244, 'Houssam': 189} | Summe Zeitfenster: 259 s = 4:19 | ruhig gerechnet: 259 s | zügig: 3:25
+ALLES OK

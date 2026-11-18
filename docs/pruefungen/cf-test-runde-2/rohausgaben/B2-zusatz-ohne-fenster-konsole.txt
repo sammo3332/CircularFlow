@@ -1,0 +1,11 @@
+   IST Bedarfsseite BD-24 Zeile: {"wert":"24.11.2026","chips":[],"klein":["Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit","In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft."]}
+   IST Angebotszeile: 2 Angebote, davon 0 prüfbar
+   IST Angebote (Abgleich): ["Angaben fehlen KB TW-05 Systemtrennwand mit Glasfeldern 120 lfm · ab 01.02.2027 Annahmefenster (Beginn) fehlt.","Angaben fehlen LH TW-01 Systemtrennwand, Vollwandelemente 42 lfm · ab 25.11.2026 bis 31.03.2027 Annahmefenster (Beginn) fehlt."]
+OK         Bedarfsseite nennt „24.11.2026“ (Handrechnung)
+OK         Bedarfsseite: „Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit“, kein Chip
+OK         Abgleich: 0 prüfbare Angebote (Angaben fehlen: Annahmefenster)
+   IST Übersicht Kopf: Zeitkritisch (7 Tage) 4 Fristen · Überfälliges zuerst
+   IST Fristzeilen (Titel): ["Aufmaßfrist · E-01 · T-07 → B-02","Nachweisfrist · E-02 · DB-01 → BD-01","Ersatzentscheidung · E-01 · T-07 → B-02","Ersatzentscheidung · E-02 · DB-01 → BD-01"]
+OK         Übersicht: keine Zeile „Prüfbitte spätestens“, weiter 4 Fristen (Bestellfrist 30.11. liegt außerhalb des Fensters)
+OK         keine Konsolen- oder Seitenfehler
+ZUSATZABLAUF OHNE ANNAHMEFENSTER ALLES OK

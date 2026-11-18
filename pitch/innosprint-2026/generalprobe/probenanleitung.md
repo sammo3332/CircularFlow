@@ -41,6 +41,12 @@ Eintrag „noch 2 Std. · Aufmaßfrist · E-01 · T-07 → B-02“. Stimmt etwas
 Die Prüfbitte wird in der Hauptdemo **nicht** angelegt. Wer es doch tut, muss die Vorschau danach zurücksetzen (neues
 Profil, oder Erfassen → In diesem Browser gespeichert → Zurücksetzen).
 
+**Hinweis zu K3 (Beispieldaten):** Die Oberfläche kennzeichnet die 14 Tage Prüfzeit bei BD-23 nicht als „geschätzt“: In
+`plattform/app/daten.js` steht für BD-23 „belegt“ (Z. 164), obwohl Z. 162 beide Bedarfe als Beispielannahmen bezeichnet. Sagt
+deshalb wie im K3-Satz „mit der **angenommenen** Prüfzeit“, und auf Nachfrage: „Die 14 Tage sind eine Annahme in den
+Beispieldaten, nicht belegt.“ Die Daten wurden nicht geändert, damit Pitch-Stand und Ersatzbilder gleich bleiben. Ob BD-23 vor
+dem Pitch auf „geschätzt“ gestellt wird (dann Ersatzbilder neu aufnehmen), entscheidet das Team.
+
 ## 3. Zeitkontrollen
 
 | Zeitpunkt | Soll | Wenn nicht |
