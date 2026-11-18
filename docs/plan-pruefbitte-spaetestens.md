@@ -2,10 +2,10 @@
 
 | | |
 |---|---|
-| Dokumentversion | 1.0 vom 18.11.2026. Entwurf der Planung (`cf-planung`), von der Koordination um Abschnitt 9 ergänzt (Entscheidungen). |
+| Dokumentversion | 1.1 vom 18.11.2026. Entwurf der Planung (`cf-planung`), von der Koordination um Abschnitt 9 ergänzt (Entscheidungen). Nach der ersten unabhängigen Prüfung berichtigt: Ausgangscommit, Eintragsform, Wortlaut zum Fenster, Beispieldaten BD-23 (E10), Liste der Nachführung. |
 | Status | Plan. Der Auftraggeber hat die Umsetzung der kleinsten sinnvollen Verbesserung am 17./18.11.2026 beauftragt (Abschnitt 9). Umsetzung nur auf dem getrennten Branch `codex/plattform-entwicklung-20261118`. Kein Merge, keine Veröffentlichung, keine Änderung der geteilten Vorschau. |
-| Branch | Planung auf `codex/plattform-v1`. Umsetzung durch `cf-entwicklung` auf `codex/plattform-entwicklung-20261118` (Ausgangscommit `c584285`). `plattform/` und `prototype/` bleiben auf `codex/plattform-v1` unverändert. |
-| Ausgangscommit | `da85183` (HEAD von `codex/plattform-v1`, aus `.git` gelesen). Der Anwendungscode ist laut Plan Restmenge 1.1 und Fallakte 1.3 seit `2121b92` unverändert; das habe ich nicht mit `git diff` geprüft. Zeilenangaben gelten für `da85183`. Seitdem hat sich am Anwendungscode nichts geändert (geprüft mit `git diff`). |
+| Branch | Planung auf `codex/plattform-v1`. Umsetzung durch `cf-entwicklung` auf `codex/plattform-entwicklung-20261118` (Ausgangscommit `23dc050`, der Commit dieses Plans). `plattform/` und `prototype/` bleiben auf `codex/plattform-v1` unverändert. |
+| Ausgangscommit | `da85183` (HEAD von `codex/plattform-v1`, aus `.git` gelesen). Zeilenangaben gelten für `da85183`. Dass sich am Anwendungscode seit `2121b92` nichts geändert hat, steht in Plan Restmenge 1.1 und Fallakte 1.3. Die Koordination hat es am 18.11.2026 nachgeprüft: `git diff --stat 2121b92 23dc050 -- plattform prototype` zeigt nur `plattform/README.md` (2 Zeilen). |
 | Pitch-Stand | bleibt festgehalten: Vorschau Version 2 (`1794826502-00b9`), Code `2121b92`. Dieser Plan ändert daran nichts. |
 | Maßgeblich | Produktbrief v0.2 (08.11.2026). Er nennt diese Frist nicht (Fallakte §9). Der Plan erweitert Fassung 2 (Demo-Entwurf) nur auf dem Entwicklungsbranch; über Merge und Vorschau entscheidet das Team. |
 | Grundlage | Fallakte CF-PILOT-01 1.3 (§1, §5, §9, §11) · Produktideen 1.3 (§3, B2) · plattform-v2 2.0 (§3, §4, §10) · Plan Restmenge 1.1 · CF-UMBAU-01 Rev. 2 (nur Fristbegriffe, Z. 66–98) · Teil A (Priorisierung) |
@@ -22,7 +22,7 @@ Sie schließt die Lücke, die Pitch (Folie 2), Fallakte (§5 Variante 2) und der
 **Nutzerrolle (Rollenannahme, kein Praxisbefund, Produktbrief v0.2):** Planung auf der Bedarfsseite, im Pilot „Planung UAK“; die Bauleitung liest mit.
 **Nutzerproblem (Beobachtung aus der Nachrechnung, Fallakte §1, §5):** Mit 14 Tagen Mindestprüfzeit ist der 05.02.2027 der letzte Tag für die Prüfbitte zur Bestellfrist 19.02.2027. Die Vorschau nennt diesen Tag nirgends. „Zeitkritisch“ zeigt die Bestellfrist erst ab 13.02. (7-Tage-Fenster, `kennzahlen.js` Z. 83, 101). Bei jeder Prüfzeit über 7 Tage kommt der Hinweis zu spät; die Beispielbedarfe haben 10 und 14 Tage.
 **Konkreter Ablauf:** (1) Die Planung öffnet die Übersicht und sieht unter „Zeitkritisch“ „Prüfbitte spätestens · BD-24“ mit Tag und Rechnung. (2) Ein Klick öffnet die Bedarfsseite mit derselben Angabe und den Angeboten. (3) Ein Klick auf ein prüfbares Angebot öffnet den Abgleich, dort „Prüfbitte anlegen“ (besteht). (4) Sobald ein Vorgang läuft, entfällt der Eintrag.
-**Gewünschtes Verhalten:** Für jeden Bedarf ohne laufenden Vorgang, zu dem mindestens ein Paar „Weiter prüfen“ oder „Knapp“ ergibt, steht in den 7 Tagen vor dem Fristtag „Prüfbitte spätestens“ unter „Zeitkritisch“. Die Bedarfsseite nennt den Tag, seine Rechnung und die Herkunft („geschätzt“) der Angaben. Die Frist ist der letzte Tag, an dem der Abgleich das Paar noch als prüfbar zeigt; danach sagt er „Für diese Entscheidung zu spät“.
+**Gewünschtes Verhalten:** Für jeden Bedarf ohne laufenden Vorgang, zu dem mindestens ein Paar „Weiter prüfen“ oder „Knapp“ ergibt, steht in den 7 Tagen bis zum Fristende (Fristtag, 23:59) „Prüfbitte spätestens“ unter „Zeitkritisch“. Die Bedarfsseite nennt den Tag, seine Rechnung und die Herkunft („geschätzt“) der Angaben. Die Frist ist der letzte Tag, an dem der Abgleich das Paar noch als prüfbar zeigt; danach sagt er „Für diese Entscheidung zu spät“.
 **Ausgeschlossen:**
 - Versand, Erinnerung, Kontaktaufnahme (Produktideen §3: zuerst ohne Versand lösen).
 - Änderung von Abgleichregel, Türregel (Aufmaßfrist, Ersatzentscheidung; der Sollbereich von B-02 bleibt Simulationsannahme), Bodenregel, Vorgangsstatus und Vorgangsfristen.
@@ -38,7 +38,7 @@ Sie schließt die Lücke, die Pitch (Folie 2), Fallakte (§5 Variante 2) und der
 |---|---|---|---|---|
 | PS-1 | Die Regel nennt für BD-24 (Pilot) den 05.02.2027, für BD-22 den 21.03.2027, für BD-23 den 13.11.2026. | `pruefbitteFrist` | Fallakte §9; Produktbrief (Regel) | T1, T2, T7 |
 | PS-2 | Bis zum Fristtag ergibt der Abgleich „Weiter prüfen“ oder „Knapp“, am Tag danach „Für diese Entscheidung zu spät“. | Fachregel und Abgleich | plattform-v2 §3 | T4 |
-| PS-3 | „Zeitkritisch (7 Tage)“ zeigt „Prüfbitte spätestens“ je Bedarf mit prüfbarem Paar, ab 7 Tagen vor dem Fristtag (BD-24: ab 30.01.2027, nicht am 29.01.). | Übersicht | Fallakte §9; Produktideen §3 | T5, T7, T8, BA-3 |
+| PS-3 | „Zeitkritisch (7 Tage)“ zeigt „Prüfbitte spätestens“ je Bedarf mit prüfbarem Paar, solange das Fristende (Fristtag, 23:59) höchstens 7 Tage nach der Projektzeit liegt (BD-24: ab dem 29.01.2027, 23:59; am 29.01.2027 um 09:00 noch nicht, am 30.01.2027 um 09:00 ja). | Übersicht | Fallakte §9; Produktideen §3 | T5, T7, T8, BA-3 |
 | PS-4 | Höchstens ein Eintrag je Bedarf, nie überfällig, keiner bei laufendem Vorgang, ohne prüfbares Paar oder nach dem Fristtag. | Übersicht | Entscheidung E2 | T5, T6, BA-5 |
 | PS-5 | Fehlende oder ungültige Angaben ergeben keinen Eintrag; die Bedarfsseite zeigt „nicht berechenbar“ mit Grund. | Bedarfsseite | plattform-v2 §3 | T3, T8, BA-2 |
 | PS-6 | Eine als „geschätzt“ gekennzeichnete Angabe steht als „(geschätzt)“ im Eintrag und als Chip auf der Bedarfsseite. | Übersicht, Bedarfsseite | Produktbrief A3; externer Hinweis | T1, T2, T5, T8, BA-2, BA-3 |
@@ -123,13 +123,13 @@ Bedarfsseite · Angaben          Prüfbitte spätestens   24.11.2026 [geschätzt
 | Datei | Funktion, Zeilen (`da85183`) | Änderung |
 |---|---|---|
 | `plattform/app/abgleich.js` | neu zwischen `entfernung` (Z. 181–186) und „Abgleich“ (Z. 188); nutzt `fakt`, `pruefzeit`, `tagNr`, `tagText`, `tage`, `datum` (Z. 5, 37–52) | `export const FRIST_PRUEFBITTE`, `export function pruefbitteFrist(bedarf)` (rein, ca. 30 Zeilen). `pruefeZeit` und `abgleich` bleiben unverändert. |
-| `plattform/app/kennzahlen.js` | Import Z. 7; Block „Zeitkritisch“ Z. 82–105; `pruefbarePaare` Z. 69 | Import ergänzen. Vor der Schleife der Bestellfristen (Z. 98) die Paare nach Bedarf gruppieren und je Bedarf einen Eintrag `{ art: 'bedarf', name, at, ueberfaellig: false, ton: 'warn', tage, pruefbarePaare, detail, ref }` einfügen (ca. 12 Zeilen). Das Einfügen vor der Bestellfrist ordnet bei gleicher Zeit die Prüfbitte zuerst. |
+| `plattform/app/kennzahlen.js` | Import Z. 7; Block „Zeitkritisch“ Z. 82–105; `pruefbarePaare` Z. 69 | Import ergänzen. Vor der Schleife der Bestellfristen (Z. 98) die Paare nach Bedarf gruppieren und je Bedarf einen Eintrag `{ art: 'bedarf', projekt, id, ref, name, at, ueberfaellig: false, ton: 'warn', tage, pruefbarePaare, detail }` einfügen (ca. 12 Zeilen). Das Einfügen vor der Bestellfrist ordnet bei gleicher Zeit die Prüfbitte zuerst. `projekt`, `id` und `ref` braucht `zeile()` in `uebersicht.js` für Titel und Link, wie bei der Bestellfrist. |
 | `plattform/app/ansichten/uebersicht.js` | `zeitkritisch()` Z. 24–43, kleine Zeile Z. 34 | `f.detail` (mit `esc`) statt „Bedarf, zum Bedarf“, wenn vorhanden |
 | `plattform/app/ansichten/bedarfe.js` | `bedarfDetail()` Z. 70–110, Block „Angaben“ Z. 83–95, nach „Annahmefenster“ Z. 90; `paare` Z. 72 | Import `pruefbitteFrist`; Zeile `angabe('Prüfbitte spätestens', …)` über eine Hilfsfunktion (ca. 12 Zeilen); `ctx.at` für „verstrichen“ |
 | `plattform/test/pruefbittefrist.test.mjs` | neu | Tests T1 bis T8 (ca. 120 Zeilen) mit Hilfen aus `_hilfe.mjs` |
 | `docs/pilot/cf-pilot-01-simulation.mjs` | Z. 131–136 (Bestellfrist erscheint ab 13.02.), Kopfkommentar Z. 1–7 | Filter `f.name === 'Bestellfrist'`. Neu: erster Tag „Prüfbitte spätestens“ = 30.01.2027 und Gleichlauf mit `letzterPruefbarerTag` (Z. 127). Ohne Änderung bricht das Skript an Z. 136 ab, weil der erste Eintrag für BD-24 dann der 30.01. statt des 13.02. wäre. |
 | unverändert | `daten.js`, `zustand.js`, `regeln.js`, `vorgang.js`, `main.js`, `ansichten/abgleich.js`, `entscheidung.js`, `vorgangsteil.js`, `styles.css`, `prototype/` | – |
-| Dokumente (Hauptsitzung, nach der Umsetzung) | Fallakte §1, §5, §9, §11; Produktideen B2; plattform-v2 §4; Folienplan A3 nur bei neuer Vorschau | Stand „Kandidat“ nachführen. Pilot-Klickpfad Schritt 6: Prüfzeit als „geschätzt“ kennzeichnen. |
+| Dokumente (Hauptsitzung, nach der Abnahme) | `docs/pilot/CF-PILOT-01-fallakte.md` §1, §5, §9, §11 · `docs/produktideen-aus-dem-pitch.md` B2 · `docs/plattform-v2.md` §4 · `docs/plan-restmenge.md` §1 · `plattform/README.md` (Dateitabelle, Stand) · Folienplan A3 nur bei neuer Vorschau | Stand „Kandidat“ nachführen: auf dem Entwicklungsbranch umgesetzt, nicht in der Vorschau, nicht freigegeben. Pilot-Klickpfad Schritt 6: Prüfzeit als „geschätzt“ kennzeichnen. `docs/produktbrief.md` und `docs/pitch-ablauf.md` bleiben unverändert (der Produktbrief nur mit ausdrücklicher Freigabe des Teams). |
 
 ```mermaid
 flowchart LR
@@ -195,6 +195,7 @@ Zahlen aus den Beispieldaten bei Stichtag Mi 18.11.2026, 14:00 (Fenster bis 25.1
 - **E7 Nicht auf der Abgleichseite** (Pitch-Pfad). Später möglich.
 - **E8 Wortlaut:** „Prüfbitte spätestens“ stammt aus Fallakte und Pitch, „Mindestprüfzeit“ aus dem Formular. „geschätzt“ nutzt die vorhandenen Kennzeichen, ohne neues Datenfeld (die Herkunft der Prüfzeit ist P3 in Teil A).
 - **E9 Laufender Vorgang:** Auch „Angelegt“ zählt als laufend, wie `bedarfBelegt`.
+- **E10 Beispieldaten unverändert (Einschränkung BD-23):** In `daten.js` steht in Z. 162, die Zeitangaben von BD-22 und BD-23 seien Beispielannahmen („Mindestprüfzeit und Annahmefenster geschätzt“). Für BD-22 ist die Herkunft entsprechend gekennzeichnet (Mindestprüfzeit und Annahmefenster „geschaetzt“). Für BD-23 stehen Bestellfrist, Mindestprüfzeit und Annahmefenster dagegen als „belegt“ (Z. 164). Die Frist von BD-23 erscheint deshalb **ohne** „geschätzt“ (T2, T7, T8), obwohl der Wert eine Beispielannahme ist. Die Daten werden nicht geändert, weil sich sonst Texte der Pitch-Demo (Abgleichseite K3) ändern könnten. Die Kennzeichnung „Beispieldaten“ bleibt sichtbar. Das Team entscheidet später, ob BD-23 auf „geschätzt“ gestellt wird.
 
 **Offene Fragen**
 
@@ -215,9 +216,18 @@ Zahlen aus den Beispieldaten bei Stichtag Mi 18.11.2026, 14:00 (Fenster bis 25.1
 
 ## 9. Entscheidungen der Koordination vom 18.11.2026
 
-Grundlage ist der Auftrag des Auftraggebers vom 17./18.11.2026: „Wähle daraus die kleinste sinnvolle, ausreichend beschriebene
-Verbesserung und setze sie vollständig um. Dokumentiere erwartetes Verhalten und Abnahmekriterien vor der Umsetzung. Entscheide
-umkehrbare Einzelheiten selbst.“ Alle Entscheidungen sind umkehrbar und stehen zur Bestätigung durch das Team.
+Grundlage ist der Auftrag des Auftraggebers vom 17./18.11.2026, hier der Absatz zur Plattform **wörtlich**:
+
+> „Entwickle nach Abschluss des Pitch-Pakets auch die Plattform weiter. Arbeite dafür auf einem getrennten
+> Entwicklungsbranch und bewahre den geprüften Pitch-Stand einschließlich seiner Demo unverändert. Lies die bestehenden
+> Pläne zu Restmenge und „Prüfbitte spätestens“. Wähle daraus die kleinste sinnvolle, ausreichend beschriebene
+> Verbesserung und setze sie vollständig um. Dokumentiere erwartetes Verhalten und Abnahmekriterien vor der Umsetzung.
+> Entscheide umkehrbare Einzelheiten selbst. Lass cf-review die Änderung prüfen und cf-test die passenden Regeltests und
+> Browserabläufe ausführen. Behebe belegte Fehler. Push auf den getrennten Branch ist erlaubt; kein Merge, Deployment
+> oder Aktualisieren der geteilten Vorschau. Liefere einen funktionierenden Entwicklungsstand mit Startanleitung und
+> tatsächlichen Prüfergebnissen. Beginne keine weitere Funktion, wenn dadurch ein unfertiger Stand zurückbleiben würde.“
+
+Alle Entscheidungen sind umkehrbar und stehen zur Bestätigung durch das Team.
 
 | Punkt | Entscheidung | Begründung |
 |---|---|---|
@@ -229,10 +239,11 @@ umkehrbare Einzelheiten selbst.“ Alle Entscheidungen sind umkehrbar und stehen
 | Frage 5 (Prüfzeit „geschätzt“ im Pilot) | in der Fallakte nachführen, wenn die Umsetzung abgenommen ist | Annahme A5 der Fallakte: 14 Tage nicht belegt |
 | Frage 6 (Dokumente) | nach der Abnahme: Fallakte §9, Produktideen B2, plattform-v2 §4 | Stand „Kandidat“ nachführen |
 | Frage 7 (14 Tage) | bleibt Simulationsannahme | bis eine dokumentierte Angabe mit Quelle vorliegt (Fallakte §11) |
+| E2 als Produktentscheidung | Zur Eintragung durch das Team in `00_START_HIER/ENTSCHEIDUNGEN.md` (nicht in diesem Repository): Nach dem Fristtag zeigt die Vorschau für „Prüfbitte spätestens“ weder einen Eintrag noch „überfällig“. Die Bedarfsseite nennt den Tag mit „verstrichen“, der Abgleich meldet „Für diese Entscheidung zu spät“, die Bestellfrist bleibt unter „Zeitkritisch“. | Schützt die Startbedingung der Demo. Spannung zum Steckbrief („lässt keine Frist stillschweigend verstreichen“): Die verstrichene Frist ist sichtbar (Bedarfsseite, Abgleich), aber kein eigener „überfällig“-Eintrag. Umkehr: „Überfällig“ mit Historie (plattform-v2 §4), eigene Stufe. |
 | Fehlerfälle | Die Sollwerte in Abschnitt 5 und 6 sind von Hand abgeleitet. Weicht ein ausgeführter Test ab, ist das ein Befund. Der Sollwert wird nicht stillschweigend angepasst, sondern erst nach Prüfung von Regel und Plan. | `cf-planung` hat nichts ausgeführt (kein Bash) |
 
 ## Nicht geprüft (Planung)
 
-Ich habe nichts ausgeführt (kein Bash): weder `node --test` noch das Pilot-Skript noch einen Browser. Alle Sollwerte in Teil B (Tage, Texte, Zählungen wie „4 prüfbare Paare“ und „noch 6 Tg. 14 Std.“) sind von Hand aus `abgleich.js`, `kennzahlen.js`, `vorgang.js`, `zeit.js` und `daten.js` abgeleitet. Das gilt auch für die Aussage, dass das Pilot-Skript an Z. 136 ohne Anpassung abbricht. Dass die bestehenden Tests grün bleiben, habe ich nur durch Lesen der betroffenen Tests (`kennzahlen`, `befunde`, `pruefauftrag`, `ansichten`) begründet, nicht gemessen. Ihre Zahl am Ausgangscommit ist mir unbekannt (die Dokumentation nennt 190 von 190 für `2121b92`). Dass der Anwendungscode seit `2121b92` unverändert ist, stammt aus den Plänen, nicht aus `git diff`. Nicht gelesen habe ich `entscheidung.js`, `vorgangsteil.js`, `projekte.js`, `main.js`, `styles.css`, `docs/plattform-v1.md`, `docs/plan-cf-umbau-01-rev2.md`, Softwareplanung v0.1 (Stichwortsuche ohne Treffer), den Folienplan ab Z. 452, die Pitch-Folien (PPTX, PDF) und den externen Prüfbericht. Die Zitate aus Concular und Madaster habe ich nicht erneut geprüft. Die beiden Hinweise der Hauptsitzung und den Auftrag, eine kleinste Verbesserung umzusetzen, kann ich im Repository nicht belegen.
+Ich habe nichts ausgeführt (kein Bash): weder `node --test` noch das Pilot-Skript noch einen Browser. Alle Sollwerte in Teil B (Tage, Texte, Zählungen wie „4 prüfbare Paare“ und „noch 6 Tg. 14 Std.“) sind von Hand aus `abgleich.js`, `kennzahlen.js`, `vorgang.js`, `zeit.js` und `daten.js` abgeleitet. Das gilt auch für die Aussage, dass das Pilot-Skript an Z. 136 ohne Anpassung abbricht. Dass die bestehenden Tests grün bleiben, habe ich nur durch Lesen der betroffenen Tests (`kennzahlen`, `befunde`, `pruefauftrag`, `ansichten`) begründet, nicht gemessen. Ihre Zahl am Ausgangscommit ist mir unbekannt (die Dokumentation nennt 190 von 190 für `2121b92`). Dass der Anwendungscode seit `2121b92` unverändert ist, stammte aus den Plänen. Die Koordination hat es am 18.11.2026 mit `git diff --stat 2121b92 23dc050 -- plattform prototype` nachgeprüft (nur `plattform/README.md`, 2 Zeilen). Nicht gelesen habe ich `entscheidung.js`, `vorgangsteil.js`, `projekte.js`, `main.js`, `styles.css`, `docs/plattform-v1.md`, `docs/plan-cf-umbau-01-rev2.md`, Softwareplanung v0.1 (Stichwortsuche ohne Treffer), den Folienplan ab Z. 452, die Pitch-Folien (PPTX, PDF) und den externen Prüfbericht. Die Zitate aus Concular und Madaster habe ich nicht erneut geprüft. Die beiden Hinweise der Hauptsitzung und den Auftrag, eine kleinste Verbesserung umzusetzen, kann ich im Repository nicht belegen.
 
 Wichtigste gelesene Dateien (absolute Pfade): `/home/user/CircularFlow/docs/plan-restmenge.md`, `/home/user/CircularFlow/docs/pilot/CF-PILOT-01-fallakte.md`, `/home/user/CircularFlow/docs/pilot/cf-pilot-01-simulation.mjs`, `/home/user/CircularFlow/docs/plattform-v2.md`, `/home/user/CircularFlow/docs/produktideen-aus-dem-pitch.md`, `/home/user/CircularFlow/docs/pitch-ablauf.md`, `/home/user/CircularFlow/docs/produktbrief.md`, `/home/user/CircularFlow/docs/claude-vor-entwicklung.md`, `/home/user/CircularFlow/docs/grundlagen/CF-UMBAU-01_Revision_2.md` (Z. 60–102), `/home/user/CircularFlow/plattform/app/abgleich.js`, `/home/user/CircularFlow/plattform/app/kennzahlen.js`, `/home/user/CircularFlow/plattform/app/vorgang.js`, `/home/user/CircularFlow/plattform/app/bedarf.js`, `/home/user/CircularFlow/plattform/app/zeit.js`, `/home/user/CircularFlow/plattform/app/daten.js`, `/home/user/CircularFlow/plattform/app/regeln.js`, `/home/user/CircularFlow/plattform/app/ansichten/uebersicht.js`, `/home/user/CircularFlow/plattform/app/ansichten/bedarfe.js`, `/home/user/CircularFlow/plattform/app/ansichten/abgleich.js`, `/home/user/CircularFlow/plattform/test/`.

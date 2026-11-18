@@ -1,6 +1,6 @@
 # Probenanleitung · 5-Minuten-Pitch INNOSPRINT · Generalprobe
 
-Dokumentversion 1.0 · Stand 18.11.2026, 00:30 Uhr (Berlin) · Branch `codex/plattform-v1` · Ausgangscommit `da85183` ·
+Dokumentversion 1.1 · Stand 18.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `23dc050` ·
 Deck-Stand `b647ea3`. Prüfsummen der Dateien: PPTX `9d5a86e7e239229a`, PDF `bc7f651fa7b5b669`, Sprechtext `e210d241234c43b0`.
 
 Eine Seite zum Ausdrucken (Abschnitte 1 bis 4). Abschnitt 5 trennt, was hier **ausgeführt** wurde, von dem, was ihr noch
@@ -26,7 +26,7 @@ Eine Seite zum Ausdrucken (Abschnitte 1 bis 4). Abschnitt 5 trennt, was hier **a
 ## 2. Die Demo in sechs Schritten (Folie 4)
 
 Vorher: frisches Browserprofil, Vollbild, mindestens 1280 × 720. **Startbedingung:** Übersicht zeigt „8 Paare davon 2
-prüfbar“, „2 Vorgänge“, links unten „Stichtag der Demo: Mi 18.11., 14:00 (Simulation)“ und oben in „Zeitkritisch“ den
+prüfbar“, „2 Vorgänge“, oben rechts „Stichtag der Demo: Mi 18.11., 14:00 (Simulation)“ (links unten steht dazu die Auswahl „Mi 18.11., 14:00“) und oben in „Zeitkritisch“ den
 Eintrag „noch 2 Std. · Aufmaßfrist · E-01 · T-07 → B-02“. Stimmt etwas nicht: neues frisches Profil.
 
 | Schritt | Aktion | Das ist zu sehen | Dazu sagt Houssam |
@@ -64,8 +64,8 @@ Profil, oder Erfassen → In diesem Browser gespeichert → Zurücksetzen).
    Version am Vortragsrechner klappt, ist **nicht geprobt** (Abschnitt 5).
 4. **PowerPoint fällt aus:** das PDF öffnen. Es enthält alle 15 Folien. Nach Seite 4 stehen die Ersatzfolien auf den
    Seiten 5 und 6, danach geht es auf Seite 7 weiter.
-5. **Alles fällt aus:** die Bilder im Ordner `generalprobe/bilder/` (USB-Stick, Handy) und die ausgedruckte Seite 2 des
-   Sprechtexts. Es sind die vier Bildschirme der Demo bei Stichtag Mi 18.11., 14:00:
+5. **Alles fällt aus:** die Bilder im Ordner `generalprobe/bilder/` (USB-Stick, Handy) und die ausgedruckten Seiten 1 und 5 des
+   Sprechtexts (Ablauf und Demotext K1 bis K4). Es sind die vier Bildschirme der Demo bei Stichtag Mi 18.11., 14:00:
    `ausfall-1-uebersicht.jpg`, `ausfall-2-paarliste.jpg`, `ausfall-3-fuenf-tage-zu-spaet.jpg`,
    `ausfall-4-weiter-pruefen.jpg`.
 6. **Rückfragen:** Foliennummer + Enter öffnet den Anhang (10 Prüfbitte und Fachergebnis, 11 Zeitprüfung, 12 Restmenge,
@@ -74,20 +74,22 @@ Profil, oder Erfassen → In diesem Browser gespeichert → Zurücksetzen).
 
 ## 5. Ausgeführt und noch zu proben
 
-### Hier ausgeführt (18.11.2026, 00:15 bis 00:35 Uhr, Chromium über Playwright, Linux)
+### Hier ausgeführt (18.11.2026, Chromium über Playwright, Linux; die Ausgaben stehen in `ergebnisse/`)
 
 | Prüfung | Ergebnis |
 |---|---|
-| Demo in frischem Browserkontext, **lokaler Stand** (`plattform/`, Code `2121b92`) | 28 von 28 Prüfungen bestanden, keine Konsolenfehler, keine Netzfehler |
-| Dieselbe Demo gegen die **veröffentlichte Auslieferung** (Version `1794826502-00b9`, alle 35 Dateien nur lesend heruntergeladen und lokal geöffnet) | 28 von 28 Prüfungen bestanden |
-| Veröffentlichte Dateien gegen einen Nachbau aus dem Repository (`node plattform/bauen-artifact.mjs`) | 34 von 35 Dateien byte-gleich. `index.html` weicht nur im Seitentitel („CircularFlow Fassung 2“) und im vom Dienst ergänzten HTML-Rahmen ab |
+| Demo in frischem Browserkontext, **lokaler Stand** (`plattform/`, Code `2121b92`) | 28 von 28 Prüfungen bestanden, keine Konsolenfehler, keine Netzfehler (`ergebnisse/demo-lokal.json`) |
+| Dieselbe Demo gegen eine **lokale Kopie der veröffentlichten Auslieferung** (Version `1794826502-00b9`, alle 35 Dateien nur lesend heruntergeladen und lokal geöffnet; **nicht** die Seite auf claude.ai) | 28 von 28 Prüfungen bestanden (`ergebnisse/demo-veroeffentlicht.json`) |
+| Heruntergeladene Dateien gegen `plattform/` im Repository | 31 von 35 byte-gleich. Abweichend: `app/main.js`, `app/door-rules.mjs`, `index.html`, `styles.css`. Das ist der Bauschritt der Veröffentlichung (`ergebnisse/dateivergleich.txt`) |
+| Heruntergeladene Dateien gegen einen Nachbau aus dem Repository (`node plattform/bauen-artifact.mjs`) | 34 von 35 Dateien byte-gleich. `index.html` weicht nur im Seitentitel („CircularFlow Fassung 2“) und im vom Dienst ergänzten HTML-Rahmen ab (`ergebnisse/dateivergleich.txt`) |
 | Startbedingung | 8 Paare, davon 2 prüfbar; 2 Vorgänge; Stichtag Mi 18.11., 14:00; „Zeitkritisch (7 Tage)“ mit 4 Fristen und oben „noch 2 Std. · Aufmaßfrist · E-01 · T-07 → B-02“ |
 | K3 | „Für diese Entscheidung zu spät“; „Prüfende 02.12.2026 liegt 5 Tage nach der Bestellfrist 27.11.2026“; „Prüfbitte anlegen“ mit `aria-disabled`; Klick auf den Knopf legt nichts an |
 | K4 | „Weiter prüfen“; „Vorschlag zur Prüfung, keine fachliche Freigabe“; „Prüfende 28.11.2026 liegt 123 Tage vor der Bestellfrist 31.03.2027“; Knopf nicht gesperrt (nicht angeklickt) |
 | Fehlendes Maß (K1) | Entscheidungsseite E-01: „Rohbauöffnung B-02 … messen oder ein verwertbares Aufmaß nachreichen. Ohne verwertbares Aufmaß bleibt die Breite offen.“ |
 | Nach dem Durchlauf | unverändert 8 Paare, davon 2 prüfbar, 2 Vorgänge |
 | Fenstergröße 1280 × 720 | kein seitliches Scrollen auf Übersicht, Paarliste, K3 und K4 |
-| Ersatzbilder gegen frische Aufnahme | `bilder/k1` bis `k4` (Quelle der Ersatzfolien) stimmen mit der neuen Aufnahme überein: 0,03 bis 0,21 % der Pixel weichen ab (JPEG-Rauschen) |
+| Ersatzbilder gegen frische Aufnahme | `bilder/k1` bis `k4` (Quelle der Ersatzfolien) stimmen mit der neuen Aufnahme überein: 0,03 bis 0,21 % der Pixel weichen ab, mittlerer Unterschied unter 0,7 von 255 (`ergebnisse/bildvergleich.txt`). Das ist JPEG-Rauschen. Wie die Bilder auf den Ersatzfolien 5 und 6 wirken, wurde nur in der Seitenübersicht der PDF angesehen, nicht am Beamer |
+| Regeltests | 190 von 190 bestanden (`ergebnisse/regeltests.txt`). Das belegt die Prüffälle, keine Fehlerfreiheit |
 | Pitch-Dateien (PPTX, PDF, Sprechtext) gegen README | 23 von 23 Prüfungen bestanden: Prüfsummen, 15 Folien, ausgeblendet 5, 6, 10–15, fünf Links in PPTX und PDF, 433 Wörter (244 / 189), Zeitfenster 259 s, Uhrzeiten, Sprechtext 16 Seiten, jeder Notizabsatz im Sprechtext |
 
 Nachvollziehen: `pruefskripte/` und `ergebnisse/` in diesem Ordner, Aufruf im Prüfprotokoll
@@ -120,5 +122,5 @@ Nachvollziehen: `pruefskripte/` und `ergebnisse/` in diesem Ordner, Aufruf im Pr
 2. Demo allein, dreimal, mit Stoppuhr (10 Minuten).
 3. Ganzer Vortrag mit Stoppuhr, zweimal, mit allen Übergaben (15 Minuten). Danach die Zeit in Abschnitt 1 eintragen.
 4. Einmal den Ausfall um 2:10 durchspielen (5 Minuten).
-5. Technik-Check am 20.11. ab 13:30 Uhr: Beamer, Adapter (HDMI oder USB-C), Strom, Hotspot, PDF und PPTX auf einem
+5. Technik-Check am 20.11. ab 13:30 Uhr (laut Veranstalterunterlage Tag 5, S. 3/4; Uhrzeit bitte beim Veranstalter bestätigen): Beamer, Adapter (HDMI oder USB-C), Strom, Hotspot, PDF und PPTX auf einem
    USB-Stick.

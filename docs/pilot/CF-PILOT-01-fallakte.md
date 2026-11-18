@@ -670,6 +670,12 @@ nicht im Repository.
 - **Änderungen an bisherigen Entscheidungen:** Die Empfehlung aus Fassung 1.0, zuerst „Prüfbitte spätestens“
   umzusetzen, ist durch den Auftrag abgelöst. Sie bleibt als späterer Kandidat erhalten. Pitch-Stand, Anwendungscode
   und Freigabe sind unverändert.
+  **Nachtrag vom 18.11.2026:** Der Nachtauftrag vom 17./18.11.2026 verlangt, aus den Plänen zu Restmenge und „Prüfbitte
+  spätestens“ die kleinste sinnvolle Verbesserung zu wählen und auf einem getrennten Branch umzusetzen. Für diese eine
+  Umsetzung gilt die Reihenfolge vom 16.11.2026 („Restmenge zuerst“, „für jetzt genügt die Dokumentation“) deshalb nicht.
+  „Prüfbitte spätestens“ wird auf `codex/plattform-entwicklung-20261118` umgesetzt (Entscheidung:
+  `docs/priorisierung-nach-dem-pitch.md` Abschnitt 5, Plan: `docs/plan-pruefbitte-spaetestens.md`). Pitch-Stand und
+  Vorschau bleiben unverändert, es gibt keinen Merge und keine Veröffentlichung. Die Restmenge bleibt als Plan bestehen.
 - **Offene Fragen an das Team:**
   1. Gibt es einen realen Partner, der Bestellfrist, Lieferzeit und Prüfzeit für Innentüren nennen kann?
   2. Die offenen Fragen F1 bis F6 im Plan zur Restmenge (`docs/plan-restmenge.md`, Abschnitt 8).

@@ -1,6 +1,6 @@
 # Praxistest · Unterlagen
 
-Dokumentversion 1.0 · Stand 18.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `e244fc4`
+Dokumentversion 1.1 · Stand 18.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `23dc050`
 
 **Status: Entwurf.** Es wurde kein Gespräch geführt, nichts versendet und niemand angeschrieben. Es gibt keine
 Praxisbestätigung und keinen Partner. Das Team bestätigt die Unterlagen, bevor es sie verwendet.
@@ -19,11 +19,20 @@ Die Hypothesen H1 bis H10, ihre Entscheidungsregeln und die Prüfschritte stehen
 
 1. **Kontakt eintragen** im Einseiter (Platzhalter „[Kontakt des Teams eintragen]“). Dort steht bewusst keine private Adresse
    und keine Telefonnummer.
-2. **Zusagen im Einseiter prüfen:** „nur für diesen Test“, „Namen, Büro oder Zitate nur mit ausdrücklicher Zustimmung“,
-   „unverbindlich“, „keinen Preis nennen“. Das Team muss sie einhalten können.
-3. **Entscheidungsregeln** aus den Juryantworten (Abschnitt 2) bestätigen oder ändern, **bevor** das erste Gespräch
+2. **Zusagen im Einseiter prüfen.** Das Team muss sie einhalten können:
+   - **Ergebnisblatt:** Der Einseiter und der Ablauf nennen ein Ergebnisblatt und ein gemeinsames Besprechen. Das Team
+     entscheidet, ob es das je Fall leisten kann und bis wann. Sonst die Zeilen ändern („Wir zeigen Ihnen das Ergebnis im
+     Gespräch“).
+   - **Verwendung:** Angaben nur zur Prüfung der Idee und für Vorträge und Folien des Teams, zunächst ohne Namen und Büro.
+     Namen, Büro, Zitate und Fotos nur mit ausdrücklicher Zustimmung (vier Fragen am Ende des Gesprächs, in der Notiz).
+   - **Unverbindlich, kein Preis.** Eine Zusage (Kurztest, Termin, Datenüberlassung) notieren, nur wenn die Person sie
+     ausdrücklich macht.
+3. **Speicherort und Löschfrist der Notizen festlegen** und im Einseiter und in der Notiz eintragen (Platzhalter „[Team
+   trägt ein]“). Vorschlag, das Team entscheidet: nur auf Geräten des Teams, nicht in geteilten Ordnern ohne Zustimmung,
+   löschen nach der Auswertung der drei Gespräche.
+4. **Entscheidungsregeln** aus den Juryantworten (Abschnitt 2) bestätigen oder ändern, **bevor** das erste Gespräch
    stattfindet.
-4. **Wer führt, wer notiert.** Vorschlag: eine Person führt, eine notiert, getauscht je Gespräch.
+5. **Wer führt, wer notiert.** Vorschlag: eine Person führt, eine notiert, getauscht je Gespräch.
 
 ## PDFs neu erzeugen
 
