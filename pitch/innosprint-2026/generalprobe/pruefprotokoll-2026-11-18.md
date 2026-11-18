@@ -42,10 +42,11 @@ ausgelesen oder angesehen. Früher geprüfte Punkte, die hier nicht wiederholt w
     (Schriften als `data:`-URI, Türregel neben den Modulen, HTML-Rahmen).
   - Darum zusätzlich `node plattform/bauen-artifact.mjs <Zielordner außerhalb des Repositorys>`: Der Nachbau und der
     Download sind in 34 von 35 Dateien byte-gleich. Nur `index.html` weicht ab, und zwar im Seitentitel („CircularFlow
-    Fassung 2“ gegen „CircularFlow Plattform“) und durch den vom Dienst ergänzten HTML-Rahmen.
+    Fassung 2“ gegen „CircularFlow Plattform“) und durch den vom Dienst ergänzten HTML-Rahmen (Unterschied gespeichert in
+    `ergebnisse/index-html-diff.txt`).
 - **Folgerung** (aus dem Dateivergleich, nicht aus dem Öffnen der Seite): Die heruntergeladenen Dateien der veröffentlichten
   Vorschau entsprechen `plattform/` in diesem Repository nach dem Bauschritt der Veröffentlichung (Code `2121b92`, seitdem
-  nur die README geändert).
+  nur die README geändert; Ausgabe von `git diff --stat` in `ergebnisse/diff-anwendungscode.txt`).
 - **Nicht geprüft:** Die Seite auf claude.ai selbst wurde nicht in einem Browser geöffnet (kein Zugang von hier). Die
   Freigabe und die Sichtbarkeit der Vorschau sind nicht geprüft.
 
@@ -79,7 +80,7 @@ ausgelesen oder angesehen. Früher geprüfte Punkte, die hier nicht wiederholt w
 
 - Die Bilder `bilder/k1-uebersicht.jpg` bis `k4-weiter-pruefen.jpg` (Quelle der Ersatzfolien 5 und 6) wurden gegen eine
   neue Aufnahme mit denselben Einstellungen verglichen: gleiche Größe (2160 × 1215), 0,03 bis 0,21 % der Pixel weichen um
-  mehr als 24 von 255 ab, die mittlere Abweichung liegt unter 0,7. Das ist JPEG-Rauschen. Die Ersatzfolien zeigen also,
+  mehr als 24 von 255 ab, die mittlere Abweichung liegt unter 0,7. Vermutlich ist das JPEG-Rauschen (gemessen wurden nur Pixelanteil und Mittelwert). Die Ersatzfolien zeigen also,
   was die Demo heute liefert. Befehl: `python3 -I pruefskripte/bildvergleich.py`, Ausgabe in `ergebnisse/bildvergleich.txt`.
   Die Wirkung der Bilder auf den Folien am Beamer ist nicht geprüft.
 - Als Rückfall außerhalb von PowerPoint liegen vier Bilder der neuen Aufnahme (veröffentlichte Auslieferung) in
@@ -88,7 +89,7 @@ ausgelesen oder angesehen. Früher geprüfte Punkte, die hier nicht wiederholt w
 ## 5. Regeltests
 
 - **Befehl:** `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs`
-- **Ergebnis:** 190 von 190 bestanden (46 in `prototype/test/`, 144 in `plattform/test/`, getrennt nachgezählt), 0
+- **Ergebnis:** 190 von 190 bestanden (46 in `prototype/test/`, 144 in `plattform/test/`, getrennt nachgezählt in `ergebnisse/regeltests-getrennt.txt`), 0
   fehlgeschlagen, Dauer 0,95 Sekunden, ausgeführt gegen `23dc050`, Arbeitsbaum ohne Änderung an `plattform/` und
   `prototype/`. Die vollständige Ausgabe steht in `ergebnisse/regeltests.txt`. Das belegt die geprüften Fälle der Regeln
   und der Vorschau, keine allgemeine Fehlerfreiheit und keine fachliche Eignung.

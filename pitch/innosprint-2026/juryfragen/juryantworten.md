@@ -5,8 +5,8 @@ Deck-Stand `b647ea3` · Rückfragerunde laut Veranstalter: fünf Minuten (Tag 5,
 
 Zehn kurze Antworten zum Sprechen, je etwa 15 bis 30 Sekunden. Jede nennt, **was belegt ist**, **was die Demo zeigt** und **was
 nur Hypothese** ist, und verweist auf den Prüfschritt dafür. Es gilt nur, was in den Quellen steht. Es gibt keinen Kunden,
-keinen Partner, keine Einsparung und keine Praxisbestätigung. Praxisfeedback liegt nicht vor (Postfach des Teamkontos am
-18.11.2026 nur lesend geprüft: keine Antwort auf die Anfragen vom 17.11.2026).
+keinen Partner, keine Einsparung und keine Praxisbestätigung. Praxisfeedback liegt nicht vor (laut Pitch-README kam bis zum
+17.11.2026, 23:10 Uhr, auf keine der neun Anfragen vom 17.11. eine Antwort).
 
 **Status:**
 - **belegt:** Die Aussage steht in einer genannten Quelle. Die Quelle ist hier im Original gelesen (Abschnitt 3).
@@ -28,7 +28,7 @@ die Zeit noch reicht.“
 
 | Teil der Antwort | Status | Beleg |
 |---|---|---|
-| Bei Bauentscheidungen zählen meist Zeit und Kosten. Es gibt zeitliche Unterschiede zwischen Angebot und Nachfrage. | belegt | Stadt Dortmund, Umweltamt, INNOSPRINT, Folie 11 („Bei Bauentscheidungen zählen meist Zeit und Kosten“); Concular, Workshop, Folie 49 („Zeitliche Unterschiede in Nachfrage und Angebot“) |
+| Bei Bauentscheidungen zählen meist Zeit und Kosten. Concular nennt „Zeitliche Unterschiede in Nachfrage und Angebot“. | belegt (Aussage des Umweltamts); Herstellerangabe (Concular) | Stadt Dortmund, Umweltamt, INNOSPRINT, Folie 11 („Bei Bauentscheidungen zählen meist Zeit und Kosten“); Concular, Workshop, Folie 49 |
 | Die Zeitprüfung „reicht die Zeit?“ | gezeigt | Demo K3 und K4 (Beispieldaten) |
 | Die Prüfung braucht Zeit (im Pitch 14 Tage angenommen). Reicht die Zeit nicht, wird neu bestellt. Wie oft das vorkommt, ist offen. | **Hypothese** | Steckbrief („Fehlen sie bis zur Frist, wird nach unserer Annahme neu gekauft“); Annahme A5 der Fallakte. Der Pitch zeigt einen **ausgedachten** Fall (Folie 1: „kann verloren gehen“). |
 
@@ -46,7 +46,7 @@ ob für ein Angebot die Zeit reicht, was fehlt und was als Nächstes zu tun ist.
 | Teil der Antwort | Status | Beleg |
 |---|---|---|
 | Nutzer ist die Projektleitung im Planungsbüro. | **Hypothese** | Folie 8 („Nutzer: Projektleitung im Planungsbüro“); Steckbrief (Zielgruppe) |
-| Es zeigt Zeit, fehlende Angaben und nächsten Schritt. | gezeigt | Demo K3 und K4: Ergebnis, „Nächster Schritt · Planung“, Prüfpunkte |
+| Es zeigt Zeit, nächsten Schritt und Prüfpunkte; bei unvollständigen Bedarfen auch, was fehlt. | gezeigt | K2 (Paarliste): vier Paare „Angaben fehlen“, „Bestellfrist fehlt.“. K3 und K4: Ergebnis, „Nächster Schritt · Planung“, Prüfpunkte, beide „Nichts fehlt.“ (`generalprobe/ergebnisse/abgleich-texte.txt`) |
 | Fachleute beurteilen die Eignung. | gezeigt | Folie 3; K4: „Vorschlag zur Prüfung, keine fachliche Freigabe“ |
 
 **Prüfschritt:** H3, Leitfaden F5 und F8. Wir fragen nach der **Rolle** im Büro, nicht nach dem Namen.
@@ -62,7 +62,7 @@ Wer zahlt, klären wir im Pilot.“
 |---|---|---|
 | Büroleitung als Käufer, Projektlizenz | **Hypothese** | Steckbrief („nach unserer Annahme die Büroleitung“; „Zahlungsbereitschaft ist nicht belegt“) |
 | Bauherrschaft oder Bestandsorganisation als Alternative | **Hypothese** | Notiz zu Folie 8; Steckbrief („Offen ist, ob der Nutzen beim Büro oder bei der Bauherrschaft liegt“) |
-| Zahlender Auftraggeber offen | gezeigt | Folie 8 („Zahlender Auftraggeber: im Pilot zu klären“) |
+| Zahlender Auftraggeber offen | **Hypothese** (offen, so auf Folie 8 genannt) | Folie 8 („Zahlender Auftraggeber: im Pilot zu klären“) |
 
 **Prüfschritt:** H4, Leitfaden F8 und F9. Wir nennen **keinen Preis** und fragen offen nach der entscheidenden Rolle.
 
@@ -115,9 +115,9 @@ suchen wir einen echten Dortmunder Umbau.“
 | Dortmunder Umbau als Pilot | **Hypothese** (Ziel) | Folie 9 („Wir suchen einen echten Umbaufall in Dortmund“). Es gibt **keinen** Partner. |
 
 **Wenn die Jury nachhakt:** „Concular schreibt auf seiner Webseite, dass es für die Universitätsbibliothek der TU Dortmund
-im Auftrag des BLB NRW Materialien erfasst und das Inventar vermittelt hat, zum Beispiel Leuchten, Regale und
-Hörsaalklappstühle. Ein großer Teil sei extern vermittelt worden. Das ist eine Angabe des Anbieters, nachgeprüft haben wir
-sie nicht. Es ist ein anderes Vorhaben als unseres.“
+im Auftrag des BLB NRW Materialien erfasst hat, zum Beispiel Leuchten, Regale und Hörsaalklappstühle, und das Inventar
+vermittelt hat. Ein großer Teil der erfassten Materialien sei extern vermittelt worden. Das ist eine Angabe des Anbieters,
+nachgeprüft haben wir sie nicht. Es ist ein anderes Vorhaben als unseres.“
 
 | Teil der Nachfrage | Status | Beleg |
 |---|---|---|
@@ -155,8 +155,8 @@ fehlt und wer es liefern soll. Eine Anbindung an vorhandene Listen gibt es noch 
 | Teil der Antwort | Status | Beleg |
 |---|---|---|
 | Eingabe, Vorschläge simuliert, nur gemessene Maße zählen bei Türen | gezeigt (Vorschau, **nicht** in der Pitch-Demo) | Fallakte CF-PILOT-01, Abschnitt 4 („Wertstatus beim Scan und beim Aufmaß“: vorgeschlagen, gemessen, bestätigt); Folie 14 |
-| Prüfpunkte mit zuständiger Rolle und geschätzte Angaben werden gezeigt | gezeigt | Demo K3 und K4, Abschnitt „Prüfpunkte“: jeder Punkt mit einer Rolle, zum Beispiel „2 offene Nachweise am Bauteil klären (siehe Bauteilakte)“. K4 zusätzlich „Geschätzte Angaben bestätigen: Mindestprüfzeit, Annahmefenster“. Beide Seiten sagen „Nichts fehlt.“ Am 18.11.2026 im Browser ausgelesen. |
-| Fehlende Angaben werden benannt | in der Vorschau gezeigt, **nicht** in der Pitch-Demo | Abgleichseite des Paares LH·T-03 → BD-21, Abschnitt „Fehlende und geschätzte Angaben“: „Fehlt“ mit Bestellfrist, Mindestprüfzeit, Annahmefenster (Beginn), Annahmefenster (Ende); nächster Schritt „Fehlende Angaben ergänzen“, Rolle Planung. Am 18.11.2026 im Browser ausgelesen. Außerdem Entscheidungsseite E-01 („Ohne verwertbares Aufmaß bleibt die Breite offen“). |
+| Prüfpunkte mit zuständiger Rolle und geschätzte Angaben werden gezeigt | gezeigt | Demo K3 und K4, Abschnitt „Prüfpunkte“: jeder Punkt mit einer Rolle, zum Beispiel „2 offene Nachweise am Bauteil klären (siehe Bauteilakte)“. K4 zusätzlich „Geschätzte Angaben bestätigen: Mindestprüfzeit, Annahmefenster“. Beide Seiten sagen „Nichts fehlt.“ (`generalprobe/ergebnisse/abgleich-texte.txt`) |
+| Fehlende Angaben werden benannt | in der Vorschau gezeigt, **nicht** in der Pitch-Demo | Abgleichseite des Paares LH·T-03 → BD-21, Abschnitt „Fehlende und geschätzte Angaben“: „Fehlt“ mit Bestellfrist, Mindestprüfzeit, Annahmefenster (Beginn), Annahmefenster (Ende); nächster Schritt „Fehlende Angaben ergänzen“, Rolle Planung (`generalprobe/ergebnisse/abgleich-texte.txt`). Außerdem Entscheidungsseite E-01 („Ohne verwertbares Aufmaß bleibt die Breite offen“, `generalprobe/ergebnisse/demo-lokal.json`). |
 | Kein Import aus Excel oder CSV, keine Ablage für Unterlagen | belegt (eigene Lücke) | Fallakte, Abschnitt 4, Schritt 2 |
 | Die Projektleitung kann die Angaben beschaffen | **Hypothese** | – |
 
@@ -167,15 +167,16 @@ Entscheidung?
 **Frage:** Wer entscheidet, und wer haftet?
 
 **Antwort:** „CircularFlow macht einen Vorschlag zur Prüfung, keine Freigabe. Fachleute beurteilen die Eignung, die
-Projektleitung entscheidet die Bestellung. Welche Prüfungen und Nachweise erforderlich sind, klären Fachplanung und
-gegebenenfalls zuständige Prüfstellen für das konkrete Bauteil und den vorgesehenen Einbau. Rechtsberatung geben wir nicht.
-Wer haftet, haben wir nicht geklärt. Das muss ein reales Projekt mit dem Eigentümer und den Fachleuten klären.“
+Projektleitung entscheidet die Bestellung. Welche Nachweise nötig sind, klären Fachplanung und zuständige Prüfstellen für das
+konkrete Bauteil. Rechtsberatung geben wir nicht. Wer haftet, haben wir nicht geklärt. Das klärt ein reales Projekt mit
+Eigentümer und Fachleuten.“
 
 | Teil der Antwort | Status | Beleg |
 |---|---|---|
-| Vorschlag, keine Freigabe; Fachleute beurteilen, Projektleitung entscheidet | gezeigt | Folie 3; Demo K4 („Vorschlag zur Prüfung, keine fachliche Freigabe“); Fachergebnis ist in der Vorschau nur ein Eintrag (Folie 14) |
-| Prüfungen und Nachweise klären Fachplanung und Prüfstellen für das konkrete Bauteil und den Einbau | Formulierung des Teams, **nicht durch eine Quelle belegt** | Folie 14. Wer im Einzelfall zuständig ist, hängt vom Bauteil ab (Fallakte, Abschnitt 6). |
-| Concular nennt seine Handlungsempfehlung keine Rechtsberatung, alle Empfehlungen seien „projektweise zu prüfen“ | belegt (Herstellerangabe, nur für Conculars eigene Empfehlung) | Concular, Handlungsempfehlung für die öffentliche Hand, Dezember 2024, S. 3, im Original gelesen |
+| Vorschlag, keine Freigabe | gezeigt | Demo K4 („Vorschlag zur Prüfung, keine fachliche Freigabe“); Fachergebnis ist in der Vorschau nur ein Eintrag (Folie 14) |
+| Fachleute beurteilen, Projektleitung entscheidet | Aussage der Folie 3, nicht durch eine Quelle belegt | Folie 3 |
+| Welche Nachweise nötig sind, klären Fachplanung und zuständige Prüfstellen für das konkrete Bauteil | Formulierung des Teams, **nicht durch eine Quelle belegt** | Folie 14. Wer im Einzelfall zuständig ist, hängt vom Bauteil ab (Fallakte, Abschnitt 6). |
+| Concular nennt seine Handlungsempfehlung keine Rechtsberatung, alle Empfehlungen seien „projektweise zu prüfen“ | belegt (Herstellerangabe, nur für Conculars eigene Empfehlung) | Concular, Handlungsempfehlung für die öffentliche Hand, Dezember 2024, PDF-Seite 3 (gedruckte Seite 5), im Original gelesen |
 | Wer haftet | **offen** | Nicht geklärt. Die Fallakte führt „Zustimmung des Eigentümers, Übergabevereinbarung, Eigentumsübergang und Haftung“ als Aufgabe eines realen Projekts (Abschnitt 6, „Was ein reales Projekt bestätigen müsste“). Offen ist auch, wer bei einer Vermittlung zwischen zwei Projekten die Rolle der „Inverkehrbringenden“ übernimmt. |
 
 **Nicht sagen:** Aussagen zu Verwendbarkeitsnachweisen einzelner Türen. Die Folie 14 enthält sie nicht mehr.
@@ -229,11 +230,11 @@ Die Prüfsummen (SHA-256, Anfang) gelten für die abgerufenen Dateien.
 |---|---|---|---|
 | „Bei Bauentscheidungen zählen meist Zeit und Kosten“; „Das Rückbau- und Entsorgungskonzept fragt nach Abfällen und Entsorgungswegen, nicht nach Bauteilen zur Wiederverwendung“; „Es gibt kaum Daten zu Baustoffströmen“; Ansatzpunkt „Rückbau- und Entsorgungskonzept: Wiederverwendung als eigene Rubrik aufnehmen“ | Stadt Dortmund, Umweltamt, INNOSPRINT, 13.11.2026, Folie 11 („Dortmund heute“) | hochgeladene PDF `2026-11-09_PP-Innosprint_01ZB_KS`, Text der Folie 11 ausgelesen | wörtlich bestätigt, die ersten drei stehen in der Spalte „Was fehlt“, der vierte in „Ansatzpunkte“ |
 | „Zeitliche Unterschiede in Nachfrage und Angebot“; „Fehlende Infrastruktur für Lagerung, Rezertifizierung und Aufbereitung“; „Interne Vermittlung“ mit „Interner Marktplatz“, „Integration in Planungstool“, „Reservieren“, „Reservieren und bilanzieren“ | Concular, Workshop im INNOSPRINT, Folien 49 und 67 | hochgeladene PDF `Concular_Workshop_Seiten_49_und_67`, Text ausgelesen | wörtlich bestätigt |
-| „Zuletzt bearbeitet: 9. September 2026“; „Verfügbar ab“ und „Verfügbar bis“ (empfohlen); E-Mail-Benachrichtigungen täglich, wöchentlich oder monatlich; „keine Handelsplattform, sondern eine Vermittlungsplattform“; Vorlauf für Rückbauprojekte „mindestens vier bis fünf Monate“ empfohlen; Nutzergruppen u. a. Planungsbüros; die Begriffe „Frist“, „Bestell“ und „Prüf“ kommen **nicht** vor | `https://docs.madaster.com/de/de/knowledge-base/industrial-reuse.html` (Madaster Match) | live abgerufen, HTTP 200, 50.664 Bytes, SHA-256 `5ed9045c79b143af`, Text ausgewertet | bestätigt. Gilt für die Dokumentationsseite, nicht für das Produkt. |
+| „Zuletzt bearbeitet: 9. September 2026“; „Verfügbar ab“ und „Verfügbar bis“ (empfohlen); E-Mail-Benachrichtigungen täglich, wöchentlich oder monatlich; „keine Handelsplattform, sondern eine Vermittlungsplattform“; für Rückbauprojekte „ein Vorlauf von mindestens vier bis fünf Monaten“ empfohlen; Nutzergruppen u. a. Planungsbüros; die Begriffe „Frist“, „Bestell“ und „Prüf“ kommen **nicht** vor | `https://docs.madaster.com/de/de/knowledge-base/industrial-reuse.html` (Madaster Match) | live abgerufen, HTTP 200, 50.664 Bytes, SHA-256 `5ed9045c79b143af`, Text ausgewertet | bestätigt. Gilt für die Dokumentationsseite, nicht für das Produkt. |
 | Concular hat im Auftrag des BLB NRW Materialien der Universitätsbibliothek TU Dortmund erfasst, die zirkuläre Ökobilanz erstellt und das Inventar vermittelt; „Ein großer Teil der identifizierten Materialien wurde extern vermittelt“ (ohne Zahlen) | `https://concular.de/tu-dortmund-bibliothek/` | live abgerufen, HTTP 200, 123.272 Bytes, SHA-256 `56daef137999ef42` | bestätigt, keine Mengenangaben |
 | Rückbau der Universitätsbibliothek TU Dortmund (Baujahr 1974) „erst, nachdem alle demontierbaren Baustoffe vollständig ausgebaut wurden“ | BLB NRW, Pressemeldung vom 02.12.2024 | live abgerufen, HTTP 200, 82.257 Bytes, SHA-256 `1a8a3cceeae442d6` | bestätigt |
-| „Sie stellt keine Rechtsberatung dar – alle Empfehlungen sind projektweise zu prüfen.“ | Concular, „Zirkuläres Planen und Bauen mit Fokus auf die Wiederverwendung von Bauprodukten“, Handlungsempfehlung für die öffentliche Hand, 1. Auflage, Dezember 2024, S. 3 | PDF (57 Seiten, 25.290.327 Bytes, SHA-256 `cf9aa76bbacf758f`) abgerufen, Seite 3 ausgelesen | wörtlich bestätigt |
-| SDG 12.5 („Abfallaufkommen … deutlich verringern, auch durch Wiederverwendung“) | Vereinte Nationen | Zugriffsversuche auf `sdgs.un.org`, `unstats.un.org`, `un.org`, `unric.org`, `bmz.de` und Wikipedia: Der Proxy lehnt die Verbindung ab (HTTP 403 beim Verbindungsaufbau) | **nicht geprüft**, die Folie sagt „sinngemäß“. Gegenlesen (Abschnitt 2, letzter Absatz). An den Netzeinstellungen wurde nichts geändert. |
+| „Sie stellt keine Rechtsberatung dar – alle Empfehlungen sind projektweise zu prüfen.“ | Concular, „Zirkuläres Planen und Bauen mit Fokus auf die Wiederverwendung von Bauprodukten“, Handlungsempfehlung für die öffentliche Hand, 1. Auflage, Dezember 2024, PDF-Seite 3 (gedruckte Seite 5) | PDF (57 Seiten, 25.290.327 Bytes, SHA-256 `cf9aa76bbacf758f`) abgerufen, Seite 3 ausgelesen | wörtlich bestätigt |
+| SDG 12.5 (Unterziel der Vereinten Nationen; die Folie 7 gibt es sinngemäß wieder: „weniger Abfall durch Wiederverwendung“) | Vereinte Nationen | Zugriffsversuche auf `sdgs.un.org`, `unstats.un.org`, `un.org`, `unric.org`, `bmz.de` und Wikipedia: Der Proxy lehnt die Verbindung ab (HTTP 403 beim Verbindungsaufbau). Zweiter Versuch mit weiteren Adressen (unter anderem `undp.org`, `globalgoals.org`, `destatis.de`, `bundesregierung.de`, `sdg-indikatoren.de`) über den Proxy und mit einem Abruf-Agenten für `sdgs.un.org` und `unstats.un.org`: keine Verbindung (Host nicht auflösbar) | **nicht geprüft**, die Folie sagt „sinngemäß“. Gegenlesen (Abschnitt 2, letzter Absatz). An den Netzeinstellungen wurde nichts geändert. |
 | „Laut BBSR sind Bauleistungen an bestehenden Gebäuden die wichtigste Größe des Bauvolumens“; Börsen wie Restado | Steckbrief | nicht geprüft | steht nur im Steckbrief, nicht im Pitch. Bei Rückfrage nicht als Beleg nennen. |
 | Teilnahmebedingungen (Einreichung „bis einschließlich 18.11.26“), Pitch 5 + 5 Minuten, Kriterien | INNOSPRINT Tag 5, S. 11, 17 und 18; Teilnahmebedingungen vom 01.10.2026 | am 17.11.2026 im Original gelesen und abgeglichen | bestätigt (frühere Runde) |
 

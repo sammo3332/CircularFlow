@@ -2,8 +2,8 @@
 
 Dokumentversion 1.1 · Stand 18.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `23dc050`
 
-**Status: Entwurf.** Es wurde kein Gespräch geführt, nichts versendet und niemand angeschrieben. Es gibt keine
-Praxisbestätigung und keinen Partner. Das Team bestätigt die Unterlagen, bevor es sie verwendet.
+**Status: Entwurf.** Für den Praxistest wurde kein Gespräch geführt und in dieser Runde nichts versendet. (Die neun Anfragen
+vom 17.11.2026 blieben laut Pitch-README bis 23:10 Uhr unbeantwortet.) Es gibt keine Praxisbestätigung und keinen Partner. Das Team bestätigt die Unterlagen, bevor es sie verwendet.
 
 | Datei | Zweck |
 |---|---|
@@ -23,13 +23,14 @@ Die Hypothesen H1 bis H10, ihre Entscheidungsregeln und die Prüfschritte stehen
    - **Ergebnisblatt:** Der Einseiter und der Ablauf nennen ein Ergebnisblatt und ein gemeinsames Besprechen. Das Team
      entscheidet, ob es das je Fall leisten kann und bis wann. Sonst die Zeilen ändern („Wir zeigen Ihnen das Ergebnis im
      Gespräch“).
-   - **Verwendung:** Angaben nur zur Prüfung der Idee und für Vorträge und Folien des Teams, zunächst ohne Namen und Büro.
-     Namen, Büro, Zitate und Fotos nur mit ausdrücklicher Zustimmung (vier Fragen am Ende des Gesprächs, in der Notiz).
+   - **Verwendung:** Angaben zur Prüfung der Idee. Für Vorträge und Folien (ohne Namen und Büro) sowie für Namen, Büro,
+     Zitate und Fotos nur mit ausdrücklicher Zustimmung am Ende des Gesprächs (vier Fragen, Antworten in der Notiz).
    - **Unverbindlich, kein Preis.** Eine Zusage (Kurztest, Termin, Datenüberlassung) notieren, nur wenn die Person sie
      ausdrücklich macht.
-3. **Speicherort und Löschfrist der Notizen festlegen** und im Einseiter und in der Notiz eintragen (Platzhalter „[Team
-   trägt ein]“). Vorschlag, das Team entscheidet: nur auf Geräten des Teams, nicht in geteilten Ordnern ohne Zustimmung,
-   löschen nach der Auswertung der drei Gespräche.
+3. **Speicherort und Löschfrist der Notizen festlegen** und eintragen: im Einseiter (Platzhalter „[Team trägt ein]“) und in
+   der Notiz (Zeile „Speicherort dieser Notiz und Löschen bis“). Vorschlag, das Team entscheidet: nur auf Geräten des Teams,
+   **nicht in diesem Git-Repository** (das Remote liegt auf GitHub), nicht in geteilten Ordnern ohne Zustimmung, löschen nach
+   der Auswertung der drei Gespräche.
 4. **Entscheidungsregeln** aus den Juryantworten (Abschnitt 2) bestätigen oder ändern, **bevor** das erste Gespräch
    stattfindet.
 5. **Wer führt, wer notiert.** Vorschlag: eine Person führt, eine notiert, getauscht je Gespräch.

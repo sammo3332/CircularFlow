@@ -3,8 +3,11 @@
 Dokumentversion 1.1 · Stand 18.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `23dc050` ·
 Deck-Stand `b647ea3`. Prüfsummen der Dateien: PPTX `9d5a86e7e239229a`, PDF `bc7f651fa7b5b669`, Sprechtext `e210d241234c43b0`.
 
-Eine Seite zum Ausdrucken (Abschnitte 1 bis 4). Abschnitt 5 trennt, was hier **ausgeführt** wurde, von dem, was ihr noch
-**proben** müsst. Die Zeiten sind aus den Wortzahlen gerechnet und nicht gestoppt.
+Zum Ausdrucken sind die Abschnitte 1 bis 4 gedacht (als PDF drei Seiten, `probenanleitung-druck.pdf`). Abschnitt 5 trennt,
+was hier **ausgeführt** wurde, von dem, was ihr noch **proben** müsst. Die Zeiten sind aus den Wortzahlen gerechnet und nicht
+gestoppt.
+Druckfassung neu erzeugen: `sed '/^## 5\./,$d' pitch/innosprint-2026/generalprobe/probenanleitung.md > /tmp/druck.md`, dann
+`node docs/praxistest/pdf-erzeugen.cjs /tmp/druck.md pitch/innosprint-2026/generalprobe/probenanleitung-druck.pdf 9`.
 
 ## 1. Rollen und Sprecherwechsel
 
@@ -47,6 +50,10 @@ deshalb wie im K3-Satz „mit der **angenommenen** Prüfzeit“, und auf Nachfra
 Beispieldaten, nicht belegt.“ Die Daten wurden nicht geändert, damit Pitch-Stand und Ersatzbilder gleich bleiben. Ob BD-23 vor
 dem Pitch auf „geschätzt“ gestellt wird (dann Ersatzbilder neu aufnehmen), entscheidet das Team.
 
+**Mögliche Nachfrage zu K2 und K4:** „Warum steht in der Liste 58 Tage und auf der Seite 123 Tage?“ Antwort: Die Liste zeigt
+hier die Reserve im Annahmefenster, 58 Tage (verfügbar ab 01.02.2027, Annahmefenster bis 31.03.2027). Die Seite nennt beide
+Reserven: 123 Tage bis zur Bestellfrist und 58 Tage im Annahmefenster (`ergebnisse/abgleich-texte.txt`).
+
 ## 3. Zeitkontrollen
 
 | Zeitpunkt | Soll | Wenn nicht |
@@ -87,16 +94,16 @@ dem Pitch auf „geschätzt“ gestellt wird (dann Ersatzbilder neu aufnehmen), 
 |---|---|
 | Demo in frischem Browserkontext, **lokaler Stand** (`plattform/`, Code `2121b92`) | 28 von 28 Prüfungen bestanden, keine Konsolenfehler, keine Netzfehler (`ergebnisse/demo-lokal.json`) |
 | Dieselbe Demo gegen eine **lokale Kopie der veröffentlichten Auslieferung** (Version `1794826502-00b9`, alle 35 Dateien nur lesend heruntergeladen und lokal geöffnet; **nicht** die Seite auf claude.ai) | 28 von 28 Prüfungen bestanden (`ergebnisse/demo-veroeffentlicht.json`) |
-| Heruntergeladene Dateien gegen `plattform/` im Repository | 31 von 35 byte-gleich. Abweichend: `app/main.js`, `app/door-rules.mjs`, `index.html`, `styles.css`. Das ist der Bauschritt der Veröffentlichung (`ergebnisse/dateivergleich.txt`) |
-| Heruntergeladene Dateien gegen einen Nachbau aus dem Repository (`node plattform/bauen-artifact.mjs`) | 34 von 35 Dateien byte-gleich. `index.html` weicht nur im Seitentitel („CircularFlow Fassung 2“) und im vom Dienst ergänzten HTML-Rahmen ab (`ergebnisse/dateivergleich.txt`) |
+| Heruntergeladene Dateien gegen `plattform/` im Repository | 31 von 35 byte-gleich. Abweichend: `app/main.js`, `app/door-rules.mjs`, `index.html`, `styles.css`. Das ist der Bauschritt der Veröffentlichung (`ergebnisse/dateivergleich.txt`). Der Code ist seit `2121b92` nur in der README geändert (`ergebnisse/diff-anwendungscode.txt`) |
+| Heruntergeladene Dateien gegen einen Nachbau aus dem Repository (`node plattform/bauen-artifact.mjs`) | 34 von 35 Dateien byte-gleich. `index.html` weicht nur im Seitentitel („CircularFlow Fassung 2“) und im vom Dienst ergänzten HTML-Rahmen ab (`ergebnisse/dateivergleich.txt`, Unterschied gespeichert in `ergebnisse/index-html-diff.txt`) |
 | Startbedingung | 8 Paare, davon 2 prüfbar; 2 Vorgänge; Stichtag Mi 18.11., 14:00; „Zeitkritisch (7 Tage)“ mit 4 Fristen und oben „noch 2 Std. · Aufmaßfrist · E-01 · T-07 → B-02“ |
 | K3 | „Für diese Entscheidung zu spät“; „Prüfende 02.12.2026 liegt 5 Tage nach der Bestellfrist 27.11.2026“; „Prüfbitte anlegen“ mit `aria-disabled`; Klick auf den Knopf legt nichts an |
 | K4 | „Weiter prüfen“; „Vorschlag zur Prüfung, keine fachliche Freigabe“; „Prüfende 28.11.2026 liegt 123 Tage vor der Bestellfrist 31.03.2027“; Knopf nicht gesperrt (nicht angeklickt) |
 | Fehlendes Maß (K1) | Entscheidungsseite E-01: „Rohbauöffnung B-02 … messen oder ein verwertbares Aufmaß nachreichen. Ohne verwertbares Aufmaß bleibt die Breite offen.“ |
 | Nach dem Durchlauf | unverändert 8 Paare, davon 2 prüfbar, 2 Vorgänge |
 | Fenstergröße 1280 × 720 | kein seitliches Scrollen auf Übersicht, Paarliste, K3 und K4 |
-| Ersatzbilder gegen frische Aufnahme | `bilder/k1` bis `k4` (Quelle der Ersatzfolien) stimmen mit der neuen Aufnahme überein: 0,03 bis 0,21 % der Pixel weichen ab, mittlerer Unterschied unter 0,7 von 255 (`ergebnisse/bildvergleich.txt`). Das ist JPEG-Rauschen. Wie die Bilder auf den Ersatzfolien 5 und 6 wirken, wurde nur in der Seitenübersicht der PDF angesehen, nicht am Beamer |
-| Regeltests | 190 von 190 bestanden (`ergebnisse/regeltests.txt`). Das belegt die Prüffälle, keine Fehlerfreiheit |
+| Ersatzbilder gegen frische Aufnahme | `bilder/k1` bis `k4` (Quelle der Ersatzfolien) stimmen mit der neuen Aufnahme überein: 0,03 bis 0,21 % der Pixel weichen ab, mittlerer Unterschied unter 0,7 von 255 (`ergebnisse/bildvergleich.txt`). Vermutlich ist das JPEG-Rauschen (gemessen wurden nur Pixelanteil und Mittelwert). Wie die Bilder auf den Ersatzfolien 5 und 6 wirken, wurde nur in der Seitenübersicht der PDF angesehen, nicht am Beamer |
+| Regeltests | 190 von 190 bestanden (`ergebnisse/regeltests.txt`; getrennt 46 + 144: `ergebnisse/regeltests-getrennt.txt`). Das belegt die Prüffälle, keine Fehlerfreiheit |
 | Pitch-Dateien (PPTX, PDF, Sprechtext) gegen README | 23 von 23 Prüfungen bestanden: Prüfsummen, 15 Folien, ausgeblendet 5, 6, 10–15, fünf Links in PPTX und PDF, 433 Wörter (244 / 189), Zeitfenster 259 s, Uhrzeiten, Sprechtext 16 Seiten, jeder Notizabsatz im Sprechtext |
 
 Nachvollziehen: `pruefskripte/` und `ergebnisse/` in diesem Ordner, Aufruf im Prüfprotokoll

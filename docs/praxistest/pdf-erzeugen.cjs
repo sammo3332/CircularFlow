@@ -1,5 +1,6 @@
 // Erzeugt aus einer Markdown-Datei ein A4-PDF (pandoc zu HTML, Chromium über Playwright zu PDF).
-// Aufruf: node docs/praxistest/pdf-erzeugen.cjs <datei.md> <ausgabe.pdf> [Schriftgröße in pt, Standard 9.5]
+// Aufruf: node docs/praxistest/pdf-erzeugen.cjs <datei.md> <ausgabe.pdf> [Schriftgröße in pt, Standard 9.5] [eingabe]
+// Mit „eingabe“ werden die Tabellen zum Ausfüllen gestaltet (breite Eingabespalten, höhere Zeilen), zum Beispiel für die Gesprächsnotiz.
 // Voraussetzungen: pandoc und Playwright mit Chromium (in der Arbeitsumgebung vorhanden).
 const { execFileSync } = require('node:child_process');
 const fs = require('node:fs');
@@ -7,7 +8,7 @@ const os = require('node:os');
 const path = require('node:path');
 const { chromium } = require('playwright');
 
-const [eingabe, ausgabe, pt = '9.5'] = process.argv.slice(2);
+const [eingabe, ausgabe, pt = '9.5', tabellen = ''] = process.argv.slice(2);
 if (!eingabe || !ausgabe) { console.error('Aufruf: node pdf-erzeugen.cjs <datei.md> <ausgabe.pdf> [pt]'); process.exit(1); }
 
 const css = `
@@ -25,6 +26,9 @@ ul, ol { margin: 2pt 0 4pt 14pt; padding: 0; }
 li { margin: 1pt 0; }
 code { font-family: "Liberation Mono", monospace; font-size: 0.9em; }
 header#title-block-header { display: none; }
+table.eingabe { table-layout: fixed; }
+table.eingabe th:first-child, table.eingabe td:first-child { width: 40%; }
+table.eingabe td { height: 2.4em; }
 `;
 
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'pdf-'));
@@ -32,6 +36,8 @@ const kopf = path.join(tmp, 'kopf.html');
 fs.writeFileSync(kopf, `<style>${css}</style>`);
 const html = path.join(tmp, 'seite.html');
 execFileSync('pandoc', [eingabe, '-f', 'gfm', '-t', 'html5', '-s', '--metadata', 'lang=de', '--metadata', `pagetitle=${path.basename(eingabe, '.md')}`, '-H', kopf, '-o', html]);
+
+if (tabellen === 'eingabe') fs.writeFileSync(html, fs.readFileSync(html, 'utf8').replace(/<table(\s|>)/g, '<table class="eingabe"$1'));
 
 (async () => {
   const browser = await chromium.launch();

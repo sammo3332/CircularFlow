@@ -1,7 +1,7 @@
 # Gesprächsleitfaden · 15 Minuten · Projektleitung im Umbau
 
 Dokumentversion 1.1 · Stand 18.11.2026 · Branch `codex/plattform-v1` · Ausgangscommit `23dc050` · Entwurf, das Team
-bestätigt ihn vor dem ersten Gespräch. Gehört zu `juryfragen/juryantworten.md` (Hypothesen H1 bis H10).
+bestätigt ihn vor dem ersten Gespräch. Gehört zu `pitch/innosprint-2026/juryfragen/juryantworten.md` (Hypothesen H1 bis H10).
 
 **Ziel:** Von einer echten Projektleitung im Umbau erfahren, wie Angebote für gebrauchte Bauteile, Fristen und Prüfzeiten
 **heute** laufen, und ob der Kurzcheck davor etwas verändern würde. Wir wollen **nichts verkaufen**, keinen **Preis** nennen
@@ -32,9 +32,9 @@ Gesprächsnotiz (`gespraechsnotiz-vorlage.md`) steht.
 
 **Einstieg (1 Minute):** „Danke für Ihre Zeit. Wir sind zwei Studierende der TU Dortmund und testen eine Idee für Umbauten.
 Wir wollen von Ihnen lernen, wie das heute läuft. Es gibt keine falschen Antworten, und wir verkaufen nichts. Wir
-schreiben von Hand mit und nehmen nichts auf. Wir verwenden Ihre Angaben, um unsere Idee zu prüfen und für Vorträge und
-Folien unseres Teams, zunächst ohne Namen und Büro. Namen, Büro, Zitate oder Fotos nur, wenn Sie am Ende ausdrücklich
-zustimmen. Dürfen wir Notizen machen?“
+schreiben von Hand mit und nehmen nichts auf. Wir nutzen Ihre Angaben zur Prüfung unserer Idee. Ob wir sie ohne Namen und
+Büro auch in Vorträgen und Folien verwenden dürfen, fragen wir am Ende, ebenso zu Namen, Büro, Zitaten und Fotos. Dürfen
+wir Notizen machen?“
 Die Antwort **sofort** in der Notiz eintragen („Einverständnis zu Notizen“). Bei „nein“ wird nicht mitgeschrieben und
 nichts aus dem Gespräch festgehalten, nur dass es stattfand (Datum, Rolle). Eine Aufnahme gibt es nie.
 
@@ -74,7 +74,7 @@ Dürfen wir uns noch einmal melden?“ Vier Fragen, vier Antworten (ja oder nein
 ## Direkt danach (10 Minuten, beide gemeinsam)
 
 1. Die Gesprächsnotiz vollständig ausfüllen, solange die Erinnerung frisch ist.
-2. Je Hypothese H1 bis H10 (Tabelle in `juryfragen/juryantworten.md`, Abschnitt 2) eintragen: **bestätigt**, **widerlegt** oder
+2. Je Hypothese H1 bis H10 (Tabelle in `pitch/innosprint-2026/juryfragen/juryantworten.md`, Abschnitt 2) eintragen: **bestätigt**, **widerlegt** oder
    **offen**, jeweils mit dem Beleg aus der Notiz.
 3. Die Entscheidungsregeln aus Abschnitt 2 anwenden. Sie sind ein Vorschlag, das Team bestätigt sie. Nach drei Gesprächen
    entscheidet das Team, ob es weitergeht, die Idee ändert oder abbricht.

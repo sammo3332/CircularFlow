@@ -32,9 +32,9 @@ entscheiden die Bestellung. Prüfzeiten sind Ihre Angaben oder Annahmen, wir pr�
 **Ablauf:** 1. Gespräch (15 Minuten) · 2. Sie nennen die Angaben zu einer Bauteilgruppe · 3. wir erstellen das
 Ergebnisblatt · 4. wir besprechen es gemeinsam und fragen, was daran fehlt oder hilft.
 
-**Ihre Daten:** Bitte keine personenbezogenen Daten Dritter. Wir notieren von Hand, ohne Aufnahme, und verwenden Ihre
-Angaben für die Prüfung unserer Idee sowie für Vorträge und Folien unseres Teams, zunächst ohne Namen und Büro. Namen,
-Büro, Zitate oder Fotos nur mit Ihrer ausdrücklichen Zustimmung. Speicherort und Löschfrist der Notizen: [Team trägt ein].
+**Ihre Daten:** Bitte keine personenbezogenen Daten Dritter. Wir notieren von Hand, ohne Aufnahme, und nutzen Ihre
+Angaben zur Prüfung unserer Idee. Ob wir sie ohne Namen und Büro auch für Vorträge und Folien verwenden dürfen, fragen wir
+am Ende, ebenso zu Namen, Büro, Zitaten und Fotos. Speicherort und Löschfrist der Notizen: [Team trägt ein].
 
 **Unverbindlich:** Der Test verpflichtet Sie zu nichts, einen Preis nennen wir nicht. Wir möchten von Ihnen erfahren, ob ein
 solcher Kurzcheck nützlich wäre und wer dafür zuständig ist.

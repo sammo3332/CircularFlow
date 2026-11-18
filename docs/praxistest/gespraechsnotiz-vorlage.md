@@ -1,16 +1,17 @@
 # Gesprächsnotiz · Vorlage
 
-Dokumentversion 1.1 · Stand 18.11.2026 · Zu `gespraechsleitfaden-15-minuten.md`. Für jedes Gespräch eine Kopie anlegen. Nur
-eintragen, was die Person gesagt hat. Eigene Deutung steht getrennt unten. Nichts erfinden, nichts ergänzen.
+Dokumentversion 1.1 · Stand 18.11.2026 · Zu `gespraechsleitfaden-15-minuten.md`. Für jedes Gespräch eine Kopie anlegen und **nicht
+in das Git-Repository legen** (das Remote liegt auf GitHub). Nur eintragen, was die Person gesagt hat. Eigene Deutung steht getrennt unten. Nichts erfinden, nichts ergänzen.
 
 | | |
 |---|---|
-| Gespräch Nr. / Datum / Uhrzeit / Dauer | |
-| Geführt von / notiert von | |
+| **Einverständnis zu Notizen (zu Beginn erfragt, ja / nein).** Bei „nein“ nur Datum und Rolle der Person eintragen, sonst nichts. | |
+| Datum | |
 | Rolle der Person (kein Name ohne Zustimmung) | |
+| Gespräch Nr. / Uhrzeit / Dauer | |
+| Geführt von / notiert von | |
 | Art des Büros oder Projekts (keine Namen ohne Zustimmung) | |
-| **Einverständnis zu Notizen (zu Beginn erfragt, ja / nein).** Bei „nein“ nichts weiter eintragen. | |
-| Speicherort dieser Notiz und Löschen bis (das Team legt beides vor dem ersten Gespräch fest) | |
+| Speicherort dieser Notiz und Löschen bis (das Team legt beides vor dem ersten Gespräch fest; **nicht im Git-Repository**) | |
 
 ## Einverständnis zur Verwendung (am Ende erfragt)
 
