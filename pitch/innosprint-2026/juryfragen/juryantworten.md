@@ -35,6 +35,11 @@ die Zeit noch reicht.“
 **Wenn die Jury nachhakt („Gibt es das Problem wirklich?“):** „Das wissen wir noch nicht. Die Stadt sagt, bei
 Bauentscheidungen zählen meist Zeit und Kosten. Concular nennt zeitliche Unterschiede zwischen Angebot und Nachfrage. Ob
 es in einem echten Umbau so läuft, prüfen wir im Praxistest.“
+
+**Wenn die Jury nachhakt („Sind die 14 Tage belegt?“):** „Nein. Die 14 Tage sind eine Annahme in unseren Beispieldaten. Wie lange
+eine Prüfung wirklich dauert, wollen wir im Praxistest bei einer prüfenden Person erfragen.“ Hinweis: Die Oberfläche kennzeichnet die
+14 Tage bei BD-23 nicht als „geschätzt“ (`plattform/app/daten.js` Z. 164), siehe `generalprobe/probenanleitung.md`, Abschnitt 2.
+
 **Prüfschritt:** H1 und H2, Leitfaden F1 bis F4.
 
 ### 2 · Erster Nutzer
