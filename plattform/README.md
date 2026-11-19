@@ -35,7 +35,9 @@ node plattform/server/pilotserver.mjs raum-anlegen "Pilot Dortmund"
 ```
 
 Der Befehl zeigt einmalig einen Bearbeitungs- und einen Leseschlüssel; der Server speichert nur Prüfsummen. Daten liegen als Dateien in
-`plattform/server/daten/` (nicht im Repository). Fremde Räume sind nicht erreichbar, der Leseschlüssel kann nicht schreiben.
+`plattform/server/daten/` (nicht im Repository, Vorversion als `.vorher`). Fremde Räume sind nicht erreichbar, der Leseschlüssel kann
+nicht schreiben. Der Server liefert nur `plattform/` und `prototype/dist/` aus. Beim Abgleich gewinnen eigene Änderungen seit dem letzten
+Abgleich; gleiche Kennungen aus zwei Browsern werden umbenannt und gemeldet.
 Für andere Geräte im selben WLAN die Adresse `http://<IP des Rechners>:8000/plattform/` verwenden (ohne HTTPS keine App-Installation).
 
 **Prüfen:**

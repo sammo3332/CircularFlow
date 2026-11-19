@@ -4,7 +4,7 @@ import { GRUPPEN, ZUSTAND } from '../daten.js';
 import { esc, chip, icon, leer, slug, seitenkopf, feld, feldAttr, optionen, tonSymbol, pchip, routePass, routeBedarf, routeEntscheidung, person } from '../ui.js';
 import { zeit, datum } from '../zeit.js';
 import { LEISTUNGEN, ANFRAGE_STATUS, URTEIL, KOSTENTRAEGER, DIENSTLEISTER_ART, VERKAUF_STATUS, PROVISION_STATUS, HINWEIS_ANFRAGE, HINWEIS_INTERESSE, HINWEIS_PROVISION,
-  anfrageStatus, findeDienstleister, anfragenFuerBauteil, anfragenFuerBedarf, interessenFuerBauteil, interessenFuerBedarf, offenesInteresse, provisionsLage, letzteAenderung,
+  anfrageStatus, findeDienstleister, waehlbareDienstleister, anfragenFuerBauteil, anfragenFuerBedarf, interessenFuerBauteil, interessenFuerBedarf, offenesInteresse, provisionsLage, letzteAenderung,
   leererAngebotEntwurf, leererDienstleisterEntwurf } from '../pilot.js';
 
 export const routeAnfrage = (a) => `#anfrage-${slug(a.id)}`;
@@ -17,8 +17,9 @@ export const SCHRITT_FELD_ID = { dienstleister: 'as-dienstleister', bestaetigt: 
 const bauteilVon = (ctx, r) => ctx.daten.bauteile.find((b) => b.projekt === r.projekt && b.id === r.id) || null;
 const bedarfVon = (ctx, r) => (r ? ctx.daten.bedarfe.find((d) => d.projekt === r.projekt && d.id === r.id) || null : null);
 const projektVon = (ctx, kurz) => ctx.daten.projekte.find((p) => p.kurz === kurz) || null;
-const statusChip = (a) => { const s = anfrageStatus(a); return chip(s.label, s.ton); };
-const dlChip = (d) => (d ? chip(DIENSTLEISTER_ART[d.art].label, DIENSTLEISTER_ART[d.art].ton) : '');
+const statusChip = (a) => { const s = anfrageStatus(a); return chip(s.label || s.key, s.ton || 'neutral'); };
+const dlChip = (d) => (d ? `${chip(DIENSTLEISTER_ART[d.art]?.label || d.art, DIENSTLEISTER_ART[d.art]?.ton || 'neutral')}${d.zurueckgezogen ? ` ${chip('zurückgezogen', 'crit')}` : ''}` : '');
+const sicherDatum = (d) => { try { return datum(d); } catch { return '–'; } };
 const regelHinweis = () => `<p class="klein">${chip('regelbasiert, keine KI', 'sim')} Status, erlaubte Schritte und Hinweise folgen festen Regeln aus den eingetragenen Angaben.</p>`;
 
 // ---------- Liste ----------
@@ -33,7 +34,7 @@ export function anfragenSeite(ctx) {
       <td data-label="Leistung">${esc(LEISTUNGEN[a.leistung] || a.leistung)}</td>
       <td data-label="Status">${statusChip(a)}</td>
       <td data-label="Dienstleister">${d ? `${esc(d.name)} ${dlChip(d)}` : '<span class="leise">noch keiner</span>'}</td>
-      <td data-label="Zuständig · Termin">${esc(a.zustaendig)}<small>benötigt bis ${datum(a.termin)}</small></td></tr>`; }).join('')}</tbody></table></div>`
+      <td data-label="Zuständig · Termin">${esc(a.zustaendig)}<small>benötigt bis ${sicherDatum(a.termin)}</small></td></tr>`; }).join('')}</tbody></table></div>`
     : leer('Noch keine Anfrage vorbereitet.', 'Eine Anfrage beginnt im Bauteilpass („Prüf- oder Logistikanfrage vorbereiten“) oder auf der Abgleichseite eines Paares.', '<a class="knopf" href="#bauteile">Zu den Bauteilen</a>')}
   ${regelHinweis()}
   ${dienstleisterBereich(ctx, dl)}`;
@@ -43,8 +44,8 @@ function dienstleisterBereich(ctx, dl) {
   const f = ctx.ui.pilot.dienstleister;
   return `<section class="flaeche" id="dienstleister" aria-labelledby="h-dl">
     <div class="block-kopf"><h2 id="h-dl">Dienstleister</h2>${f.offen ? '' : '<button type="button" class="knopf-zweit knopf-klein" id="btn-dl-neu" data-action="dl-neu">Dienstleister hinterlegen</button>'}</div>
-    <p class="leise">Nur freigegebene echte Kontakte oder eindeutig gekennzeichnete Testeinträge. Es gibt keine vorbelegten Partner.</p>
-    ${dl.length ? `<ul class="kompaktliste flaeche-schraffur">${dl.map((d) => `<li><span><b>${esc(d.name)}</b> ${dlChip(d)}<small>${d.leistungen.map((l) => esc(LEISTUNGEN[l] || l)).join(' · ')}${d.ort ? ` · ${esc(d.ort)}` : ''}${d.kontakt ? ` · ${esc(d.kontakt)}` : ''}${d.art === 'freigegeben' ? ` · Freigabe: ${esc(d.freigabe)}` : ''}</small></span><span class="mono">${esc(d.id)}</span></li>`).join('')}</ul>` : '<p class="leer-zeile">Noch kein Dienstleister hinterlegt.</p>'}
+    <p class="leise">Nur freigegebene echte Kontakte oder eindeutig gekennzeichnete Testeinträge. Es gibt keine vorbelegten Partner. Die Freigabe ist eine Selbstauskunft der eintragenden Person; ein falscher Eintrag lässt sich zurückziehen und ist dann nicht mehr wählbar.</p>
+    ${dl.length ? `<ul class="kompaktliste flaeche-schraffur">${dl.map((d) => `<li><span><b>${esc(d.name)}</b> ${dlChip(d)}<small>${(d.leistungen || []).map((l) => esc(LEISTUNGEN[l] || l)).join(' · ')}${d.ort ? ` · ${esc(d.ort)}` : ''}${d.kontakt ? ` · ${esc(d.kontakt)}` : ''}${d.art === 'freigegeben' ? ` · Freigabe: ${esc(d.freigabe)}` : ''}${d.zurueckgezogen ? ` · zurückgezogen ${sicherDatum(d.zurueckgezogen)}${d.zurueckGrund ? ` (${esc(d.zurueckGrund)})` : ''}` : ''}</small></span><span><span class="mono">${esc(d.id)}</span>${d.zurueckgezogen ? '' : ` <button type="button" class="knopf-leise knopf-klein" data-action="dl-zurueck" data-dienstleister="${esc(d.id)}">Zurückziehen</button>`}</span></li>`).join('')}</ul>` : '<p class="leer-zeile">Noch kein Dienstleister hinterlegt.</p>'}
     ${f.offen ? dienstleisterFormular(ctx) : ''}
   </section>`;
 }
@@ -77,7 +78,7 @@ export function anfrageFormular(ctx, b, d) {
   const ff = (name, extra = '') => `name="${name}" data-ff="pilot-anfrage"${extra}`;
   const fld = (id, key, label, hinweis, ctl, kl = '') => feld({ id, label, hinweis, klasse: kl, fehler: fe[key], control: ctl(feldAttr(id, fe[key], hinweis), e[key] ?? '') });
   const bedarfe = ctx.daten.bedarfe.filter((x) => x.gruppe === b.gruppe);
-  const dl = ctx.daten.dienstleister || [];
+  const dl = waehlbareDienstleister(ctx);
   const bedarfWert = e.bedarf ? `${e.bedarf.projekt}|${e.bedarf.id}` : '';
   return `${seitenkopf({ pfad: [['#bauteile', 'Bauteile'], [routePass(b), `${b.id} Bauteilpass`]], aktuell: 'Anfrage vorbereiten', eyebrow: 'Pilotbetrieb', titel: 'Prüf- oder Logistikanfrage vorbereiten', untertitel: `${p ? pchip(p) : ''} <span class="mono">${esc(b.id)}</span> ${esc(b.name)}${d ? ` · Bedarf <span class="mono">${esc(d.id)}</span> ${esc(d.titel)}` : ''}` })}
   <p class="hinweisbox">${tonSymbol('info')} <span>${esc(HINWEIS_ANFRAGE)}</span></p>
@@ -112,7 +113,7 @@ function schrittFormular(ctx, a, aktion, titel, intro, felder, knopf) {
   </form>`;
 }
 function schrittFormulare(ctx, a) {
-  const st = anfrageStatus(a); const dl = ctx.daten.dienstleister || [];
+  const st = anfrageStatus(a); const dl = waehlbareDienstleister(ctx);
   const f = {
     beauftragt: () => schrittFormular(ctx, a, 'beauftragt', 'Als beauftragt vermerken', 'Die Beauftragung geschieht außerhalb der Plattform (Telefon, E-Mail, Auftrag). Hier wird sie nur vermerkt.', ({ fld, ff, werte, fe }) => `
       <div class="formular formular-eng">${feld({ id: 'as-dienstleister', label: 'Dienstleister (Pflicht)', hinweis: dl.length ? '' : 'Zuerst unter „Anfragen“ einen Dienstleister hinterlegen.', fehler: fe.dienstleister, control: `<select ${feldAttr('as-dienstleister', fe.dienstleister)} ${ff('dienstleister')}>${optionen(dl.map((x) => [x.id, `${x.name} (${DIENSTLEISTER_ART[x.art].label})`]), werte.dienstleister ?? a.dienstleister ?? '')}</select>` })}</div>
@@ -152,7 +153,7 @@ export function anfrageSeite(ctx, a) {
       <div><dt>Unterlagen</dt><dd>${a.unterlagen ? esc(a.unterlagen) : '<span class="leise">keine genannt</span>'}</dd></div>
       <div><dt>Offene Fragen</dt><dd>${a.offeneFragen ? esc(a.offeneFragen) : '<span class="leise">keine</span>'}</dd></div>
       <div><dt>Zuständig</dt><dd>${esc(a.zustaendig)}</dd></div>
-      <div><dt>Benötigt bis</dt><dd class="mono">${datum(a.termin)}</dd></div>
+      <div><dt>Benötigt bis</dt><dd class="mono">${sicherDatum(a.termin)}</dd></div>
       <div><dt>Dienstleister</dt><dd>${dl ? `${esc(dl.name)} ${dlChip(dl)}<small>${dl.leistungen.map((l) => esc(LEISTUNGEN[l] || l)).join(' · ')}</small>` : '<span class="leise">noch keiner gewählt</span>'}</dd></div>
       <div><dt>Kostentragung</dt><dd>${esc(KOSTENTRAEGER[a.kostentraeger] || KOSTENTRAEGER.offen)}${a.kostenHinweis ? `<small>${esc(a.kostenHinweis)}</small>` : ''}</dd></div>
       ${a.ergebnis ? `<div><dt>Ergebnis</dt><dd>${esc(URTEIL[a.ergebnis.urteil] || a.ergebnis.urteil)}<small>mitgeteilt von ${esc(a.ergebnis.person)}${a.ergebnis.notiz ? ` · ${esc(a.ergebnis.notiz)}` : ''}${a.leistung === 'fachpruefung' ? ' · keine Fachfreigabe durch die Plattform' : ''}</small></dd></div>` : ''}
@@ -163,7 +164,7 @@ export function anfrageSeite(ctx, a) {
   <section class="flaeche vorgang" id="anfrage-verlauf" aria-labelledby="h-a-verlauf">
     <div class="block-kopf"><h2 id="h-a-verlauf">Verlauf und nächste Schritte</h2><span class="leise">Einträge von Personen, nichts versendet</span></div>
     <div class="vorgang-status" id="anfrage-status" tabindex="-1"><span class="label">Aktueller Status</span><span class="vs-zeile">${statusChip(a)} ${esc(st.text)}</span></div>
-    <ol class="verlauf">${(a.verlauf || []).slice().reverse().map((v) => `<li><span class="mono">${zeit(v.at, false)}</span><p>${esc(v.text)}<small>${esc(ANFRAGE_STATUS[v.status]?.label || v.status)} · Eigene Eingabe</small></p></li>`).join('')}</ol>
+    <ol class="verlauf">${(a.verlauf || []).filter((v) => v && typeof v === 'object').slice().reverse().map((v) => `<li><span class="mono">${(() => { try { return zeit(v.at, false); } catch { return '–'; } })()}</span><p>${esc(v.text || '')}<small>${esc(ANFRAGE_STATUS[v.status]?.label || v.status || '')} · Eigene Eingabe</small></p></li>`).join('')}</ol>
     ${st.beendet ? `<p class="kette-ende hinweisbox">${tonSymbol(st.ton === 'crit' ? 'crit' : 'ok')} <b>Die Anfrage ist beendet: ${esc(st.label)}.</b>${a.abgelehnt ? ` Grund: ${esc(a.abgelehnt.grund)}` : ''}</p>` : ''}
     ${allg ? `<p class="feld-meldung" id="anfrage-fehler" tabindex="-1" role="alert">${esc(allg)}</p>` : ''}
     ${!st.beendet ? `<div class="vorgang-aktionen">${schrittFormulare(ctx, a).join('')}</div>` : ''}
@@ -192,6 +193,7 @@ function angebotFormular(ctx, b) {
   const fld = (id, key, label, hinweis, ctl, kl = '') => feld({ id, label, hinweis, klasse: kl, fehler: fe[key], control: ctl(feldAttr(id, fe[key], hinweis), e[key] ?? '') });
   return `<form class="vorgangsform" id="form-angebot" data-form="pilot-angebot" data-key="${esc(k)}" novalidate aria-labelledby="h-ag">
     <h3 id="h-ag">Angebot bearbeiten</h3><p class="leise">Menge, Verfügbarkeit und Zustand aktualisieren oder das Angebot zurückziehen. Maße bleiben im Block „Angaben“.</p>
+    ${fe.allgemein ? `<p class="feld-meldung" role="alert">${esc(fe.allgemein)}</p>` : ''}
     <div class="formular formular-eng">
       ${fld('ag-menge', 'menge', `Menge in ${esc(einheit)} (Pflicht)`, '', (a, w) => `<span class="einheit-feld"><input ${a} ${ff('menge', ' inputmode="decimal"')} value="${esc(w)}"><span>${esc(einheit)}</span></span>`)}
       ${fld('ag-ab', 'verfuegbarAb', 'Verfügbar ab', '', (a, w) => `<input type="date" ${a} ${ff('verfuegbarAb')} value="${esc(w)}">`)}
@@ -216,7 +218,7 @@ function verkaufBereich(ctx, b) {
   const bedarfe = ctx.daten.bedarfe.filter((x) => x.gruppe === b.gruppe);
   const status = ve.status ?? v.status;
   return `<section class="flaeche" id="verkauf" aria-labelledby="h-verkauf">
-    <div class="block-kopf"><h2 id="h-verkauf">Verkauf und Provision</h2>${chip(VERKAUF_STATUS[v.status].label, VERKAUF_STATUS[v.status].ton)}</div>
+    <div class="block-kopf"><h2 id="h-verkauf">Verkauf und Provision</h2>${chip((VERKAUF_STATUS[v.status] || VERKAUF_STATUS.offen).label, (VERKAUF_STATUS[v.status] || VERKAUF_STATUS.offen).ton)}</div>
     <p class="leise">Geschäftsmodell laut Teamvorgabe: Käufer und Verkäufer bezahlen die vereinbarten Prüf- und Logistikleistungen an die beauftragten Unternehmen. Nach abgeschlossenem Bauteilverkauf zahlen die vermittelten Dienstleister CircularFlow eine vereinbarte Provision.</p>
     ${v.status === 'abgeschlossen' ? `<p>Verkauf abgeschlossen am <b>${datum(v.datum)}</b>${v.bedarf ? ` an Bedarf <span class="mono">${esc(v.bedarf.projekt)} · ${esc(v.bedarf.id)}</span>` : ''}${v.notiz ? ` · ${esc(v.notiz)}` : ''} (laut Eintrag).</p>` : ''}
     <form class="vorgangsform" id="form-verkauf" data-form="pilot-verkauf" data-key="${esc(k)}" novalidate aria-labelledby="h-vk-form">
@@ -234,7 +236,7 @@ function verkaufBereich(ctx, b) {
     <h3>Vermittelte Leistungen und Provision</h3>
     ${lage.zeilen.length ? `<ul class="einfache-liste provisionen">${lage.zeilen.map((z) => { const pe = pf.k === k && pf.eingabe[z.dienstleister.id] ? pf.eingabe[z.dienstleister.id] : {}; const pfe = pf.k === k && pf.fehler[z.dienstleister.id] ? pf.fehler[z.dienstleister.id] : {}; const pr = z.provision; return `<li>
         <b>${esc(z.dienstleister.name)}</b> ${dlChip(z.dienstleister)}<small>${z.anfragen.map((a) => `<a href="${routeAnfrage(a)}">${esc(a.id)} ${esc(LEISTUNGEN[a.leistung] || a.leistung)} (${esc(ANFRAGE_STATUS[a.status]?.label || a.status)})</a>`).join(' · ')}</small>
-        ${pr ? `<p>Provision: ${chip(PROVISION_STATUS[pr.status].label, PROVISION_STATUS[pr.status].ton)}${pr.grundlage ? ` <small>Grundlage: ${esc(pr.grundlage)}</small>` : ''}</p>
+        ${pr ? `<p>Provision: ${chip((PROVISION_STATUS[pr.status] || PROVISION_STATUS.offen).label, (PROVISION_STATUS[pr.status] || PROVISION_STATUS.offen).ton)}${pr.grundlage ? ` <small>Grundlage: ${esc(pr.grundlage)}</small>` : ''}</p>
         <form class="vorgangsform" data-form="pilot-provision" data-key="${esc(k)}" data-dienstleister="${esc(z.dienstleister.id)}" novalidate>
           ${pfe.allgemein ? `<p class="feld-meldung" role="alert">${esc(pfe.allgemein)}</p>` : ''}
           <div class="formular formular-eng">
@@ -261,7 +263,7 @@ export function passPilotBereich(ctx, p, b) {
   <section class="flaeche" id="interessenten" aria-labelledby="h-interessenten">
     <div class="block-kopf"><h2 id="h-interessenten">Interessenten und Anfragen</h2><a class="knopf-zweit knopf-klein" id="btn-anfrage-neu" href="${routeAnfrageNeu(b)}">${icon('flagge')} Prüf- oder Logistikanfrage vorbereiten</a></div>
     ${offen.length ? `<ul class="kompaktliste">${offen.map((i) => { const d = bedarfVon(ctx, i.bedarf); return `<li>${d ? `<a href="${routeBedarf(d)}"><span class="mono">${esc(d.projekt)} · ${esc(d.id)}</span><span><b>Interesse: ${esc(d.titel)}</b><small>${datum(i.at)}${i.notiz ? ` · ${esc(i.notiz)}` : ''} · keine Reservierung</small></span></a>` : `<span>${esc(i.bedarf.projekt)} · ${esc(i.bedarf.id)}</span>`}</li>`; }).join('')}</ul>` : '<p class="leer-zeile">Noch kein Interesse festgehalten. Käufer halten es auf der Abgleichseite eines Paares fest.</p>'}
-    ${anfragen.length ? `<ul class="kompaktliste">${anfragen.map((a) => { const d = findeDienstleister(ctx, a.dienstleister); return `<li><a href="${routeAnfrage(a)}"><span class="mono">${esc(a.id)}</span><span><b>${esc(LEISTUNGEN[a.leistung] || a.leistung)}</b><small>${esc(anfrageStatus(a).label)}${d ? ` · ${esc(d.name)}` : ''} · benötigt bis ${datum(a.termin)}</small></span>${icon('pfeilrechts')}</a></li>`; }).join('')}</ul>` : '<p class="leer-zeile">Noch keine Anfrage zu diesem Bauteil.</p>'}
+    ${anfragen.length ? `<ul class="kompaktliste">${anfragen.map((a) => { const d = findeDienstleister(ctx, a.dienstleister); return `<li><a href="${routeAnfrage(a)}"><span class="mono">${esc(a.id)}</span><span><b>${esc(LEISTUNGEN[a.leistung] || a.leistung)}</b><small>${esc(anfrageStatus(a).label || a.status)}${d ? ` · ${esc(d.name)}` : ''} · benötigt bis ${sicherDatum(a.termin)}</small></span>${icon('pfeilrechts')}</a></li>`; }).join('')}</ul>` : '<p class="leer-zeile">Noch keine Anfrage zu diesem Bauteil.</p>'}
   </section>
   ${verkaufBereich(ctx, b)}`;
 }

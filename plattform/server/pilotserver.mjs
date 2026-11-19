@@ -64,12 +64,18 @@ export async function api(req, res, url) {
     if (z.rechte !== 'bearbeiten') { json(res, 403, { fehler: 'Dieser Schlüssel erlaubt nur Lesen.' }); return; }
     let body; try { body = JSON.parse(await koerper(req)); } catch (e) { json(res, e.message === 'zu groß' ? 413 : 400, { fehler: e.message === 'zu groß' ? 'Der Datenstand ist größer als 15 MB.' : 'Kein gültiges JSON.' }); return; }
     if (!body || typeof body !== 'object' || !Number.isInteger(body.basisVersion) || !body.daten || typeof body.daten !== 'object') { json(res, 400, { fehler: 'basisVersion und daten sind nötig.' }); return; }
+    if (body.daten.version !== 1) { json(res, 400, { fehler: 'Unbekannte Datenfassung; der Pilotserver kennt nur Fassung 1.' }); return; }
     const roh = JSON.stringify(body.daten);
     const geprueft = ladePersistenz({ getItem: () => roh }); // nur gültige Einträge; beschädigte entfallen
     await nacheinander(z.id, async () => {
       const st = await standLesen(z.id);
       if (st.version !== body.basisVersion) { json(res, 409, { fehler: 'Der Datenstand wurde inzwischen geändert.', version: st.version, geaendert: st.geaendert, daten: st.daten }); return; }
+      // Schrumpfschutz: Die Anwendung löscht nie Einträge. Ein kleinerer Stand deutet auf einen Fehler hin und wird abgewiesen.
+      const vorher = st.daten ? anzahlEigeneAenderungen(st.daten) : 0; const nachher = anzahlEigeneAenderungen(geprueft);
+      if (nachher < vorher) { json(res, 422, { fehler: `Der neue Stand enthält weniger Einträge (${nachher}) als der gespeicherte (${vorher}) und wurde nicht übernommen. Erst abgleichen, dann erneut speichern.`, version: st.version, geaendert: st.geaendert, daten: st.daten }); return; }
       const neu = { version: st.version + 1, geaendert: new Date().toISOString(), daten: geprueft };
+      // Vorversion als Sicherung behalten (eine Fassung zurück).
+      if (st.daten) { try { await fsp.copyFile(standDatei(z.id), `${standDatei(z.id)}.vorher`); } catch { /* erste Fassung */ } }
       await standSchreiben(z.id, neu);
       json(res, 200, { version: neu.version, geaendert: neu.geaendert, eintraege: anzahlEigeneAenderungen(geprueft) });
     });
@@ -78,10 +84,17 @@ export async function api(req, res, url) {
   json(res, 404, { fehler: 'Unbekannter Pfad.' });
 }
 
+// Ausgeliefert werden nur die Plattform und die Türregel des Prototyps; Serverordner, Daten, node_modules und alles außerhalb bleiben gesperrt.
+const FREI = ['/plattform/', '/prototype/dist/'];
 function statisch(req, res, url) {
-  let rel = decodeURIComponent(url.pathname); if (rel.endsWith('/')) rel += 'index.html';
+  let rel; try { rel = decodeURIComponent(url.pathname); } catch { res.writeHead(400, { 'content-type': 'text/plain; charset=utf-8' }); res.end('Ungültige Adresse'); return; }
+  if (rel === '/') { res.writeHead(302, { location: '/plattform/' }); res.end(); return; }
+  if (rel.endsWith('/')) rel += 'index.html';
   const datei = path.normalize(path.join(WURZEL, rel));
-  if (!datei.startsWith(WURZEL) || datei.startsWith(DATEN) || rel.includes('/node_modules/') || rel.startsWith('/.git')) { res.writeHead(403); res.end('Verboten'); return; }
+  const innerhalb = (basis) => datei === basis || datei.startsWith(basis + path.sep);
+  // Die Freigabeliste gilt für den aufgelösten Pfad (nach „..“), nicht für die rohe Adresse.
+  const relNorm = `/${path.relative(WURZEL, datei).split(path.sep).join('/')}`;
+  if (!innerhalb(WURZEL) || !FREI.some((f) => relNorm.startsWith(f)) || innerhalb(DATEN) || innerhalb(path.join(WURZEL, 'plattform', 'server')) || rel.includes('/node_modules/')) { res.writeHead(403, { 'content-type': 'text/plain; charset=utf-8' }); res.end('Verboten'); return; }
   fs.stat(datei, (err, st) => {
     if (err || !st.isFile()) { res.writeHead(404, { 'content-type': 'text/plain; charset=utf-8' }); res.end('Nicht gefunden'); return; }
     res.writeHead(200, { 'content-type': MIME[path.extname(datei).toLowerCase()] || 'application/octet-stream', 'cache-control': 'no-cache', 'content-length': st.size });

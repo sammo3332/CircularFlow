@@ -80,6 +80,7 @@ export function interesseAnlegen(ctx, { bauteil, bedarf, notiz = '' }) {
 }
 export function interesseZurueckziehen(ctx, interesse) {
   if (!interesse || interesse.status !== 'offen') return { fehler: { allgemein: 'Dieses Interesse ist nicht mehr offen.' } };
+  if (minuten(ctx.at) < minuten(interesse.at)) return { fehler: { allgemein: `Das Interesse wurde am ${datum(interesse.at)} festgehalten. Stichtag auf diesen Tag oder später stellen.` } };
   return { interesse: { ...interesse, status: 'zurueckgezogen', zurueckAm: ctx.at } };
 }
 
@@ -98,8 +99,16 @@ export function pruefeDienstleister(e) {
   return f;
 }
 export function dienstleisterAusEntwurf(e, { id, at }) {
-  return { id, name: feld(e.name), leistungen: Object.keys(LEISTUNGEN).filter((k) => e.leistungen?.[k]), ort: feld(e.ort), kontakt: feld(e.kontakt), art: e.art, freigabe: e.art === 'freigegeben' ? feld(e.freigabe) : '', angelegt: at, von: 'browser' };
+  return { id, name: feld(e.name), leistungen: Object.keys(LEISTUNGEN).filter((k) => e.leistungen?.[k]), ort: feld(e.ort), kontakt: feld(e.kontakt), art: e.art, freigabe: e.art === 'freigegeben' ? feld(e.freigabe) : '', angelegt: at, von: 'browser', zurueckgezogen: null };
 }
+// Ein Eintrag lässt sich nicht löschen (Verweise aus Anfragen bleiben), aber zurückziehen: Er ist dann nicht mehr wählbar.
+export function dienstleisterZurueckziehen(ctx, d, grund = '') {
+  if (!d) return { fehler: { allgemein: 'Diesen Dienstleister gibt es nicht.' } };
+  if (d.zurueckgezogen) return { fehler: { allgemein: 'Der Eintrag ist bereits zurückgezogen.' } };
+  const g = feld(grund); if (g.length > 200) return { fehler: { grund: 'Höchstens 200 Zeichen.' } };
+  return { dienstleister: { ...d, zurueckgezogen: ctx.at, zurueckGrund: g } };
+}
+export const waehlbareDienstleister = (ctx) => (ctx.daten.dienstleister || []).filter((d) => !d.zurueckgezogen);
 
 // ---------- Prüf- und Logistikanfrage ----------
 export const leererAnfrageEntwurf = (bauteil = null, bedarf = null) => ({ bauteil, bedarf, leistung: '', beschreibung: '', unterlagen: '', offeneFragen: '', zustaendig: '', termin: '', dienstleister: '', kostentraeger: 'offen' });
@@ -114,6 +123,7 @@ export function pruefeAnfrage(e, ctx) {
   const z = feld(e.zustaendig); if (z.length < 2 || z.length > 80) f.zustaendig = 'Bitte die zuständige Person oder Rolle eintragen (2 bis 80 Zeichen).';
   if (!istDatum(feld(e.termin))) f.termin = 'Bitte den benötigten Termin als Datum eintragen.';
   if (e.dienstleister && !findeDienstleister(ctx, e.dienstleister)) f.dienstleister = 'Diesen Dienstleister gibt es nicht.';
+  else if (e.dienstleister && findeDienstleister(ctx, e.dienstleister).zurueckgezogen) f.dienstleister = 'Dieser Dienstleister ist zurückgezogen und nicht mehr wählbar.';
   if (!KOSTENTRAEGER[e.kostentraeger || 'offen']) f.kostentraeger = 'Bitte eine Angabe zur Kostentragung wählen.';
   return f;
 }
@@ -147,6 +157,7 @@ export function anfrageSchritt(ctx, a, aktion, eingabe = {}) {
   if (aktion === 'beauftragt') {
     const dl = eingabe.dienstleister || a.dienstleister;
     if (!findeDienstleister(ctx, dl)) f.dienstleister = 'Bitte einen hinterlegten Dienstleister wählen.';
+    else if (findeDienstleister(ctx, dl).zurueckgezogen) f.dienstleister = 'Dieser Dienstleister ist zurückgezogen und nicht mehr wählbar.';
     if (eingabe.bestaetigt !== true) f.bestaetigt = 'Bitte bestätigen, dass die Beauftragung außerhalb der Plattform erfolgt ist.';
     if (Object.keys(f).length) return { fehler: f };
     const d = findeDienstleister(ctx, dl);
@@ -195,9 +206,11 @@ export function verkaufSetzen(ctx, b, eingabe = {}) {
   const bedarf = eingabe.bedarf ? findeBedarf(ctx, eingabe.bedarf) : null;
   if (eingabe.bedarf && !bedarf) f.bedarf = 'Den gewählten Bedarf gibt es nicht.';
   const notiz = feld(eingabe.notiz); if (notiz.length > 300) f.notiz = 'Höchstens 300 Zeichen.';
-  if (Object.keys(f).length) return { fehler: f };
   const alt = verkaufVon(ctx, b) || { provisionen: {} };
-  return { verkauf: { bauteil: { projekt: b.projekt, id: b.id }, status, datum: status === 'abgeschlossen' ? am : '', bedarf: bedarf ? { projekt: bedarf.projekt, id: bedarf.id } : null, notiz, at: ctx.at, von: 'browser', provisionen: status === 'abgeschlossen' ? (alt.provisionen || {}) : {} } };
+  if (alt.at && minuten(ctx.at) < minuten(alt.at)) f.allgemein = `Der Verkaufsstand wurde zuletzt am ${datum(alt.at)} eingetragen. Stichtag auf diesen Tag oder später stellen.`;
+  if (Object.keys(f).length) return { fehler: f };
+  // Eingetragene Provisionsvereinbarungen bleiben erhalten, auch wenn der Stand zwischenzeitlich geändert wird; sie gelten nur bei „abgeschlossen“.
+  return { verkauf: { bauteil: { projekt: b.projekt, id: b.id }, status, datum: status === 'abgeschlossen' ? am : '', bedarf: bedarf ? { projekt: bedarf.projekt, id: bedarf.id } : null, notiz, at: ctx.at, von: 'browser', provisionen: alt.provisionen || {} } };
 }
 // Vermittelte Leistungen = Anfragen dieses Bauteils, die mit einem Dienstleister beauftragt (oder weiter) sind.
 export const vermittelteLeistungen = (ctx, b) => anfragenFuerBauteil(ctx, b).filter((a) => a.dienstleister && a.status !== 'vorbereitet' && a.status !== 'abgelehnt');
@@ -207,6 +220,8 @@ export function provisionSetzen(ctx, b, dienstleisterId, eingabe = {}) {
   if (!findeDienstleister(ctx, dienstleisterId)) return { fehler: { allgemein: 'Diesen Dienstleister gibt es nicht.' } };
   if (!vermittelteLeistungen(ctx, b).some((a) => a.dienstleister === dienstleisterId)) return { fehler: { allgemein: 'Für diesen Dienstleister ist keine vermittelte Leistung an diesem Bauteil eingetragen.' } };
   const status = feld(eingabe.status); const grundlage = feld(eingabe.grundlage);
+  const alt = v.provisionen?.[dienstleisterId];
+  if (alt?.at && minuten(ctx.at) < minuten(alt.at)) return { fehler: { allgemein: `Der Provisionsstatus wurde zuletzt am ${datum(alt.at)} eingetragen. Stichtag auf diesen Tag oder später stellen.` } };
   if (!PROVISION_STATUS[status]) return { fehler: { status: 'Bitte den Provisionsstatus wählen.' } };
   if (status === 'vereinbart' && grundlage.length < 3) return { fehler: { grundlage: 'Bitte die vereinbarte Berechnungsgrundlage eintragen (frei formuliert, kein Vorgabewert).' } };
   if (grundlage.length > 200) return { fehler: { grundlage: 'Höchstens 200 Zeichen.' } };
@@ -227,8 +242,9 @@ export function provisionsLage(ctx, b) {
 
 // ---------- Eigenes Angebot bearbeiten (Verkäuferseite) ----------
 export const leererAngebotEntwurf = (b) => ({ menge: String(b.menge ?? '').replace('.', ','), verfuegbarAb: b.verfuegbarAb || '', verfuegbarBis: b.verfuegbarBis || '', zustand: b.zustand || '', zustandText: b.zustandText || '', status: b.status === 'nicht' ? 'nicht' : 'erfasst', grund: b.grund || '' });
-export function pruefeAngebot(e, b) {
+export function pruefeAngebot(e, b, at = null) {
   const f = {}; const einheit = GRUPPEN[b.gruppe]?.einheit || '';
+  if (at && b.geaendertAm && b.angebotGeaendert && minuten(at) < minuten(b.geaendertAm)) f.allgemein = `Das Angebot wurde zuletzt am ${datum(b.geaendertAm)} geändert. Stichtag auf diesen Tag oder später stellen.`;
   const m = feld(e.menge); if (!ZAHL.test(m) || !(zahl(m) > 0)) f.menge = `Bitte eine Menge größer als 0 in ${einheit} eingeben.`;
   if (feld(e.verfuegbarAb) && !istDatum(feld(e.verfuegbarAb))) f.verfuegbarAb = 'Bitte ein gültiges Datum eingeben.';
   if (feld(e.verfuegbarBis) && !istDatum(feld(e.verfuegbarBis))) f.verfuegbarBis = 'Bitte ein gültiges Datum eingeben.';
@@ -247,8 +263,9 @@ export function angebotAenderung(e, { at }) {
 export function angebotAnwenden(b, a) {
   if (!a) return b;
   const neu = { ...b, menge: a.menge, verfuegbarAb: a.verfuegbarAb, verfuegbarBis: a.verfuegbarBis, zustand: a.zustand, zustandText: a.zustandText, geaendertAm: a.geaendertAm, angebotGeaendert: true };
-  if (a.status === 'nicht') { neu.status = 'nicht'; neu.grund = a.grund; } else if (b.status === 'nicht' && b.angebotGeaendert) { neu.status = 'erfasst'; neu.grund = ''; }
-  neu.verlauf = [...(b.verlauf || []), { at: a.geaendertAm, von: a.von || 'browser', text: `Angebot geändert: Menge ${String(a.menge).replace('.', ',')} ${GRUPPEN[b.gruppe]?.einheit || ''}, verfügbar ${a.verfuegbarAb ? `ab ${datum(a.verfuegbarAb)}` : 'offen'}${a.verfuegbarBis ? ` bis ${datum(a.verfuegbarBis)}` : ''}${a.status === 'nicht' ? `, nicht mehr angeboten (${a.grund})` : ''}.` }];
+  // „wird angeboten“ hebt einen Status „nicht verfügbar“ auf (eigene Eingabe, im Verlauf vermerkt); sonst bleibt der bisherige Status.
+  if (a.status === 'nicht') { neu.status = 'nicht'; neu.grund = a.grund; } else if (b.status === 'nicht') { neu.status = 'erfasst'; neu.grund = ''; }
+  neu.verlauf = [...(b.verlauf || []), { at: a.geaendertAm, von: a.von || 'browser', text: `Angebot geändert: Menge ${String(a.menge).replace('.', ',')} ${GRUPPEN[b.gruppe]?.einheit || ''}, verfügbar ${a.verfuegbarAb ? `ab ${datum(a.verfuegbarAb)}` : 'offen'}${a.verfuegbarBis ? ` bis ${datum(a.verfuegbarBis)}` : ''}${a.status === 'nicht' ? `, nicht mehr angeboten (${a.grund})` : b.status === 'nicht' ? ', wieder angeboten' : ''}.` }];
   return neu;
 }
 

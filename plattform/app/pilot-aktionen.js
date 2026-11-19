@@ -1,10 +1,10 @@
 // Pilotbetrieb: Aktionen und Formulare (Interesse, Dienstleister, Anfrage, Angebot, Verkauf, Provision, Datei, Pilotraum).
 // Hält main.js klein: main übergibt ui, Kontext, uebernehmen, render, melde, gehe und den Speicher.
-import { interesseAnlegen, interesseZurueckziehen, pruefeDienstleister, dienstleisterAusEntwurf, leererDienstleisterEntwurf, pruefeAnfrage, anfrageAusEntwurf, leererAnfrageEntwurf,
+import { interesseAnlegen, interesseZurueckziehen, pruefeDienstleister, dienstleisterAusEntwurf, leererDienstleisterEntwurf, dienstleisterZurueckziehen, pruefeAnfrage, anfrageAusEntwurf, leererAnfrageEntwurf,
   anfrageSchritt, naechsteId, verkaufSetzen, provisionSetzen, pruefeAngebot, angebotAenderung, leererAngebotEntwurf, findeAnfrage } from './pilot.js';
 import { ANFRAGE_FELD_ID, DIENSTLEISTER_FELD_ID, ANGEBOT_FELD_ID, SCHRITT_FELD_ID, routeAnfrage } from './ansichten/anfragen.js';
 import { leeresPilotformular } from './uizustand.js';
-import { exportStand, importStand, vereinige, anzahlEigeneAenderungen, baueDaten } from './zustand.js';
+import { exportStand, importStand, vereinige, zusammenfuehren, standSignatur, anzahlEigeneAenderungen, baueDaten } from './zustand.js';
 import { pilotraumLaden, pilotraumSpeichern, raumInfo, standHolen, standSchreiben } from './sync.js';
 import { routePass } from './ui.js';
 
@@ -60,8 +60,8 @@ export function pilotAktionen({ ui, ctx, uebernehmen, render, melde, gehe, speic
       p.schritt = { id: '', eingabe: {}, fehler: {}, aktion: '' }; ui.fokus = 'anfrage-status'; render(); melde(MELDUNG[aktion] || 'Gespeichert.'); return;
     }
     if (art === 'pilot-angebot') {
-      const key = f.dataset.key; const b = bauteilAus(key); const e = (p.angebot.k === key && p.angebot.entwurf) || leererAngebotEntwurf(b); const fe = pruefeAngebot(e, b);
-      if (Object.keys(fe).length) { p.angebot = { k: key, entwurf: e, fehler: fe, offen: true }; ui.fokus = ANGEBOT_FELD_ID[Object.keys(fe)[0]]; render(); return; }
+      const key = f.dataset.key; const b = bauteilAus(key); const e = (p.angebot.k === key && p.angebot.entwurf) || leererAngebotEntwurf(b); const fe = pruefeAngebot(e, b, ui.at);
+      if (Object.keys(fe).length) { p.angebot = { k: key, entwurf: e, fehler: fe, offen: true }; ui.fokus = ANGEBOT_FELD_ID[Object.keys(fe).find((k) => k !== 'allgemein')] || 'h-angebot'; if (fe.allgemein) melde(fe.allgemein); render(); return; }
       uebernehmen((d) => { d.bauteilAenderungen[key] = angebotAenderung(e, { at: ui.at }); });
       p.angebot = { k: '', entwurf: null, fehler: {}, offen: false }; ui.fokus = 'h-angebot'; render(); melde('Angebot geändert. Der Abgleich ist neu berechnet.'); return;
     }
@@ -69,7 +69,7 @@ export function pilotAktionen({ ui, ctx, uebernehmen, render, melde, gehe, speic
       const key = f.dataset.key; const b = bauteilAus(key); const ein = p.verkauf.k === key ? p.verkauf.eingabe : {};
       const vorhanden = c.daten.verkaeufe?.[key];
       const r = verkaufSetzen(c, b, { status: ein.status ?? vorhanden?.status ?? '', datum: ein.datum ?? vorhanden?.datum ?? '', bedarf: ein.bedarf !== undefined ? refAus(ein.bedarf) : vorhanden?.bedarf || null, notiz: ein.notiz ?? vorhanden?.notiz ?? '' });
-      if (r.fehler) { p.verkauf = { k: key, eingabe: ein, fehler: r.fehler }; ui.fokus = r.fehler.datum ? 'vk-datum' : 'vk-status'; render(); return; }
+      if (r.fehler) { p.verkauf = { k: key, eingabe: ein, fehler: r.fehler }; ui.fokus = r.fehler.datum ? 'vk-datum' : 'vk-status'; if (r.fehler.allgemein) melde(r.fehler.allgemein); render(); return; }
       uebernehmen((d) => { d.verkaeufe[key] = r.verkauf; });
       p.verkauf = { k: '', eingabe: {}, fehler: {} }; ui.fokus = 'h-verkauf'; render(); melde('Verkaufsstand gespeichert (laut Eintrag). Keine Zahlung ausgelöst.'); return;
     }
@@ -90,6 +90,7 @@ export function pilotAktionen({ ui, ctx, uebernehmen, render, melde, gehe, speic
     switch (act) {
       case 'dl-neu': p.dienstleister = { entwurf: leererDienstleisterEntwurf(), fehler: {}, offen: true }; ui.fokus = 'dl-name'; return true;
       case 'dl-abbrechen': p.dienstleister = { entwurf: null, fehler: {}, offen: false }; ui.fokus = 'h-dl'; return true;
+      case 'dl-zurueck': { const d = ctx().daten.dienstleister.find((x) => x.id === a.dataset.dienstleister); const r = dienstleisterZurueckziehen(ctx(), d); if (r.fehler) { melde(r.fehler.allgemein); return true; } uebernehmen((dd) => { const k = dd.dienstleister.findIndex((x) => x.id === d.id); if (k >= 0) dd.dienstleister[k] = r.dienstleister; }); ui.fokus = 'h-dl'; melde(`Dienstleister ${d.id} zurückgezogen; bestehende Anfragen behalten den Verweis.`); return true; }
       case 'angebot-bearbeiten': p.angebot = { k: a.dataset.key, entwurf: leererAngebotEntwurf(bauteilAus(a.dataset.key)), fehler: {}, offen: true }; ui.fokus = 'ag-menge'; return true;
       case 'angebot-abbrechen': p.angebot = { k: '', entwurf: null, fehler: {}, offen: false }; ui.fokus = 'btn-angebot'; return true;
       case 'interesse-zurueck': { const i = ctx().daten.interessen.find((x) => x.id === a.dataset.interesse); const r = interesseZurueckziehen(ctx(), i); if (r.fehler) { melde(r.fehler.allgemein); return true; } uebernehmen((d) => { const k = d.interessen.findIndex((x) => x.id === i.id); if (k >= 0) d.interessen[k] = r.interesse; }); melde('Interesse zurückgezogen.'); return true; }
@@ -123,9 +124,17 @@ export function pilotAktionen({ ui, ctx, uebernehmen, render, melde, gehe, speic
 
   // ---------- Pilotraum (gemeinsamer Datenstand) ----------
   const cfg = () => ({ url: ui.pilotraum.url || '', schluessel: ui.pilotraum.schluessel || '' });
+  // Signatur des zuletzt abgeglichenen Raumstands (je Eintrag eine Prüfsumme): Damit gewinnen beim Abgleich nur Einträge, die sich hier seit dem letzten Abgleich geändert haben.
+  const SIG_SCHLUESSEL = 'circularflow-pilotraum-signatur-v1';
+  let basisSig = null;
+  const sigLaden = () => { try { basisSig = JSON.parse(speicher?.getItem(SIG_SCHLUESSEL) || 'null'); } catch { basisSig = null; } };
+  const sigMerken = (stand) => { basisSig = standSignatur(stand); try { speicher?.setItem(SIG_SCHLUESSEL, JSON.stringify(basisSig)); } catch { /* ohne Speicher: Signatur nur im Speicher der Seite */ } };
+  const sigLoeschen = () => { basisSig = null; try { speicher?.removeItem(SIG_SCHLUESSEL); } catch { /* egal */ } };
+  const umbenennungText = (r) => { const t = []; if (r.umbenannt.length) t.push(`${r.umbenannt.length === 1 ? 'Ein Eintrag wurde' : `${r.umbenannt.length} Einträge wurden`} umbenannt, weil die Kennung im Raum schon vergeben war: ${r.umbenannt.map((u) => `${u.von} → ${u.nach}`).join(', ')}.`); if (r.verworfen.length) t.push(`Nicht übernommen (Kennung im Raum anders belegt, nicht umbenennbar): ${r.verworfen.map((v) => v.kennung).join(', ')}.`); return t.join(' '); };
   function start() {
     const gespeichert = pilotraumLaden(speicher);
     if (!gespeichert) return;
+    sigLaden();
     Object.assign(ui.pilotraum, gespeichert, { status: 'verbindet' });
     abgleichen({ meldung: false }).catch(() => {});
     document.addEventListener('visibilitychange', () => { if (!document.hidden && ui.pilotraum.status === 'verbunden') abgleichen({ meldung: false }).catch(() => {}); });
@@ -145,8 +154,10 @@ export function pilotAktionen({ ui, ctx, uebernehmen, render, melde, gehe, speic
     } catch (e) { Object.assign(r, { status: 'fehler', fehler: e.message }); }
     render();
   }
-  function trennen() { pilotraumSpeichern(speicher, null); Object.assign(ui.pilotraum, { status: 'getrennt', name: '', rechte: '', fehler: '', version: 0, zuletzt: '', meldung: 'Verbindung getrennt. Der zuletzt geladene Stand bleibt in diesem Browser.' }); }
-  let laeuft = null;
+  function trennen() { pilotraumSpeichern(speicher, null); sigLoeschen(); Object.assign(ui.pilotraum, { status: 'getrennt', name: '', rechte: '', fehler: '', version: 0, zuletzt: '', meldung: 'Verbindung getrennt. Der zuletzt geladene Stand bleibt in diesem Browser.' }); }
+  // Nach „Zurücksetzen“ im Browser: Der Raum bleibt unverändert; der gemeinsame Stand wird neu geladen.
+  function nachReset() { if (ui.pilotraum.status !== 'verbunden') return; sigLoeschen(); abgleichen({ meldung: false }).catch(() => {}); }
+  let laeuft = null; let nochmal = false;
   // Holt den gemeinsamen Stand, führt ihn mit dem lokalen zusammen und schreibt den lokalen Stand zurück (bei Bearbeitungsrecht).
   async function abgleichen({ meldung = false, uebernahme = false } = {}) {
     if (laeuft) return laeuft;
@@ -157,27 +168,34 @@ export function pilotAktionen({ ui, ctx, uebernehmen, render, melde, gehe, speic
         Object.assign(r, { status: 'verbunden', name: st.name, rechte: st.rechte, fehler: '' });
         const lokal = datenHolen().p;
         const vorherLokal = anzahlEigeneAenderungen(lokal);
-        let neu = st.daten ? vereinige(st.daten, lokal) : lokal;
-        const geaendert = JSON.stringify(neu) !== JSON.stringify(st.daten || null);
+        // Drei-Wege-Zusammenführung: Raumstand + lokale Änderungen seit dem letzten Abgleich (Signatur). Kollisionen werden umbenannt und gemeldet.
+        let z = zusammenfuehren(basisSig, st.daten, lokal); let neu = z.stand; const hinweise = [umbenennungText(z)].filter(Boolean);
+        const geaendert = JSON.stringify(neu) !== JSON.stringify(st.daten ? zusammenfuehren(null, st.daten, st.daten).stand : null);
         datenSetzen(neu); r.version = st.version; r.zuletzt = new Date().toISOString();
         if (r.rechte === 'bearbeiten' && geaendert) {
-          const w = await standSchreiben(cfg(), st.version, neu);
-          if (w.konflikt) { neu = vereinige(w.daten || {}, neu); datenSetzen(neu); const w2 = await standSchreiben(cfg(), w.version, neu); if (w2.konflikt) throw new Error('Der Pilotraum wurde gleichzeitig geändert. Bitte noch einmal abgleichen.'); r.version = w2.version; } else r.version = w.version;
+          let w = await standSchreiben(cfg(), st.version, neu);
+          if (w.konflikt) { z = zusammenfuehren(basisSig, w.daten || null, neu); neu = z.stand; const h2 = umbenennungText(z); if (h2) hinweise.push(h2); datenSetzen(neu); w = await standSchreiben(cfg(), w.version, neu); if (w.konflikt) throw new Error('Der Pilotraum wurde gleichzeitig geändert. Bitte noch einmal abgleichen.'); }
+          r.version = w.version;
         }
+        sigMerken(neu);
         const jetzt = anzahlEigeneAenderungen(datenHolen().p);
-        if (meldung) { r.meldung = `Abgeglichen: Fassung ${r.version}, ${jetzt} Einträge im Raum${jetzt !== vorherLokal ? ` (${jetzt - vorherLokal > 0 ? '+' : ''}${jetzt - vorherLokal} gegenüber diesem Browser)` : ''}.`; melde('Pilotraum abgeglichen.'); }
+        if (hinweise.length) { r.meldung = hinweise.join(' '); melde(hinweise[0], 8000); }
+        else if (meldung) { r.meldung = `Abgeglichen: Fassung ${r.version}, ${jetzt} Einträge im Raum${jetzt !== vorherLokal ? ` (${jetzt - vorherLokal > 0 ? '+' : ''}${jetzt - vorherLokal} gegenüber diesem Browser)` : ''}.`; melde('Pilotraum abgeglichen.'); }
         if (!uebernahme) render();
       } catch (e) { r.status = r.name ? 'verbunden' : 'fehler'; r.fehler = e.message; if (meldung) melde(`Abgleich fehlgeschlagen: ${e.message}`); render(); throw e; }
-      finally { laeuft = null; }
+      finally { laeuft = null; if (nochmal) { nochmal = false; setTimeout(() => abgleichen({ meldung: false }).catch(() => {}), 50); } }
     })();
     return laeuft;
   }
   // Nach jeder lokalen Änderung in den Raum schreiben (nur mit Bearbeitungsrecht). Konflikte werden zusammengeführt.
   let schreibTimer = null;
   function nachAenderung() {
-    if (ui.pilotraum.status !== 'verbunden' || ui.pilotraum.rechte !== 'bearbeiten') return;
+    if (ui.pilotraum.status !== 'verbunden') return;
+    if (ui.pilotraum.rechte !== 'bearbeiten') { ui.speicherHinweis = `Pilotraum „${ui.pilotraum.name}“ nur mit Leserecht: Diese Änderung bleibt in diesem Browser und gelangt nicht in den Raum.`; return; }
+    // Läuft gerade ein Abgleich, wird danach noch einmal abgeglichen, damit die Änderung nicht bis zum nächsten Takt wartet.
+    if (laeuft) { nochmal = true; return; }
     clearTimeout(schreibTimer); schreibTimer = setTimeout(() => abgleichen({ meldung: false }).catch(() => {}), 400);
   }
 
-  return { eingabe, absenden, klick, datenLaden, start, nachAenderung, abgleichen, neuesFormular: leeresPilotformular, leererAnfrageEntwurf, baueDaten };
+  return { eingabe, absenden, klick, datenLaden, start, nachAenderung, nachReset, abgleichen, neuesFormular: leeresPilotformular, leererAnfrageEntwurf, baueDaten };
 }

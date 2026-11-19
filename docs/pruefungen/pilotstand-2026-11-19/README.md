@@ -2,7 +2,7 @@
 
 Dokumentversion 1.0 · Stand 19.11.2026 · Branch `codex/pilotstand-20261119` · Ausgangscommit `f3c57a9`
 (`codex/uebernahme-scan-pitch-20261118`, Scan-Integration von ChatGPT), Merge von `claude/bold-fermat-t1ngwv` (`665ffdb`, CF-PWA-01),
-Umsetzung `c297aa5` und Folgecommits auf diesem Branch. Bearbeitung: Claude (Hauptsitzung); unabhängige Prüfung durch die Agenten
+Umsetzung `c297aa5`, Prüfbericht `6502dd6`, Review-Korrekturen im Folgecommit (siehe `git log`). Bearbeitung: Claude (Hauptsitzung); unabhängige Prüfung durch die Agenten
 cf-review und cf-test (Abschnitt 6). Auftrag: Team, 19.11.2026, „technische Fertigstellung, durchgehend nutzbarer Pilotstand“.
 
 Nicht veröffentlicht, nicht gemergt, keine Zugriffsrechte externer Dienste geändert, keine Käufe. Der Pitch-Stand `codex/plattform-v1`
@@ -54,11 +54,11 @@ Nicht veröffentlicht, nicht gemergt, keine Zugriffsrechte externer Dienste geä
 - **Dokumente:** `plattform/README.md` (Start, Klickpfad, echt/nicht echt), `docs/produktentscheidungen.md` §7 (A8, A9, V10 bis V15),
   `docs/praxistest/erfassungsvergleich-vorlage.md` + `.csv` (fünf Bauteile, ohne Messwerte).
 
-## 4 Prüfungen (alle am Codezustand von Commit `c297aa5`, Folgekorrektur der Herkunftsanzeige in `erfassung.js`/`main.js` danach erneut mit Regeltests geprüft)
+## 4 Prüfungen (Endstand nach den Review-Korrekturen, Abschnitt 6; alle Läufe am selben Codezustand, Commit siehe Kopf)
 
 | Befehl | Rohausgabe | Ergebnis |
 |---|---|---|
-| `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs` | [`rohausgaben/regeltests.txt`](rohausgaben/regeltests.txt) | 232 von 232 bestanden |
+| `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs` | [`rohausgaben/regeltests.txt`](rohausgaben/regeltests.txt) | 239 von 239 bestanden (darunter `pilot.test.mjs`, `pilotserver.test.mjs`) |
 | `cd plattform/etikett-versuch && node test/ocr.mjs` (Node, Sprachdatei deu) | [`rohausgaben/ocr-node.txt`](rohausgaben/ocr-node.txt) | 5 Fixtures: 4 Etiketten vollständig richtig (auch Umlaute), leeres Bild ohne Angabe |
 | `node docs/pruefungen/pilotstand-2026-11-19/werkzeug/browserlauf.mjs <Testdaten>` (Playwright, Chromium 153, Pilotserver) | [`rohausgaben/browserlauf.txt`](rohausgaben/browserlauf.txt), Bilder in [`bilder/`](bilder/) | 63 von 63 bestanden |
 | `node plattform/bauen-artifact.mjs <Wegwerfordner>` | – | gebaut (41 Begleitdateien); die Vorschau-Fassung enthält keine OCR-Engine und keinen Pilotserver |
@@ -97,9 +97,35 @@ Metadaten bleiben), beschädigte Datei beim Laden, Rückdatierung von Anfragesch
 
 Eine durchgehende Simulation bleibt eine Simulation: Beispielprojekte, Fristen, Personen und Bedarfe sind fiktiv.
 
-## 6 Unabhängige Prüfung (cf-review, cf-test)
+## 6 Unabhängige Prüfung (cf-review, cf-test) und Behebung
 
-Wird nach Abschluss der Agentenläufe ergänzt (Befunde, Behebung, erneute Prüfung).
+**cf-test** (unabhängiger Testlauf auf `c297aa5`, nur lesend und ausführend): 232 Regeltests bestanden, OCR-Node-Test bestanden (alle
+Felder der vier Etiketten richtig, leeres Bild ohne Angabe), Browserlauf 63 von 63 bestanden (Texterkennung 842 ms Rechner, 795 ms
+Handy-Emulation), fünf Handprüfungen bestanden (Erfassung ohne Foto und Typenschild; TW-01 → BD-23 „zu spät“ mit gesperrtem Knopf
+unter dem Schlüssel `#abgleich-lh-tw-01--sb-bd-23`; T-31 → BD-21 „Angaben fehlen“; Verkauf „nicht zustande gekommen“ ohne
+Provisionsstatus; `#anfragen` leer ohne Konsolenfehler). Hinweis des Agenten: Während seines Laufs änderte die Hauptsitzung
+`erfassung.js`/`main.js` (Herkunftshinweis), deshalb wurde der Browserlauf nach allen Korrekturen erneut ausgeführt (Abschnitt 4).
+
+**cf-review** (lesend, Diff `f3c57a9..c297aa5`): 13 Befunde, davon 7 „vor der Abnahme beheben“. Behebung am 19.11.2026:
+
+| Nr. | Befund (Kurzform) | Behebung | Beleg |
+|---|---|---|---|
+| 1 | Pilotraum-Abgleich überschrieb lokale Statuswechsel (Anfrage beauftragt, Interesse zurückgezogen) beim selben Stichtag, weil die Zusammenführung nach dem simulierten Stichtag entschied und im Zweifel der Raum gewann | Neue Drei-Wege-Zusammenführung `zusammenfuehren(sig, raum, lokal)` in `zustand.js`: je Eintrag eine Prüfsumme des zuletzt abgeglichenen Raumstands (Signatur, im Browserspeicher); lokal geänderte oder neue Einträge gewinnen, unveränderte folgen dem Raum; keine Zeitstempel mehr für die Entscheidung | `pilot.test.mjs` „Drei-Wege-Zusammenführung: lokale Statuswechsel gewinnen“ |
+| 2 | Gleiche Kennungen aus zwei Browsern (A-01, DL-01, T-13 …) gingen still verloren; V13 behauptete eine Meldung | Kollisionen werden erkannt, der neue lokale Eintrag wird umbenannt (nächste freie Kennung) und alle Verweise ziehen mit (Anfragen, Interessen, Verkäufe, Angebotsänderungen, Zuordnungen, Ereignisse, Provisionen); Projekte und Radar-Meldungen sind nicht umbenennbar und werden als „nicht übernommen“ gemeldet. Meldung im Pilotraum-Block und als Hinweis | `pilot.test.mjs` „gleiche Kennungen … werden umbenannt, Verweise ziehen mit“ |
+| 3 | Zeitreihenfolge nach simuliertem Stichtag; Rückdatierung bei Angebot, Verkauf, Provision, Interesse nicht verhindert | Zusammenführung ohne Zeitvergleich (siehe 1); Rückdatierung bei Verkauf, Provision, Angebot und Interesse-Zurückziehen gesperrt wie bei Anfragen („Stichtag auf … oder später stellen“). Angebotsänderungen erscheinen weiter unabhängig vom Stichtag (wie Bedarfsergänzungen), dokumentiert in Abschnitt 7 | `pilot.test.mjs` „Rückdatierung ist … gesperrt“ |
+| 4 | Kopftext „Etikettangaben am Foto bestätigt“ im Bauteilpass auch ohne Foto; Rohtext-Hinweis ohne Foto falsch | Kopftext aus `etikett.hinweis` (manuell/ohne Foto unterschieden); Rohtext nur, wenn vorhanden; Fotohinweis nur bei Speicherknappheit | Node-Rendering `pass()` in `etikett.test.mjs` |
+| 5 | Datenschutztexte („wird nicht hochgeladen“, „keine Synchronisierung“) bei verbundenem Pilotraum falsch | Texte folgen dem Verbindungsstatus und dem Recht (Bearbeiten/Lesen), nennen die Übertragung einschließlich Fotos an den Pilotserver | `erfassung.js` Schritte 2 und 5 |
+| 6 | Server stürzte bei ungültiger URL-Kodierung ab; Pfadprüfung ohne Trennzeichen; gesamtes Repository ausgeliefert | `decodeURIComponent` abgefangen (400); Präfixprüfung mit Trennzeichen auf dem aufgelösten Pfad; nur `/plattform/` und `/prototype/dist/` werden ausgeliefert, `plattform/server/`, Datenordner und `node_modules` gesperrt | `pilotserver.test.mjs` „Statische Auslieferung“ |
+| 7 | Bearbeitungsschlüssel konnte den Raum mit leeren oder ungültigen Daten überschreiben; keine Sicherung | Datenfassung muss 1 sein (400); Schrumpfschutz: weniger Einträge als gespeichert → 422; Vorversion als `.vorher`-Datei gesichert. Rechte bleiben auf Raumebene (dokumentiert) | `pilotserver.test.mjs` „Versionskonflikt 409, Schrumpfschutz 422 …“ |
+| 8 | Abbruch vor dem Laden der Engine wirkungslos; Worker konnte nach spätem Start liegen bleiben; Zeitlimit-Text nannte das Laden nicht | Abbruch und Zeitlimit gelten ab Beginn; ein nach dem Abbruch fertig gestarteter Worker wird beendet; Text nennt das Laden | Browserlauf „Abbruch während des Ladens“ |
+| 9 | Provisionsvereinbarungen gingen beim Umstellen des Verkaufsstands verloren | Vereinbarungen bleiben gespeichert und gelten nur bei „abgeschlossen“ | `pilot.test.mjs` „Provisionsvereinbarung bleibt … erhalten“ |
+| 10 | Beschädigte Einträge (Provisionsstatus, Verlauf, Termin) konnten Ansichten abstürzen lassen | Prüfung beim Laden verschärft (`ladePersistenz`), Ansichten mit Rückfallwerten | `zustand.js`, `anfragen.js` |
+| 11 | „wird angeboten“ bei Bauteil mit Status „nicht“ wirkungslos (toter Zweig) | Status wird auf „erfasst“ gesetzt, Verlauf „wieder angeboten“ | `pilot.test.mjs` „Angebot: wird angeboten hebt nicht verfügbar auf“ |
+| 12 | Dienstleister weder änderbar noch entfernbar; Freigabe ist Selbstauskunft | „Zurückziehen“ (nicht mehr wählbar, Verweise bleiben), Hinweis zur Selbstauskunft im Text | `pilot.test.mjs`, `anfragen.js` |
+| 13 | Teilstände (`ezustand`, `werte` …) ließen lokal immer gewinnen; Fotos bei vollem Speicher still weggelassen; Leserecht nur einmal gemeldet; Änderung während eines laufenden Abgleichs wartete bis zum nächsten Takt | Teilstände folgen derselben Signaturregel; Hinweis bei weggelassenen Fotos; dauerhafter Hinweis bei jeder Änderung mit Leserecht; laufender Abgleich wird direkt wiederholt | `pilot-aktionen.js`, `main.js` |
+
+Nach der Behebung: 239 Regeltests bestanden (7 neue), Browserlauf erneut ausgeführt (Abschnitt 4, Rohausgabe `browserlauf.txt`).
+Nicht erneut durch die Agenten geprüft: Die zweite Runde wurde von der Hauptsitzung selbst ausgeführt (Regeltests und Browserlauf).
 
 ## 7 Bekannte Fehler und Grenzen
 
@@ -109,9 +135,11 @@ Wird nach Abschluss der Agentenläufe ergänzt (Befunde, Behebung, erneute Prüf
    „Hersteller:“ / „Modell:“ / „Seriennummer:“ / „Baujahr:“ oder englische Entsprechungen. Fehlt die Beschriftung, bleibt das Feld leer
    und wird von Hand eingetragen.
 3. **Pilotserver:** nur HTTP, nur im eigenen Netz; Raumschlüssel statt persönlicher Konten; keine Protokollierung, wer geändert hat
-   (Einträge heißen „Eigene Eingabe“). Zwei gleichzeitige Erfassungen mit derselben Kennung innerhalb weniger Sekunden: Der Abgleich
-   behält den Eintrag des Raums und meldet den Konflikt; der verworfene Eintrag ist im lokalen Browser nicht automatisch wiederhergestellt.
-   Leseschlüssel: Änderungen bleiben lokal und werden als solche angezeigt, aber nicht verhindert.
+   (Einträge heißen „Eigene Eingabe“). Rechte gibt es nur je Raum (Bearbeiten oder Lesen), nicht je Projekt oder Rolle. Vergeben zwei
+   Browser gleichzeitig dieselbe Kennung, wird der später abgeglichene Eintrag umbenannt (z. B. A-01 → A-02) und gemeldet; eigene
+   Projekte und Radar-Meldungen mit gleicher Kennung werden nicht übernommen und gemeldet. Leseschlüssel: Änderungen bleiben lokal und
+   werden bei jeder Änderung als solche angezeigt, aber nicht verhindert. Der Schlüssel liegt im Browserspeicher des Geräts.
+   Angebotsänderungen erscheinen unabhängig vom gewählten Stichtag der Demo (wie Bedarfsergänzungen).
 4. **Anfrage ↔ Vorgang:** Eine Anfrage „Fachprüfung“ setzt das Fachergebnis des Vorgangs nicht automatisch; beides wird getrennt
    eingetragen (gewollt), ist aber nur über Verweise verbunden.
 5. **Vorschau-Fassung (`bauen-artifact.mjs`)** enthält weder OCR-Engine noch Pilotserver; dort erscheint der Fehlertext „Engine fehlt“.

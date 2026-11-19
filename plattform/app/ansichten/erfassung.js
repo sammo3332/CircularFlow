@@ -57,7 +57,7 @@ function schritt2(ctx, ent) {
       <label class="knopf-zweit dateiknopf">Vorhandenes Bild wählen<input type="file" id="erf-foto-wahl" accept="image/*"></label>
       ${ent.foto ? '<button type="button" class="knopf-leise" data-action="erf-foto-weg">Foto entfernen</button>' : ''}
     </div>
-    <p class="lokal-hinweis">${chip('Nur auf diesem Gerät', 'info')} <span>Das Foto wird verkleinert und im Speicher dieses Browsers abgelegt. Es wird nicht hochgeladen.</span></p>
+    ${ctx.ui.pilotraum?.status === 'verbunden' ? `<p class="lokal-hinweis">${chip('Pilotraum verbunden', 'ok')} <span>Das Foto wird verkleinert, in diesem Browser gespeichert und${ctx.ui.pilotraum.rechte === 'bearbeiten' ? ' mit dem Bauteil an den Pilotserver des Teams übertragen' : ' nicht in den Raum übertragen (nur Leserecht)'}. Kein externer Dienst.</span></p>` : `<p class="lokal-hinweis">${chip('Nur auf diesem Gerät', 'info')} <span>Das Foto wird verkleinert und im Speicher dieses Browsers abgelegt. Es wird nicht hochgeladen.</span></p>`}
     ${ent.fotoLaedt ? '<p class="leise" role="status">Foto wird verkleinert …</p>' : ''}
     ${ent.fotoFehler ? `<p class="feld-meldung" role="alert">${esc(ent.fotoFehler)}</p>` : ''}
     ${ent.foto ? `<p class="leise">${esc(ent.foto.name)} · ${ent.foto.breite} × ${ent.foto.hoehe} px nach Verkleinerung</p>` : ''}
@@ -172,7 +172,7 @@ function schritt5(ctx, ent, projekte, p, ort) {
     </div>
     ${ent.etikett ? etikettFelder(ent) : ''}
     ${g ? `<ul class="prueffelder" aria-label="Angaben mit Status">${g.felder.map((f) => { const w = ent.werte[f.key] || { status: 'fehlt' }; const anzeige = w.status === 'fehlt' ? '–' : wertText(f, { wert: w.eingabe }); return `<li><span class="pf-text"><span class="pf-name">${esc(f.label)}</span><span class="pf-wert mono">${esc(anzeige)}</span></span>${wertChip(w.status)}</li>`; }).join('')}</ul>` : ''}
-    <p class="lokal-hinweis">${chip('Nur auf diesem Gerät', 'info')} <span>Gespeichert wird im Speicher dieses Browsers. Es gibt keine Synchronisierung: Auf anderen Geräten erscheint das Bauteil nicht.</span></p>
+    ${ctx.ui.pilotraum?.status === 'verbunden' && ctx.ui.pilotraum.rechte === 'bearbeiten' ? `<p class="lokal-hinweis">${chip('Pilotraum verbunden', 'ok')} <span>Gespeichert wird in diesem Browser und im Pilotraum „${esc(ctx.ui.pilotraum.name)}“ (Pilotserver des Teams, einschließlich Fotos). Berechtigte Personen mit Schlüssel sehen das Bauteil.</span></p>` : `<p class="lokal-hinweis">${chip('Nur auf diesem Gerät', 'info')} <span>Gespeichert wird im Speicher dieses Browsers${ctx.ui.pilotraum?.status === 'verbunden' ? ' (Pilotraum nur mit Leserecht: keine Übertragung)' : ''}. Es gibt keine Synchronisierung: Auf anderen Geräten erscheint das Bauteil nicht.</span></p>`}
     <p class="klein">Nach dem Speichern erscheint das Bauteil im Bestand von ${p ? esc(p.kurz) : 'diesem Projekt'} und hat einen eigenen Pass. Fehlende und vorgeschlagene Angaben stehen dort als offene Nachweise.</p>`;
 }
 

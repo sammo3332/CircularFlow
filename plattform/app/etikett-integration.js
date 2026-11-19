@@ -34,24 +34,28 @@ export async function etikettLesen(file, { log = () => {}, abbruch = null, zeitl
   if (!file) throw new Error('Bitte ein Foto des Typenschilds wählen.');
   if (!TYPEN.includes(file.type)) throw new Error('Bitte ein JPEG-, PNG- oder WebP-Foto wählen. Andere Dateitypen werden nicht gelesen.');
   if (file.size > 20 * 1024 * 1024) throw new Error('Das Foto ist größer als 20 MB. Bitte eine kleinere Aufnahme wählen.');
-  log({ phase: 'bild', prozent: 0 });
-  const foto = await etikettFoto(file); // beschädigte Bilder scheitern hier, bevor die Engine lädt
   let worker = null; let timer = null; let beendet = false;
   const aufraeumen = async () => { clearTimeout(timer); if (worker) { const w = worker; worker = null; try { await w.terminate(); } catch { /* schon beendet */ } } };
+  // Abbruch und Zeitlimit gelten ab jetzt, also auch während das Foto vorbereitet oder die Engine geladen wird.
   const abbruchVersprechen = new Promise((_, fail) => {
-    timer = setTimeout(() => { beendet = true; fail(new Error('Die Texterkennung dauert zu lange (über 60 Sekunden). Bitte näher und schärfer fotografieren oder die Angaben von Hand eintragen.')); }, zeitlimitMs);
-    if (abbruch) abbruch.cb = () => { beendet = true; fail(new Error('Texterkennung abgebrochen. Es wurde nichts übernommen.')); };
+    timer = setTimeout(() => { beendet = true; fail(new Error(`Die Texterkennung dauert zu lange (über ${Math.round(zeitlimitMs / 1000)} Sekunden einschließlich Laden der Engine). Bitte näher und schärfer fotografieren, die Verbindung prüfen oder die Angaben von Hand eintragen.`)); }, zeitlimitMs);
+    if (abbruch) { abbruch.cb = () => { beendet = true; fail(new Error('Texterkennung abgebrochen. Es wurde nichts übernommen.')); }; if (abbruch.aktiv) abbruch.cb(); }
   });
   const lauf = (async () => {
+    log({ phase: 'bild', prozent: 0 });
+    const foto = await etikettFoto(file); // beschädigte Bilder scheitern hier, bevor die Engine lädt
+    if (beendet) throw new Error('abgebrochen');
     log({ phase: 'laden', prozent: 0 });
     let createWorker;
     try { const mod = await import('../etikett-versuch/vendor/tesseract.esm.min.js'); createWorker = mod.createWorker || mod.default?.createWorker; if (typeof createWorker !== 'function') throw new Error('kein createWorker'); } catch { throw new Error('Die Texterkennung ist nicht geladen (Engine fehlt). Im Ordner plattform/etikett-versuch „npm install“ und „npm run vendor“ ausführen oder die Angaben von Hand eintragen.'); }
     const root = new URL('../etikett-versuch/vendor/', import.meta.url);
-    worker = await createWorker(sprache, 1, {
+    const w = await createWorker(sprache, 1, {
       workerPath: new URL('worker.min.js', root).href, corePath: new URL('core/', root).href, langPath: new URL('lang', root).href, workerBlobURL: false, gzip: false, cacheMethod: 'none',
       logger: (m) => { if (beendet) return; if (m.status === 'recognizing text') log({ phase: 'lesen', prozent: Math.round((m.progress || 0) * 100) }); else if (/loading|initializing/.test(m.status || '')) log({ phase: 'laden', prozent: Math.round((m.progress || 0) * 100) }); },
     });
-    if (beendet) throw new Error('abgebrochen');
+    // Kam der Abbruch, während die Engine noch lud, wird der fertig gestartete Worker hier beendet statt liegen zu bleiben.
+    if (beendet) { try { await w.terminate(); } catch { /* egal */ } throw new Error('abgebrochen'); }
+    worker = w;
     await worker.setParameters({ tessedit_pageseg_mode: '6' });
     const { data } = await worker.recognize(foto.blob);
     if (beendet) throw new Error('abgebrochen');

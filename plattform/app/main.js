@@ -81,7 +81,7 @@ function uebernehmen(aenderung) {
 // Pilotbetrieb: Interesse, Dienstleister, Anfragen, Verkauf, Angebot, Datei und Pilotraum (gemeinsamer Datenstand).
 const pilot = pilotAktionen({ ui, ctx, uebernehmen, render: () => render(), melde: (t) => melde(t), gehe: (h) => gehe(h), speicher,
   datenHolen: () => ({ p, db }),
-  datenSetzen: (neu) => { p = neu; db = baueDaten(p); const r = speichere(speicher, p); if (speicher && !r.ok) ui.speicherHinweis = 'Speichern im Browser ist fehlgeschlagen. Der gemeinsame Stand liegt im Pilotraum.'; } });
+  datenSetzen: (neu) => { p = neu; db = baueDaten(p); const r = speichere(speicher, p); if (speicher && !r.ok) ui.speicherHinweis = 'Speichern im Browser ist fehlgeschlagen. Der gemeinsame Stand liegt im Pilotraum.'; else if (r.fotosNichtGespeichert) ui.speicherHinweis = `Der Browserspeicher ist voll: ${r.fotosNichtGespeichert} ${r.fotosNichtGespeichert === 1 ? 'Foto bleibt' : 'Fotos bleiben'} nur bis zum Neuladen; im Pilotraum sind sie weiter vorhanden.`; } });
 
 // ---------- Router ----------
 const projektPerSlug = (s) => db.projekte.find((x) => slug(x.kurz) === s);
@@ -313,8 +313,7 @@ app.addEventListener('click', (ev) => {
       loesche(speicher); p = leerePersistenz(); db = baueDaten(p);
       Object.assign(ui, { resetFrage: false, zuletzt: null, zielWahl: null, zuordnungFehler: '', erfassung: leererEntwurf(), radar: leereRadarFilter(), importe: { ifc: null, ifcSim: false, scanSim: false }, speicherHinweis: '',
         bedarfForm: leeresBedarfsformular(), projektForm: leeresProjektformular(), vorgangForm: leeresVorgangsformular(), pilot: leeresPilotformular(), bedarfe: leereBedarfsliste(), katalog: leererKatalog(), bestand: leererBestand(), vorgaenge: { status: '' }, abgleich: { ergebnis: '' } });
-      pilot.nachAenderung();
-      melde('Eigene Erfassungen und Änderungen gelöscht.'); break;
+      pilot.nachReset(); melde(ui.pilotraum.status === 'verbunden' ? 'Eigene Einträge in diesem Browser gelöscht; der Pilotraum bleibt unverändert und wird neu geladen.' : 'Eigene Erfassungen und Änderungen gelöscht.'); break;
     case 'zum-ziel': { const sel = document.getElementById('ziel-wahl'); if (sel) { sel.scrollIntoView({ block: 'center' }); sel.focus({ preventScroll: true }); } return; }
     case 'radar-pruefen': case 'radar-bestaetigen': case 'radar-verwerfen': radarAktion(act.slice(6), a.dataset.hinweis); return;
     case 'radar-verwerfen-frage': ui.radar.verwerfen[a.dataset.hinweis] = true; ui.fokus = `notiz-${slug(a.dataset.hinweis)}`; break;

@@ -1,7 +1,7 @@
-Chromium 153.0.8010.12 · http://127.0.0.1:8010/plattform/ · Pilotserver (Node v22.23.4) · 2026-11-19T19:21:53.736Z
+Chromium 153.0.8010.12 · http://127.0.0.1:8010/plattform/ · Pilotserver (Node v22.23.4) · 2026-11-19T19:35:28.495Z
 
 == Rechner 1280 × 800: Erfassung mit echter Texterkennung, Korrektur, Bestätigung, Speichern, Neuladen ==
-OK   rechner: echte Texterkennung im Browser (0.8 s, Fortschrittsanzeige „Texterkennung wird geladen …“) · „Texterkennung fertig: 4 von 4 Angaben vorgeschlagen (0.4 s einschließlich Laden). Vorschlä“
+OK   rechner: echte Texterkennung im Browser (0.8 s, Fortschrittsanzeige „Texterkennung wird geladen …“) · „Texterkennung fertig: 4 von 4 Angaben vorgeschlagen (0.5 s einschließlich Laden). Vorschlä“
 OK   rechner: Weiter ist nach der Texterkennung wieder frei
 OK   rechner: vier Felder neben dem Etikettfoto vorgeschlagen (MUSTERWERK, TUER-17, CF-2026-001, 2020)
 OK   rechner: Korrektur hebt die Bestätigung auf (erneute Bestätigung nötig)
@@ -77,6 +77,6 @@ OK   Handy Schritt 5: Überstand 0 px, Ziele unter 44 px: []
 OK   Handy Bauteilpass: Überstand 0 px, Ziele unter 44 px: []
 OK   Handy: keine Konsolenfehler ([])
 
-Texterkennung im Browser (ms, einschließlich Laden der Engine): {"rechner":847,"handy":793}
+Texterkennung im Browser (ms, einschließlich Laden der Engine): {"rechner":850,"handy":795}
 Alle Prüfungen bestanden
 exit 0
