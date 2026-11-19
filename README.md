@@ -15,6 +15,10 @@ CircularFlow untersucht, wie Angebot und Bedarf für Wiederverwendung frühzeiti
 
 ## Einrichtung, Betrieb und Prüfung
 
+**Pilotstand 19.11.2026** (Branch `codex/pilotstand-20261119`, nicht gemergt): Erfassung mit lokaler Typenschild-Texterkennung,
+Anfragen an Dienstleister, Verkauf/Provision und Pilotserver für einen gemeinsamen Datenstand. Start, Klickpfad und Grenzen in
+[`plattform/README.md`](plattform/README.md); Prüfbericht in [`docs/pruefungen/pilotstand-2026-11-19/README.md`](docs/pruefungen/pilotstand-2026-11-19/README.md).
+
 Der [Prototyp](prototype/README.md) ist eine statische Browseranwendung. Für die Regelprüfung im Repository-Verzeichnis `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs` ausführen. `prototype/dist/` enthält die Website mit fiktiven Testdaten.
 
 Die [Plattform](plattform/README.md) (Entwicklungsbranches) startet mit `python3 -m http.server 8000` vom Repository-Wurzelverzeichnis unter `http://localhost:8000/plattform/`; Tests: `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs`. Der Branch `claude/bold-fermat-t1ngwv` (18.11.2026) macht sie als Web-App installierbar; Installation, geprüfte Umgebungen und Grenzen stehen im Plattform-README.

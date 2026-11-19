@@ -1,0 +1,82 @@
+Chromium 153.0.8010.12 · http://127.0.0.1:8010/plattform/ · Pilotserver (Node v22.23.4) · 2026-11-19T19:21:53.736Z
+
+== Rechner 1280 × 800: Erfassung mit echter Texterkennung, Korrektur, Bestätigung, Speichern, Neuladen ==
+OK   rechner: echte Texterkennung im Browser (0.8 s, Fortschrittsanzeige „Texterkennung wird geladen …“) · „Texterkennung fertig: 4 von 4 Angaben vorgeschlagen (0.4 s einschließlich Laden). Vorschlä“
+OK   rechner: Weiter ist nach der Texterkennung wieder frei
+OK   rechner: vier Felder neben dem Etikettfoto vorgeschlagen (MUSTERWERK, TUER-17, CF-2026-001, 2020)
+OK   rechner: Korrektur hebt die Bestätigung auf (erneute Bestätigung nötig)
+OK   rechner: Speichern ohne Bestätigung ist gesperrt („1 Angabe verhindern das Speichern. Hersteller bitte am Foto prüfen und ausdrückl“)
+OK   rechner: gespeichert („LH T-13 Innentür ist im Bestand“)
+OK   rechner: Bauteilpass zeigt Typenschild mit Herkunft je Angabe
+OK   rechner: Bauteilpass nennt letzte Änderung und Grenze (kein Aufmaß, keine Fachfreigabe)
+OK   rechner: nach Neuladen von #pass-lh-t-13 bleiben Typenschild, Maß und Foto erhalten
+
+== Fehlerfälle und Erfassung ohne Scan ==
+OK   Falscher Dateityp: „Bitte ein JPEG-, PNG- oder WebP-Foto wählen. Andere Dateitypen werden “
+OK   Beschädigtes Bild: „Das Bild konnte nicht gelesen werden. Die Datei ist beschädigt oder ke“
+OK   Leeres Bild: keine Angabe erfunden („Texterkennung fertig: 0 von 4 Angaben vorgeschlagen (0.2 s e“)
+OK   Abbruch während des Ladens: „Texterkennung abgebrochen. Es wurde nichts übernommen. Alternativ die “, kein Ergebnis übernommen
+OK   Nach dem Abbruch ist Weiter wieder frei
+OK   Neues Etikettfoto verwirft die alten Vorschläge sofort
+OK   Nach dem neuen Foto gelten nur dessen (leere) Vorschläge
+OK   Angaben ohne Scan: Eingabemodus geöffnet
+OK   Ohne Foto heißt die Herkunft „manuell eingegeben, geprüft“ (nicht „am Foto bestätigt“)
+OK   Manuelle Erfassung ohne Typenschildfoto im Pass mit Herkunft „manuell eingegeben“
+
+== Abgleich, Interesse, Anfrage mit Dienstleister und Verlauf ==
+OK   Abgleich TW-01 → BD-23: „zu spät“, Prüfbitte gesperrt, Grund steht daneben
+OK   Abgleich T-31 → BD-21: „Angaben fehlen“ mit konkret fehlender Angabe und nächstem Schritt
+OK   Abgleich TW-05 → BD-22: „Weiter prüfen“, als regelbasiert gekennzeichnet, Zuständigkeit genannt
+OK   Interesse festgehalten, als „keine Reservierung“ gekennzeichnet
+OK   Anfrage ohne Pflichtangaben wird abgewiesen
+OK   Anfrage gespeichert: Status „vorbereitet“, nicht versendet
+OK   Beauftragung ohne Dienstleister und Bestätigung wird abgewiesen
+OK   Dienstleister als Testeintrag hinterlegt
+OK   Beauftragung vermerkt (laut Eintrag), keine Nachricht
+OK   Negatives Ergebnis braucht einen Grund
+OK   Negative Prüfung eingetragen: nicht automatisch abgelehnt, keine Fachfreigabe
+OK   Kostentragung eingetragen, ohne Beträge
+
+== Bauteilpass: Angebot bearbeiten, Verkauf, Provision ==
+OK   Angebot bearbeitet: Menge 55 lfm, Verfügbarkeit bis 31.03.2027
+OK   Verkauf „abgeschlossen“ ohne Datum wird abgewiesen
+OK   Verkauf abgeschlossen (laut Eintrag), keine Zahlung
+OK   Provision nur bei vermittelter Leistung (Dienstleister aus Anfrage vorhanden)
+OK   Provision „vereinbart“ ohne Berechnungsgrundlage wird abgewiesen (kein Vorgabewert)
+OK   Provisionsstatus „vereinbart“ mit eingetragener Grundlage
+
+== Datenstand als Datei sichern und laden ==
+OK   Datei gesichert: 2 Erfassungen, 1 Anfrage, 1 Dienstleister
+OK   Ungültige Datei wird abgewiesen
+OK   Datei geladen: „ 7 neue Einträge aus der Datei übernommen (7 in der Datei, 7 jetzt insgesamt).“
+OK   Nach dem Laden sind die Einträge im zweiten Browserprofil vorhanden
+OK   Keine Konsolenfehler im Rechnerlauf ([])
+
+== Pilotraum: zwei getrennte Sitzungen, fremder Raum, Leseschlüssel ==
+OK   Sitzung 1 verbunden (bearbeiten), lokale Einträge übernommen: „Pilotraum (gemeinsamer Datenstand) verbunden · bearbeiten Ein Pilotraum liegt auf dem Pilotserver des Teams (eigener Rec“
+OK   Server Raum A: Fassung 1, 2 Erfassungen, 1 Anfrage
+OK   Sitzung 2 sieht die Erfassung #pass-lh-t-13 aus Sitzung 1 (gemeinsamer Datenstand)
+OK   Änderung aus Sitzung 2 liegt im Raum (Fassung 2)
+OK   Sitzung 1 sieht nach dem Abgleich den Eintrag aus Sitzung 2
+OK   Sitzung 2 bleibt nach Neuladen verbunden
+OK   Fremder Raum B: Erfassung aus Raum A ist nicht sichtbar (Projektdaten getrennt)
+OK   Leseschlüssel: verbunden mit „nur lesen“
+OK   Leseschlüssel sieht den gemeinsamen Stand
+OK   Leseschlüssel schreibt nicht in den Raum (Fassung bleibt 2); Eintrag bleibt lokal
+OK   Ungültiger Schlüssel wird abgewiesen
+OK   Keine Konsolenfehler in den Pilotraum-Sitzungen ([])
+
+== Handy-Emulation (412 × 839, Chromium-Profil „Pixel 7“, kein echtes Gerät) ==
+OK   Handy Schritt 1: Überstand 0 px, Ziele unter 44 px: []
+OK   Handy: Typenschild-Feld öffnet die Kamera (capture), Zweitfeld die Bilder
+OK   Handy Schritt 2: Überstand 0 px, Ziele unter 44 px: []
+OK   Handy: deutsches Etikett mit Umlauten gelesen (0.8 s)
+OK   Handy: Umlaute richtig in den Feldern
+OK   Handy Schritt 3: Überstand 0 px, Ziele unter 44 px: []
+OK   Handy Schritt 5: Überstand 0 px, Ziele unter 44 px: []
+OK   Handy Bauteilpass: Überstand 0 px, Ziele unter 44 px: []
+OK   Handy: keine Konsolenfehler ([])
+
+Texterkennung im Browser (ms, einschließlich Laden der Engine): {"rechner":847,"handy":793}
+Alle Prüfungen bestanden
+exit 0

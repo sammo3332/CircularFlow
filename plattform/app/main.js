@@ -14,7 +14,7 @@ import { startseite, projektUebersicht, popupHtml, gefilterteProjekte } from './
 import { gebaeudeAnsicht } from './ansichten/gebaeude.js';
 import { bestand, pass } from './ansichten/bauteile.js';
 import { entscheidungsListe, entscheidungsSeite } from './ansichten/entscheidung.js';
-import { erfassung, leererEntwurf } from './ansichten/erfassung.js';
+import { erfassung, leererEntwurf, etikettFeldHinweis } from './ansichten/erfassung.js';
 import { etikettLesen, etikettAbbruch, etikettManuell } from './etikett-integration.js';
 import { pilotAktionen } from './pilot-aktionen.js';
 import { anfragenSeite, anfrageSeite, anfrageFormular } from './ansichten/anfragen.js';
@@ -336,7 +336,7 @@ app.addEventListener('input', (ev) => {
   if (t.id === 'erf-menge') { ent.menge = t.value; delete ent.fehler.menge; render(); return; }
   if (t.id === 'erf-notiz') { ent.notiz = t.value; return; }
   // Typenschild-Feld geändert: Bestätigung aufheben; die Prüf-Checkbox gibt es nur für nicht leere Angaben.
-  if (t.dataset.etikett) { ent.etikett.pruefung[t.dataset.etikett] = { wert: t.value, geprueft: false }; delete ent.fehler.etikett; const box = app.querySelector(`[data-etikett-check="${t.dataset.etikett}"]`); if (box) { box.checked = false; box.disabled = !t.value.trim(); } return; }
+  if (t.dataset.etikett) { ent.etikett.pruefung[t.dataset.etikett] = { wert: t.value, geprueft: false }; delete ent.fehler.etikett; const box = app.querySelector(`[data-etikett-check="${t.dataset.etikett}"]`); if (box) { box.checked = false; box.disabled = !t.value.trim(); } const sm = document.getElementById(`etikett-herkunft-${t.dataset.etikett}`); if (sm) sm.textContent = etikettFeldHinweis(ent.etikett, t.dataset.etikett); return; }
   if (t.dataset.wert && t.tagName === 'INPUT') {
     const f = GRUPPEN[ent.gruppe].felder.find((x) => x.key === t.dataset.wert);
     const leer = !t.value.trim();

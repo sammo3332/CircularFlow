@@ -103,15 +103,24 @@ function schritt3(ctx, ent) {
     <div class="feld"><label for="erf-notiz">Notiz zum Zustand</label><input id="erf-notiz" value="${esc(ent.notiz)}" placeholder="z. B. Kantenschaden unten links"></div>${etikettFelder(ent)}`;
 }
 
+// Hinweis unter einem Typenschildfeld: Quelle des Vorschlags und Herkunft der Angabe (auch main.js nutzt ihn nach einer Eingabe).
+export function etikettFeldHinweis(e, k) {
+  const p = e.pruefung[k]; const s = e.scan.felder[k]; const mitFoto = Boolean(e.foto?.daten);
+  const quelle = s.status === 'vorgeschlagen' ? 'Vorschlag aus der Texterkennung' : s.status === 'uneindeutig' ? 'Uneindeutig gelesen, von Hand klären' : e.manuell ? 'Von Hand eintragen' : 'Nicht erkannt, von Hand ergänzen oder leer lassen';
+  let herkunft;
+  if (!String(p.wert).trim()) herkunft = 'leer, bleibt offen';
+  else { const unveraendert = s.status === 'vorgeschlagen' && p.wert === s.wert; const basis = unveraendert ? 'ausgelesen (Texterkennung)' : 'manuell eingegeben'; herkunft = p.geprueft ? `${basis}, ${mitFoto ? 'am Foto bestätigt' : 'geprüft'}` : `${basis}, noch nicht bestätigt`; }
+  return `${quelle} · Herkunft: ${herkunft}`;
+}
 function etikettFelder(ent) {
   if (!ent.etikett) return '';
   const e = ent.etikett; const mitFoto = Boolean(e.foto?.daten);
-  const herkunft = (k) => { const p = e.pruefung[k]; const s = e.scan.felder[k]; if (!String(p.wert).trim()) return 'leer, bleibt offen'; const unveraendert = s.status === 'vorgeschlagen' && p.wert === s.wert; const basis = unveraendert ? 'ausgelesen (Texterkennung)' : 'manuell eingegeben'; return p.geprueft ? `${basis}, ${mitFoto ? 'am Foto bestätigt' : 'geprüft'}` : `${basis}, noch nicht bestätigt`; };
+
   return `<section class="etikett-pruefung" aria-labelledby="etikett-titel"><h3 id="etikett-titel">Angaben vom Typenschild prüfen</h3>
   <p class="leise">${mitFoto ? 'Jede Angabe am Foto prüfen und einzeln bestätigen. Eine Änderung hebt die Bestätigung auf.' : 'Angaben eintragen und einzeln bestätigen (ohne Foto gelten sie als manuell eingegeben).'} Unlesbares bleibt leer. Die Bestätigung betrifft nur den Text, nicht die Eignung des Bauteils.</p>
   <div class="etikett-raster">
     ${mitFoto ? `<figure class="etikett-bild"><img src="${esc(e.foto.daten)}" alt="Gewähltes Typenschild als Prüfreferenz"><figcaption class="klein">${esc(e.foto.name || 'Typenschild')}</figcaption></figure>` : ''}
-    <div class="formular formular-eng">${Object.entries(FELDER).map(([k, label]) => `<div class="feld"><label for="etikett-${k}">${esc(label)}</label><input id="etikett-${k}" data-etikett="${k}" maxlength="120" autocomplete="off" ${k === 'baujahr' ? 'inputmode="numeric"' : ''} value="${esc(e.pruefung[k].wert)}"><label class="schalter"><input type="checkbox" id="etikett-check-${k}" data-etikett-check="${k}" ${e.pruefung[k].geprueft ? 'checked' : ''} ${String(e.pruefung[k].wert).trim() ? '' : 'disabled'}><span>${mitFoto ? 'Am Foto geprüft' : 'Geprüft'}</span></label><small class="wf-quelle">${esc(e.scan.felder[k].status === 'vorgeschlagen' ? 'Vorschlag aus der Texterkennung' : e.scan.felder[k].status === 'uneindeutig' ? 'Uneindeutig gelesen, von Hand klären' : e.manuell ? 'Von Hand eintragen' : 'Nicht erkannt, von Hand ergänzen oder leer lassen')} · Herkunft: ${esc(herkunft(k))}</small></div>`).join('')}</div>
+    <div class="formular formular-eng">${Object.entries(FELDER).map(([k, label]) => `<div class="feld"><label for="etikett-${k}">${esc(label)}</label><input id="etikett-${k}" data-etikett="${k}" maxlength="120" autocomplete="off" ${k === 'baujahr' ? 'inputmode="numeric"' : ''} value="${esc(e.pruefung[k].wert)}"><label class="schalter"><input type="checkbox" id="etikett-check-${k}" data-etikett-check="${k}" ${e.pruefung[k].geprueft ? 'checked' : ''} ${String(e.pruefung[k].wert).trim() ? '' : 'disabled'}><span>${mitFoto ? 'Am Foto geprüft' : 'Geprüft'}</span></label><small class="wf-quelle" id="etikett-herkunft-${k}">${esc(etikettFeldHinweis(e, k))}</small></div>`).join('')}</div>
   </div>
   ${e.scan.hinweise.map((h) => `<p class="klein">${esc(h)}</p>`).join('')}
   ${e.scan.rohtext ? `<details><summary>Erkannten Text anzeigen</summary><pre class="rohtext">${esc(e.scan.rohtext)}</pre></details>` : ''}
