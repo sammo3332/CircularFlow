@@ -1,0 +1,392 @@
+{
+  "datum": "2026-11-19T20:26:16.839Z",
+  "engine": "Tesseract.js 7.0.0 / LSTM / deu",
+  "ausfuehrung": "Node.js CPU, keine Browser- oder Geräteprüfung",
+  "initialisierungMs": 205,
+  "faelle": [
+    {
+      "datei": "klar.png",
+      "synthetisch": true,
+      "ocrMs": 189,
+      "schema": "cf-etikett-v1",
+      "felder": {
+        "hersteller": {
+          "wert": "MUSTERWERK",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Hersteller: MUSTERWERK"
+        },
+        "modell": {
+          "wert": "TUER-17",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Modell: TUER-17"
+        },
+        "seriennummer": {
+          "wert": "CF-2026-001",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Seriennummer: CF-2026-001"
+        },
+        "baujahr": {
+          "wert": "2020",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Baujahr: 2020"
+        }
+      },
+      "hinweise": [],
+      "rohtext": "Leseversuch 1 (Original):\nSYNTHETISCHES TESTETIKETT - KEIN ECHTES BAUTEIL\nHersteller: MUSTERWERK\nModell: TUER-17\nSeriennummer: CF-2026-001\nBaujahr: 2020\n",
+      "grenzen": "Keine Bauteilerkennung, kein Aufmaß, keine Fachfreigabe.",
+      "ocr": {
+        "versuche": [
+          {
+            "variante": "Original",
+            "confidence": 91
+          }
+        ],
+        "hinweis": "Engine-Bewertung ist keine Bestätigung der Richtigkeit."
+      }
+    },
+    {
+      "datei": "alternative-beschriftung.png",
+      "synthetisch": true,
+      "ocrMs": 122,
+      "schema": "cf-etikett-v1",
+      "felder": {
+        "hersteller": {
+          "wert": "MUSTERWERK",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Fabrikat MUSTERWERK"
+        },
+        "modell": {
+          "wert": "TUER-17",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Typ = TUER-17"
+        },
+        "seriennummer": {
+          "wert": "CF-2026-001",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Ser.-Nr. CF-2026-001"
+        },
+        "baujahr": {
+          "wert": "2020",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Herstellungsjahr 2020"
+        }
+      },
+      "hinweise": [],
+      "rohtext": "Leseversuch 1 (Original):\nSYNTHETISCHES TESTETIKETT - KEIN ECHTES BAUTEIL\nFabrikat MUSTERWERK\n\nTyp = TUER-17\n\nSer.-Nr. CF-2026-001\nHerstellungsjahr 2020\n",
+      "grenzen": "Keine Bauteilerkennung, kein Aufmaß, keine Fachfreigabe.",
+      "ocr": {
+        "versuche": [
+          {
+            "variante": "Original",
+            "confidence": 91
+          }
+        ],
+        "hinweis": "Engine-Bewertung ist keine Bestätigung der Richtigkeit."
+      }
+    },
+    {
+      "datei": "kontrastarm.png",
+      "synthetisch": true,
+      "ocrMs": 124,
+      "schema": "cf-etikett-v1",
+      "felder": {
+        "hersteller": {
+          "wert": "MUSTERWERK",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Hersteller: MUSTERWERK"
+        },
+        "modell": {
+          "wert": "TUER-17",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Modell: TUER-17"
+        },
+        "seriennummer": {
+          "wert": "CF-2026-001",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Seriennummer: CF-2026-001"
+        },
+        "baujahr": {
+          "wert": "2020",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Baujahr: 2020"
+        }
+      },
+      "hinweise": [],
+      "rohtext": "Leseversuch 1 (Original):\nSYNTHETISCHES TESTETIKETT - KEIN ECHTES BAUTEIL\nHersteller: MUSTERWERK\nModell: TUER-17\nSeriennummer: CF-2026-001\nBaujahr: 2020\n",
+      "grenzen": "Keine Bauteilerkennung, kein Aufmaß, keine Fachfreigabe.",
+      "ocr": {
+        "versuche": [
+          {
+            "variante": "Original",
+            "confidence": 91
+          }
+        ],
+        "hinweis": "Engine-Bewertung ist keine Bestätigung der Richtigkeit."
+      }
+    },
+    {
+      "datei": "90-grad.png",
+      "synthetisch": true,
+      "ocrMs": 664,
+      "schema": "cf-etikett-v1",
+      "felder": {
+        "hersteller": {
+          "wert": "",
+          "status": "fehlt",
+          "quelle": "",
+          "beleg": ""
+        },
+        "modell": {
+          "wert": "",
+          "status": "fehlt",
+          "quelle": "",
+          "beleg": ""
+        },
+        "seriennummer": {
+          "wert": "",
+          "status": "fehlt",
+          "quelle": "",
+          "beleg": ""
+        },
+        "baujahr": {
+          "wert": "",
+          "status": "fehlt",
+          "quelle": "",
+          "beleg": ""
+        }
+      },
+      "hinweise": [
+        "Hersteller nicht erkannt. Am Schild nachsehen oder Angabe offen lassen.",
+        "Modell / Typ nicht erkannt. Am Schild nachsehen oder Angabe offen lassen.",
+        "Seriennummer nicht erkannt. Am Schild nachsehen oder Angabe offen lassen.",
+        "Baujahr nicht erkannt. Am Schild nachsehen oder Angabe offen lassen.",
+        "Keine eindeutig beschrifteten Metadaten erkannt. Näher und schärfer fotografieren oder manuell erfassen."
+      ],
+      "rohtext": "Leseversuch 1 (Original):\nun\ne 39235\nBe u > er\nsc aa 4a 73\nı > 2 9:\nZI\n32320720204\n„823%\n30204\noO m\nSara!\nDe Be Eu:\nN. 5\n7 » :\noO m 5\nN a a:\nw@\n5. Ro:\n= ;\nul\n\n\nLeseversuch 2 (Kontrast und freie Zeilen):\n",
+      "grenzen": "Keine Bauteilerkennung, kein Aufmaß, keine Fachfreigabe.",
+      "ocr": {
+        "versuche": [
+          {
+            "variante": "Original",
+            "confidence": 44
+          },
+          {
+            "variante": "Kontrast und freie Zeilen",
+            "confidence": 0
+          }
+        ],
+        "hinweis": "Engine-Bewertung ist keine Bestätigung der Richtigkeit."
+      }
+    },
+    {
+      "datei": "90-grad-korrigiert.png",
+      "synthetisch": true,
+      "ocrMs": 117,
+      "schema": "cf-etikett-v1",
+      "felder": {
+        "hersteller": {
+          "wert": "MUSTERWERK",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Hersteller: MUSTERWERK"
+        },
+        "modell": {
+          "wert": "TUER-17",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Modell: TUER-17"
+        },
+        "seriennummer": {
+          "wert": "CF-2026-001",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Seriennummer: CF-2026-001"
+        },
+        "baujahr": {
+          "wert": "2020",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Baujahr: 2020"
+        }
+      },
+      "hinweise": [],
+      "rohtext": "Leseversuch 1 (Original):\nSYNTHETISCHES TESTETIKETT - KEIN ECHTES BAUTEIL\nHersteller: MUSTERWERK\nModell: TUER-17\nSeriennummer: CF-2026-001\nBaujahr: 2020\n",
+      "grenzen": "Keine Bauteilerkennung, kein Aufmaß, keine Fachfreigabe.",
+      "ocr": {
+        "versuche": [
+          {
+            "variante": "Original",
+            "confidence": 91
+          }
+        ],
+        "hinweis": "Engine-Bewertung ist keine Bestätigung der Richtigkeit."
+      }
+    },
+    {
+      "datei": "unscharf.png",
+      "synthetisch": true,
+      "ocrMs": 497,
+      "schema": "cf-etikett-v1",
+      "felder": {
+        "hersteller": {
+          "wert": "MUSTERWERK",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Hersteller: MUSTERWERK"
+        },
+        "modell": {
+          "wert": "TUER-17",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Modell: TUER-17"
+        },
+        "seriennummer": {
+          "wert": "CF-2026-001",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Seriennummer: CF-2026-001"
+        },
+        "baujahr": {
+          "wert": "2020",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Baujahr: 2020"
+        }
+      },
+      "hinweise": [],
+      "rohtext": "Leseversuch 1 (Original):\nSewTaeTaCHEr TESTETRETT aim HOHES Mauren\nHersteller: MUSTERWERK\nModell: TUER-17\nSeriennummer: CF-2026-001\nBaujahr: 2020\n\n\nLeseversuch 2 (Kontrast und freie Zeilen):\nVAT TC TESTETRETT En DOHTEN BATER\n\nHersteller: MUSTERWERK\n\nModell: TUER-17\n\nSeriennummer: CF-2026-001\n\nBaujahr: 2020\n",
+      "grenzen": "Keine Bauteilerkennung, kein Aufmaß, keine Fachfreigabe.",
+      "ocr": {
+        "versuche": [
+          {
+            "variante": "Original",
+            "confidence": 59
+          },
+          {
+            "variante": "Kontrast und freie Zeilen",
+            "confidence": 57
+          }
+        ],
+        "hinweis": "Engine-Bewertung ist keine Bestätigung der Richtigkeit."
+      }
+    },
+    {
+      "datei": "widerspruch.png",
+      "synthetisch": true,
+      "ocrMs": 411,
+      "schema": "cf-etikett-v1",
+      "felder": {
+        "hersteller": {
+          "wert": "",
+          "status": "uneindeutig",
+          "quelle": "",
+          "beleg": ""
+        },
+        "modell": {
+          "wert": "TUER-17",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Modell: TUER-17"
+        },
+        "seriennummer": {
+          "wert": "",
+          "status": "fehlt",
+          "quelle": "",
+          "beleg": ""
+        },
+        "baujahr": {
+          "wert": "2020",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "Baujahr: 2020"
+        }
+      },
+      "hinweise": [
+        "Hersteller: unterschiedliche oder unklare Lesarten. Am Foto klären und von Hand eintragen.",
+        "Seriennummer nicht erkannt. Am Schild nachsehen oder Angabe offen lassen."
+      ],
+      "rohtext": "Leseversuch 1 (Original):\nSYNTHETISCHES TESTETIKETT - KEIN ECHTES BAUTEIL\nHersteller: Alpha\n\nHersteller: Beta\n\nModell: TUER-17\n\nBaujahr: 2020\n\n\nLeseversuch 2 (Kontrast und freie Zeilen):\nSYNTHETISCHES TESTETIKETT - KEIN ECHTES BAUTEIL\n\nHersteller: Alpha\n\nHersteller: Beta\n\nModell: TUER-17\n\nBaujahr: 2020\n",
+      "grenzen": "Keine Bauteilerkennung, kein Aufmaß, keine Fachfreigabe.",
+      "ocr": {
+        "versuche": [
+          {
+            "variante": "Original",
+            "confidence": 92
+          },
+          {
+            "variante": "Kontrast und freie Zeilen",
+            "confidence": 94
+          }
+        ],
+        "hinweis": "Engine-Bewertung ist keine Bestätigung der Richtigkeit."
+      }
+    },
+    {
+      "datei": "leer.png",
+      "synthetisch": true,
+      "ocrMs": 242,
+      "schema": "cf-etikett-v1",
+      "felder": {
+        "hersteller": {
+          "wert": "",
+          "status": "fehlt",
+          "quelle": "",
+          "beleg": ""
+        },
+        "modell": {
+          "wert": "",
+          "status": "fehlt",
+          "quelle": "",
+          "beleg": ""
+        },
+        "seriennummer": {
+          "wert": "",
+          "status": "fehlt",
+          "quelle": "",
+          "beleg": ""
+        },
+        "baujahr": {
+          "wert": "",
+          "status": "fehlt",
+          "quelle": "",
+          "beleg": ""
+        }
+      },
+      "hinweise": [
+        "Hersteller nicht erkannt. Am Schild nachsehen oder Angabe offen lassen.",
+        "Modell / Typ nicht erkannt. Am Schild nachsehen oder Angabe offen lassen.",
+        "Seriennummer nicht erkannt. Am Schild nachsehen oder Angabe offen lassen.",
+        "Baujahr nicht erkannt. Am Schild nachsehen oder Angabe offen lassen.",
+        "Keine eindeutig beschrifteten Metadaten erkannt. Näher und schärfer fotografieren oder manuell erfassen."
+      ],
+      "rohtext": "Leseversuch 1 (Original):\n\n\nLeseversuch 2 (Kontrast und freie Zeilen):\n",
+      "grenzen": "Keine Bauteilerkennung, kein Aufmaß, keine Fachfreigabe.",
+      "ocr": {
+        "versuche": [
+          {
+            "variante": "Original",
+            "confidence": 0
+          },
+          {
+            "variante": "Kontrast und freie Zeilen",
+            "confidence": 0
+          }
+        ],
+        "hinweis": "Engine-Bewertung ist keine Bestätigung der Richtigkeit."
+      }
+    }
+  ],
+  "grenze": "Nur synthetische Funktionsprüfung, keine Baustellen-Erkennungsrate und kein Zeitvergleich mit manueller Erfassung. Drehkorrektur am Testbild mit Pillow, Browser-Canvas separat nicht geprüft."
+}

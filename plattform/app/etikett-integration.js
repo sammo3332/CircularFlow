@@ -1,13 +1,14 @@
 // Typenschild lesen (Texterkennung, lokal) und in den Bauteilpass übernehmen. Keine Objekterkennung, kein Aufmaß, keine Fachfreigabe.
 // Sprache „deu“: liest deutsche und englische Beschriftungen einschließlich Umlauten (geprüft 19.11.2026 an synthetischen Etiketten).
 import { ausEtikett, gepruefterEntwurf, FELDER } from '../etikett-versuch/etikett.mjs';
+import { leseTypenschild, kontrastPixel, drehungsGeometrie } from '../etikett-versuch/lesepipeline.mjs';
 export { FELDER };
 export const OCR_SPRACHE = 'deu';
 export const OCR_ZEITLIMIT_MS = 60000;
 const TYPEN = ['image/png', 'image/jpeg', 'image/webp'];
 
-export function etikettStart(text, foto = null) {
-  const scan = ausEtikett(text);
+export function etikettStart(text, foto = null, ergebnis = null) {
+  const scan = ergebnis || ausEtikett(text);
   return { scan, pruefung: Object.fromEntries(Object.entries(scan.felder).map(([k, v]) => [k, { wert: v.wert, geprueft: false }])), foto, manuell: false };
 }
 // Angaben ohne Texterkennung von Hand eintragen (Scan nicht möglich oder nicht gewünscht).
@@ -30,11 +31,11 @@ export function etikettAbbruch() { const a = { aktiv: false, cb: null, abbrechen
 
 // Liest ein Etikettfoto. log({ phase, prozent }) meldet den Fortschritt. Wirft verständliche Fehler bei Dateityp, Größe,
 // beschädigtem Bild, fehlender Engine, Zeitüberschreitung oder Abbruch.
-export async function etikettLesen(file, { log = () => {}, abbruch = null, zeitlimitMs = OCR_ZEITLIMIT_MS, sprache = OCR_SPRACHE } = {}) {
+export async function etikettLesen(file, { log = () => {}, abbruch = null, zeitlimitMs = OCR_ZEITLIMIT_MS, sprache = OCR_SPRACHE, drehung = 0 } = {}) {
   if (!file) throw new Error('Bitte ein Foto des Typenschilds wählen.');
   if (!TYPEN.includes(file.type)) throw new Error('Bitte ein JPEG-, PNG- oder WebP-Foto wählen. Andere Dateitypen werden nicht gelesen.');
   if (file.size > 20 * 1024 * 1024) throw new Error('Das Foto ist größer als 20 MB. Bitte eine kleinere Aufnahme wählen.');
-  let worker = null; let timer = null; let beendet = false;
+  let worker = null; let versuch = 1; let timer = null; let beendet = false;
   const aufraeumen = async () => { clearTimeout(timer); if (worker) { const w = worker; worker = null; try { await w.terminate(); } catch { /* schon beendet */ } } };
   // Abbruch und Zeitlimit gelten ab jetzt, also auch während das Foto vorbereitet oder die Engine geladen wird.
   const abbruchVersprechen = new Promise((_, fail) => {
@@ -43,7 +44,7 @@ export async function etikettLesen(file, { log = () => {}, abbruch = null, zeitl
   });
   const lauf = (async () => {
     log({ phase: 'bild', prozent: 0 });
-    const foto = await etikettFoto(file); // beschädigte Bilder scheitern hier, bevor die Engine lädt
+    const foto = await etikettFoto(file, drehung); // beschädigte Bilder scheitern hier, bevor die Engine lädt
     if (beendet) throw new Error('abgebrochen');
     log({ phase: 'laden', prozent: 0 });
     let createWorker;
@@ -51,32 +52,47 @@ export async function etikettLesen(file, { log = () => {}, abbruch = null, zeitl
     const root = new URL('../etikett-versuch/vendor/', import.meta.url);
     const w = await createWorker(sprache, 1, {
       workerPath: new URL('worker.min.js', root).href, corePath: new URL('core/', root).href, langPath: new URL('lang', root).href, workerBlobURL: false, gzip: false, cacheMethod: 'none',
-      logger: (m) => { if (beendet) return; if (m.status === 'recognizing text') log({ phase: 'lesen', prozent: Math.round((m.progress || 0) * 100) }); else if (/loading|initializing/.test(m.status || '')) log({ phase: 'laden', prozent: Math.round((m.progress || 0) * 100) }); },
+      logger: (m) => { if (beendet) return; if (m.status === 'recognizing text') log({ phase: versuch > 1 ? 'erneut' : 'lesen', prozent: Math.round((m.progress || 0) * 100) }); else if (/loading|initializing/.test(m.status || '')) log({ phase: 'laden', prozent: Math.round((m.progress || 0) * 100) }); },
     });
     // Kam der Abbruch, während die Engine noch lud, wird der fertig gestartete Worker hier beendet statt liegen zu bleiben.
     if (beendet) { try { await w.terminate(); } catch { /* egal */ } throw new Error('abgebrochen'); }
     worker = w;
-    await worker.setParameters({ tessedit_pageseg_mode: '6' });
-    const { data } = await worker.recognize(foto.blob);
+    const scan = await leseTypenschild(worker, foto.blob, {
+      kontrastBild: () => kontrastFoto(foto.canvas), aktiv: () => !beendet,
+      fortschritt: (nr) => { versuch = nr; log({ phase: nr === 1 ? 'lesen' : 'erneut', prozent: 0 }); },
+    });
     if (beendet) throw new Error('abgebrochen');
     log({ phase: 'fertig', prozent: 100 });
-    return etikettStart(data.text, { daten: foto.daten, name: file.name, breite: foto.breite, hoehe: foto.hoehe });
+    return etikettStart(scan.rohtext, { daten: foto.daten, name: file.name, breite: foto.breite, hoehe: foto.hoehe }, scan);
   })();
   try { return await Promise.race([lauf, abbruchVersprechen]); }
   finally { beendet = true; await aufraeumen(); }
 }
 
 // Verkleinert das Etikettfoto (längste Seite 1600 px) für Anzeige und Speicher und liefert es auch als Blob für die Engine.
-async function etikettFoto(file) {
+async function etikettFoto(file, drehung = 0) {
   const url = URL.createObjectURL(file);
   try {
     const img = await new Promise((ok, fail) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => fail(new Error('Das Bild konnte nicht gelesen werden. Die Datei ist beschädigt oder kein unterstütztes Bild.')); i.src = url; });
     if (!img.naturalWidth || !img.naturalHeight) throw new Error('Das Bild ist leer.');
     if (img.naturalWidth * img.naturalHeight > 24000000) throw new Error('Das Foto hat mehr als 24 Megapixel. Bitte mit geringerer Auflösung aufnehmen.');
     const scale = Math.min(1, 1600 / Math.max(img.naturalWidth, img.naturalHeight));
-    const canvas = document.createElement('canvas'); canvas.width = Math.round(img.naturalWidth * scale); canvas.height = Math.round(img.naturalHeight * scale);
-    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+    const w = Math.max(1, Math.round(img.naturalWidth * scale)); const h = Math.max(1, Math.round(img.naturalHeight * scale));
+    const g = drehungsGeometrie(w, h, drehung);
+    const canvas = document.createElement('canvas'); canvas.width = g.breite; canvas.height = g.hoehe;
+    const ctx = canvas.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.translate(canvas.width / 2, canvas.height / 2); ctx.rotate(g.radians); ctx.drawImage(img, -w / 2, -h / 2, w, h);
     const blob = await new Promise((ok) => canvas.toBlob(ok, 'image/jpeg', 0.92));
-    return { daten: canvas.toDataURL('image/jpeg', 0.9), blob: blob || file, breite: canvas.width, hoehe: canvas.height };
+    return { canvas, daten: canvas.toDataURL('image/jpeg', 0.9), blob: blob || file, breite: canvas.width, hoehe: canvas.height };
   } finally { URL.revokeObjectURL(url); }
+}
+
+
+async function kontrastFoto(original) {
+  const canvas = document.createElement('canvas'); canvas.width = original.width; canvas.height = original.height;
+  const ctx = canvas.getContext('2d'); const pixel = original.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+  pixel.data.set(kontrastPixel(pixel.data)); ctx.putImageData(pixel, 0, 0);
+  const blob = await new Promise((ok) => canvas.toBlob(ok, 'image/png'));
+  if (!blob) throw new Error('Das Foto konnte nicht für den zweiten Versuch vorbereitet werden. Bitte erneut fotografieren.');
+  return blob;
 }

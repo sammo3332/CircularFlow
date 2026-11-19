@@ -8,7 +8,7 @@ import { FELDER, erkannteFelder, OCR_ZEITLIMIT_MS } from '../etikett-integration
 import { raumVon } from './projekte.js';
 
 export const SCHRITTE = ['Ort', 'Foto', 'Bauteil', 'Angaben', 'Prüfen'];
-export const leererEntwurf = (projekt = '', raum = '') => ({ schritt: 1, projekt, raum, foto: null, fotoFehler: '', fotoLaedt: false, etikett: null, etikettLaedt: false, etikettFehler: '', etikettFortschritt: null, etikettAbbruch: null, etikettDauerMs: null, erkennung: null, gruppe: '', werte: {}, menge: '1', zustand: '', verfuegbarAb: '', notiz: '', fehler: {}, gespeichert: null });
+export const leererEntwurf = (projekt = '', raum = '') => ({ schritt: 1, projekt, raum, foto: null, fotoFehler: '', fotoLaedt: false, etikett: null, etikettDatei: null, etikettDrehung: 0, etikettLaedt: false, etikettFehler: '', etikettFortschritt: null, etikettAbbruch: null, etikettDauerMs: null, erkennung: null, gruppe: '', werte: {}, menge: '1', zustand: '', verfuegbarAb: '', notiz: '', fehler: {}, gespeichert: null });
 
 export function erfassung(ctx) {
   const ent = ctx.ui.erfassung;
@@ -72,19 +72,22 @@ function typenschildBlock(ent) {
     <p class="leise">Gesondertes Foto des Typenschilds, nah und scharf. Die Texterkennung läuft auf diesem Gerät (kein Versand). Erkannt werden nur beschriftete Angaben: Hersteller, Modell/Typ, Seriennummer, Baujahr. Keine Maße, keine Eignung.</p>`;
   if (ent.etikettLaedt) return `${kopf}<div class="ergebnisbox" id="etikett-lauf" role="status" aria-live="polite"><p><b>Texterkennung läuft</b></p><p id="etikett-fortschritt">${esc(fortschrittText(ent.etikettFortschritt))}</p><p class="klein">Dauert je nach Gerät einige Sekunden; Abbruch nach ${Math.round(OCR_ZEITLIMIT_MS / 1000)} Sekunden. Weiter und Speichern sind so lange gesperrt.</p><button type="button" class="knopf-leise" id="erf-etikett-abbrechen" data-action="erf-etikett-abbrechen">Abbrechen</button></div>`;
   return `${kopf}
+    <label class="feld" for="erf-etikett-drehung">Drehung für den nächsten Leseversuch<select id="erf-etikett-drehung">${[[0, 'Wie fotografiert'], [90, '90° nach rechts'], [180, 'Auf den Kopf drehen (180°)'], [270, '90° nach links']].map(([v, label]) => `<option value="${v}" ${(ent.etikettDrehung || 0) === v ? 'selected' : ''}>${label}</option>`).join('')}</select></label>
+    <p class="klein">Nur das Typenschild möglichst bildfüllend aufnehmen, ohne Spiegelung. Bei fehlenden Angaben folgt automatisch ein zweiter Leseversuch. Unterschiedliche Lesarten bleiben offen.</p>
     <div class="foto-aktionen">
+      ${ent.etikettDatei ? '<button type="button" class="knopf-zweit" data-action="erf-etikett-erneut">Foto erneut auslesen</button>' : ''}
       <label class="knopf-zweit dateiknopf" for="erf-etikett">${icon('kamera')} Typenschild fotografieren<input id="erf-etikett" type="file" accept="image/jpeg,image/png,image/webp" capture="environment"></label>
       <label class="knopf-zweit dateiknopf">Vorhandenes Bild wählen<input id="erf-etikett-wahl" type="file" accept="image/jpeg,image/png,image/webp"></label>
       ${e ? '' : '<button type="button" class="knopf-leise" id="erf-etikett-manuell" data-action="erf-etikett-manuell">Angaben ohne Scan eintragen</button>'}
     </div>
     ${ent.etikettFehler ? `<p role="alert" class="feld-meldung" id="etikett-fehler" tabindex="-1">${esc(ent.etikettFehler)} Alternativ die Angaben ohne Scan eintragen.</p>` : ''}
-    ${e && !e.manuell ? `<div class="ergebnisbox" id="etikett-ergebnis" tabindex="-1" role="status"><p><b>Texterkennung fertig:</b> ${erkannteFelder(e)} von ${Object.keys(FELDER).length} Angaben vorgeschlagen${ent.etikettDauerMs ? ` (${(ent.etikettDauerMs / 1000).toFixed(1)} s einschließlich Laden)` : ''}.</p><p class="klein">Vorschläge sind ungeprüft. In Schritt 3 jede Angabe am Foto prüfen und einzeln bestätigen; ein neues Foto verwirft die Vorschläge.</p>${e.foto?.daten ? `<img src="${esc(e.foto.daten)}" alt="Gewähltes Typenschild" class="etikett-vorschau">` : ''}</div>` : ''}
+    ${e && !e.manuell ? `<div class="ergebnisbox" id="etikett-ergebnis" tabindex="-1" role="status"><p><b>Texterkennung fertig:</b> ${erkannteFelder(e)} von ${Object.keys(FELDER).length} Angaben vorgeschlagen${ent.etikettDauerMs ? ` (${(ent.etikettDauerMs / 1000).toFixed(1)} s einschließlich Laden)` : ''}.</p><p class="klein">Vorschläge sind ungeprüft. In Schritt 3 jede Angabe am Foto prüfen und einzeln bestätigen; ein neues Foto verwirft die Vorschläge.</p>${e.scan.ocr ? `<p class="klein">${e.scan.ocr.versuche.length} Leseversuch${e.scan.ocr.versuche.length === 1 ? '' : 'e'}. ${esc(e.scan.ocr.hinweis)}</p>` : ''}${e.foto?.daten ? `<img src="${esc(e.foto.daten)}" alt="Gewähltes Typenschild" class="etikett-vorschau">` : ''}</div>` : ''}
     ${e && e.manuell ? '<div class="ergebnisbox" id="etikett-ergebnis" tabindex="-1" role="status"><p><b>Angaben ohne Scan.</b> In Schritt 3 eintragen und einzeln bestätigen. Herkunft: manuell eingegeben.</p></div>' : ''}
     ${e ? '<button type="button" class="knopf-leise knopf-klein" data-action="erf-etikett-weg">Typenschild-Angaben verwerfen</button>' : ''}`;
 }
 export function fortschrittText(m) {
   if (!m) return 'Bitte warten …';
-  return m.phase === 'bild' ? 'Etikettfoto wird vorbereitet …' : m.phase === 'laden' ? `Texterkennung wird geladen${m.prozent ? ` … ${m.prozent} %` : ' …'}` : m.phase === 'lesen' ? `Etikett wird gelesen … ${m.prozent} %` : 'Fertig.';
+  return m.phase === 'bild' ? 'Etikettfoto wird vorbereitet …' : m.phase === 'laden' ? `Texterkennung wird geladen${m.prozent ? ` … ${m.prozent} %` : ' …'}` : m.phase === 'erneut' ? `Zweiter Leseversuch mit Kontrast … ${m.prozent} %` : m.phase === 'lesen' ? `Etikett wird gelesen … ${m.prozent} %` : 'Fertig.';
 }
 
 function schritt3(ctx, ent) {
@@ -214,4 +217,5 @@ function meineErfassungen(ctx) {
     <p class="leise">${ctx.eigeneAenderungen} eigene ${ctx.eigeneAenderungen === 1 ? 'Änderung' : 'Änderungen'} (Erfassungen, Zuordnungen, Aufmaße, Anfragen, Meldungen). ${ctx.ui.pilotraum?.status === 'verbunden' ? `Sie liegen in diesem Browser und im Pilotraum „${esc(ctx.ui.pilotraum.name)}“.` : 'Sie liegen nur in diesem Browser auf diesem Gerät.'} <a href="#pilotraum">Als Datei sichern oder Pilotraum verbinden</a></p>
   </section>`;
 }
+
 

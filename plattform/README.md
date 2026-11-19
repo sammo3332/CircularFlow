@@ -302,3 +302,16 @@ Neuer Entwicklungsstand: Bedarf speichern → Angebote automatisch berechnen →
 - Im verbundenen Pilotraum erfolgt der vorhandene Datenabgleich bei sichtbarer Plattform alle 20 Sekunden sowie beim Zurückkehren zur Seite. Das gilt jetzt auch, wenn die Verbindung erst nach dem Öffnen eingerichtet wird. Es gibt keine Nachrichten bei geschlossener Plattform, keine E-Mail und kein Push.
 
 Technischer Auftrag, Prüfung und Grenzen: `docs/pruefungen/trefferhinweise-2026-11-19.md`.
+
+## Verbesserte Typenschild-Erfassung · 19.11.2026
+
+Der Entwicklungsbranch `codex/scan-robustheit-20261119` enthält die Trefferhinweise und erweitert den vorhandenen Scan. Die veröffentlichte Plattform und der Pitchstand werden damit nicht geändert.
+
+1. Erfassen → Ort wählen → Foto → Typenschild fotografieren oder Bild wählen. Die lokale Texterkennung schlägt beschriftete Angaben zu Hersteller, Modell/Typ, Seriennummer und Baujahr vor. Auch „Fabrikat“, „Ser.-Nr.“, einfache Trenner und zweizeilige Beschriftungen werden verstanden.
+2. Bei fehlenden Angaben oder einer niedrigen Engine-Bewertung folgt höchstens ein weiterer Leseversuch mit Kontrastaufbereitung und anderer Zeilenaufteilung. Widersprüche bleiben zur Klärung offen. Vollständige, hoch bewertete Ergebnisse benötigen nur einen Durchlauf. Das bestehende Zeitlimit von 60 Sekunden einschließlich Laden bleibt bestehen.
+3. Steht das Schild seitlich oder auf dem Kopf, unter „Drehung für den nächsten Leseversuch“ die passende Vierteldrehung wählen und „Foto erneut auslesen“ klicken. Alte Vorschläge werden beim erneuten Lesen verworfen. Das Foto dafür bleibt nur bis zum Verlassen/Zurücksetzen der Erfassung im Arbeitsspeicher; nach Neuladen bei Bedarf erneut wählen.
+4. In Schritt 3 die Angaben am Foto prüfen und einzeln bestätigen. Maßangaben, Menge, Zustand und Verfügbarkeit weiter gesondert eintragen. Es gibt keine allgemeine Erkennung der Bauteilart, Materialdiagnose, automatische Maßbestimmung oder Fachfreigabe aus einem Foto.
+
+Die Engine und Sprachmodelle vor dem ersten Einsatz wie oben beschrieben mit `npm install` und `npm run vendor` im Ordner `plattform/etikett-versuch` bereitstellen. Ein bloßer Quellcode-Checkout enthält diese großen Dateien weiterhin nicht. Beim späteren Lesen bleibt das Foto lokal; der aktivierte Pilotraum kann ein anschließend ausdrücklich gespeichertes Bauteil einschließlich Foto wie bisher synchronisieren.
+
+Recherche, Abnahme und Grenzen: `docs/scan-weiterentwicklung-2026-11-19.md`. Reproduzierbarer echter OCR-Bildtest: im Etikett-Ordner `npm run test:robustheit` (Node-Abhängigkeiten, lokale Sprachdatei und Python mit Pillow nötig). Künstliche Testbilder sind enthalten. Zum erneuten Erzeugen `python3 scripts/scan-testbilder.py`. Kein gemessener Praxiszeitvorteil und kein Smartphone-Nachweis.

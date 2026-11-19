@@ -316,8 +316,9 @@ app.addEventListener('click', (ev) => {
     case 'erf-gehe': ent.schritt = Number(a.dataset.schritt); ent.fehler = {}; ui.fokus = 'h-erf'; break;
     case 'erf-zurueck': ent.schritt = Math.max(1, ent.schritt - 1); ent.fehler = {}; ui.fokus = 'erf-zurueck'; break;
     case 'installieren': appInstallieren(); return;
+    case 'erf-etikett-erneut': etikettAuslesen(ent.etikettDatei); return;
     case 'erf-etikett-manuell': ent.etikett = etikettManuell(); ent.etikettFehler = ''; ui.fokus = 'etikett-hersteller'; break;
-    case 'erf-etikett-weg': ent.etikett = null; ent.etikettFehler = ''; delete ent.fehler.etikett; ui.fokus = 'erf-etikett'; break;
+    case 'erf-etikett-weg': ent.etikett = null; ent.etikettDatei = null; ent.etikettFehler = ''; delete ent.fehler.etikett; ui.fokus = 'erf-etikett'; break;
     case 'erf-etikett-abbrechen': if (ent.etikettAbbruch) ent.etikettAbbruch.abbrechen(); return;
     case 'erf-weiter': erfWeiter(); return;
     case 'erf-speichern': erfSpeichern(); return;
@@ -364,19 +365,29 @@ app.addEventListener('input', (ev) => {
   if (t.dataset.meldung) { ui.radar.meldung[t.dataset.meldung] = t.type === 'checkbox' ? t.checked : t.value; delete ui.radar.meldungFehler[t.dataset.meldung]; }
 });
 
+
+async function etikettAuslesen(file) {
+  const ent = ui.erfassung;
+  if (!file || ent.etikettLaedt) return;
+  ent.etikettDatei = file;
+  // Ein neues Etikettfoto verwirft alte Vorschläge; während des Lesens ist Weiter/Speichern gesperrt, Abbrechen möglich.
+  const abbruch = etikettAbbruch(); const start = performance.now();
+  Object.assign(ent, { etikettLaedt: true, etikettFehler: '', etikett: null, etikettFortschritt: { phase: 'bild', prozent: 0 }, etikettAbbruch: abbruch, etikettDauerMs: null }); delete ent.fehler.etikett; render();
+  const fortschritt = (m) => { if (ui.erfassung !== ent) return; ent.etikettFortschritt = m; const el = document.getElementById('etikett-fortschritt'); if (el) el.textContent = etikettFortschrittText(m); };
+  try { const result = await etikettLesen(file, { log: fortschritt, abbruch, drehung: ent.etikettDrehung || 0 }); if (ui.erfassung === ent) { ent.etikett = result; ent.etikettDauerMs = Math.round(performance.now() - start); } }
+  catch (err) { if (ui.erfassung === ent) ent.etikettFehler = err.message; }
+  finally { Object.assign(ent, { etikettLaedt: false, etikettAbbruch: null, etikettFortschritt: null }); if (ui.erfassung === ent) { ui.fokus = ent.etikett ? 'etikett-ergebnis' : 'etikett-fehler'; render(); } }
+
+}
+
 app.addEventListener('change', async (ev) => {
   const t = ev.target; const ent = ui.erfassung;
   if (t.dataset.etikettCheck) { const pf = ent.etikett.pruefung[t.dataset.etikettCheck]; pf.geprueft = t.checked; delete ent.fehler.etikett; ui.fokus = t.id || null; render(); return; }
+  if (t.id === 'erf-etikett-drehung') { ent.etikettDrehung = Number(t.value); return; }
   if (t.id === 'daten-datei') { await pilot.datenLaden(t.files?.[0]); return; }
   if (t.id === 'erf-etikett' || t.id === 'erf-etikett-wahl') {
     const file = t.files?.[0]; if (!file || ent.etikettLaedt) return;
-    // Ein neues Etikettfoto verwirft alte Vorschläge; während des Lesens ist Weiter/Speichern gesperrt, Abbrechen möglich.
-    const abbruch = etikettAbbruch(); const start = performance.now();
-    Object.assign(ent, { etikettLaedt: true, etikettFehler: '', etikett: null, etikettFortschritt: { phase: 'bild', prozent: 0 }, etikettAbbruch: abbruch, etikettDauerMs: null }); delete ent.fehler.etikett; render();
-    const fortschritt = (m) => { if (ui.erfassung !== ent) return; ent.etikettFortschritt = m; const el = document.getElementById('etikett-fortschritt'); if (el) el.textContent = etikettFortschrittText(m); };
-    try { const result = await etikettLesen(file, { log: fortschritt, abbruch }); if (ui.erfassung === ent) { ent.etikett = result; ent.etikettDauerMs = Math.round(performance.now() - start); } }
-    catch (err) { if (ui.erfassung === ent) ent.etikettFehler = err.message; }
-    finally { Object.assign(ent, { etikettLaedt: false, etikettAbbruch: null, etikettFortschritt: null }); if (ui.erfassung === ent) { ui.fokus = ent.etikett ? 'etikett-ergebnis' : 'etikett-fehler'; render(); } }
+    await etikettAuslesen(file);
     return;
   }
   if (t.dataset.ff) { formEingabe(t); if (t.dataset.neuZeichnen) render(); return; }
@@ -432,7 +443,7 @@ app.addEventListener('focusout', (ev) => { const z = ev.target.closest('[data-ho
 window.addEventListener('hashchange', render);
 export function etikettFortschrittText(m) {
   if (!m) return '';
-  return m.phase === 'bild' ? 'Etikettfoto wird vorbereitet …' : m.phase === 'laden' ? `Texterkennung wird geladen${m.prozent ? ` … ${m.prozent} %` : ' …'}` : m.phase === 'lesen' ? `Etikett wird gelesen … ${m.prozent} %` : 'Fertig.';
+  return m.phase === 'bild' ? 'Etikettfoto wird vorbereitet …' : m.phase === 'laden' ? `Texterkennung wird geladen${m.prozent ? ` … ${m.prozent} %` : ' …'}` : m.phase === 'erneut' ? `Zweiter Leseversuch mit Kontrast … ${m.prozent} %` : m.phase === 'lesen' ? `Etikett wird gelesen … ${m.prozent} %` : 'Fertig.';
 }
 pilot.start();
 

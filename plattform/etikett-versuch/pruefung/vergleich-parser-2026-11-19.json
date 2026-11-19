@@ -1,0 +1,45 @@
+{
+  "hinweis": "Gleicher gespeicherter OCR-Rohtext des ersten Durchlaufs für alten Parser; neue Spalte enthält Ergebnis der vollständigen neuen Pipeline. Kein Vergleich verschiedener OCR-Engines.",
+  "vergleich": [
+    {
+      "datei": "klar.png",
+      "alteFeldzuordnung": 4,
+      "neueFeldzuordnung": 4
+    },
+    {
+      "datei": "alternative-beschriftung.png",
+      "alteFeldzuordnung": 0,
+      "neueFeldzuordnung": 4
+    },
+    {
+      "datei": "kontrastarm.png",
+      "alteFeldzuordnung": 4,
+      "neueFeldzuordnung": 4
+    },
+    {
+      "datei": "90-grad.png",
+      "alteFeldzuordnung": 0,
+      "neueFeldzuordnung": 0
+    },
+    {
+      "datei": "90-grad-korrigiert.png",
+      "alteFeldzuordnung": 4,
+      "neueFeldzuordnung": 4
+    },
+    {
+      "datei": "unscharf.png",
+      "alteFeldzuordnung": 4,
+      "neueFeldzuordnung": 4
+    },
+    {
+      "datei": "widerspruch.png",
+      "alteFeldzuordnung": 2,
+      "neueFeldzuordnung": 2
+    },
+    {
+      "datei": "leer.png",
+      "alteFeldzuordnung": 0,
+      "neueFeldzuordnung": 0
+    }
+  ]
+}
