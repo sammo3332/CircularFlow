@@ -123,7 +123,7 @@ export function pilotAktionen({ ui, ctx, uebernehmen, render, melde, gehe, speic
   }
 
   // ---------- Pilotraum (gemeinsamer Datenstand) ----------
-  const cfg = () => ({ url: ui.pilotraum.url || '', schluessel: ui.pilotraum.schluessel || '' });
+  const cfg = () => ({ raum: ui.pilotraum.raum || '', url: ui.pilotraum.url || '', schluessel: ui.pilotraum.schluessel || '' });
   // Signatur des zuletzt abgeglichenen Raumstands (je Eintrag eine Prüfsumme): Damit gewinnen beim Abgleich nur Einträge, die sich hier seit dem letzten Abgleich geändert haben.
   const SIG_SCHLUESSEL = 'circularflow-pilotraum-signatur-v1';
   let basisSig = null;
@@ -133,10 +133,12 @@ export function pilotAktionen({ ui, ctx, uebernehmen, render, melde, gehe, speic
   const umbenennungText = (r) => { const t = []; if (r.umbenannt.length) t.push(`${r.umbenannt.length === 1 ? 'Ein Eintrag wurde' : `${r.umbenannt.length} Einträge wurden`} umbenannt, weil die Kennung im Raum schon vergeben war: ${r.umbenannt.map((u) => `${u.von} → ${u.nach}`).join(', ')}.`); if (r.verworfen.length) t.push(`Nicht übernommen (Kennung im Raum anders belegt, nicht umbenennbar): ${r.verworfen.map((v) => v.kennung).join(', ')}.`); return t.join(' '); };
   function start() {
     const gespeichert = pilotraumLaden(speicher);
-    if (!gespeichert) return;
-    sigLaden();
-    Object.assign(ui.pilotraum, gespeichert, { status: 'verbindet' });
-    abgleichen({ meldung: false }).catch(() => {});
+    // Auch eine erst später auf dieser Seite eingerichtete Verbindung regelmäßig abgleichen.
+    if (gespeichert) {
+      sigLaden();
+      Object.assign(ui.pilotraum, gespeichert, { status: 'verbindet' });
+      abgleichen({ meldung: false }).catch(() => {});
+    }
     document.addEventListener('visibilitychange', () => { if (!document.hidden && ui.pilotraum.status === 'verbunden') abgleichen({ meldung: false }).catch(() => {}); });
     abgleichTimer = setInterval(() => { if (ui.pilotraum.status === 'verbunden' && !document.hidden) abgleichen({ meldung: false }).catch(() => {}); }, 20000);
   }
@@ -146,7 +148,7 @@ export function pilotAktionen({ ui, ctx, uebernehmen, render, melde, gehe, speic
     r.status = 'verbindet'; render();
     try {
       const info = await raumInfo(cfg());
-      Object.assign(r, { status: 'verbunden', name: info.name, rechte: info.rechte, version: info.version, zuletzt: new Date().toISOString(), meldung: '' });
+      Object.assign(r, { status: 'verbunden', raum: info.raum, name: info.name, rechte: info.rechte, version: info.version, zuletzt: new Date().toISOString(), meldung: '' });
       pilotraumSpeichern(speicher, cfg());
       const eigene = anzahlEigeneAenderungen(datenHolen().p);
       await abgleichen({ meldung: false, uebernahme: true });
@@ -154,7 +156,7 @@ export function pilotAktionen({ ui, ctx, uebernehmen, render, melde, gehe, speic
     } catch (e) { Object.assign(r, { status: 'fehler', fehler: e.message }); }
     render();
   }
-  function trennen() { pilotraumSpeichern(speicher, null); sigLoeschen(); Object.assign(ui.pilotraum, { status: 'getrennt', name: '', rechte: '', fehler: '', version: 0, zuletzt: '', meldung: 'Verbindung getrennt. Der zuletzt geladene Stand bleibt in diesem Browser.' }); }
+  function trennen() { pilotraumSpeichern(speicher, null); sigLoeschen(); Object.assign(ui.pilotraum, { status: 'getrennt', raum: '', name: '', rechte: '', fehler: '', version: 0, zuletzt: '', meldung: 'Verbindung getrennt. Der zuletzt geladene Stand bleibt in diesem Browser.' }); }
   // Nach „Zurücksetzen“ im Browser: Der Raum bleibt unverändert; der gemeinsame Stand wird neu geladen.
   function nachReset() { if (ui.pilotraum.status !== 'verbunden') return; sigLoeschen(); abgleichen({ meldung: false }).catch(() => {}); }
   let laeuft = null; let nochmal = false;
@@ -165,7 +167,7 @@ export function pilotAktionen({ ui, ctx, uebernehmen, render, melde, gehe, speic
       const r = ui.pilotraum;
       try {
         const st = await standHolen(cfg());
-        Object.assign(r, { status: 'verbunden', name: st.name, rechte: st.rechte, fehler: '' });
+        Object.assign(r, { status: 'verbunden', raum: st.raum, name: st.name, rechte: st.rechte, fehler: '' });
         const lokal = datenHolen().p;
         const vorherLokal = anzahlEigeneAenderungen(lokal);
         // Drei-Wege-Zusammenführung: Raumstand + lokale Änderungen seit dem letzten Abgleich (Signatur). Kollisionen werden umbenannt und gemeldet.
@@ -199,3 +201,4 @@ export function pilotAktionen({ ui, ctx, uebernehmen, render, melde, gehe, speic
 
   return { eingabe, absenden, klick, datenLaden, start, nachAenderung, nachReset, abgleichen, neuesFormular: leeresPilotformular, leererAnfrageEntwurf, baueDaten };
 }
+

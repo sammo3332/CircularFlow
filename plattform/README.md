@@ -289,3 +289,16 @@ node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform
 | `app/ansichten/installieren.js`, `test/pwa.test.mjs` | Installationshilfe (`#installieren`) und Tests zu Manifest, Icons, Installationshilfe und Foto-Wegen |
 | `bauen-artifact.mjs` | erzeugt die Fassung für eine Veröffentlichung als claude.ai-Seite |
 
+
+
+## Trefferhinweise für Bedarfe · 19.11.2026
+
+Neuer Entwicklungsstand: Bedarf speichern → Angebote automatisch berechnen → neue Vorschläge ohne Katalogsuche sehen. Die Hauptnavigation zeigt bei „Bedarfe“ die Anzahl neuer Vorschläge. Ein Hinweis oben auf jeder Seite führt zu `#treffer` und von dort zum konkreten Abgleich.
+
+- Neue Bedarfe werden in diesem Browser automatisch beobachtet. Bei bestehenden Bedarfen auf der Bedarfsseite „Über Angebote informieren“ einschalten. Dort lässt sich das Beobachten wieder ausschalten.
+- Hinweise verwenden unverändert die bisherige Regel für „Weiter prüfen“ und „Knapp“. Auch Teilmengen können darunter sein; die fehlende Menge wird ausdrücklich angezeigt. Fachliche Eignung, Freitextanforderungen und Maße werden dadurch nicht bestätigt. Keine automatische Zuteilung oder Reservierung.
+- Beim Öffnen eines Vorschlags wird dieses Paar als gelesen markiert. Alternativ „Alle als gelesen markieren“. Der Status bleibt im Browser erhalten. Bereits gelesene Paare werden bei Änderungen nicht erneut als neu gemeldet. Aktuell nicht mehr prüfbare oder belegte Paare verschwinden aus den Hinweisen.
+- Beobachtung und Lesestatus bleiben getrennt vom gemeinsamen Datenstand, je Browser und Pilotraum. Auf einem anderen Gerät oder nach einem Raumwechsel Hinweise bei Bedarf erneut einschalten. Bei voller oder gesperrter Speicherung erscheint eine Warnung; dann bleiben Einstellungen nur bis zum Neuladen erhalten.
+- Im verbundenen Pilotraum erfolgt der vorhandene Datenabgleich bei sichtbarer Plattform alle 20 Sekunden sowie beim Zurückkehren zur Seite. Das gilt jetzt auch, wenn die Verbindung erst nach dem Öffnen eingerichtet wird. Es gibt keine Nachrichten bei geschlossener Plattform, keine E-Mail und kein Push.
+
+Technischer Auftrag, Prüfung und Grenzen: `docs/pruefungen/trefferhinweise-2026-11-19.md`.

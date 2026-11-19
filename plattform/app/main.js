@@ -31,12 +31,15 @@ import { projektFormular, PROJEKT_FELD_ID, erstesProjektFeld } from './ansichten
 import { VORGANG_FELD_ID } from './ansichten/vorgangsteil.js';
 import { abgleichListeSeite, abgleichSeite } from './ansichten/abgleich.js';
 import { vorgaenge } from './ansichten/vorgaenge.js';
+import { trefferZentrale } from './treffer.js';
+import { trefferSeite, trefferBanner } from './ansichten/treffer.js';
 
 const app = document.getElementById('app');
 const speicher = (() => { try { const s = window.localStorage; s.setItem('cf-test', '1'); s.removeItem('cf-test'); return s; } catch { return null; } })();
 let R = null; let geo = null; let geoFehler = '';
 let p = ladePersistenz(speicher);
 let db = baueDaten(p);
+const treffer = trefferZentrale(speicher);
 
 const ui = neuerUiZustand();
 // Schmale Anzeige: das Diagramm wird dafür mit einer kleineren Zeichenfläche gebaut.
@@ -65,7 +68,7 @@ toast.className = 'toast'; toast.setAttribute('role', 'status'); toast.setAttrib
 document.body.append(toast);
 function melde(text, ms = 3600) { toast.textContent = text; clearTimeout(melde.t); melde.t = setTimeout(() => { toast.textContent = ''; }, ms); }
 
-const ctx = () => ({ R, at: ui.at, daten: db, ereignisse: p.ereignisse, ezustand: p.ezustand, ui, geo, eigeneAenderungen: anzahlEigeneAenderungen(p) });
+const ctx = () => ({ R, at: ui.at, daten: db, ereignisse: p.ereignisse, ezustand: p.ezustand, ui, geo, treffer: ui.treffer, eigeneAenderungen: anzahlEigeneAenderungen(p) });
 
 function uebernehmen(aenderung) {
   aenderung(p);
@@ -92,6 +95,7 @@ function route() {
   if (h === 'uebersicht' || h === '') return { view: 'uebersicht' };
   if (h === 'projekte') return { view: 'start' };
   if (h === 'vorgaenge') return { view: 'vorgaenge' };
+  if (h === 'treffer') return { view: 'treffer' };
   if (h === 'anfragen') return { view: 'anfragen' };
   if (h === 'pilotraum') return { view: 'pilotraum' };
   const an = m('anfrage-neu-'); if (an !== null) {
@@ -135,7 +139,7 @@ const gehe = (hash) => { if (location.hash === hash) render(); else location.has
 
 // ---------- Rahmen ----------
 const BEREICH = {
-  uebersicht: 'uebersicht', vorgaenge: 'uebersicht',
+  uebersicht: 'uebersicht', vorgaenge: 'uebersicht', treffer: 'bedarfe',
   start: 'projekte', projekt: 'projekte', gebaeude: 'projekte', bestand: 'projekte', entscheidungen: 'projekte', entscheidung: 'projekte', radar: 'projekte', projektneu: 'projekte',
   katalog: 'bauteile', pass: 'bauteile',
   bedarfe: 'bedarfe', bedarf: 'bedarfe', bedarfneu: 'bedarfe', bedarfergaenzen: 'bedarfe', abgleichliste: 'bedarfe', abgleich: 'bedarfe',
@@ -145,7 +149,7 @@ const BEREICH = {
 const HAUPT = [['uebersicht', '#uebersicht', 'Übersicht', 'uebersicht'], ['projekte', '#projekte', 'Projekte', 'karte'], ['bauteile', '#bauteile', 'Bauteile', 'bauteil'], ['bedarfe', '#bedarfe', 'Bedarfe', 'bedarf'], ['erfassen', '#erfassung', 'Erfassen', 'kamera']];
 function rahmen(r, inhalt) {
   const bereich = BEREICH[r.view] || '';
-  const navLink = ([k, h, t, i]) => `<a href="${h}" data-action="nav" data-ziel="${k}" ${bereich === k ? 'aria-current="page"' : ''}>${icon(i)}<span>${t}</span></a>`;
+  const navLink = ([k, h, t, i]) => `<a href="${h}" data-action="nav" data-ziel="${k}" ${bereich === k ? 'aria-current="page"' : ''}>${icon(i)}<span>${t}${k === 'bedarfe' && ui.treffer?.anzahlNeu ? ` (${ui.treffer.anzahlNeu} neu)` : ''}</span></a>`;
   const zeitwahl = (id) => `<label class="projektzeit" for="${id}"><span>Stichtag der Demo <em>(Simulation)</em></span><select id="${id}">${PROJEKTZEITEN.map((z) => `<option value="${z.at}" ${z.at === ui.at ? 'selected' : ''}>${z.label}</option>`).join('')}</select></label>`;
   const pr = r.p;
   return `
@@ -155,10 +159,12 @@ function rahmen(r, inhalt) {
       <a class="marke" href="#uebersicht"><span class="marke-zeichen" aria-hidden="true">${icon('kreislauf')}</span><span><b>CircularFlow</b><small>Bauteile im Kreislauf</small></span></a>
       <nav class="nav" aria-label="Hauptnavigation">${HAUPT.map(navLink).join('')}</nav>
       ${pr ? `<div class="kontext"><span class="label">Projekt</span><a href="#projekt-${slug(pr.kurz)}" class="kontext-titel">${pchip(pr)}<b>${esc(pr.name)}</b></a></div>` : ''}
-      <div class="rail-fuss">${zeitwahl('projektzeit')}<p><span class="chip chip-sim">Beispieldaten</span> Projekte, Personen und Bauteile sind fiktiv. Eigene Erfassungen bleiben in diesem Browser.</p>${ui.installation.laeuftAlsApp ? '' : '<p><a href="#installieren">Als App installieren</a></p>'}<p><a href="#anfragen">Anfragen</a> · <a href="#pilotraum">Daten und Pilotraum</a>${ui.pilotraum.status === 'verbunden' ? ` <span class="chip chip-ok">Pilotraum ${esc(ui.pilotraum.rechte === 'bearbeiten' ? 'verbunden' : 'nur lesen')}</span>` : ''}</p></div>
+      <div class="rail-fuss">${zeitwahl('projektzeit')}<p><span class="chip chip-sim">Beispieldaten</span> Projekte, Personen und Bauteile sind fiktiv. Eigene Erfassungen bleiben in diesem Browser.</p>${ui.installation.laeuftAlsApp ? '' : '<p><a href="#installieren">Als App installieren</a></p>'}<p><a href="#treffer">Trefferhinweise</a> · <a href="#anfragen">Anfragen</a> · <a href="#pilotraum">Daten und Pilotraum</a>${ui.pilotraum.status === 'verbunden' ? ` <span class="chip chip-ok">Pilotraum ${esc(ui.pilotraum.rechte === 'bearbeiten' ? 'verbunden' : 'nur lesen')}</span>` : ''}</p></div>
     </aside>
     <div class="arbeitsflaeche">
       <header class="kopf-mobil"><a class="marke" href="#uebersicht"><span class="marke-zeichen" aria-hidden="true">${icon('kreislauf')}</span><b>CircularFlow</b></a>${zeitwahl('projektzeit-m')}</header>
+      ${trefferBanner(ctx())}
+      ${ui.treffer?.speicherFehler && ui.treffer.beobachtet.length ? '<p class="speicherhinweis" role="alert">Trefferhinweise können nicht dauerhaft gespeichert werden. Sie bleiben nur bis zum Neuladen erhalten.</p>' : ''}
       ${ui.speicherHinweis ? `<p class="speicherhinweis" role="alert">${esc(ui.speicherHinweis)}</p>` : ''}
       <main id="inhalt" tabindex="-1">${inhalt}</main>
     </div>
@@ -194,10 +200,12 @@ function render() {
     if (r.p && (ent.gespeichert || ent.projekt !== r.p.kurz || ent.raum !== r.raum)) ui.erfassung = { ...leererEntwurf(r.p.kurz, r.raum), schritt: 2, verfuegbarAb: r.p.rueckbauAb || '' };
     else if (!r.p && ent.gespeichert) ui.erfassung = leererEntwurf();
   }
+  if (R) ui.treffer = treffer.stand(ctx());
   const c = ctx();
   const inhalt = !R ? laedt()
     : r.view === 'uebersicht' ? uebersicht(c)
     : r.view === 'katalog' ? katalog(c)
+    : r.view === 'treffer' ? trefferSeite(c)
     : r.view === 'bedarfe' ? bedarfe(c)
     : r.view === 'bedarf' ? bedarfDetail(c, r.d)
     : r.view === 'bedarfneu' ? bedarfFormular(c)
@@ -224,7 +232,7 @@ function render() {
   const aktiv = document.activeElement; const sel = fokusSelektor(aktiv); const pos = aktiv?.id ? aktiv.selectionStart : null;
   if (document.getElementById('karte')) karteEntfernen(ui.start.ansicht || (ui.start.ansicht = {}));
   app.innerHTML = rahmen(r, inhalt);
-  document.title = `${{ uebersicht: 'Übersicht', katalog: 'Bauteile', bedarfe: 'Bedarfe', bedarf: `Bedarf ${r.d?.id}`, bedarfneu: 'Bedarf erfassen', bedarfergaenzen: `Bedarf ${r.d?.id} ergänzen`, abgleichliste: 'Passende Paare', abgleich: `Abgleich ${r.bauteil?.id} und ${r.bedarf?.id}`, vorgaenge: 'Arbeitsliste', projektneu: 'Projekt erfassen', start: 'Projekte', projekt: r.p?.name, gebaeude: `Gebäude ${r.p?.kurz}`, bestand: `Bestand ${r.p?.kurz}`, pass: `${r.b?.id} Bauteilpass`, entscheidungen: `Entscheidungen ${r.p?.kurz}`, entscheidung: `Entscheidung ${r.e?.id}`, erfassung: 'Erfassung', installieren: 'App installieren', anfragen: 'Anfragen', anfrage: `Anfrage ${r.a?.id}`, anfrageneu: 'Anfrage vorbereiten', pilotraum: 'Daten und Pilotraum', radar: 'Projektradar' }[r.view] || 'Nicht gefunden'} · CircularFlow`;
+  document.title = `${{ uebersicht: 'Übersicht', treffer: 'Trefferhinweise', katalog: 'Bauteile', bedarfe: 'Bedarfe', bedarf: `Bedarf ${r.d?.id}`, bedarfneu: 'Bedarf erfassen', bedarfergaenzen: `Bedarf ${r.d?.id} ergänzen`, abgleichliste: 'Passende Paare', abgleich: `Abgleich ${r.bauteil?.id} und ${r.bedarf?.id}`, vorgaenge: 'Arbeitsliste', projektneu: 'Projekt erfassen', start: 'Projekte', projekt: r.p?.name, gebaeude: `Gebäude ${r.p?.kurz}`, bestand: `Bestand ${r.p?.kurz}`, pass: `${r.b?.id} Bauteilpass`, entscheidungen: `Entscheidungen ${r.p?.kurz}`, entscheidung: `Entscheidung ${r.e?.id}`, erfassung: 'Erfassung', installieren: 'App installieren', anfragen: 'Anfragen', anfrage: `Anfrage ${r.a?.id}`, anfrageneu: 'Anfrage vorbereiten', pilotraum: 'Daten und Pilotraum', radar: 'Projektradar' }[r.view] || 'Nicht gefunden'} · CircularFlow`;
   if (r.view === 'start' && R) karteAnzeigen(c);
   letzteRoute = location.hash;
   if (neu) {
@@ -267,6 +275,16 @@ app.addEventListener('click', (ev) => {
   const pr = pilot.klick(act, a); if (pr === true) { render(); return; } if (pr === false) return;
   const k = a.dataset.entscheidung;
   switch (act) {
+    case 'bedarf-beobachten': {
+      const d = db.bedarfe.find((x) => x.projekt === a.dataset.projekt && x.id === a.dataset.bedarf);
+      if (!d) return;
+      treffer.beobachten(ctx(), d, a.getAttribute('aria-pressed') !== 'true');
+      break;
+    }
+    case 'treffer-lesen':
+      if (ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey) return;
+      treffer.gelesen(ctx(), a.dataset.key); if (zumLink(a)) return; break;
+    case 'treffer-alle-gelesen': treffer.gelesen(ctx()); break;
     case 'skip': document.getElementById('inhalt').focus(); return;
     case 'start-art': ui.start.art = a.dataset.wert; break;
     case 'etage': ui.gebaeude[a.dataset.projekt] = a.dataset.etage; if (location.hash.startsWith('#raum-')) { gehe(`#gebaeude-${slug(a.dataset.projekt)}`); return; } ui.fokus = null; break;
@@ -310,7 +328,7 @@ app.addEventListener('click', (ev) => {
     case 'reset-frage': ui.resetFrage = true; break;
     case 'reset-nein': ui.resetFrage = false; break;
     case 'reset-ja':
-      loesche(speicher); p = leerePersistenz(); db = baueDaten(p);
+      treffer.reset(ctx()); loesche(speicher); p = leerePersistenz(); db = baueDaten(p);
       Object.assign(ui, { resetFrage: false, zuletzt: null, zielWahl: null, zuordnungFehler: '', erfassung: leererEntwurf(), radar: leereRadarFilter(), importe: { ifc: null, ifcSim: false, scanSim: false }, speicherHinweis: '',
         bedarfForm: leeresBedarfsformular(), projektForm: leeresProjektformular(), vorgangForm: leeresVorgangsformular(), pilot: leeresPilotformular(), bedarfe: leereBedarfsliste(), katalog: leererKatalog(), bestand: leererBestand(), vorgaenge: { status: '' }, abgleich: { ergebnis: '' } });
       pilot.nachReset(); melde(ui.pilotraum.status === 'verbunden' ? 'Eigene Einträge in diesem Browser gelöscht; der Pilotraum bleibt unverändert und wird neu geladen.' : 'Eigene Erfassungen und Änderungen gelöscht.'); break;
@@ -516,16 +534,17 @@ function bedarfSpeichern() {
   if (Object.keys(fehler).length) { f.fehler = fehler; ui.fokus = BEDARF_FELD_ID[erstesBedarfFeld(fehler)]; render(); return; }
   if (vorhanden) {
     uebernehmen((d) => { d.bedarfAenderungen[f.schluessel] = bedarfAenderung(e); });
-    const n = abgleichListe(ctx(), { bedarf: db.bedarfe.find((x) => `${x.projekt}:${x.id}` === f.schluessel) }).length;
-    gehe(routeBedarf(vorhanden)); melde(`Bedarf ${vorhanden.id} ergänzt. Die passenden Angebote sind neu berechnet (${n} ${n === 1 ? 'Angebot' : 'Angebote'}).`);
+    const n = abgleichListe(ctx(), { bedarf: db.bedarfe.find((x) => `${x.projekt}:${x.id}` === f.schluessel), ergebnis: ['weiter', 'knapp'] }).length;
+    gehe(routeBedarf(vorhanden)); melde(`Bedarf ${vorhanden.id} ergänzt. ${n} ${n === 1 ? 'Angebot ist' : 'Angebote sind'} zur Prüfung vorgeschlagen.`);
     return;
   }
   const b = bedarfAusEntwurf(e, { id: naechsteBedarfId(db.bedarfe), at: ui.at });
   const etage = e.raum ? (db.projekte.find((x) => x.kurz === e.projekt)?.gebaeude || []).flatMap((g) => g.etagen).find((et) => et.raeume.some((r) => r.id === e.raum)) : null;
   if (etage) { b.raeume = [e.raum]; b.etage = etage.id; }
   uebernehmen((d) => { d.bedarfe.push(b); });
-  const n = abgleichListe(ctx(), { bedarf: db.bedarfe.find((x) => x.projekt === b.projekt && x.id === b.id) }).length;
-  gehe(routeBedarf(b)); melde(`Bedarf ${b.id} gespeichert. Die passenden Angebote sind berechnet (${n} ${n === 1 ? 'Angebot' : 'Angebote'}).`);
+  treffer.beobachten(ctx(), b, true);
+  const n = abgleichListe(ctx(), { bedarf: db.bedarfe.find((x) => x.projekt === b.projekt && x.id === b.id), ergebnis: ['weiter', 'knapp'] }).length;
+  gehe(routeBedarf(b)); melde(`Bedarf ${b.id} gespeichert. ${n} ${n === 1 ? 'Angebot ist' : 'Angebote sind'} zur Prüfung vorgeschlagen. Trefferhinweise sind eingeschaltet.`);
 }
 
 function projektSpeichern() {
@@ -713,5 +732,6 @@ async function ladeGeo() {
 }
 Promise.all([ladeTuerregel(), ladeGeo()]).then(([mod, g]) => { R = mod; geo = g; render(); })
   .catch(() => { app.innerHTML = '<div class="leer"><b>Die Anwendung konnte nicht starten.</b><p>Bitte über einen lokalen Server vom Repository-Wurzelverzeichnis aus öffnen (siehe README).</p></div>'; });
+
 
 

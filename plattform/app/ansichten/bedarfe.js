@@ -6,6 +6,7 @@ import { bedarfBelegt, bedarfBelegtArt, bedarfVorgang, vorgangStatus } from '../
 import { esc, chip, icon, leer, pchip, gruppenChip, seitenkopf, person, routeBedarf, routeAbgleich, routeEntscheidung, tagText, ergebnisChip, tonMarke } from '../ui.js';
 import { verfuegbarText } from './bauteile.js';
 import { interessenAmBedarf } from './anfragen.js';
+import { trefferSchalter } from './treffer.js';
 
 export const bestellfristVon = (d) => d.bestellfrist ?? d.fristen?.ersatz?.slice(0, 10) ?? null;
 export const mengeBedarf = (d) => (d.bedarfM2 !== undefined ? `${String(d.bedarfM2).replace('.', ',')} m²` : d.menge ? `${String(d.menge).replace('.', ',')} ${d.einheit || GRUPPEN[d.gruppe].einheit}` : 'fehlt');
@@ -62,7 +63,7 @@ export function bedarfe(ctx) {
 
 // Reiter im Bereich „Bedarfe“.
 export function bedarfeReiter(aktiv) {
-  return `<nav class="reiter" aria-label="Bedarfe">${[['bedarfe', '#bedarfe', 'Bedarfe'], ['abgleich', '#abgleich', 'Paare derselben Gruppe']].map(([k, h, t]) => `<a href="${h}" ${aktiv === k ? 'aria-current="page"' : ''}>${t}</a>`).join('')}</nav>`;
+  return `<nav class="reiter" aria-label="Bedarfe">${[['bedarfe', '#bedarfe', 'Bedarfe'], ['abgleich', '#abgleich', 'Paare derselben Gruppe'], ['treffer', '#treffer', 'Trefferhinweise']].map(([k, h, t]) => `<a href="${h}" ${aktiv === k ? 'aria-current="page"' : ''}>${t}</a>`).join('')}</nav>`;
 }
 
 const angabe = (k, v) => `<div><dt>${k}</dt><dd>${v}</dd></div>`;
@@ -89,6 +90,7 @@ export function bedarfDetail(ctx, d) {
     untertitel: `${esc(mengeBedarf(d))} ${fehlt.length ? chip(`${fehlt.length} Zeitangabe${fehlt.length === 1 ? '' : 'n'} fehlen`, 'info') : chip('Zeitangaben vollständig', 'ok')} ${d.neu ? chip('Eigene Eingabe', 'sim') : ''}${d.ergaenzt ? chip('ergänzt in diesem Browser', 'sim') : ''}`,
     aktionen: `<button type="button" class="knopf-zweit" id="btn-bedarf-ergaenzen" data-action="bedarf-ergaenzen" data-projekt="${esc(d.projekt)}" data-bedarf="${esc(d.id)}">${icon('plus')} ${fehlt.length ? 'Bedarf ergänzen' : 'Angaben ändern'}</button>`,
   })}
+  ${trefferSchalter(ctx, d)}
   <div class="zweispaltig">
     <section class="flaeche" aria-labelledby="h-bd-angaben">
       <h2 id="h-bd-angaben">Angaben</h2>
@@ -122,3 +124,4 @@ export function bedarfDetail(ctx, d) {
     ${interessenAmBedarf(ctx, d)}
   </div>`;
 }
+

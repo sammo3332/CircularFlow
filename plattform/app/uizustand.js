@@ -41,7 +41,8 @@ export function neuerUiZustand() {
     projektForm: leeresProjektformular(),
     vorgangForm: leeresVorgangsformular(),
     pilot: leeresPilotformular(),
-    pilotraum: { url: '', schluessel: '', status: 'getrennt', name: '', rechte: '', fehler: '', version: 0, zuletzt: '' },
+    pilotraum: { raum: '', url: '', schluessel: '', status: 'getrennt', name: '', rechte: '', fehler: '', version: 0, zuletzt: '' },
     zuletzt: null, zielWahl: null, zuordnungFehler: '', resetFrage: false, fokus: null, fokusNachRoute: null, speicherHinweis: '',
   };
 }
+
