@@ -62,6 +62,7 @@ Nicht veröffentlicht, nicht gemergt, keine Zugriffsrechte externer Dienste geä
 | `cd plattform/etikett-versuch && node test/ocr.mjs` (Node, Sprachdatei deu) | [`rohausgaben/ocr-node.txt`](rohausgaben/ocr-node.txt) | 5 Fixtures: 4 Etiketten vollständig richtig (auch Umlaute), leeres Bild ohne Angabe |
 | `node docs/pruefungen/pilotstand-2026-11-19/werkzeug/browserlauf.mjs <Testdaten>` (Playwright, Chromium 153, Pilotserver) | [`rohausgaben/browserlauf.txt`](rohausgaben/browserlauf.txt), Bilder in [`bilder/`](bilder/) | 63 von 63 bestanden |
 | `node plattform/bauen-artifact.mjs <Wegwerfordner>` | – | gebaut (41 Begleitdateien); die Vorschau-Fassung enthält keine OCR-Engine und keinen Pilotserver |
+| `node docs/pruefungen/pilotstand-2026-11-19/werkzeug/statisch-pruefen.mjs` gegen `python3 -m http.server` auf einem sauberen Export des Commits (wie Hosting aus dem Repository) | [`rohausgaben/statisch-pruefen.txt`](rohausgaben/statisch-pruefen.txt) | Texterkennung mit den im Repository liegenden Engine-Dateien (Rechner und Pixel-7-Emulation), Manifest, Installierbarkeit laut Chromium, verständliche Meldung ohne Pilotserver |
 
 Umgebung: Node 22.23, Playwright-Chromium 153 (Headless), Linux-Container. **Kein echtes Gerät, keine Kamera, kein HTTPS.**
 Testdaten: gezeichnetes Bauteilfoto, synthetische Etiketten (`plattform/etikett-versuch/fixtures/`), beschädigte PNG-Datei,
@@ -143,6 +144,9 @@ Nicht erneut durch die Agenten geprüft: Die zweite Runde wurde von der Hauptsit
 4. **Anfrage ↔ Vorgang:** Eine Anfrage „Fachprüfung“ setzt das Fachergebnis des Vorgangs nicht automatisch; beides wird getrennt
    eingetragen (gewollt), ist aber nur über Verweise verbunden.
 5. **Vorschau-Fassung (`bauen-artifact.mjs`)** enthält weder OCR-Engine noch Pilotserver; dort erscheint der Fehlertext „Engine fehlt“.
+   Ein Hosting des Repository-Stands (Vercel-Branch-Vorschau) hat die Engine; das Deployment selbst und HTTPS wurden nicht geprüft.
+   Eine von Vercel ausgelieferte App kann den Pilotserver im WLAN nicht über http ansprechen (gemischte Inhalte); der gemeinsame
+   Datenstand braucht dann HTTPS für den Pilotserver oder die Nutzung direkt vom Pilotserver.
 6. **Keine Objekterkennung.** Es gibt kein geprüftes Modell, keine Freigabe zur Bildverarbeitung und keine Hardwareprüfung; ein Knopf
    dafür wurde bewusst nicht eingebaut.
 7. **Zeitersparnis nicht gemessen.** Die Vorlage für fünf echte Bauteile liegt vor (`docs/praxistest/erfassungsvergleich-vorlage.md`).

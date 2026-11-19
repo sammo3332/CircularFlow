@@ -48,6 +48,23 @@ cd plattform/etikett-versuch && node test/ocr.mjs && cd ../..
 node docs/pruefungen/pilotstand-2026-11-19/werkzeug/browserlauf.mjs <Testdatenordner>   # Playwright mit Chromium, startet den Pilotserver selbst auf Port 8010
 ```
 
+## Als App auf dem Handy (Hosting aus dem Repository)
+
+Die Texterkennung liegt jetzt vollständig im Repository (`plattform/etikett-versuch/vendor/`: Engine, drei LSTM-Kerne, deutsche
+Sprachdatei, zusammen 13 MB). Ein statisches Hosting des Repository-Wurzelverzeichnisses (z. B. Vercel) liefert damit eine
+installierbare Web-App mit Texterkennung aus; `vercel.json` leitet `/` auf `/plattform/` und setzt Cache-Regeln.
+
+1. Im Vercel-Projekt den Branch `codex/pilotstand-20261119` als Vorschau bereitstellen (Branch-Deployment, **nicht** die
+   Produktions-URL des Pitch-Stands ersetzen). Root-Verzeichnis = Repository-Wurzel, kein Build-Befehl, kein Output-Verzeichnis.
+2. Am Handy die Vorschau-Adresse öffnen (`https://…vercel.app/plattform/#erfassung`), dann „Als App installieren“ (`#installieren`):
+   Android/Chrome über das Menü „App installieren“, iPhone/Safari über „Teilen → Zum Home-Bildschirm“.
+3. Ohne Pilotserver speichert die App nur auf dem Gerät; Datenstand sichern/laden über `#pilotraum` (Datei). Für den gemeinsamen
+   Datenstand den Pilotserver auf einem Rechner im WLAN starten und seine Adresse (`http://<IP>:8000`) unter `#pilotraum` eintragen
+   (gemischt https/http blockieren Browser; dann die App direkt vom Pilotserver öffnen).
+
+Geprüft: statischer Server mit dem sauberen Repository-Stand (`docs/pruefungen/pilotstand-2026-11-19/rohausgaben/statisch-pruefen.txt`):
+Texterkennung, Manifest, Installierbarkeit laut Chromium. **Nicht geprüft:** das Vercel-Deployment selbst, HTTPS, echtes Gerät.
+
 ## Klickpfad des Pilotablaufs (Beispieldaten, Stichtag der Demo Mi 18.11.2026, 14:00)
 
 1. **Erfassen** (`#erfassung`): Projekt LH, Raum wählen → Schritt 2: Bauteilfoto, dann „Typenschild fotografieren“ oder
