@@ -6,6 +6,7 @@ import { esc, chip, icon, leer, pchip, gruppenChip, seitenkopf, person, routeBed
 import { zeit } from '../zeit.js';
 import { verfuegbarText } from './bauteile.js';
 import { bedarfeReiter, bestellfristVon, mengeBedarf } from './bedarfe.js';
+import { interesseKnopf, routeAnfrageNeu } from './anfragen.js';
 import { mengeText } from './katalog.js';
 
 export const VORSCHLAG = 'Vorschlag zur Prüfung, keine fachliche Freigabe';
@@ -92,13 +93,15 @@ export function abgleichSeite(ctx, bauteil, bedarf) {
   <section class="flaeche ergebnis-kopf" aria-labelledby="h-ab-ergebnis">
     <p class="label">Ergebnis</p>
     <h2 id="h-ab-ergebnis" tabindex="-1">${tonSymbol(a.gesamt.ton)}${esc(a.gesamt.label)}</h2>
-    <p class="ergebnis-rolle">${VORSCHLAG}. ${esc(a.hinweis)}</p>
+    <p class="ergebnis-rolle">${VORSCHLAG}. ${esc(a.hinweis)} ${chip('regelbasiert, keine KI', 'sim')}</p>
     <ul class="gruende">${a.gruende.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
     <div class="naechster"><p class="label">Nächster Schritt · ${esc(person(a.naechsterSchritt.rolle).rolle)}</p><p><b>${esc(a.naechsterSchritt.text)}</b>${a.naechsterSchritt.vorgang ? ` <a href="${routeEntscheidung(a.naechsterSchritt.vorgang)}">Vorgang ${esc(a.naechsterSchritt.vorgang.id)} öffnen</a>` : ''}</p></div>
     <div class="ergebnis-aktionen">
       <button type="button" class="knopf" id="btn-pruefbitte" data-action="pruefbitte-anlegen" data-key="${esc(a.schluessel)}" ${a.pruefbitteMoeglich ? '' : 'aria-disabled="true" aria-describedby="pruefbitte-grund"'}>${icon('flagge')} Prüfbitte anlegen</button>
       ${a.pruefbitteMoeglich ? '<span class="leise">Legt einen Vorgang an und bittet die Fachprüfung um Eignungsprüfung. Simulation, es wird nichts versendet.</span>' : `<span class="sperrgrund" id="pruefbitte-grund" tabindex="-1">${tonSymbol('warn')}<span><b>Gesperrt.</b> ${esc(a.sperrgrund)}</span></span>`}
+      <a class="knopf-zweit" id="btn-anfrage-vorbereiten" href="${routeAnfrageNeu(a.bauteil, a.bedarf)}">Prüf- oder Logistikanfrage vorbereiten</a>
     </div>
+    ${interesseKnopf(ctx, a.bauteil, a.bedarf)}
   </section>
   <div class="zweispaltig paar">${angebotKarte(ctx, a)}${bedarfKarte(ctx, a)}</div>
   <section class="flaeche" aria-labelledby="h-ab-pruefung">

@@ -6,6 +6,7 @@ import { zeit, datum, abstand } from '../zeit.js';
 import { projektKopf, raumVon } from './projekte.js';
 import { abgleichListe, zuordnungZumBedarf, lueckeText } from '../abgleich.js';
 import { uebergebenerVorgang } from '../vorgang.js';
+import { passPilotBereich } from './anfragen.js';
 
 const werteZaehlung = (b) => {
   const z = { gemessen: 0, bestaetigt: 0, vorgeschlagen: 0, fehlt: 0 };
@@ -112,6 +113,7 @@ export function pass(ctx, p, b) {
         ${paare.length ? `<ul class="paarliste">${paare.map((x) => `<li><a class="paar" href="${routeAbgleich(x.schluessel)}"><span class="paar-kopf">${ergebnisChip(x.gesamt)}<span class="bref">${pchip(ctx.daten.projekte.find((q) => q.kurz === x.bedarf.projekt) || { kurz: x.bedarf.projekt, farbe: '#55605b', name: '' })}<span class="mono">${esc(x.bedarf.id)}</span></span></span><b>${esc(x.bedarf.titel)}</b>${x.menge?.status === 'teilweise' ? `<small class="paar-luecke t-${esc(x.menge.ton)}">${tonMarke(x.menge.ton)}${esc(lueckeText(x.menge))}</small>` : ''}<small>${esc(x.gruende[0] || '')}</small></a></li>`).join('')}</ul>`
           : `<p class="leer-zeile">${b.ziel ? `Das Bauteil hat bereits ein festes Ziel (${esc(b.ziel)}).` : e ? `Für dieses Bauteil läuft bereits der Vorgang ${esc(e.id)}.` : 'Kein offener Bedarf derselben Bauteilgruppe, für den dieses Bauteil in Frage kommt.'}</p>`}
       </section>`}
+      ${passPilotBereich(ctx, p, b)}
       <section class="flaeche" aria-labelledby="h-werte">
         <div class="block-kopf"><h2 id="h-werte">Angaben</h2><span class="leise">${Object.entries(WERTSTATUS).map(([k, v]) => `${wertChip(k)}`).join(' ')}</span></div>
         <div class="tabelle-rahmen"><table class="einfach">

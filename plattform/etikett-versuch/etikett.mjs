@@ -38,19 +38,22 @@ export function ausEtikett(text, maxJahr = new Date().getFullYear()) {
   return { schema:'cf-etikett-v1', felder, rohtext, hinweise, grenzen:'Keine Bauteilerkennung, kein Aufmaß, keine Fachfreigabe.' };
 }
 
-export function gepruefterEntwurf(scan, pruefung, jetzt = new Date().toISOString()) {
+// mitFoto: Die Bestätigung geschah am Foto des Typenschilds; ohne Foto gilt die Angabe als manuell eingegeben und geprüft, nicht am Foto bestätigt.
+export function gepruefterEntwurf(scan, pruefung, jetzt = new Date().toISOString(), { mitFoto = true } = {}) {
   const felder = {};
   for (const key of Object.keys(FELDER)) {
     const p=pruefung?.[key];
     const value=String(p?.wert ?? '').trim();
     if (!value) continue;
-    if (p?.geprueft !== true) throw new Error(`${FELDER[key]} bitte am Foto prüfen und ausdrücklich bestätigen.`);
+    if (p?.geprueft !== true) throw new Error(mitFoto ? `${FELDER[key]} bitte am Foto prüfen und ausdrücklich bestätigen.` : `${FELDER[key]} bitte prüfen und ausdrücklich bestätigen.`);
     if (value.length>120 || /[\r\n\u0000]/u.test(value)) throw new Error(`${FELDER[key]} ist zu lang oder ungültig.`);
     if (key==='baujahr' && (!/^[12]\d{3}$/u.test(value) || +value>new Date(jetzt).getFullYear())) throw new Error('Baujahr bitte prüfen.');
     const src=scan.felder[key];
     const unveraendert=src.status==='vorgeschlagen' && value===src.wert;
-    felder[key]={wert:value,status:'bestätigt',quelle:unveraendert?'Etikett, OCR-Vorschlag am Foto bestätigt':'Etikett, manuell am Foto eingetragen',beleg:unveraendert?src.beleg:''};
+    const herkunft=unveraendert?'ausgelesen':'manuell';
+    const quelle=unveraendert?(mitFoto?'ausgelesen (Texterkennung), am Foto bestätigt':'ausgelesen (Texterkennung), bestätigt'):(mitFoto?'manuell eingegeben, am Foto bestätigt':'manuell eingegeben, geprüft');
+    felder[key]={wert:value,status:'bestätigt',herkunft,amFoto:Boolean(mitFoto),quelle,beleg:unveraendert?src.beleg:''};
   }
-  if (!Object.keys(felder).length) throw new Error('Mindestens eine am Foto geprüfte Angabe ist nötig.');
+  if (!Object.keys(felder).length) throw new Error(mitFoto ? 'Mindestens eine am Foto geprüfte Angabe ist nötig.' : 'Mindestens eine geprüfte Angabe ist nötig.');
   return {schema:'cf-etikett-entwurf-v1',erfasstAm:jetzt,felder,rohtext:scan.rohtext,aufmass:{status:'fehlt'},fachfreigabe:false,hinweis:'Etikettangaben bestätigt, nicht gemessen. Kein Gültigkeitsnachweis. Separater Entwurf, noch nicht im CircularFlow-Bestand.'};
 }

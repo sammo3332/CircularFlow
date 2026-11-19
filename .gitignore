@@ -20,3 +20,6 @@ __pycache__/
 node_modules/
 
 # Keine Stackentscheidung durch diese Vorsorgeeinträge.
+
+# Pilotserver: gemeinsame Datenstände und Schlüsselprüfsummen bleiben lokal
+plattform/server/daten/

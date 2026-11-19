@@ -3,9 +3,12 @@
 import { PROJEKTE, BAUTEILE, ZIELOEFFNUNGEN, BEDARFE, ENTSCHEIDUNGEN, GRUPPEN } from './daten.js';
 import { ergaenzeBedarf } from './bedarf.js';
 import { QUELLEN, HINWEISE } from './radar-daten.js';
+import { angebotAnwenden, ANFRAGE_STATUS, DIENSTLEISTER_ART, VERKAUF_STATUS } from './pilot.js';
 
 export const SPEICHERSCHLUESSEL = 'circularflow-plattform-v1';
-export const leerePersistenz = () => ({ version: 1, erfassungen: [], zuordnungen: [], ereignisse: [], ezustand: {}, radar: {}, meldungen: [], projekteAusRadar: [], werte: {}, bedarfe: [], bedarfAenderungen: {}, projekteEigen: [] });
+export const leerePersistenz = () => ({ version: 1, erfassungen: [], zuordnungen: [], ereignisse: [], ezustand: {}, radar: {}, meldungen: [], projekteAusRadar: [], werte: {}, bedarfe: [], bedarfAenderungen: {}, projekteEigen: [],
+  // Pilotbetrieb (19.11.2026): Interesse, Dienstleister, Anfragen, Verkäufe, Änderungen am eigenen Angebot.
+  interessen: [], dienstleister: [], anfragen: [], verkaeufe: {}, bauteilAenderungen: {} });
 const klon = (x) => JSON.parse(JSON.stringify(x));
 
 export function ladePersistenz(speicher) {
@@ -37,6 +40,13 @@ export function ladePersistenz(speicher) {
     leer.projekteEigen = einmalig(leer.projekteEigen.filter((x) => objekt(x) && zk(x.kurz) && zk(x.id) && typeof x.name === 'string' && Array.isArray(x.lage) && x.lage.length === 2 && x.lage.every(Number.isFinite) && Array.isArray(x.gebaeude)
       && !beispielKuerzel.has(x.kurz.toUpperCase())), (x) => x.kurz.toUpperCase());
     leer.bedarfAenderungen = Object.fromEntries(Object.entries(leer.bedarfAenderungen).filter(([k, v]) => /^[^:]+:[^:]+$/.test(k) && objekt(v) && !Array.isArray(v)));
+    // Pilotbetrieb: Einträge brauchen Kennung und gültige Verweise; unbekannte Status entfallen.
+    const ref = (r) => objekt(r) && zk(r.projekt) && zk(r.id);
+    leer.interessen = einmalig(leer.interessen.filter((i) => objekt(i) && zk(i.id) && ref(i.bauteil) && ref(i.bedarf) && ['offen', 'zurueckgezogen'].includes(i.status) && zk(i.at)), (i) => i.id);
+    leer.dienstleister = einmalig(leer.dienstleister.filter((d) => objekt(d) && zk(d.id) && zk(d.name) && Array.isArray(d.leistungen) && DIENSTLEISTER_ART[d.art]), (d) => d.id);
+    leer.anfragen = einmalig(leer.anfragen.filter((a) => objekt(a) && zk(a.id) && ref(a.bauteil) && (a.bedarf === null || a.bedarf === undefined || ref(a.bedarf)) && ANFRAGE_STATUS[a.status] && zk(a.leistung) && zk(a.geaendert) && Array.isArray(a.verlauf)), (a) => a.id);
+    leer.verkaeufe = Object.fromEntries(Object.entries(leer.verkaeufe).filter(([k, v]) => /^[^:]+:[^:]+$/.test(k) && objekt(v) && VERKAUF_STATUS[v.status] && objekt(v.provisionen)));
+    leer.bauteilAenderungen = Object.fromEntries(Object.entries(leer.bauteilAenderungen).filter(([k, v]) => /^[^:]+:[^:]+$/.test(k) && objekt(v) && Number.isFinite(v.menge) && zk(v.geaendertAm)));
     return leer;
   } catch { return leerePersistenz(); }
 }
@@ -76,6 +86,11 @@ export function baueDaten(p) {
     const b = bauteile.find((x) => x.projekt === projekt && x.id === id);
     if (b) b.werte = { ...b.werte, ...felder };
   }
+  // Änderungen am eigenen Angebot (Menge, Verfügbarkeit, Zustand, nicht mehr angeboten) überlagern das Bauteil.
+  for (const [k, a] of Object.entries(p.bauteilAenderungen || {})) {
+    const i = bauteile.findIndex((x) => `${x.projekt}:${x.id}` === k);
+    if (i >= 0) bauteile[i] = angebotAnwenden(bauteile[i], a);
+  }
   const hinweise = [...klon(HINWEISE), ...klon(p.meldungen)].map((h) => (p.radar[h.id] ? { ...h, ...p.radar[h.id] } : h));
   return {
     projekte: [...klon(PROJEKTE), ...klon(p.projekteAusRadar), ...klon(p.projekteEigen || [])],
@@ -86,13 +101,52 @@ export function baueDaten(p) {
     entscheidungen: [...klon(ENTSCHEIDUNGEN), ...klon(p.zuordnungen)],
     hinweise,
     quellen: QUELLEN,
+    interessen: klon(p.interessen || []), dienstleister: klon(p.dienstleister || []), anfragen: klon(p.anfragen || []), verkaeufe: klon(p.verkaeufe || {}),
   };
 }
 
 // Zahl aller eigenen Änderungen in diesem Browser (für Hinweis und Zurücksetzen).
 export function anzahlEigeneAenderungen(p) {
   const n = (x) => (Array.isArray(x) ? x.length : x && typeof x === 'object' ? Object.keys(x).length : 0);
-  return ['erfassungen', 'zuordnungen', 'ereignisse', 'meldungen', 'projekteAusRadar', 'ezustand', 'radar', 'werte', 'bedarfe', 'bedarfAenderungen', 'projekteEigen']
+  return ['erfassungen', 'zuordnungen', 'ereignisse', 'meldungen', 'projekteAusRadar', 'ezustand', 'radar', 'werte', 'bedarfe', 'bedarfAenderungen', 'projekteEigen',
+    'interessen', 'dienstleister', 'anfragen', 'verkaeufe', 'bauteilAenderungen']
     .reduce((s, k) => s + n(p?.[k]), 0);
+}
+
+// ---------- Datenstand als Datei sichern und laden (ohne Server) ----------
+export const EXPORT_SCHEMA = 'circularflow-stand-v1';
+export function exportStand(p, { at = null, quelle = 'Browser' } = {}) {
+  return JSON.stringify({ schema: EXPORT_SCHEMA, exportiertAm: at, quelle, hinweis: 'Eigene Einträge der CircularFlow-Plattform. Beispieldaten sind nicht enthalten.', daten: p }, null, 1);
+}
+// Liest eine gesicherte Datei. Liefert einen geprüften Stand (wie ladePersistenz) oder wirft einen verständlichen Fehler.
+export function importStand(text) {
+  let d;
+  try { d = JSON.parse(String(text)); } catch { throw new Error('Die Datei ist kein lesbarer CircularFlow-Datenstand (kein JSON).'); }
+  if (!d || d.schema !== EXPORT_SCHEMA || !d.daten || typeof d.daten !== 'object') throw new Error('Die Datei ist kein CircularFlow-Datenstand (Kennung fehlt).');
+  const roh = JSON.stringify(d.daten);
+  const stand = ladePersistenz({ getItem: () => roh });
+  if (anzahlEigeneAenderungen(stand) === 0 && anzahlEigeneAenderungen(d.daten) > 0) throw new Error('Die Datei enthält keine gültigen Einträge.');
+  return stand;
+}
+// Vereinigt zwei Stände: Listen nach Kennung (vorhandene Einträge bleiben, neue kommen dazu), Zuordnungen nach Schlüssel (der neuere gewinnt).
+export function vereinige(basis, neu) {
+  const a = ladePersistenz({ getItem: () => JSON.stringify(basis) }); const b = ladePersistenz({ getItem: () => JSON.stringify(neu) });
+  const key = { erfassungen: (x) => `${x.projekt}:${x.id}`, zuordnungen: (x) => `${x.projekt}:${x.id}`, meldungen: (x) => x.id, projekteAusRadar: (x) => x.kurz, bedarfe: (x) => x.id, projekteEigen: (x) => String(x.kurz).toUpperCase(), interessen: (x) => x.id, dienstleister: (x) => x.id, anfragen: (x) => x.id };
+  const out = { ...a };
+  for (const [k, kf] of Object.entries(key)) {
+    const vorhanden = new Map(a[k].map((x) => [kf(x), x]));
+    for (const x of b[k]) { const alt = vorhanden.get(kf(x)); if (!alt) vorhanden.set(kf(x), x); else if (k === 'anfragen' && String(x.geaendert) > String(alt.geaendert)) vorhanden.set(kf(x), x); }
+    out[k] = [...vorhanden.values()];
+  }
+  const gesehen = new Set(a.ereignisse.map((x) => JSON.stringify(x)));
+  out.ereignisse = [...a.ereignisse, ...b.ereignisse.filter((x) => !gesehen.has(JSON.stringify(x)))];
+  for (const k of ['ezustand', 'radar', 'werte', 'bedarfAenderungen', 'verkaeufe', 'bauteilAenderungen']) {
+    out[k] = { ...a[k] };
+    for (const [id, v] of Object.entries(b[k])) {
+      const alt = out[k][id]; const neuer = !alt || String(v.geaendertAm || v.at || '') >= String(alt.geaendertAm || alt.at || '');
+      out[k][id] = k === 'ezustand' || k === 'werte' || k === 'radar' || k === 'bedarfAenderungen' ? { ...(alt || {}), ...v } : (neuer ? v : alt);
+    }
+  }
+  return out;
 }
 

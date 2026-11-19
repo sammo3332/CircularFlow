@@ -1,0 +1,176 @@
+{
+  "datum": "2026-11-19",
+  "engine": "Tesseract.js 7.0.0 / LSTM / deu",
+  "ausfuehrung": "Node.js, lokale CPU; kein Smartphone- oder Browsernachweis",
+  "initialisierungMs": 138,
+  "faelle": [
+    {
+      "datei": "testetikett.png",
+      "synthetisch": true,
+      "ocrMs": 211,
+      "rohtext": "TESTETIKETT - KEIN ECHTES BAUTEIL\nHERSTELLER: MUSTERWERK\n\nMODELL: TUER-17\n\nSERIENNUMMER: CF-2026-001\nBAUJAHR: 2020\n\nBREITE: 985 mm / BRANDSCHUTZ: T30\n",
+      "felder": {
+        "hersteller": {
+          "wert": "MUSTERWERK",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "HERSTELLER: MUSTERWERK"
+        },
+        "modell": {
+          "wert": "TUER-17",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "MODELL: TUER-17"
+        },
+        "seriennummer": {
+          "wert": "CF-2026-001",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "SERIENNUMMER: CF-2026-001"
+        },
+        "baujahr": {
+          "wert": "2020",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "BAUJAHR: 2020"
+        }
+      },
+      "hinweise": []
+    },
+    {
+      "datei": "testetikett-schief.png",
+      "synthetisch": true,
+      "ocrMs": 236,
+      "rohtext": "en\nTESTETIKETT - KEIN ECHTES BAUTEIL\nHERSTELLER: MUSTERWERK\nMODELL: TUER-17\nSERIENNUMMER: CF-2026-001\nBAUJAHR: 2020\nBREITE: 985 mm / BRANDSCHUTZ: T30\n",
+      "felder": {
+        "hersteller": {
+          "wert": "MUSTERWERK",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "HERSTELLER: MUSTERWERK"
+        },
+        "modell": {
+          "wert": "TUER-17",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "MODELL: TUER-17"
+        },
+        "seriennummer": {
+          "wert": "CF-2026-001",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "SERIENNUMMER: CF-2026-001"
+        },
+        "baujahr": {
+          "wert": "2020",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "BAUJAHR: 2020"
+        }
+      },
+      "hinweise": []
+    },
+    {
+      "datei": "testetikett-deutsch.png",
+      "synthetisch": true,
+      "ocrMs": 132,
+      "rohtext": "HERSTELLER: Türenwerk Müller GmbH\nMODELL: Bürotür Größe 2 / TÜ-885\nSERIENNUMMER: SN-ÄÖÜ-2021-0042\nBAUJAHR: 2021\n\nFeuerwiderstand: T30 (nicht übernehmen)\n",
+      "felder": {
+        "hersteller": {
+          "wert": "Türenwerk Müller GmbH",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "HERSTELLER: Türenwerk Müller GmbH"
+        },
+        "modell": {
+          "wert": "Bürotür Größe 2 / TÜ-885",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "MODELL: Bürotür Größe 2 / TÜ-885"
+        },
+        "seriennummer": {
+          "wert": "SN-ÄÖÜ-2021-0042",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "SERIENNUMMER: SN-ÄÖÜ-2021-0042"
+        },
+        "baujahr": {
+          "wert": "2021",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "BAUJAHR: 2021"
+        }
+      },
+      "hinweise": []
+    },
+    {
+      "datei": "testetikett-englisch.png",
+      "synthetisch": true,
+      "ocrMs": 136,
+      "rohtext": "MANUFACTURER: Doorworks Ltd.\nMODEL: Office Door Type 2 / OD-885\nSERIAL NO: SN-UK-2019-0077\n\nYEAR OF MANUFACTURE: 2019\n",
+      "felder": {
+        "hersteller": {
+          "wert": "Doorworks Ltd.",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "MANUFACTURER: Doorworks Ltd."
+        },
+        "modell": {
+          "wert": "Office Door Type 2 / OD-885",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "MODEL: Office Door Type 2 / OD-885"
+        },
+        "seriennummer": {
+          "wert": "SN-UK-2019-0077",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "SERIAL NO: SN-UK-2019-0077"
+        },
+        "baujahr": {
+          "wert": "2019",
+          "status": "vorgeschlagen",
+          "quelle": "Texterkennung vom Etikett, ungeprüft",
+          "beleg": "YEAR OF MANUFACTURE: 2019"
+        }
+      },
+      "hinweise": []
+    },
+    {
+      "datei": "leer.png",
+      "synthetisch": true,
+      "ocrMs": 29,
+      "rohtext": "",
+      "felder": {
+        "hersteller": {
+          "wert": "",
+          "status": "fehlt",
+          "quelle": "",
+          "beleg": ""
+        },
+        "modell": {
+          "wert": "",
+          "status": "fehlt",
+          "quelle": "",
+          "beleg": ""
+        },
+        "seriennummer": {
+          "wert": "",
+          "status": "fehlt",
+          "quelle": "",
+          "beleg": ""
+        },
+        "baujahr": {
+          "wert": "",
+          "status": "fehlt",
+          "quelle": "",
+          "beleg": ""
+        }
+      },
+      "hinweise": [
+        "Keine eindeutig beschrifteten Metadaten erkannt. Näher und schärfer fotografieren oder manuell erfassen."
+      ]
+    }
+  ],
+  "grenze": "Synthetische Funktionsprüfung. Keine Aussage zur Erkennungsrate an echten Bauteilen oder zur Zeitersparnis."
+}

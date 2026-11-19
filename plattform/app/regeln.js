@@ -406,7 +406,7 @@ export function bauteilAusErfassung(entwurf, { id, at, von = 'browser', etage })
     projekt: entwurf.projekt, id, gruppe: entwurf.gruppe, name, menge: Number(String(entwurf.menge).replace(',', '.')), etage, raum: entwurf.raum,
     werte, zustand: entwurf.zustand || null, zustandText: entwurf.notiz || '', hersteller: etikett?.felder.hersteller?.wert || 'unbekannt', baujahr: etikett?.felder.baujahr?.wert || 'unbekannt', etikett,
     status: 'erfasst', verfuegbarAb: entwurf.verfuegbarAb || null, foto: entwurf.foto ? { daten: entwurf.foto.daten, breite: entwurf.foto.breite, hoehe: entwurf.foto.hoehe } : null,
-    erfassung: { art: 'Mobile Erfassung', am: at, von, erkennung: ausSimulation ? 'Simulation' : null },
+    erfassung: { art: 'Mobile Erfassung', am: at, von, erkennung: ausSimulation ? 'Simulation' : null }, geaendertAm: at,
     rueckbau: [['Schadstoffverdacht', 'nicht untersucht']],
     nachweise: entwurf.foto ? [{ titel: 'Foto der mobilen Erfassung', art: 'Foto', datum: at, von, stand: 'liegt vor', ton: 'ok' }] : [],
     offen: [], neu: true,

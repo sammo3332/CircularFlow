@@ -15,7 +15,12 @@ import { gebaeudeAnsicht } from './ansichten/gebaeude.js';
 import { bestand, pass } from './ansichten/bauteile.js';
 import { entscheidungsListe, entscheidungsSeite } from './ansichten/entscheidung.js';
 import { erfassung, leererEntwurf } from './ansichten/erfassung.js';
-import { etikettLesen } from './etikett-integration.js';
+import { etikettLesen, etikettAbbruch, etikettManuell } from './etikett-integration.js';
+import { pilotAktionen } from './pilot-aktionen.js';
+import { anfragenSeite, anfrageSeite, anfrageFormular } from './ansichten/anfragen.js';
+import { pilotraumSeite } from './ansichten/pilotraum.js';
+import { leererAnfrageEntwurf } from './pilot.js';
+import { leeresPilotformular } from './uizustand.js';
 import { installieren, geraeteArt } from './ansichten/installieren.js';
 import { radar, leereMeldung } from './ansichten/radar.js';
 import { uebersicht } from './ansichten/uebersicht.js';
@@ -70,7 +75,13 @@ function uebernehmen(aenderung) {
   else if (!r.ok) ui.speicherHinweis = 'Speichern im Browser ist fehlgeschlagen. Änderungen gehen beim Neuladen verloren.';
   else if (r.fotosNichtGespeichert) ui.speicherHinweis = `Der Browserspeicher ist voll. ${r.fotosNichtGespeichert === 1 ? 'Ein Foto bleibt' : `${r.fotosNichtGespeichert} Fotos bleiben`} nur bis zum Neuladen erhalten. Fehlende Fotos sind im jeweiligen Bauteilpass gekennzeichnet.`;
   else ui.speicherHinweis = '';
+  pilot.nachAenderung();
+  return r;
 }
+// Pilotbetrieb: Interesse, Dienstleister, Anfragen, Verkauf, Angebot, Datei und Pilotraum (gemeinsamer Datenstand).
+const pilot = pilotAktionen({ ui, ctx, uebernehmen, render: () => render(), melde: (t) => melde(t), gehe: (h) => gehe(h), speicher,
+  datenHolen: () => ({ p, db }),
+  datenSetzen: (neu) => { p = neu; db = baueDaten(p); const r = speichere(speicher, p); if (speicher && !r.ok) ui.speicherHinweis = 'Speichern im Browser ist fehlgeschlagen. Der gemeinsame Stand liegt im Pilotraum.'; } });
 
 // ---------- Router ----------
 const projektPerSlug = (s) => db.projekte.find((x) => slug(x.kurz) === s);
@@ -81,6 +92,14 @@ function route() {
   if (h === 'uebersicht' || h === '') return { view: 'uebersicht' };
   if (h === 'projekte') return { view: 'start' };
   if (h === 'vorgaenge') return { view: 'vorgaenge' };
+  if (h === 'anfragen') return { view: 'anfragen' };
+  if (h === 'pilotraum') return { view: 'pilotraum' };
+  const an = m('anfrage-neu-'); if (an !== null) {
+    const [bt, bd] = an.split('--'); const finde = (teil, liste) => liste.find((x) => teil === `${slug(x.projekt)}-${slug(x.id)}`) || null;
+    const bauteil = finde(bt, db.bauteile); const bedarf = bd ? finde(bd, db.bedarfe) : null;
+    return bauteil && (!bd || bedarf) ? { view: 'anfrageneu', b: bauteil, d: bedarf } : { view: 'fehlt', art: 'Bauteil', id: an };
+  }
+  const af = m('anfrage-'); if (af !== null) { const a = db.anfragen.find((x) => slug(x.id) === af); return a ? { view: 'anfrage', a } : { view: 'fehlt', art: 'Anfrage', id: af }; }
   if (h === 'bauteile') return { view: 'katalog' };
   if (h === 'bedarfe') return { view: 'bedarfe' };
   if (h === 'bedarf-neu') return { view: 'bedarfneu' };
@@ -120,7 +139,8 @@ const BEREICH = {
   start: 'projekte', projekt: 'projekte', gebaeude: 'projekte', bestand: 'projekte', entscheidungen: 'projekte', entscheidung: 'projekte', radar: 'projekte', projektneu: 'projekte',
   katalog: 'bauteile', pass: 'bauteile',
   bedarfe: 'bedarfe', bedarf: 'bedarfe', bedarfneu: 'bedarfe', bedarfergaenzen: 'bedarfe', abgleichliste: 'bedarfe', abgleich: 'bedarfe',
-  erfassung: 'erfassen', installieren: 'erfassen',
+  erfassung: 'erfassen', installieren: 'erfassen', pilotraum: 'erfassen',
+  anfragen: 'uebersicht', anfrage: 'uebersicht', anfrageneu: 'bauteile',
 };
 const HAUPT = [['uebersicht', '#uebersicht', 'Übersicht', 'uebersicht'], ['projekte', '#projekte', 'Projekte', 'karte'], ['bauteile', '#bauteile', 'Bauteile', 'bauteil'], ['bedarfe', '#bedarfe', 'Bedarfe', 'bedarf'], ['erfassen', '#erfassung', 'Erfassen', 'kamera']];
 function rahmen(r, inhalt) {
@@ -135,7 +155,7 @@ function rahmen(r, inhalt) {
       <a class="marke" href="#uebersicht"><span class="marke-zeichen" aria-hidden="true">${icon('kreislauf')}</span><span><b>CircularFlow</b><small>Bauteile im Kreislauf</small></span></a>
       <nav class="nav" aria-label="Hauptnavigation">${HAUPT.map(navLink).join('')}</nav>
       ${pr ? `<div class="kontext"><span class="label">Projekt</span><a href="#projekt-${slug(pr.kurz)}" class="kontext-titel">${pchip(pr)}<b>${esc(pr.name)}</b></a></div>` : ''}
-      <div class="rail-fuss">${zeitwahl('projektzeit')}<p><span class="chip chip-sim">Beispieldaten</span> Projekte, Personen und Bauteile sind fiktiv. Eigene Erfassungen bleiben in diesem Browser.</p>${ui.installation.laeuftAlsApp ? '' : '<p><a href="#installieren">Als App installieren</a></p>'}</div>
+      <div class="rail-fuss">${zeitwahl('projektzeit')}<p><span class="chip chip-sim">Beispieldaten</span> Projekte, Personen und Bauteile sind fiktiv. Eigene Erfassungen bleiben in diesem Browser.</p>${ui.installation.laeuftAlsApp ? '' : '<p><a href="#installieren">Als App installieren</a></p>'}<p><a href="#anfragen">Anfragen</a> · <a href="#pilotraum">Daten und Pilotraum</a>${ui.pilotraum.status === 'verbunden' ? ` <span class="chip chip-ok">Pilotraum ${esc(ui.pilotraum.rechte === 'bearbeiten' ? 'verbunden' : 'nur lesen')}</span>` : ''}</p></div>
     </aside>
     <div class="arbeitsflaeche">
       <header class="kopf-mobil"><a class="marke" href="#uebersicht"><span class="marke-zeichen" aria-hidden="true">${icon('kreislauf')}</span><b>CircularFlow</b></a>${zeitwahl('projektzeit-m')}</header>
@@ -166,6 +186,8 @@ function render() {
     if (r.view === 'bedarfneu') bedarfsformularStarten(ui, null);
     else if (r.view === 'bedarfergaenzen') bedarfsformularStarten(ui, r.d);
     else if (r.view === 'projektneu') ui.projektForm = leeresProjektformular();
+    ui.pilot = { ...leeresPilotformular(), datei: ui.pilot.datei, dienstleister: r.view === 'anfragen' ? ui.pilot.dienstleister : leeresPilotformular().dienstleister };
+    if (r.view === 'anfrageneu') ui.pilot.anfrage = { entwurf: leererAnfrageEntwurf({ projekt: r.b.projekt, id: r.b.id }, r.d ? { projekt: r.d.projekt, id: r.d.id } : null), fehler: {} };
   }
   if (r.view === 'erfassung' && neu) {
     const ent = ui.erfassung;
@@ -193,12 +215,16 @@ function render() {
                 : r.view === 'entscheidung' ? entscheidungsSeite(c, r.p, r.e)
                   : r.view === 'erfassung' ? erfassung(c)
                     : r.view === 'installieren' ? installieren(c)
+                    : r.view === 'anfragen' ? anfragenSeite(c)
+                    : r.view === 'anfrage' ? anfrageSeite(c, r.a)
+                    : r.view === 'anfrageneu' ? anfrageFormular(c, r.b, r.d)
+                    : r.view === 'pilotraum' ? pilotraumSeite(c)
                     : r.view === 'radar' ? radar(c, r)
                       : nichtGefunden(r.art, r.id);
   const aktiv = document.activeElement; const sel = fokusSelektor(aktiv); const pos = aktiv?.id ? aktiv.selectionStart : null;
   if (document.getElementById('karte')) karteEntfernen(ui.start.ansicht || (ui.start.ansicht = {}));
   app.innerHTML = rahmen(r, inhalt);
-  document.title = `${{ uebersicht: 'Übersicht', katalog: 'Bauteile', bedarfe: 'Bedarfe', bedarf: `Bedarf ${r.d?.id}`, bedarfneu: 'Bedarf erfassen', bedarfergaenzen: `Bedarf ${r.d?.id} ergänzen`, abgleichliste: 'Passende Paare', abgleich: `Abgleich ${r.bauteil?.id} und ${r.bedarf?.id}`, vorgaenge: 'Arbeitsliste', projektneu: 'Projekt erfassen', start: 'Projekte', projekt: r.p?.name, gebaeude: `Gebäude ${r.p?.kurz}`, bestand: `Bestand ${r.p?.kurz}`, pass: `${r.b?.id} Bauteilpass`, entscheidungen: `Entscheidungen ${r.p?.kurz}`, entscheidung: `Entscheidung ${r.e?.id}`, erfassung: 'Erfassung', installieren: 'App installieren', radar: 'Projektradar' }[r.view] || 'Nicht gefunden'} · CircularFlow`;
+  document.title = `${{ uebersicht: 'Übersicht', katalog: 'Bauteile', bedarfe: 'Bedarfe', bedarf: `Bedarf ${r.d?.id}`, bedarfneu: 'Bedarf erfassen', bedarfergaenzen: `Bedarf ${r.d?.id} ergänzen`, abgleichliste: 'Passende Paare', abgleich: `Abgleich ${r.bauteil?.id} und ${r.bedarf?.id}`, vorgaenge: 'Arbeitsliste', projektneu: 'Projekt erfassen', start: 'Projekte', projekt: r.p?.name, gebaeude: `Gebäude ${r.p?.kurz}`, bestand: `Bestand ${r.p?.kurz}`, pass: `${r.b?.id} Bauteilpass`, entscheidungen: `Entscheidungen ${r.p?.kurz}`, entscheidung: `Entscheidung ${r.e?.id}`, erfassung: 'Erfassung', installieren: 'App installieren', anfragen: 'Anfragen', anfrage: `Anfrage ${r.a?.id}`, anfrageneu: 'Anfrage vorbereiten', pilotraum: 'Daten und Pilotraum', radar: 'Projektradar' }[r.view] || 'Nicht gefunden'} · CircularFlow`;
   if (r.view === 'start' && R) karteAnzeigen(c);
   letzteRoute = location.hash;
   if (neu) {
@@ -238,6 +264,7 @@ app.addEventListener('click', (ev) => {
   // Links mit Aktion setzen erst den Filter im ui-Objekt; die Navigation zeichnet danach selbst. Gleiche Seite: sofort neu zeichnen.
   const zumLink = (el) => el.localName === 'a' && el.getAttribute('href') !== location.hash;
   const act = a.dataset.action; const ent = ui.erfassung;
+  const pr = pilot.klick(act, a); if (pr === true) { render(); return; } if (pr === false) return;
   const k = a.dataset.entscheidung;
   switch (act) {
     case 'skip': document.getElementById('inhalt').focus(); return;
@@ -271,9 +298,12 @@ app.addEventListener('click', (ev) => {
     case 'erf-gehe': ent.schritt = Number(a.dataset.schritt); ent.fehler = {}; ui.fokus = 'h-erf'; break;
     case 'erf-zurueck': ent.schritt = Math.max(1, ent.schritt - 1); ent.fehler = {}; ui.fokus = 'erf-zurueck'; break;
     case 'installieren': appInstallieren(); return;
+    case 'erf-etikett-manuell': ent.etikett = etikettManuell(); ent.etikettFehler = ''; ui.fokus = 'etikett-hersteller'; break;
+    case 'erf-etikett-weg': ent.etikett = null; ent.etikettFehler = ''; delete ent.fehler.etikett; ui.fokus = 'erf-etikett'; break;
+    case 'erf-etikett-abbrechen': if (ent.etikettAbbruch) ent.etikettAbbruch.abbrechen(); return;
     case 'erf-weiter': erfWeiter(); return;
     case 'erf-speichern': erfSpeichern(); return;
-    case 'erf-uebernehmen': { const w = ent.werte[a.dataset.key]; ent.werte[a.dataset.key] = { ...w, status: 'bestaetigt', quelle: 'Erkennung (Simulation), von Hand geprüft' }; ui.fokus = `w-${a.dataset.key}`; break; }
+    case 'erf-uebernehmen': { const w = ent.werte[a.dataset.key]; ent.werte[a.dataset.key] = { ...w, status: 'bestaetigt', quelle: 'Vorschlag, von Hand geprüft' }; ui.fokus = `w-${a.dataset.key}`; break; }
     case 'erf-leeren': ent.werte[a.dataset.key] = { eingabe: '', status: 'fehlt', quelle: '' }; ui.fokus = `w-${a.dataset.key}`; break;
     case 'erf-foto-weg': ent.foto = null; ent.erkennung = null; ent.fotoFehler = ''; break;
     case 'erf-neu': ui.erfassung = a.dataset.projekt ? { ...leererEntwurf(a.dataset.projekt, a.dataset.raum), schritt: 2, verfuegbarAb: db.projekte.find((x) => x.kurz === a.dataset.projekt)?.rueckbauAb || '' } : leererEntwurf(); ui.fokus = 'h-erf'; break;
@@ -282,7 +312,8 @@ app.addEventListener('click', (ev) => {
     case 'reset-ja':
       loesche(speicher); p = leerePersistenz(); db = baueDaten(p);
       Object.assign(ui, { resetFrage: false, zuletzt: null, zielWahl: null, zuordnungFehler: '', erfassung: leererEntwurf(), radar: leereRadarFilter(), importe: { ifc: null, ifcSim: false, scanSim: false }, speicherHinweis: '',
-        bedarfForm: leeresBedarfsformular(), projektForm: leeresProjektformular(), vorgangForm: leeresVorgangsformular(), bedarfe: leereBedarfsliste(), katalog: leererKatalog(), bestand: leererBestand(), vorgaenge: { status: '' }, abgleich: { ergebnis: '' } });
+        bedarfForm: leeresBedarfsformular(), projektForm: leeresProjektformular(), vorgangForm: leeresVorgangsformular(), pilot: leeresPilotformular(), bedarfe: leereBedarfsliste(), katalog: leererKatalog(), bestand: leererBestand(), vorgaenge: { status: '' }, abgleich: { ergebnis: '' } });
+      pilot.nachAenderung();
       melde('Eigene Erfassungen und Änderungen gelöscht.'); break;
     case 'zum-ziel': { const sel = document.getElementById('ziel-wahl'); if (sel) { sel.scrollIntoView({ block: 'center' }); sel.focus({ preventScroll: true }); } return; }
     case 'radar-pruefen': case 'radar-bestaetigen': case 'radar-verwerfen': radarAktion(act.slice(6), a.dataset.hinweis); return;
@@ -304,7 +335,8 @@ app.addEventListener('input', (ev) => {
   if (t.id === 'kat-menge') { ui.katalog.mindest = t.value; render(); return; }
   if (t.id === 'erf-menge') { ent.menge = t.value; delete ent.fehler.menge; render(); return; }
   if (t.id === 'erf-notiz') { ent.notiz = t.value; return; }
-  if (t.dataset.etikett) { ent.etikett.pruefung[t.dataset.etikett] = {wert:t.value,geprueft:false}; delete ent.fehler.etikett; const box=app.querySelector(`[data-etikett-check="${t.dataset.etikett}"]`); if(box)box.checked=false; return; }
+  // Typenschild-Feld geändert: Bestätigung aufheben; die Prüf-Checkbox gibt es nur für nicht leere Angaben.
+  if (t.dataset.etikett) { ent.etikett.pruefung[t.dataset.etikett] = { wert: t.value, geprueft: false }; delete ent.fehler.etikett; const box = app.querySelector(`[data-etikett-check="${t.dataset.etikett}"]`); if (box) { box.checked = false; box.disabled = !t.value.trim(); } return; }
   if (t.dataset.wert && t.tagName === 'INPUT') {
     const f = GRUPPEN[ent.gruppe].felder.find((x) => x.key === t.dataset.wert);
     const leer = !t.value.trim();
@@ -317,13 +349,18 @@ app.addEventListener('input', (ev) => {
 
 app.addEventListener('change', async (ev) => {
   const t = ev.target; const ent = ui.erfassung;
-  if (t.dataset.etikettCheck) { const p=ent.etikett.pruefung[t.dataset.etikettCheck]; p.geprueft=t.checked; delete ent.fehler.etikett; return; }
-  if (t.id === 'erf-etikett') {
-    const file=t.files?.[0]; if(!file||ent.etikettLaedt)return;
-    ent.etikettLaedt=true;ent.etikettFehler='';ent.etikett=null;render();
-    try {const result=await etikettLesen(file);if(ui.erfassung===ent)ent.etikett=result;}
-    catch(err){if(ui.erfassung===ent)ent.etikettFehler='Texterkennung nicht verfügbar: '+err.message;}
-    finally{ent.etikettLaedt=false;if(ui.erfassung===ent)render();}return;
+  if (t.dataset.etikettCheck) { const pf = ent.etikett.pruefung[t.dataset.etikettCheck]; pf.geprueft = t.checked; delete ent.fehler.etikett; ui.fokus = t.id || null; render(); return; }
+  if (t.id === 'daten-datei') { await pilot.datenLaden(t.files?.[0]); return; }
+  if (t.id === 'erf-etikett' || t.id === 'erf-etikett-wahl') {
+    const file = t.files?.[0]; if (!file || ent.etikettLaedt) return;
+    // Ein neues Etikettfoto verwirft alte Vorschläge; während des Lesens ist Weiter/Speichern gesperrt, Abbrechen möglich.
+    const abbruch = etikettAbbruch(); const start = performance.now();
+    Object.assign(ent, { etikettLaedt: true, etikettFehler: '', etikett: null, etikettFortschritt: { phase: 'bild', prozent: 0 }, etikettAbbruch: abbruch, etikettDauerMs: null }); delete ent.fehler.etikett; render();
+    const fortschritt = (m) => { if (ui.erfassung !== ent) return; ent.etikettFortschritt = m; const el = document.getElementById('etikett-fortschritt'); if (el) el.textContent = etikettFortschrittText(m); };
+    try { const result = await etikettLesen(file, { log: fortschritt, abbruch }); if (ui.erfassung === ent) { ent.etikett = result; ent.etikettDauerMs = Math.round(performance.now() - start); } }
+    catch (err) { if (ui.erfassung === ent) ent.etikettFehler = err.message; }
+    finally { Object.assign(ent, { etikettLaedt: false, etikettAbbruch: null, etikettFortschritt: null }); if (ui.erfassung === ent) { ui.fokus = ent.etikett ? 'etikett-ergebnis' : 'etikett-fehler'; render(); } }
+    return;
   }
   if (t.dataset.ff) { formEingabe(t); if (t.dataset.neuZeichnen) render(); return; }
   if (t.dataset.checkliste) { checklisteUmschalten(t); return; }
@@ -368,6 +405,7 @@ app.addEventListener('submit', (ev) => {
   if (f.dataset.form === 'bedarf') bedarfSpeichern();
   else if (f.dataset.form === 'projekt') projektSpeichern();
   else if (f.dataset.form === 'vorgang') vorgangAktion(f.dataset.entscheidung, f.dataset.aktion);
+  else if (f.dataset.form.startsWith('pilot')) pilot.absenden(f);
 });
 
 app.addEventListener('mouseover', (ev) => { const z = ev.target.closest('[data-hover]'); if (z) markerHervorheben(z.dataset.hover, true); });
@@ -375,6 +413,11 @@ app.addEventListener('mouseout', (ev) => { const z = ev.target.closest('[data-ho
 app.addEventListener('focusin', (ev) => { const z = ev.target.closest('[data-hover]'); if (z) markerHervorheben(z.dataset.hover, true); });
 app.addEventListener('focusout', (ev) => { const z = ev.target.closest('[data-hover]'); if (z) markerHervorheben(z.dataset.hover, false); });
 window.addEventListener('hashchange', render);
+export function etikettFortschrittText(m) {
+  if (!m) return '';
+  return m.phase === 'bild' ? 'Etikettfoto wird vorbereitet …' : m.phase === 'laden' ? `Texterkennung wird geladen${m.prozent ? ` … ${m.prozent} %` : ' …'}` : m.phase === 'lesen' ? `Etikett wird gelesen … ${m.prozent} %` : 'Fertig.';
+}
+pilot.start();
 
 // Tooltip für Diagrammsegmente: bei Maus und Tastaturfokus, Text aus data-tip.
 const tip = document.createElement('div');
@@ -458,6 +501,7 @@ function formEingabe(t) {
     if (t.name.startsWith('art-')) e.geschaetzt = { ...e.geschaetzt, [t.name.slice(4)]: wert === 'geschaetzt' };
     else { e[t.name] = wert; if (t.name === 'projekt') e.raum = ''; }
   } else if (ff === 'projekt') ui.projektForm.entwurf[t.name] = wert;
+  else if (ff.startsWith('pilot')) pilot.eingabe(t);
   else if (ff.startsWith('vorgang-')) {
     const k = t.closest('form')?.dataset.entscheidung; const aktion = ff.slice(8);
     if (ui.vorgangForm.k !== k) ui.vorgangForm = { ...leeresVorgangsformular(), k };
@@ -553,9 +597,7 @@ function pruefbitteAnlegenAktion(key, gesperrt) {
 // ---------- Erfassung ----------
 function gruppeWaehlen(g) {
   const ent = ui.erfassung; ent.gruppe = g; delete ent.fehler.gruppe;
-  ent.werte = {};
-  const vorschlag = ent.erkennung && ent.erkennung.gruppe === g ? GRUPPEN[g].vorschlag : {};
-  for (const [key, wert] of Object.entries(vorschlag)) ent.werte[key] = { eingabe: String(wert), status: 'vorgeschlagen', quelle: 'Erkennung (Simulation)' };
+  ent.werte = {}; // keine Vorschläge aus dem Foto: Maße werden gemessen oder bleiben offen
   if (GRUPPEN[g].einheit === 'Stk' && !ZAHL.test(String(ent.menge).trim())) ent.menge = '1';
 }
 
@@ -578,11 +620,16 @@ function erfSpeichern() {
   if (Object.keys(f).length) { ent.fehler = f; ui.fokus = 'erf-fehler'; render(); return; }
   const pr = db.projekte.find((x) => x.kurz === ent.projekt);
   const etage = pr.gebaeude[0].etagen.find((e) => e.raeume.some((r) => r.id === ent.raum)).id;
-  const id = naechsteBauteilId(db.bauteile, ent.projekt, ent.gruppe);
-  const b = bauteilAusErfassung(ent, { id, at: ui.at, etage });
-  uebernehmen((d) => { d.erfassungen.push(b); });
-  const fotoNurBisNeuladen = ui.speicherHinweis.startsWith('Der Browserspeicher ist voll');
+  let b;
+  // Die Kennung entsteht erst beim Speichern aus dem dann gültigen Stand (auch nach einem Abgleich mit dem Pilotraum).
+  const r = uebernehmen((d) => { const id = naechsteBauteilId(baueDaten(d).bauteile, ent.projekt, ent.gruppe); b = bauteilAusErfassung(ent, { id, at: ui.at, etage }); d.erfassungen.push(b); });
   const key = `${b.projekt}:${b.id}`;
+  if (!r.ok) {
+    // Nicht dauerhaft gespeichert: kein Erfolg melden. Der Eintrag bleibt bis zum Neuladen sichtbar; die Datei-Sicherung ist der Ausweg.
+    ui.zuletzt = key; ui.erfassung = { ...leererEntwurf(), gespeichert: { key, fehler: speicher ? `Speichern im Browser ist fehlgeschlagen (${r.grund}). Das Bauteil bleibt nur bis zum Neuladen erhalten.` : 'Dieser Browser erlaubt keinen lokalen Speicher. Das Bauteil bleibt nur bis zum Neuladen erhalten.' } };
+    ui.fokus = 'h-gesp'; render(); melde('Achtung: nicht dauerhaft gespeichert.'); return;
+  }
+  const fotoNurBisNeuladen = ui.speicherHinweis.startsWith('Der Browserspeicher ist voll');
   ui.zuletzt = key;
   ui.erfassung = { ...leererEntwurf(), gespeichert: { key, fotoHinweis: fotoNurBisNeuladen && b.foto ? 'Foto nur bis zum Neuladen gespeichert' : '' } };
   ui.fokus = 'h-gesp'; render(); melde(`${b.projekt} · ${b.id} gespeichert.`);

@@ -1,4 +1,5 @@
-import {createWorker} from './vendor/tesseract.esm.min.js';
+import Tesseract from './vendor/tesseract.esm.min.js';
+const createWorker=Tesseract.createWorker; // die ESM-Auslieferung von Tesseract.js 7 hat nur einen Standardexport
 import {FELDER,ausEtikett,gepruefterEntwurf} from './etikett.mjs';
 const $=id=>document.getElementById(id);
 const KEY='circularflow-etikett-versuch-v1';

@@ -19,6 +19,8 @@ export const bedarfsformularStarten = (ui, bedarf = null) => {
 };
 export const leeresProjektformular = () => ({ entwurf: { name: '', zusatz: '', art: '', bezirk: '', rueckbauAb: '', entscheidungBis: '', gebaeudeName: '', etagen: '1', raeume: '4' }, fehler: {} });
 export const leeresVorgangsformular = () => ({ k: '', eingabe: {}, fehler: {}, aktion: '' });
+// Pilotbetrieb: Anfrage, Dienstleister, Angebot bearbeiten, Verkauf/Provision und Interesse. Entwurf und Fehler je Formular.
+export const leeresPilotformular = () => ({ anfrage: { entwurf: null, fehler: {} }, dienstleister: { entwurf: null, fehler: {}, offen: false }, angebot: { k: '', entwurf: null, fehler: {}, offen: false }, verkauf: { k: '', eingabe: {}, fehler: {} }, provision: { k: '', eingabe: {}, fehler: {} }, interesse: { k: '', notiz: '', fehler: {} }, schritt: { id: '', eingabe: {}, fehler: {}, aktion: '' }, datei: { fehler: '', meldung: '' } });
 
 export function neuerUiZustand() {
   return {
@@ -38,6 +40,8 @@ export function neuerUiZustand() {
     bedarfForm: leeresBedarfsformular(),
     projektForm: leeresProjektformular(),
     vorgangForm: leeresVorgangsformular(),
+    pilot: leeresPilotformular(),
+    pilotraum: { url: '', schluessel: '', status: 'getrennt', name: '', rechte: '', fehler: '', version: 0, zuletzt: '' },
     zuletzt: null, zielWahl: null, zuordnungFehler: '', resetFrage: false, fokus: null, fokusNachRoute: null, speicherHinweis: '',
   };
 }

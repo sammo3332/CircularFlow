@@ -797,3 +797,19 @@ legend { font-size: var(--t-s); font-weight: 620; color: var(--tinte-2); margin-
 /* Zahlenzeile und Nebenzahl (Paare derselben Gruppe, davon prüfbar) */
 .zahlenzeile { margin: 0 0 var(--s-3, 12px); font-size: var(--t-m, 1rem); }
 .kachel-neben { display: block; margin-top: 2px; font-weight: 600; font-size: var(--t-s, .875rem); color: var(--tinte-2, inherit); }
+
+/* Pilotbetrieb (19.11.2026): Typenschild, Interesse, Anfragen, Provision */
+.etikett-raster { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
+@media (min-width: 861px) { .etikett-raster:has(.etikett-bild) { grid-template-columns: minmax(220px, 2fr) minmax(0, 3fr); } }
+.etikett-bild { margin: 0; } .etikett-bild img { width: 100%; max-height: 360px; object-fit: contain; border: 1px solid var(--linie); border-radius: var(--r); background: var(--flaeche-3); }
+.etikett-vorschau { max-width: 100%; max-height: 220px; object-fit: contain; border-radius: var(--r); border: 1px solid var(--linie); display: block; margin-top: var(--s-2); }
+.rohtext { white-space: pre-wrap; font-size: var(--t-s); background: var(--flaeche-3); padding: var(--s-3); border-radius: var(--r); }
+.etikett-pruefung .feld .schalter { margin-top: 4px; }
+.interesse-form { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-3); align-items: end; margin-top: var(--s-3); }
+.interesse-form .feld-inline { display: grid; gap: 4px; flex: 1 1 260px; font-size: var(--t-s); font-weight: 620; color: var(--tinte-2); }
+.interesse-form .feld-inline input { font-weight: 400; }
+.interesse-form .klein { flex: 1 1 100%; margin: 0; }
+.provisionen li { display: grid; gap: var(--s-2); padding-block: var(--s-3); border-top: 1px solid var(--linie); }
+.provisionen li:first-child { border-top: 0; }
+.provisionen li > p { margin: 0; }
+.hinweisliste { margin: var(--s-3) 0 0; padding-left: 20px; display: grid; gap: 4px; font-size: var(--t-s); color: var(--tinte-2); }

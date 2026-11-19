@@ -1,3 +1,92 @@
+
+
+# CircularFlow Plattform · Pilotstand 19.11.2026
+
+Stand 19.11.2026 · Branch `codex/pilotstand-20261119` · Arbeitsstand für den Pilotbetrieb, keine Veröffentlichung. Der geprüfte
+Pitch-Stand (`codex/plattform-v1`, Code `2121b92`) und die geteilte Vorschau bleiben unverändert.
+
+Dieser Stand verbindet den Scan-Stand von ChatGPT (`f3c57a9`, Etikett-Texterkennung) mit der installierbaren Web-App (CF-PWA-01,
+`665ffdb`) und ergänzt den Pilotablauf: Bauteil fotografieren → Typenschild auslesen → Angaben prüfen und bestätigen → Bauteilpass
+speichern → passenden Bedarf finden → fehlende Angaben und Fristen klären → Prüf- oder Logistikleistung anfragen → Verlauf dokumentieren.
+Prüfbericht mit Belegen: [`docs/pruefungen/pilotstand-2026-11-19/README.md`](../docs/pruefungen/pilotstand-2026-11-19/README.md).
+
+## Starten
+
+Einmalig die Texterkennung bereitstellen (Engine und Sprachdateien liegen nicht im Repository):
+
+```sh
+cd plattform/etikett-versuch && npm install && npm run vendor && cd ../..
+```
+
+Dann **vom Repository-Wurzelverzeichnis** den Pilotserver starten (liefert die Seite aus und hält den gemeinsamen Datenstand):
+
+```sh
+node plattform/server/pilotserver.mjs
+```
+
+`http://localhost:8000/plattform/` öffnen. Ohne Pilotraum arbeitet die Plattform wie bisher nur mit dem Speicher dieses Browsers.
+Alternativ genügt für reine Einzelnutzung weiterhin `python3 -m http.server 8000` vom Wurzelverzeichnis.
+
+**Gemeinsamer Datenstand (Pilotraum):** Raum anlegen, Schlüssel an die berechtigten Personen geben, in der Anwendung unter
+„Daten und Pilotraum“ (`#pilotraum`) verbinden.
+
+```sh
+node plattform/server/pilotserver.mjs raum-anlegen "Pilot Dortmund"
+```
+
+Der Befehl zeigt einmalig einen Bearbeitungs- und einen Leseschlüssel; der Server speichert nur Prüfsummen. Daten liegen als Dateien in
+`plattform/server/daten/` (nicht im Repository). Fremde Räume sind nicht erreichbar, der Leseschlüssel kann nicht schreiben.
+Für andere Geräte im selben WLAN die Adresse `http://<IP des Rechners>:8000/plattform/` verwenden (ohne HTTPS keine App-Installation).
+
+**Prüfen:**
+
+```sh
+node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs
+cd plattform/etikett-versuch && node test/ocr.mjs && cd ../..
+node docs/pruefungen/pilotstand-2026-11-19/werkzeug/browserlauf.mjs <Testdatenordner>   # Playwright mit Chromium, startet den Pilotserver selbst auf Port 8010
+```
+
+## Klickpfad des Pilotablaufs (Beispieldaten, Stichtag der Demo Mi 18.11.2026, 14:00)
+
+1. **Erfassen** (`#erfassung`): Projekt LH, Raum wählen → Schritt 2: Bauteilfoto, dann „Typenschild fotografieren“ oder
+   „Vorhandenes Bild wählen“ (Testbild `plattform/etikett-versuch/fixtures/testetikett.png`). Fortschritt erscheint, Abbrechen ist möglich.
+   Ohne Scan: „Angaben ohne Scan eintragen“.
+2. Schritt 3: Bauteilgruppe, Menge; Typenschildangaben neben dem Foto prüfen, korrigieren, jede Angabe „Am Foto geprüft“ bestätigen.
+   Eine Änderung hebt die Bestätigung auf. Schritt 4: Maße messen oder offen lassen. Schritt 5: Speichern.
+   Ohne Bestätigung ist Speichern gesperrt; ein Speicherfehler erscheint als Fehler, nicht als Erfolg.
+3. **Bauteilpass** (`#pass-lh-t-13` nach der ersten Erfassung): Angaben mit Herkunft (ausgelesen, manuell eingegeben, am Foto bestätigt,
+   gemessen), Typenschild mit Rohtext, letzte Änderung, „Angebot bearbeiten“ (Menge, Verfügbarkeit, Zustand, zurückziehen).
+4. **Bedarf finden**: Bauteilpass → „Bedarfe derselben Gruppe“ oder `#abgleich`. Paar öffnen: Ergebnis „Weiter prüfen“, „Angaben fehlen“
+   oder „Für diese Entscheidung zu spät“ mit Begründung, fehlender Angabe, nächstem Schritt, Zuständigkeit und Frist; als regelbasiert
+   gekennzeichnet. Beispiele: TW-05 → BD-22 (weiter prüfen), T-31 → BD-21 (Angaben fehlen; Bedarf ergänzen), TW-01 → BD-23 (zu spät).
+5. **Käuferseite**: auf der Abgleichseite „Interesse festhalten“ (keine Reservierung); „Prüfbitte anlegen“ startet wie bisher den Vorgang.
+6. **Anfrage** (`#anfrage-neu-…` von Pass oder Abgleich): Leistung, Unterlagen, offene Fragen, zuständige Person, Termin, Dienstleister,
+   Kostentragung → speichern (nicht versenden). Unter `#anfragen` Dienstleister hinterlegen (Testeintrag oder freigegebener Kontakt).
+   Verlauf: beauftragt (laut Eintrag) → Ergebnis (positiv, negativ, offene Punkte; nie automatisch) → Klärung, Übergabe, abgeschlossen
+   oder abgelehnt.
+7. **Verkauf und Provision** (im Bauteilpass): Verkaufsstand eintragen; erst nach „abgeschlossen“ erscheint je vermitteltem Dienstleister
+   der Provisionsstatus, der ohne eingetragene Vereinbarung „offen“ bleibt.
+8. **Daten und Pilotraum** (`#pilotraum`): Datenstand als Datei sichern oder laden; Pilotraum verbinden.
+
+Zurücksetzen: Erfassen → „In diesem Browser gespeichert“ → „Zurücksetzen“.
+
+## Was echt ist und was nicht (Pilotstand)
+
+| Bereich | Stand |
+|---|---|
+| Texterkennung vom Typenschild | echt, lokal (Tesseract.js 7.0.0, Sprachdatei `deu`); vier Felder; im Browser geprüft (Chromium). Kein Versand des Fotos |
+| Erkennung aus dem Bauteilfoto | gibt es nicht; die frühere Simulation ist aus dem Ablauf entfernt |
+| Herkunft je Angabe | echt: ausgelesen, manuell eingegeben, am Foto bestätigt, gemessen, laut Eintrag (Fachergebnis) |
+| Speichern | Browserspeicher dieses Geräts; Fehler werden angezeigt; Datei-Sicherung; mit Pilotraum gemeinsamer Stand über den Pilotserver |
+| Abgleich, Vorgänge, Anfragen | regelbasierte Einträge von Personen; nichts wird versendet, keine Fachfreigabe |
+| Dienstleister | nur eigene Einträge (Testeintrag oder freigegebener Kontakt); keine vorbelegten Partner |
+| Verkauf und Provision | Dokumentation laut Eintrag; keine Beträge, keine Prozentsätze, keine Zahlung |
+| Beispielprojekte, Personen, Bauteile | fiktiv (unverändert) |
+
+Nicht geprüft: echtes Smartphone, Kamera, Installation als App auf einem Gerät, HTTPS, echte Typenschilder, echte Nutzer.
+
+---
+
 # Entwicklungszusatz: Etikett in den Bauteilpass übernehmen
 
 Stand 18.11.2026 · Arbeitsstand, nicht veröffentlichte Pitch-Vorschau.

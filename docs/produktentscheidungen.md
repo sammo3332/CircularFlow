@@ -1,6 +1,6 @@
 # Produktentscheidungen · Entscheidungsdatei
 
-Dokumentversion 1.0 · Stand 18.11.2026 · Branch `codex/plattform-v1` (gleichlautend auf `codex/plattform-entwicklung-20261118`) ·
+Dokumentversion 1.1 (Nachtrag §7 vom 19.11.2026) · ursprünglich Stand 18.11.2026 · Branch `codex/plattform-v1` (gleichlautend auf `codex/plattform-entwicklung-20261118`) ·
 Ausgangscommit `6ea30e7`
 
 **Zweck.** Diese Datei hält die bisher getroffenen Produktentscheidungen mit Datum, Begründung und offenen Punkten fest. Der
@@ -80,3 +80,35 @@ und `270e045` (Entwicklungsbranch). Der Commit dieser Datei steht im Git-Verlauf
 **Umfang:** Türen bleiben konkreter Testfall. Fenster und Leuchten sind Beispiele der langfristigen Idee, keine nachgewiesenen Verkaufsschlager. Im Prototyp gibt es dafür noch keine eigenen Fachregeln. Fremde Eventfotos dienen als interne Gestaltungsreferenz; ihre Logos, Zahlen und Personen werden nicht in den neuen Pitch übernommen.
 
 Prüfweg, ausgeführte Tests, Grenzen und die nächsten drei Aufgaben stehen im Übernahmebericht, nicht in einer zweiten allgemeinen Entscheidungsliste.
+
+## 7. Nachtrag 19.11.2026 · Pilotstand (technische Fertigstellung durch Claude)
+
+Dokumentversion 1.1 · Branch `codex/pilotstand-20261119` · Ausgangscommit `f3c57a9` (Scan-Integration von ChatGPT) zuzüglich Merge von
+`claude/bold-fermat-t1ngwv` (`665ffdb`, CF-PWA-01). Auftrag des Teams vom 19.11.2026: durchgehend nutzbarer Pilotstand.
+
+**Festlegung des Auftraggebers A8 (19.11.2026, Geschäftsmodell):** Käufer und Verkäufer bezahlen die jeweils vereinbarten Prüf- und
+Logistikleistungen an die beauftragten Unternehmen. Nach abgeschlossenem Bauteilverkauf zahlen die vermittelten Dienstleister
+CircularFlow eine vereinbarte Provision. **Ändert** die Hypothese „Provisionen aus Bauteilgeschäften“ aus §6 (abgelöst). Umsetzung:
+Verkaufsstand je Bauteil, vermittelte Leistungen je Dienstleister, Provisionsstatus „offen“, solange keine Vereinbarung eingetragen ist;
+keine Prozentsätze, keine Zahlungen. Offen: Akzeptanz des Modells durch Dienstleister, Höhe und Grundlage der Provision, Kostentragung
+bei negativer Prüfung (wird je Anfrage eingetragen, nicht automatisch verteilt).
+
+**Festlegung des Auftraggebers A9 (19.11.2026, Ablauf):** Bauteil fotografieren → Typenschild auslesen → Angaben prüfen und bestätigen →
+Bauteilpass speichern → passenden Bedarf finden → fehlende Angaben und Fristen klären → Prüf- oder Logistikleistung anfragen → Verlauf
+dokumentieren. Eine Funktion gilt erst als fertig, wenn sie ausgeführt und passend geprüft wurde.
+
+**Vorschläge der Koordination (umgesetzt, Freigabe des Teams fehlt):**
+
+| Nr. | Vorschlag | Begründung | Offen |
+|---|---|---|---|
+| V10 | Texterkennung mit der deutschen Sprachdatei `deu` (tessdata_fast) statt `eng`. | Am 19.11.2026 an synthetischen Etiketten geprüft: `eng` liest Umlaute falsch („Turenwerk Muller“, „GréRe“), `deu` liest das deutsche und das englische Testetikett vollständig richtig und ist kleiner (1,5 MB statt 4,1 MB). `eng` bleibt als Vergleich im Paket. | Echte Typenschilder (Prägung, Glanz, Schmutz) sind nicht geprüft. |
+| V11 | Herkunft je Typenschildangabe: „ausgelesen (Texterkennung), am Foto bestätigt“, „manuell eingegeben, am Foto bestätigt“, ohne Foto „manuell eingegeben, geprüft“. Maße weiter „gemessen/bestätigt/vorgeschlagen/fehlt“, Fachergebnis „laut Eintrag“. | Auftrag §3 verlangt die Unterscheidung ausgelesen, manuell, am Foto bestätigt, gemessen, fachlich geprüft. | – |
+| V12 | Die simulierte Erkennung der Bauteilgruppe aus dem Seitenverhältnis ist aus dem Erfassungsablauf entfernt; die alte Funktion bleibt nur für historische Tests. Objekterkennung aus Bauteilfotos gibt es nicht. | Auftrag §5: keine Simulation im aktiven Ablauf; keine vorbereitete Schnittstelle als „Erkennung“ ausgeben. | Eine echte Bauteilerkennung braucht ein geprüftes Modell, Hardware und eine Freigabe zur Bildverarbeitung; nicht Teil dieses Stands. |
+| V13 | Gemeinsamer Datenstand über einen eigenen **Pilotserver** (Node, keine Abhängigkeiten, Datei je Pilotraum) mit Bearbeitungs- und Leseschlüssel; die Anwendung bleibt ohne Verbindung vollständig lokal nutzbar. Zusätzlich Datenstand als Datei sichern und laden. | Auftrag §3: kleinste passende Lösung für gemeinsamen Zugriff im Pilot, getrennte Räume, kein kostenpflichtiger Dienst. | Kein Hosting, kein HTTPS, keine Benutzerkonten; Schlüssel sind Raumschlüssel, keine persönlichen Zugänge. Gleichzeitige Erfassung mit gleicher Kennung innerhalb weniger Sekunden kann einen Eintrag verwerfen (wird gemeldet, nicht still). |
+| V14 | Anfragen haben die Statuskette vorbereitet → beauftragt (laut Eintrag) → Ergebnis eingetragen → weitere Klärung oder abgelehnt → Übergabe geplant → abgeschlossen. Ein Ergebnis braucht ein eingetragenes Urteil; nichts wird versendet. | Auftrag §6. Die bestehende Vorgangskette (Prüfbitte, Fachergebnis, Vormerkung, Übergabe) bleibt unverändert daneben. | Verknüpfung Anfrage ↔ Vorgang ist nur als Verweis vorgesehen, nicht automatisch. |
+| V15 | Interesse an einem Angebot ist eine Interessenbekundung je Paar (Bauteil, Bedarf), keine Reservierung; sie sperrt nichts. | Auftrag §4. | – |
+
+**Abgelöst:** §6 „Geschäftsmodellhypothese … Provisionen aus Bauteilgeschäften“ durch A8. Die frühere Freigabe nur dreier Musterfolien
+und der Pitch-Entwurf bleiben von diesem Nachtrag unberührt.
+
+Prüfweg, ausgeführte Tests, Grenzen und nächste Aufgaben: `docs/pruefungen/pilotstand-2026-11-19/README.md`.

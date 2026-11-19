@@ -5,6 +5,7 @@ import { fehlendeZeitangaben } from '../bedarf.js';
 import { bedarfBelegt, bedarfBelegtArt, bedarfVorgang, vorgangStatus } from '../vorgang.js';
 import { esc, chip, icon, leer, pchip, gruppenChip, seitenkopf, person, routeBedarf, routeAbgleich, routeEntscheidung, tagText, ergebnisChip, tonMarke } from '../ui.js';
 import { verfuegbarText } from './bauteile.js';
+import { interessenAmBedarf } from './anfragen.js';
 
 export const bestellfristVon = (d) => d.bestellfrist ?? d.fristen?.ersatz?.slice(0, 10) ?? null;
 export const mengeBedarf = (d) => (d.bedarfM2 !== undefined ? `${String(d.bedarfM2).replace('.', ',')} m²` : d.menge ? `${String(d.menge).replace('.', ',')} ${d.einheit || GRUPPEN[d.gruppe].einheit}` : 'fehlt');
@@ -118,5 +119,6 @@ export function bedarfDetail(ctx, d) {
         <small>${esc(a.gruende[0] || '')}</small></a></li>`).join('')}</ul>`
         : (e ? '' : leer('Kein passendes Angebot.', 'Es gibt kein angebotenes Bauteil derselben Gruppe, das für diesen Bedarf in Frage kommt.'))}
     </section>
+    ${interessenAmBedarf(ctx, d)}
   </div>`;
 }
