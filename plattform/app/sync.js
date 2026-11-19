@@ -13,6 +13,7 @@ async function anfrage(cfg, pfad, { methode = 'GET', body = null } = {}) {
   catch { throw new Error('Der Pilotserver ist nicht erreichbar. Adresse prüfen oder Server starten.'); }
   let daten = null; try { daten = await res.json(); } catch { /* keine JSON-Antwort */ }
   if (res.status === 409) return { konflikt: true, ...daten };
+  if (res.status === 404 && !daten) throw new Error('Unter dieser Adresse läuft kein Pilotserver (nur statische Dateien). Server starten oder die Adresse des Pilotservers eintragen.');
   if (!res.ok) throw new Error(daten?.fehler || `Der Pilotserver antwortet mit Fehler ${res.status}.`);
   return daten;
 }

@@ -1,0 +1,7 @@
+{
+  "redirects": [{ "source": "/", "destination": "/plattform/", "permanent": false }],
+  "headers": [
+    { "source": "/plattform/etikett-versuch/vendor/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800, immutable" }] },
+    { "source": "/plattform/(.*)\\.(js|css|html|webmanifest)", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] }
+  ]
+}

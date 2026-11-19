@@ -1,0 +1,12 @@
+OK   rechner: Texterkennung mit den Repository-Dateien (0.8 s): Texterkennung fertig: 4 von 4 Angaben vorgeschlagen (0.4 s einschließl
+     geladen: 200 leaflet/leaflet.css, 200 leaflet/leaflet.js, 200 tesseract.esm.min.js, 200 worker.min.js, 200 core/tesseract-core-relaxedsimd-lstm.wasm.js, 200 lang/deu.traineddata
+OK   rechner: alle Engine-Dateien ausgeliefert
+OK   Manifest geladen (http://127.0.0.1:8030/plattform/manifest.webmanifest), Fehler: []
+OK   Installationshindernisse laut Chromium: []
+FEHL Ohne Pilotserver: verständliche Meldung statt Absturz („Der Pilotserver antwortet mit Fehler 404.“)
+FEHL rechner: keine Konsolenfehler (["Failed to load resource: the server responded with a status of 404 (File not found)"])
+OK   handy: Texterkennung mit den Repository-Dateien (0.8 s): Texterkennung fertig: 4 von 4 Angaben vorgeschlagen (0.3 s einschließl
+     geladen: 200 leaflet/leaflet.css, 200 leaflet/leaflet.js, 200 tesseract.esm.min.js, 200 worker.min.js, 200 core/tesseract-core-relaxedsimd-lstm.wasm.js, 200 lang/deu.traineddata
+OK   handy: alle Engine-Dateien ausgeliefert
+OK   handy: keine Konsolenfehler ([])
+2 Prüfung(en) fehlgeschlagen
