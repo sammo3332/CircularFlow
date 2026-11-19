@@ -17,7 +17,7 @@ export function erfassung(ctx) {
   const p = projekte.find((x) => x.kurz === ent.projekt);
   const ort = p && ent.raum ? raumVon(p, ent.raum) : null;
   return `
-  ${seitenkopf({ eyebrow: 'Erfassen', titel: 'Bauteil erfassen', untertitel: p ? `${pchip(p)} ${esc(p.name)}${ort ? ` · Raum ${esc(ort.raum.id)} ${esc(ort.raum.name)}` : ''}` : 'Für Handy und Tablet gebaut, funktioniert auch am Rechner.' })}
+  ${seitenkopf({ eyebrow: 'Erfassen', titel: 'Bauteil erfassen', untertitel: p ? `${pchip(p)} ${esc(p.name)}${ort ? ` · Raum ${esc(ort.raum.id)} ${esc(ort.raum.name)}` : ''}` : 'Für Handy und Tablet gebaut, funktioniert auch am Rechner.', aktionen: ent.schritt !== 1 || ctx.ui.installation?.laeuftAlsApp ? '' : '<a class="knopf-leise" href="#installieren">Als App installieren</a>' })}
   <div class="erfassung">
     <ol class="schritte" aria-label="Fortschritt">${SCHRITTE.map((t, i) => `<li class="${i + 1 < ent.schritt ? 'fertig' : i + 1 === ent.schritt ? 'jetzt' : ''}" ${i + 1 === ent.schritt ? 'aria-current="step"' : ''}>${i + 1 < ent.schritt ? `<button type="button" data-action="erf-gehe" data-schritt="${i + 1}"><span class="mono">${i + 1}</span>${t}</button>` : `<span><span class="mono">${i + 1}</span>${t}</span>`}</li>`).join('')}</ol>
     <section class="flaeche erf-karte" aria-labelledby="h-erf">
@@ -47,17 +47,23 @@ function schritt1(ctx, ent, projekte, p) {
 function schritt2(ctx, ent) {
   const er = ent.erkennung;
   return `<h2 id="h-erf">Foto aufnehmen</h2>
-    <p class="leise">Auf dem Handy öffnet sich die Kamera, am Rechner die Dateiauswahl. Das Foto bleibt in diesem Browser.</p>
+    <p class="leise">„Foto aufnehmen“ öffnet auf dem Handy die Kamera, „Vorhandenes Bild wählen“ die Bilder des Geräts. Am Rechner öffnen beide die Dateiauswahl.</p>
     <label class="fotofeld ${ent.foto ? 'hat-foto' : ''}" for="erf-foto">
-      ${ent.foto ? `<img src="${esc(ent.foto.daten)}" alt="Gewähltes Foto">` : `<span class="fotofeld-leer">${icon('kamera')}<b>Foto aufnehmen oder wählen</b><small>JPEG oder PNG bis 20 MB</small></span>`}
-      <input type="file" id="erf-foto" accept="image/*" capture="environment">
+      ${ent.foto ? `<img src="${esc(ent.foto.daten)}" alt="Gewähltes Foto">` : `<span class="fotofeld-leer">${icon('kamera')}<b>Foto aufnehmen</b><small>Hier tippen · JPEG oder PNG bis 20 MB</small></span>`}
+      <input type="file" id="erf-foto" accept="image/*" capture="environment" aria-label="Foto aufnehmen">
     </label>
+    <div class="foto-aktionen">
+      <label class="knopf dateiknopf" for="erf-foto">${icon('kamera')} ${ent.foto ? 'Neu aufnehmen' : 'Foto aufnehmen'}</label>
+      <label class="knopf-zweit dateiknopf">Vorhandenes Bild wählen<input type="file" id="erf-foto-wahl" accept="image/*"></label>
+      ${ent.foto ? '<button type="button" class="knopf-leise" data-action="erf-foto-weg">Foto entfernen</button>' : ''}
+    </div>
+    <p class="lokal-hinweis">${chip('Nur auf diesem Gerät', 'info')} <span>Das Foto wird verkleinert und im Speicher dieses Browsers abgelegt. Es wird nicht hochgeladen.</span></p>
     ${ent.fotoLaedt ? '<p class="leise" role="status">Foto wird verkleinert …</p>' : ''}
     ${ent.fotoFehler ? `<p class="feld-meldung" role="alert">${esc(ent.fotoFehler)}</p>` : ''}
     ${ent.foto ? `<p class="leise">${esc(ent.foto.name)} · ${ent.foto.breite} × ${ent.foto.hoehe} px nach Verkleinerung</p>` : ''}
     ${er ? `<div class="ergebnisbox sim" role="status"><p><b>Erkennung · Simulation</b> ${chip('keine echte Bildanalyse', 'sim')}</p>
       <p>Vorschlag: <b>${esc(GRUPPEN[er.gruppe].einzahl)}</b>, abgeleitet nur aus dem Seitenverhältnis (${esc(er.grund)}). Vorgeschlagene Werte erscheinen als „vorgeschlagen“ und müssen geprüft oder gemessen werden.</p></div>` : ''}
-    ${ent.foto ? '<button type="button" class="knopf-leise" data-action="erf-foto-weg">Foto entfernen</button>' : '<p class="klein">Ohne Foto weiter ist möglich. Das Foto fehlt dann als Nachweis.</p>'}
+    ${ent.foto ? '' : '<p class="klein">Ohne Foto weiter ist möglich. Das Foto fehlt dann als Nachweis.</p>'}
     <hr><h3>Typenschild auslesen (Versuch)</h3>
     <p>Optional: Etikett nah und scharf fotografieren. Die Texterkennung läuft lokal. Im nächsten Schritt Angaben korrigieren und einzeln bestätigen. Maße bleiben offen.</p>
     <label for="erf-etikett">Foto des Typenschilds wählen</label>
@@ -141,6 +147,7 @@ function schritt5(ctx, ent, projekte, p, ort) {
     </div>
     ${ent.etikett ? etikettFelder(ent) : ''}
     ${g ? `<ul class="prueffelder" aria-label="Angaben mit Status">${g.felder.map((f) => { const w = ent.werte[f.key] || { status: 'fehlt' }; const anzeige = w.status === 'fehlt' ? '–' : wertText(f, { wert: w.eingabe }); return `<li><span class="pf-text"><span class="pf-name">${esc(f.label)}</span><span class="pf-wert mono">${esc(anzeige)}</span></span>${wertChip(w.status)}</li>`; }).join('')}</ul>` : ''}
+    <p class="lokal-hinweis">${chip('Nur auf diesem Gerät', 'info')} <span>Gespeichert wird im Speicher dieses Browsers. Es gibt keine Synchronisierung: Auf anderen Geräten erscheint das Bauteil nicht.</span></p>
     <p class="klein">Nach dem Speichern erscheint das Bauteil im Bestand von ${p ? esc(p.kurz) : 'diesem Projekt'} und hat einen eigenen Pass. Fehlende und vorgeschlagene Angaben stehen dort als offene Nachweise.</p>`;
 }
 
@@ -152,13 +159,14 @@ function gespeichert(ctx, gs) {
   <section class="flaeche gespeichert" role="status" aria-labelledby="h-gesp">
     <p class="gesp-icon">${icon('haken')}</p>
     <h2 id="h-gesp" tabindex="-1">${pchip(p)} <span class="mono">${esc(b.id)}</span> ${esc(b.name)} ist im Bestand</h2>
-    <p>Raum ${esc(b.raum)} · ${gs.fotoHinweis ? esc(gs.fotoHinweis) : b.foto ? 'mit Foto' : 'ohne Foto'}. Gespeichert in diesem Browser.</p>
+    <p>Raum ${esc(b.raum)} · ${gs.fotoHinweis ? esc(gs.fotoHinweis) : b.foto ? 'mit Foto' : 'ohne Foto'}. Gespeichert in diesem Browser auf diesem Gerät, ohne Synchronisierung mit anderen Geräten.</p>
     <div class="ergebnis-aktionen">
       <a class="knopf" href="${routePass(b)}">Bauteilpass öffnen</a>
       <a class="knopf-zweit" href="#bestand-${slug(p.kurz)}">Im Bestand ansehen</a>
       <button type="button" class="knopf-leise" data-action="erf-neu" data-projekt="${esc(b.projekt)}" data-raum="${esc(b.raum)}">Weiteres Bauteil im selben Raum</button>
     </div>
-  </section>`;
+  </section>
+  ${meineErfassungen(ctx)}`;
 }
 
 function meineErfassungen(ctx) {
@@ -170,8 +178,8 @@ function meineErfassungen(ctx) {
     : '<button type="button" class="knopf-leise knopf-klein" data-action="reset-frage">Zurücksetzen</button>';
   return `<section class="block meine" aria-labelledby="h-meine">
     <div class="block-kopf"><h2 id="h-meine">In diesem Browser gespeichert</h2>${reset}</div>
-    ${eigene.length ? `<ul class="flaeche kompaktliste">${eigene.map((b) => `<li><a href="${routePass(b)}"><span class="mono">${esc(b.projekt)} · ${esc(b.id)}</span><span><b>${esc(b.name)}</b><small>Raum ${esc(b.raum)} · ${b.foto ? 'mit Foto' : 'ohne Foto'}</small></span></a></li>`).join('')}</ul>` : ''}
-    <p class="leise">${ctx.eigeneAenderungen} eigene ${ctx.eigeneAenderungen === 1 ? 'Änderung' : 'Änderungen'} (Erfassungen, Zuordnungen, Aufmaße, Radar-Prüfungen, Meldungen). Sie liegen nur in diesem Browser.</p>
+    ${eigene.length ? `<ul class="flaeche kompaktliste meine-liste">${eigene.map((b) => `<li><a href="${routePass(b)}" aria-label="${esc(b.projekt)} ${esc(b.id)} ${esc(b.name)}: Bauteilpass öffnen">${b.foto?.daten ? `<img class="kl-bild" src="${esc(b.foto.daten)}" alt="">` : '<span class="kl-bild kl-bild-leer" aria-hidden="true"></span>'}<span><b>${esc(b.name)}</b><small><span class="mono">${esc(b.projekt)} · ${esc(b.id)}</span> · Raum ${esc(b.raum)} · ${b.foto?.daten ? 'mit Foto' : b.foto ? 'Foto nicht gespeichert' : 'ohne Foto'}</small></span>${icon('pfeilrechts')}</a></li>`).join('')}</ul>` : ''}
+    <p class="leise">${ctx.eigeneAenderungen} eigene ${ctx.eigeneAenderungen === 1 ? 'Änderung' : 'Änderungen'} (Erfassungen, Zuordnungen, Aufmaße, Radar-Prüfungen, Meldungen). Sie liegen nur in diesem Browser auf diesem Gerät.</p>
   </section>`;
 }
 

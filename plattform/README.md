@@ -45,6 +45,60 @@ Abgleichregel, Vorgangsstatus, Beispieldaten und Speicher bleiben unverändert; 
 
 Dieser Branch ersetzt die geprüfte Pitch-Vorschau nicht. Pitch-Stand: Branch `codex/plattform-v1`, Code `2121b92`.
 
+## Entwicklungsstand: installierbare Web-App und mobile Erfassung (CF-PWA-01)
+
+Branch `claude/bold-fermat-t1ngwv`, aufbauend auf `codex/plattform-entwicklung-20261118` (`747b16c`). Plan und
+Abnahmekriterien: [`docs/plan-pwa-erfassung.md`](../docs/plan-pwa-erfassung.md). Prüfbericht mit Rohausgaben und
+Bildern: [`docs/pruefungen/cf-pwa-01/`](../docs/pruefungen/cf-pwa-01/README.md).
+
+**Neu:** Web-App-Manifest und Icons, Installationshilfe unter `#installieren`, größere Felder und Knöpfe am Handy,
+zwei Foto-Wege („Foto aufnehmen“ mit Kamera, „Vorhandenes Bild wählen“), Liste der eigenen Erfassungen mit
+Vorschaubild, deutlichere Kennzeichnung der lokalen Speicherung.
+
+**Nicht umgesetzt und nicht zugesagt:** Offline-Nutzung (es gibt keinen Service Worker), Synchronisierung zwischen
+Geräten, Konto, Server, App-Store. Was am Handy erfasst wird, erscheint nicht am Rechner.
+
+### Als App installieren
+
+Voraussetzung ist eine Adresse mit **HTTPS** oder `localhost`. Über `http://<IP-Adresse>:8000` im WLAN lässt sich
+die Seite am Handy benutzen, aber nicht installieren; die Installationshilfe sagt das dann selbst.
+
+- **Am Rechner (Chrome oder Edge):** Server starten (siehe „Starten“), `http://localhost:8000/plattform/` öffnen,
+  in der Adresszeile das Installieren-Symbol anklicken oder `#installieren` öffnen und „App installieren“ wählen.
+- **Android (Chrome):** Seite über HTTPS öffnen, Menü mit den drei Punkten → „Zum Startbildschirm hinzufügen“ oder
+  „App installieren“.
+- **iPhone und iPad (Safari):** Seite über HTTPS öffnen, Teilen-Symbol → „Zum Home-Bildschirm“. Die App vom
+  Home-Bildschirm hat dort einen eigenen Speicher; vorher in Safari Erfasstes erscheint darin nicht.
+
+Die installierte App startet bei der Erfassung (`#erfassung`) und braucht bei jedem Start die Verbindung zum Server.
+
+**Für ein Handy fehlt noch ein Hosting mit HTTPS.** Die Plattform besteht nur aus statischen Dateien; ausgeliefert
+werden müssen `plattform/` und `prototype/dist/door-rules.mjs` mit unveränderter Ordnerlage (also das
+Repository-Wurzelverzeichnis). Welcher Dienst das übernimmt, ist nicht entschieden; ein Deployment war nicht
+beauftragt. Die veröffentlichte Pitch-Vorschau (claude.ai) lässt sich nicht installieren und bleibt unverändert:
+`bauen-artifact.mjs` übernimmt die App-Angaben nicht.
+
+### Was tatsächlich geprüft wurde (18.11.2026)
+
+| Umgebung | Geprüft | Ergebnis |
+|---|---|---|
+| Node 22, `node --test …` | 218 Tests, davon 8 neu (`test/pwa.test.mjs`) | 218 bestanden |
+| Chromium 157 (Headless), Rechner 1280 × 720 | Manifest lädt, Chromium meldet keine Installationshindernisse, Icons werden ausgeliefert; Übersicht, Abgleich, Entscheidungsseite, Erfassung ohne seitliches Scrollen | bestanden |
+| Chromium 157 mit Geräteprofil „Pixel 7“ (412 × 839, **Emulation**) | Ablauf Ort → Foto → Bauteil → Angaben → Speichern → Pass → Neuladen → Liste; Zielgrößen und Schriftgrößen gemessen | bestanden |
+| Chromium 157 mit Geräteprofil „iPhone 13“ (390 × 664, **Emulation**, kein Safari) | derselbe Ablauf | bestanden |
+
+**Nicht geprüft:** kein echtes Smartphone, kein Safari, kein Firefox, kein Edge; der Installationsdialog selbst und
+das Symbol auf dem Startbildschirm; die Kamera (im Lauf wird eine Bilddatei übergeben); eine HTTPS-Adresse. Der
+Knopf „App installieren“ erscheint nur, wenn der Browser die Installation anbietet; im Headless-Lauf tat er das
+nicht, sein Weg ist deshalb nur über die Tests der Ansicht abgedeckt.
+
+**Browserlauf wiederholen** (Server läuft, Playwright mit Chromium vorhanden):
+
+```sh
+python3 docs/pruefungen/cf-pwa-01/werkzeug/testbild.py /tmp/testbild-tuer.jpg
+node docs/pruefungen/cf-pwa-01/werkzeug/browserlauf.cjs /tmp/testbild-tuer.jpg
+```
+
 ## Starten
 
 Einen statischen Server **vom Repository-Root** starten (Windows meist `py` statt `python3`):
@@ -62,7 +116,7 @@ Der Server muss vom Repository-Root laufen, weil die Plattform die geprüfte Tü
 starten und am Handy `http://<IP-Adresse des Rechners>:8000/plattform/#erfassung` öffnen. Die
 Fotoaufnahme nutzt das normale Dateifeld mit Kamera-Option und braucht dafür kein HTTPS.
 
-**Ohne Internet** funktionieren alle Ansichten, auch die Karte mit den Stadtbezirken. Nur die
+**Ohne Internet, aber mit erreichbarem Server** (zum Beispiel lokal am selben Rechner) funktionieren alle Ansichten, auch die Karte mit den Stadtbezirken. Ist der Server nicht erreichbar, lädt die Seite nicht; eine Offline-Nutzung gibt es nicht. Nur die
 zuschaltbare Straßenkarte (OpenStreetMap) braucht eine Verbindung; beim Zuschalten gehen IP-Adresse
 und Herkunftsseite an openstreetmap.org.
 
@@ -105,6 +159,7 @@ Für den Auftritt gibt es einen kürzeren, geprüften Ablauf mit Zusätzen für 
 | IFC-Vorprüfung | echt: zählt Geschosse, Räume, Türen im Browser. Import **simuliert** |
 | Raumscan | **simuliert** |
 | Speichern | nur `localStorage` dieses Browsers. Zurücksetzen unter Erfassung → „In diesem Browser gespeichert“ |
+| Installation als App | echt: Manifest und Icons; Installation über den Browser, nur mit HTTPS oder `localhost`. **Keine Offline-Nutzung, keine Synchronisierung zwischen Geräten** |
 | Prüfbitte, Fachergebnis, Vormerkung, Übergabe | **simuliert**: Einträge von „Sie“ in diesem Browser, nichts wird versendet. Ein Fachergebnis ist laut Eintrag und keine Fachfreigabe, eine Vormerkung ist unverbindlich |
 | Abgleich von Angebot und Bedarf | Entwurfsregel, nicht fachlich geprüft; Mindestprüfzeiten und Annahmefenster der Beispiele sind Annahmen; Lage und Entfernung symbolisch |
 | Eigene Projekte, Bedarfe, Grundrisse | Eigene Eingaben, nicht geprüft; Grundriss schematisch |
@@ -139,5 +194,7 @@ node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform
 | `test/regeln.test.mjs` | Regeltests für `app/regeln.js` |
 | `test/abgleich.test.mjs`, `vorgang`, `kennzahlen`, `bedarf`, `projektanlage`, `zustand`, `befunde` | Tests des Fachkerns der Fassung 2 und der Review-Befunde; `_hilfe.mjs` baut den Prüfkontext |
 | `test/pruefbittefrist.test.mjs` | Tests der Frist „Prüfbitte spätestens“ (Regel, Gleichlauf mit dem Abgleich, Übersicht, Bedarfsseite, Demo-Stichtag) |
+| `manifest.webmanifest`, `icons/` | Angaben und Icons der Web-App; `icons/erzeugen.cjs` erzeugt die PNG-Dateien neu |
+| `app/ansichten/installieren.js`, `test/pwa.test.mjs` | Installationshilfe (`#installieren`) und Tests zu Manifest, Icons, Installationshilfe und Foto-Wegen |
 | `bauen-artifact.mjs` | erzeugt die Fassung für eine Veröffentlichung als claude.ai-Seite |
 
