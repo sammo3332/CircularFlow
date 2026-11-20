@@ -1,0 +1,32 @@
+Basis: http://127.0.0.1:8030/plattform/  (lokal)
+
+== 1 Website ohne 404 ==
+OK   http://127.0.0.1:8030/plattform/ antwortet 200
+OK   Manifest antwortet 200
+OK   Übersicht gerendert: „Übersicht“
+OK   Unbekannte Unterseite zeigt die Hinweisseite der App, nicht den 404 des Hosters („Seite „gibt-es-nicht“ gibt es nicht. Der Link ist veraltet oder falsch geschrieben. Zu den“)
+
+== 2 Bauteilpass ==
+OK   Bauteilkatalog verweist auf 11 Bauteilpässe
+OK   Bauteilpass geöffnet (#pass-lh-db-01): „LH DB-01 Doppelbodenplatten 600 × 600 mm“, Angebotsblock vorhanden
+
+== 3 Angebote und Bedarfe ==
+OK   Bedarfe: 5 Zeilen mit Kennungen BD-…
+OK   Bauteile/Angebote: 11 Bauteile im Katalog, Angebotsangaben sichtbar („Bauteile Angebotene Bauteile aus allen Projekten. Wählen Sie ein Bauteil für die“)
+OK   Abgleichliste: 8 Paarungen Angebot ↔ Bedarf (Beispieldaten)
+
+== 4 Zeitprüfung ==
+OK   TW-01 → BD-23: „Für diese Entscheidung zu spät“, Prüfbitte gesperrt
+OK   TW-05 → BD-22: „Weiter prüfen“, als regelbasiert gekennzeichnet
+OK   Türdemo E-01 (T-07 → B-02) geladen: „LH
+T-07
+ Innentür samt Zarge → Öffnung B-02“
+OK   Beispielaufmaß: „AUFMASSEINGANG · ROHBAUÖFFNUNG B-02 Aufmaß rechtzeitig eingegangen Eingang Mi 18.11., 15:00 · Aufmaßfrist Mi 1“
+
+== 5 Keine echten Nachrichten ==
+OK   Prüfbitte angelegt: als Simulation gekennzeichnet („nichts wird versendet“)
+OK   Keine Anfragen an fremde Adressen (45 Anfragen, alle an http://127.0.0.1:8030)
+OK   Keine schreibenden Anfragen (POST/PUT/…) während des Laufs
+OK   Keine Konsolenfehler ([])
+
+Alle Prüfungen bestanden · Basis http://127.0.0.1:8030/plattform/

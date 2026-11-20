@@ -48,22 +48,32 @@ cd plattform/etikett-versuch && node test/ocr.mjs && cd ../..
 node docs/pruefungen/pilotstand-2026-11-19/werkzeug/browserlauf.mjs <Testdatenordner>   # Playwright mit Chromium, startet den Pilotserver selbst auf Port 8010
 ```
 
-## Als App auf dem Handy (Hosting aus dem Repository)
+## Als App auf dem Handy (Hosting aus dem Repository, Vercel)
 
-Die Texterkennung liegt jetzt vollständig im Repository (`plattform/etikett-versuch/vendor/`: Engine, drei LSTM-Kerne, deutsche
-Sprachdatei, zusammen 13 MB). Ein statisches Hosting des Repository-Wurzelverzeichnisses (z. B. Vercel) liefert damit eine
-installierbare Web-App mit Texterkennung aus; `vercel.json` leitet `/` auf `/plattform/` und setzt Cache-Regeln.
+Die Texterkennung liegt vollständig im Repository (`plattform/etikett-versuch/vendor/`: Engine, drei LSTM-Kerne, deutsche
+Sprachdatei, zusammen 13 MB). Ein statisches Hosting des Repository-Wurzelverzeichnisses liefert damit eine installierbare
+Web-App mit Texterkennung aus; `vercel.json` leitet `/` auf `/plattform/` und setzt Cache-Regeln. Es gibt keinen Build-Schritt.
 
-1. Im Vercel-Projekt den Branch `codex/pilotstand-20261119` als Vorschau bereitstellen (Branch-Deployment, **nicht** die
-   Produktions-URL des Pitch-Stands ersetzen). Root-Verzeichnis = Repository-Wurzel, kein Build-Befehl, kein Output-Verzeichnis.
-2. Am Handy die Vorschau-Adresse öffnen (`https://…vercel.app/plattform/#erfassung`), dann „Als App installieren“ (`#installieren`):
+Stand 20.11.2026: Das Vercel-Projekt `circularflowdortmund` (`https://circularflowdortmund.vercel.app`) lieferte 404, weil es den
+Branch `main` ausliefert und `main` nur Dokumentation enthält. Die App liegt auf `codex/pilotstand-20261119`. Befund, nötige
+Einstellungen und Abnahme: `docs/pruefungen/vercel-2026-11-20/README.md`.
+
+1. Im Vercel-Projekt `circularflowdortmund` (kein zweites Projekt): Settings → Git → Production Branch = `codex/pilotstand-20261119`
+   (oder nach Teamentscheidung den Branch nach `main` mergen). Framework Preset „Other“, Build Command, Output Directory, Install
+   Command und Root Directory leer (Repository-Wurzel, weil `plattform/app/main.js` die Türregel aus `prototype/dist/` lädt).
+   Danach „Redeploy“ oder ein Push auf den Branch.
+2. Abnahme gegen die Vercel-Adresse: `node docs/pruefungen/vercel-2026-11-20/werkzeug/abnahme.mjs https://circularflowdortmund.vercel.app/plattform/ <Bilderordner> vercel`
+   und `node docs/pruefungen/pilotstand-2026-11-19/werkzeug/statisch-pruefen.mjs https://circularflowdortmund.vercel.app/plattform/`.
+3. Am Handy `https://circularflowdortmund.vercel.app/plattform/#erfassung` öffnen, dann „Als App installieren“ (`#installieren`):
    Android/Chrome über das Menü „App installieren“, iPhone/Safari über „Teilen → Zum Home-Bildschirm“.
-3. Ohne Pilotserver speichert die App nur auf dem Gerät; Datenstand sichern/laden über `#pilotraum` (Datei). Für den gemeinsamen
+4. Ohne Pilotserver speichert die App nur auf dem Gerät; Datenstand sichern/laden über `#pilotraum` (Datei). Für den gemeinsamen
    Datenstand den Pilotserver auf einem Rechner im WLAN starten und seine Adresse (`http://<IP>:8000`) unter `#pilotraum` eintragen
    (gemischt https/http blockieren Browser; dann die App direkt vom Pilotserver öffnen).
 
-Geprüft: statischer Server mit dem sauberen Repository-Stand (`docs/pruefungen/pilotstand-2026-11-19/rohausgaben/statisch-pruefen.txt`):
-Texterkennung, Manifest, Installierbarkeit laut Chromium. **Nicht geprüft:** das Vercel-Deployment selbst, HTTPS, echtes Gerät.
+Geprüft (Commit `eccd5e2`): statischer Server mit dem sauberen Repository-Stand – Texterkennung, Manifest, Installierbarkeit laut
+Chromium (`docs/pruefungen/pilotstand-2026-11-19/rohausgaben/statisch-pruefen.txt`) und die fünf Auftragskriterien 17/17
+(`docs/pruefungen/vercel-2026-11-20/rohausgaben/abnahme-lokal-eccd5e2.txt`). **Nicht geprüft:** das Vercel-Deployment selbst,
+HTTPS, echtes Gerät.
 
 ## Klickpfad des Pilotablaufs (Beispieldaten, Stichtag der Demo Mi 18.11.2026, 14:00)
 
