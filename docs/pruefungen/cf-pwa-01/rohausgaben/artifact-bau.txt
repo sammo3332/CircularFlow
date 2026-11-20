@@ -1,0 +1,12 @@
+Artifact-Fassung erstellt in <Wegwerfordner>/artifact (35 Begleitdateien, Liste in dateien.json)
+exit 0
+--- index.html der gebauten Fassung:
+<title>CircularFlow Plattform</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="styles.css">
+<div id="app"><p style="padding:24px">CircularFlow wird geladen …</p></div>
+<script src="vendor/leaflet/leaflet.js"></script>
+<script type="module" src="app/main.js"></script>
+--- Treffer für manifest|apple-touch|theme-color: 0
+--- installieren.js enthalten: 1

@@ -1,0 +1,8 @@
+Änderungen am Anwendungscode seit dem Pitch-Stand
+Befehl: git diff --stat 2121b92 23dc050 -- plattform prototype
+ plattform/README.md | 2 ++
+ 1 file changed, 2 insertions(+)
+
+Befehl: git diff --stat 2121b92 HEAD -- plattform prototype   (HEAD = 75fd769, Pitch-Branch-Stand beim Erzeugen dieser Datei)
+ plattform/README.md | 2 ++
+ 1 file changed, 2 insertions(+)

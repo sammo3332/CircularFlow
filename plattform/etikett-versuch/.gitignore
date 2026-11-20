@@ -1,0 +1,11 @@
+node_modules/
+test-ergebnis.json
+# Texterkennung: Engine (ESM, Worker), die drei LSTM-Kerne (ohne SIMD, SIMD, Relaxed-SIMD; der Browser wählt) und die deutsche Sprachdatei liegen im Repository,
+# damit ein Hosting aus dem Repository (statische Dateien) die Texterkennung hat. Die übrigen Kerne und eng.traineddata holt `npm run vendor`.
+vendor/core/*
+!vendor/core/LICENSE
+!vendor/core/tesseract-core-lstm.wasm.js
+!vendor/core/tesseract-core-simd-lstm.wasm.js
+!vendor/core/tesseract-core-relaxedsimd-lstm.wasm.js
+vendor/lang/*
+!vendor/lang/deu.traineddata

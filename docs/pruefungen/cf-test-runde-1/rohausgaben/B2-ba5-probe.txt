@@ -1,0 +1,22 @@
+
+===== BA-5 =====
+   IST BA-5 · Formularwerte vor „Speichern“: {"projekt":"SB","gruppe":"Systemtrennwände","titel":"Fristtest","menge":"30","bestellfrist":"2026-11-30","pruefzeit":"6","art":"geschätzt (Annahme)","von":"2027-02-01","bis":"2027-03-31"}
+   IST BA-5 · Zeile TW-05 auf BD-24: Weiter prüfen KB TW-05 Systemtrennwand mit Glasfeldern 120 lfm · ab 01.02.2027 Prüfende 24.11.2026 liegt 6 Tage vor der Bestellfrist 30.11.2026.
+   IST BA-5 · Abgleichseite: SB BD-24 Fristtest
+   IST BA-5 · „Prüfbitte anlegen“ aria-disabled: null
+OK         BA-5 · „Prüfbitte anlegen“ ist bedienbar (nicht gesperrt)
+   IST BA-5 · Adresse nach „Prüfbitte anlegen“: #entscheidung-kb-e-01
+   IST BA-5 · Überschrift danach: KB TW-05 Systemtrennwand mit Glasfeldern → SB Bedarf BD-24
+   IST BA-5 · Übersicht Kopf: Zeitkritisch (7 Tage) 4 Fristen · Überfälliges zuerst
+   IST BA-5 · alle Fristzeilen: [{"chip":"noch 2 Std.","titel":"Aufmaßfrist · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Mi 18.11., 16:00","href":"#entscheidung-lh-e-01"},{"chip":"noch 20 Std.","titel":"Nachweisfrist · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 10:00","href":"#entscheidung-lh-e-02"},{"chip":"noch 22 Std.","titel":"Ersatzentscheidung · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 12:00","href":"#entscheidung-lh-e-01"},{"chip":"noch 1 Tg. 22 Std.","titel":"Ersatzentscheidung · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Fr 20.11., 12:00","href":"#entscheidung-lh-e-02"}]
+   IST BA-5 · Kachel Vorgänge: 3 Vorgänge
+OK         BA-5 · Zeitkritisch: „4 Fristen“
+OK         BA-5 · keine Zeile „Prüfbitte spätestens“
+OK         BA-5 · „Vorgänge je Status“: 3 Vorgänge
+   IST BA-5 · Zusatz: BD-24 nach Prüfbitte: {"anzahl":1,"voll":"Prüfbitte spätestens 24.11.2026 geschätzt Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt) In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft.","wert":"24.11.2026","chips":["geschätzt"],"klein":["Bestellfrist 30.11.2026 minus 6 Tage Mindestprüfzeit (geschätzt)","In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft."]}
+   IST BA-5 · nach Zurücksetzen: Kopf: Zeitkritisch (7 Tage) 4 Fristen · Überfälliges zuerst
+   IST BA-5 · nach Zurücksetzen: Fristzeilen: ["Aufmaßfrist · E-01 · T-07 → B-02","Nachweisfrist · E-02 · DB-01 → BD-01","Ersatzentscheidung · E-01 · T-07 → B-02","Ersatzentscheidung · E-02 · DB-01 → BD-01"]
+OK         BA-5 · Zurücksetzen: Übersicht wieder wie BA-1 (8 Paare, davon 2 prüfbar; 2 Vorgänge; 4 Fristen ohne Prüfbitte spätestens)
+SKRIPTFEHLER BA-5: TimeoutError: locator.innerText: Timeout 30000ms exceeded. | Call log: | [2m  - waiting for locator('h1').first()[22m
+
+ZUSAMMENFASSUNG je Ablauf: {"BA-5":{"ok":5,"abw":0}} | Skriptfehler: 1

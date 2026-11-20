@@ -1,0 +1,10 @@
+Folie 1: Sprecher laut Kopf='Feyrouz': Wörter (Leerraum)=55, (alnum)=55 | Zeitfenster: etwa 31 Sekunden · Uhr am Ende: 0:31
+Folie 2: Sprecher laut Kopf='Feyrouz': Wörter (Leerraum)=63, (alnum)=63 | Zeitfenster: etwa 35 Sekunden · Uhr am Ende: 1:06
+Folie 3: Sprecher laut Kopf='Houssam': Wörter (Leerraum)=44, (alnum)=44 | Zeitfenster: etwa 27 Sekunden · Uhr am Ende: 1:33
+Folie 4: Sprecher laut Kopf='Houssam': Wörter (Leerraum)=96, (alnum)=96 | Zeitfenster: etwa 64 Sekunden · Uhr am Ende: 2:37
+Folie 7: Sprecher laut Kopf='Feyrouz': Wörter (Leerraum)=56, (alnum)=56 | Zeitfenster: etwa 33 Sekunden · Uhr am Ende: 3:10
+Folie 8: Sprecher laut Kopf='Houssam, dann Feyrouz': Wörter (Leerraum)=79, (alnum)=79 | Zeitfenster: etwa 48 Sekunden · Uhr am Ende: 3:58
+Folie 9: Sprecher laut Kopf='Feyrouz': Wörter (Leerraum)=40, (alnum)=40 | Zeitfenster: etwa 21 Sekunden · Uhr am Ende: 4:19
+GESAMT (Leerraum): 433 {'Feyrouz': 244, 'Houssam': 189}
+GESAMT (alnum)   : 433 {'Feyrouz': 244, 'Houssam': 189}
+Summe der Zeitfenster aus den Notizen: 259 s = 4:19

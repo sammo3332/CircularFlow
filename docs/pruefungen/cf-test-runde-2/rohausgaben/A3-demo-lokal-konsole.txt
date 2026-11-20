@@ -1,0 +1,30 @@
+OK     Frischer Kontext: nichts gespeichert
+OK     Seitentitel
+OK     Stichtag der Demo
+OK     Kachel „Paare derselben Gruppe“: 8 Paare, davon 2 prüfbar
+OK     Kachel „Vorgänge je Status“: 2 Vorgänge
+OK     Zeitkritisch (7 Tage) mit 4 Fristen
+OK     Zeitkritisch: oben „noch 2 Std.“ Aufmaßfrist E-01 T-07 → B-02
+OK     Kein seitliches Scrollen (Übersicht, 1440 px)
+OK     Eintrag E-01 zeigt fehlendes Aufmaß
+OK     K2 Paarliste: 8 Paare, davon 2 prüfbar
+OK     K2 Paarliste enthält TW-01 → BD-23 und TW-05 → BD-22
+OK     K3 Ergebnis „Für diese Entscheidung zu spät“
+OK     K3 fünf Tage zu spät (Prüfende 02.12.2026, Bestellfrist 27.11.2026)
+OK     K3 „Vorschlag zur Prüfung, keine fachliche Freigabe“
+OK     K3 Knopf „Prüfbitte anlegen“ ist gesperrt (aria-disabled)
+OK     K3 Sperrgrund sichtbar („Gesperrt.“)
+OK     K3 Klick auf gesperrten Knopf: Seite bleibt, kein Vorgang angelegt
+OK     Zurück zu „Paare derselben Gruppe“ über den Pfad
+OK     K4 Ergebnis „Weiter prüfen“
+OK     K4 „Vorschlag zur Prüfung, keine fachliche Freigabe“
+OK     K4 Prüfende 28.11.2026 liegt 123 Tage vor der Bestellfrist 31.03.2027
+OK     K4 Knopf „Prüfbitte anlegen“ ist nicht gesperrt (nicht angeklickt)
+OK     Nach dem Durchlauf unverändert: 8 Paare, davon 2 prüfbar, 2 Vorgänge
+OK     Kein seitliches Scrollen bei 1280 × 720: Übersicht
+OK     Kein seitliches Scrollen bei 1280 × 720: Paarliste
+OK     Kein seitliches Scrollen bei 1280 × 720: K3 TW-01 → BD-23
+OK     Kein seitliches Scrollen bei 1280 × 720: K4 TW-05 → BD-22
+OK     Keine Konsolen- oder Seitenfehler
+Netzfehler (informativ): keine
+ALLES OK (lokal)

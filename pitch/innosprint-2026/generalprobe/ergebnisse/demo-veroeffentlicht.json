@@ -1,0 +1,184 @@
+{
+ "name": "veroeffentlicht",
+ "startUrl": "http://127.0.0.1:8101/index.html",
+ "pruefungen": [
+  {
+   "titel": "Frischer Kontext: nichts gespeichert",
+   "soll": {
+    "ls": 0,
+    "ss": 0
+   },
+   "ist": {
+    "ls": 0,
+    "ss": 0
+   },
+   "ok": true
+  },
+  {
+   "titel": "Seitentitel",
+   "soll": "enthält CircularFlow",
+   "ist": "Übersicht · CircularFlow",
+   "ok": true
+  },
+  {
+   "titel": "Stichtag der Demo",
+   "soll": "Mi 18.11., 14:00 (Simulation)",
+   "ist": "Stichtag der Demo (Simulation) ",
+   "ok": true
+  },
+  {
+   "titel": "Kachel „Paare derselben Gruppe“: 8 Paare, davon 2 prüfbar",
+   "soll": "8 Paare davon 2 prüfbar",
+   "ist": "8 Paare davon 2 prüfbar",
+   "ok": true
+  },
+  {
+   "titel": "Kachel „Vorgänge je Status“: 2 Vorgänge",
+   "soll": "2 Vorgänge",
+   "ist": "2 Vorgänge",
+   "ok": true
+  },
+  {
+   "titel": "Zeitkritisch (7 Tage) mit 4 Fristen",
+   "soll": "4 Fristen",
+   "ist": "4 Fristen",
+   "ok": true
+  },
+  {
+   "titel": "Zeitkritisch: oben „noch 2 Std.“ Aufmaßfrist E-01 T-07 → B-02",
+   "soll": "noch 2 Std. Aufmaßfrist · E-01 · T-07 → B-02",
+   "ist": "Zeitkritisch (7 Tage) 4 Fristen · Überfälliges zuerst noch 2 Std. Aufmaßfrist · E-01 · T-07 → B-02 LH Vorgang, zur Entscheidung Mi 18.11., 16:00 noch 20 Std. Nachweisfrist · E-02 · DB-01 → BD-01 LH Vo",
+   "ok": true
+  },
+  {
+   "titel": "Kein seitliches Scrollen (Übersicht, 1440 px)",
+   "soll": true,
+   "ist": true,
+   "ok": true
+  },
+  {
+   "titel": "Eintrag E-01 zeigt fehlendes Aufmaß",
+   "soll": "Aufmaß",
+   "ist": "ITT Rohbauöffnung B-02 an der Messstelle laut P-02 messen oder ein verwertbares Aufmaß nachreichen Montagebetrieb · K.",
+   "ok": true
+  },
+  {
+   "titel": "K2 Paarliste: 8 Paare, davon 2 prüfbar",
+   "soll": "8 Paare derselben Gruppe, davon 2 prüfbar",
+   "ist": "8 Paare derselben Gruppe, davon 2 prüfbar",
+   "ok": true
+  },
+  {
+   "titel": "K2 Paarliste enthält TW-01 → BD-23 und TW-05 → BD-22",
+   "soll": true,
+   "ist": null,
+   "ok": true
+  },
+  {
+   "titel": "K3 Ergebnis „Für diese Entscheidung zu spät“",
+   "soll": "Für diese Entscheidung zu spät",
+   "ist": null,
+   "ok": true
+  },
+  {
+   "titel": "K3 fünf Tage zu spät (Prüfende 02.12.2026, Bestellfrist 27.11.2026)",
+   "soll": "Prüfende 02.12.2026 liegt 5 Tage nach der Bestellfrist 27.11.2026",
+   "ist": "Prüfende 02.12.2026 liegt 5 Tage nach der Bestellfrist 27.11.2026.",
+   "ok": true
+  },
+  {
+   "titel": "K3 „Vorschlag zur Prüfung, keine fachliche Freigabe“",
+   "soll": true,
+   "ist": null,
+   "ok": true
+  },
+  {
+   "titel": "K3 Knopf „Prüfbitte anlegen“ ist gesperrt (aria-disabled)",
+   "soll": "true",
+   "ist": "true",
+   "ok": true
+  },
+  {
+   "titel": "K3 Sperrgrund sichtbar („Gesperrt.“)",
+   "soll": "Gesperrt. Für diese Entscheidung zu spät: Prüfende 02.12.2026 liegt 5 Tage nach der Bestellfrist 27.11.2026",
+   "ist": "Gesperrt. Für diese Entscheidung zu spät: Prüfende 02.12.",
+   "ok": true
+  },
+  {
+   "titel": "K3 Klick auf gesperrten Knopf: Seite bleibt, kein Vorgang angelegt",
+   "soll": "Seite bleibt beim Paar TW-01 / BD-23",
+   "ist": "abgleich-lh-tw-01--sb-bd-23",
+   "ok": true
+  },
+  {
+   "titel": "Zurück zu „Paare derselben Gruppe“ über den Pfad",
+   "soll": "#abgleich",
+   "ist": "abgleich",
+   "ok": true
+  },
+  {
+   "titel": "K4 Ergebnis „Weiter prüfen“",
+   "soll": "TW-05 und BD-22: Weiter prüfen",
+   "ist": null,
+   "ok": true
+  },
+  {
+   "titel": "K4 „Vorschlag zur Prüfung, keine fachliche Freigabe“",
+   "soll": true,
+   "ist": null,
+   "ok": true
+  },
+  {
+   "titel": "K4 Prüfende 28.11.2026 liegt 123 Tage vor der Bestellfrist 31.03.2027",
+   "soll": "Prüfende 28.11.2026 liegt 123 Tage vor der Bestellfrist 31.03.2027",
+   "ist": "Prüfende 28.11.2026 liegt 123 Tage vor der Bestellfrist 31.03.2027.",
+   "ok": true
+  },
+  {
+   "titel": "K4 Knopf „Prüfbitte anlegen“ ist nicht gesperrt (nicht angeklickt)",
+   "soll": null,
+   "ist": null,
+   "ok": true
+  },
+  {
+   "titel": "Nach dem Durchlauf unverändert: 8 Paare, davon 2 prüfbar, 2 Vorgänge",
+   "soll": "8 Paare davon 2 prüfbar · 2 Vorgänge",
+   "ist": null,
+   "ok": true
+  },
+  {
+   "titel": "Kein seitliches Scrollen bei 1280 × 720: Übersicht",
+   "soll": true,
+   "ist": true,
+   "ok": true
+  },
+  {
+   "titel": "Kein seitliches Scrollen bei 1280 × 720: Paarliste",
+   "soll": true,
+   "ist": true,
+   "ok": true
+  },
+  {
+   "titel": "Kein seitliches Scrollen bei 1280 × 720: K3 TW-01 → BD-23",
+   "soll": true,
+   "ist": true,
+   "ok": true
+  },
+  {
+   "titel": "Kein seitliches Scrollen bei 1280 × 720: K4 TW-05 → BD-22",
+   "soll": true,
+   "ist": true,
+   "ok": true
+  },
+  {
+   "titel": "Keine Konsolen- oder Seitenfehler",
+   "soll": [],
+   "ist": [],
+   "ok": true
+  }
+ ],
+ "fehler": [],
+ "netz": [],
+ "e01_auszug": " laut P-02 messen oder ein verwertbares Aufmaß nachreichen Montagebetrieb · K. Arslan, Tischlerei und Innenausbau (fiktiv) Ohne verwertbares Aufmaß bleibt die Breite offen. Messauftrag vermerken Wird mit Projektzeit im Verlauf vermerkt. Simulation, nichts wird versendet. WEITERHIN OFFEN Nichts weiter offen. Vorgang Einträge der Simulation, keine Fachfreigabe AKTUELLER STATUS Angelegt 1 Zuordnung e",
+ "alle_ok": true
+}

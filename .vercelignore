@@ -1,0 +1,5 @@
+# Nicht ausliefern: Abhängigkeiten, Pilotserver-Daten, Pitch-Quellen und Prüfbilder (die Plattform braucht nur plattform/ und prototype/dist/)
+**/node_modules
+plattform/server/daten
+pitch
+docs/pruefungen

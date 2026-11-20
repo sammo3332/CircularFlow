@@ -1,0 +1,32 @@
+--- Stichtag Mi 18.11., 14:00 (Frist liegt in der Zukunft) ---
+   IST BD-24 Zeile: {"wert":"19.11.2026","chips":[],"klein":["Bestellfrist 19.11.2026 minus 0 Tage Mindestprüfzeit","In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft."]}
+OK         BD-24: Prüfbitte spätestens „19.11.2026“ (Prüfzeit 0 = Bestellfrist)
+OK         BD-24: Rechnung „Bestellfrist 19.11.2026 minus 0 Tage Mindestprüfzeit“, kein Chip
+   IST Kopf: Zeitkritisch (7 Tage) 6 Fristen · Überfälliges zuerst
+   IST Fristzeilen: [{"chip":"noch 2 Std.","titel":"Aufmaßfrist · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Mi 18.11., 16:00"},{"chip":"noch 20 Std.","titel":"Nachweisfrist · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 10:00"},{"chip":"noch 22 Std.","titel":"Ersatzentscheidung · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 12:00"},{"chip":"noch 1 Tg. 9 Std.","titel":"Prüfbitte spätestens · BD-24 · Grenztag","klein":"SB Bedarf · 2 prüfbare Paare · Bestellfrist 19.11.2026 minus 0 Tage Mindestprüfzeit","zeit":"Do 19.11., 23:59"},{"chip":"noch 1 Tg. 9 Std.","titel":"Bestellfrist · BD-24 · Grenztag","klein":"SB Bedarf, zum Bedarf","zeit":"Do 19.11., 23:59"},{"chip":"noch 1 Tg. 22 Std.","titel":"Ersatzentscheidung · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Fr 20.11., 12:00"}]
+OK         Übersicht: 6 Fristen (4 bisherige + Prüfbitte + Bestellfrist)
+OK         Prüfbitte-Zeile: Chip „noch 1 Tg. 9 Std.“, Zeit „Do 19.11., 23:59“
+OK         Bestellfrist-Zeile von BD-24 steht zur selben Zeit „Do 19.11., 23:59“
+OK         Plan 2.2: bei gleicher Zeit steht „Prüfbitte spätestens“ vor der „Bestellfrist“
+--- Stichtag Do 19.11., 09:00 (Fristtag = Stichtag) ---
+   IST Kopf: Zeitkritisch (7 Tage) 6 Fristen, davon 1 überfällig · Überfälliges zuerst
+   IST Fristzeilen: [{"chip":"Überfällig","titel":"Aufmaßfrist · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Mi 18.11., 16:00"},{"chip":"noch 1 Std.","titel":"Nachweisfrist · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 10:00"},{"chip":"noch 3 Std.","titel":"Ersatzentscheidung · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 12:00"},{"chip":"noch 14 Std. 59 Min.","titel":"Prüfbitte spätestens · BD-24 · Grenztag","klein":"SB Bedarf · 2 prüfbare Paare · Bestellfrist 19.11.2026 minus 0 Tage Mindestprüfzeit","zeit":"Do 19.11., 23:59"},{"chip":"noch 14 Std. 59 Min.","titel":"Bestellfrist · BD-24 · Grenztag","klein":"SB Bedarf, zum Bedarf","zeit":"Do 19.11., 23:59"},{"chip":"noch 1 Tg. 3 Std.","titel":"Ersatzentscheidung · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Fr 20.11., 12:00"}]
+ABWEICHUNG Frist am Stichtag: Eintrag vorhanden mit Chip „noch 14 Std.“ (0 Tage, Restzeit in Stunden), Zeit „Do 19.11., 23:59“ | soll ["noch 14 Std.","Do 19.11., 23:59"] | ist ["noch 14 Std. 59 Min.","Do 19.11., 23:59"]
+OK         Der Eintrag ist nicht „Überfällig“
+   IST BD-24 Zeile: {"wert":"19.11.2026","chips":[],"klein":["Bestellfrist 19.11.2026 minus 0 Tage Mindestprüfzeit","In den 7 Tagen davor steht sie unter „Zeitkritisch“, solange ein Angebot prüfbar ist und kein Vorgang läuft."]}
+   IST Angebote: ["Knapp KB TW-05 Systemtrennwand mit Glasfeldern 120 lfm · ab 01.02.2027 Prüfende 19.11.2026 liegt am Tag der Bestellfrist 19.11.2026.","Knapp LH TW-01 Systemtrennwand, Vollwandelemente 42 lfm · ab 25.11.2026 bis 31.03.2027 Prüfende 19.11.2026 liegt am Tag der Bestellfrist 19.11.2026."]
+OK         Frist am Stichtag: Bedarfsseite „19.11.2026“ ohne Chip „verstrichen“ (der Grenztag zählt als rechtzeitig)
+OK         Frist am Stichtag: beide Angebote „Knapp“ (Prüfende 19.11.2026 liegt am Tag der Bestellfrist 19.11.2026)
+OK         Frist am Stichtag: Satz „In den 7 Tagen davor …“ steht (noch nicht verstrichen)
+--- Stichtag Fr 20.11., 09:00 (Frist einen Tag verstrichen) ---
+   IST BD-24 Zeile: {"wert":"19.11.2026","chips":["verstrichen"],"klein":["Bestellfrist 19.11.2026 minus 0 Tage Mindestprüfzeit"]}
+   IST Angebote: ["Für diese Entscheidung zu spät KB TW-05 Systemtrennwand mit Glasfeldern 120 lfm · ab 01.02.2027 Prüfbeginn 20.11.2026 (Stichtag der Demo) liegt 1 Tag nach der Bestellfrist 19.11.2026.","Für diese Entscheidung zu spät LH TW-01 Systemtrennwand, Vollwandelemente 42 lfm · ab 25.11.2026 bis 31.03.2027 Prüfbeginn 20.11.2026 (Stichtag der Demo) liegt 1 Tag nach der Bestellfrist 19.11.2026."]
+OK         nach der Frist: Bedarfsseite Chip „verstrichen“, ohne „In den 7 Tagen davor …“
+OK         nach der Frist: beide Angebote „Für diese Entscheidung zu spät“
+   IST Kopf: Zeitkritisch (7 Tage) 5 Fristen, davon 4 überfällig · Überfälliges zuerst
+   IST Fristzeilen: [{"chip":"Überfällig","titel":"Aufmaßfrist · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Mi 18.11., 16:00"},{"chip":"Überfällig","titel":"Nachweisfrist · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 10:00"},{"chip":"Überfällig","titel":"Ersatzentscheidung · E-01 · T-07 → B-02","klein":"LH Vorgang, zur Entscheidung","zeit":"Do 19.11., 12:00"},{"chip":"Überfällig","titel":"Bestellfrist · BD-24 · Grenztag","klein":"SB Bedarf, zum Bedarf","zeit":"Do 19.11., 23:59"},{"chip":"noch 3 Std.","titel":"Ersatzentscheidung · E-02 · DB-01 → BD-01","klein":"LH Vorgang, zur Entscheidung","zeit":"Fr 20.11., 12:00"}]
+OK         nach der Frist: keine Zeile „Prüfbitte spätestens“ (nie überfällig)
+--- Rücksprung auf Do 19.11., 09:00 ---
+ABWEICHUNG Rücksprung der Betrachtungszeit: Eintrag mit „noch 14 Std.“ ist wieder da | soll "noch 14 Std." | ist "noch 14 Std. 59 Min."
+OK         keine Konsolen- oder Seitenfehler
+ABWEICHUNGEN: 2

@@ -1,0 +1,428 @@
+{
+ "pruefungen": [
+  {
+   "name": "Prüfsumme pptx laut README",
+   "soll": "9d5a86e7e239229a",
+   "ist": "9d5a86e7e239229a",
+   "ok": true
+  },
+  {
+   "name": "Prüfsumme pdf laut README",
+   "soll": "bc7f651fa7b5b669",
+   "ist": "bc7f651fa7b5b669",
+   "ok": true
+  },
+  {
+   "name": "Prüfsumme sprechtext laut README",
+   "soll": "e210d241234c43b0",
+   "ist": "e210d241234c43b0",
+   "ok": true
+  },
+  {
+   "name": "Folienzahl PPTX",
+   "soll": 15,
+   "ist": 15,
+   "ok": true
+  },
+  {
+   "name": "Ausgeblendete Folien",
+   "soll": [
+    5,
+    6,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+   ],
+   "ist": [
+    5,
+    6,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+   ],
+   "ok": true
+  },
+  {
+   "name": "Links PPTX (Folie -> Ziele)",
+   "soll": {
+    "4": [
+     5,
+     6
+    ],
+    "5": [
+     6,
+     7
+    ],
+    "6": [
+     7
+    ]
+   },
+   "ist": {
+    "4": [
+     5,
+     6
+    ],
+    "5": [
+     6,
+     7
+    ],
+    "6": [
+     7
+    ]
+   },
+   "ok": true
+  },
+  {
+   "name": "Uhr am Ende je Folie = Summe der Zeitfenster",
+   "soll": {
+    "1": "0:31",
+    "2": "1:06",
+    "3": "1:33",
+    "4": "2:37",
+    "7": "3:10",
+    "8": "3:58",
+    "9": "4:19"
+   },
+   "ist": {
+    "1": "0:31",
+    "2": "1:06",
+    "3": "1:33",
+    "4": "2:37",
+    "7": "3:10",
+    "8": "3:58",
+    "9": "4:19"
+   },
+   "ok": true
+  },
+  {
+   "name": "Zeit ruhig (Wörter/1,8 + 18 s) gegen Summe der Zeitfenster",
+   "soll": 259,
+   "ist": 259,
+   "ok": true
+  },
+  {
+   "name": "README: Wörter gesamt",
+   "soll": 433,
+   "ist": 433,
+   "ok": true
+  },
+  {
+   "name": "README: Feyrouz",
+   "soll": 244,
+   "ist": 244,
+   "ok": true
+  },
+  {
+   "name": "README: Houssam",
+   "soll": 189,
+   "ist": 189,
+   "ok": true
+  },
+  {
+   "name": "README: Zeitfenster und Uhr je Folie",
+   "soll": {
+    "1": [
+     31,
+     "0:31"
+    ],
+    "2": [
+     35,
+     "1:06"
+    ],
+    "3": [
+     27,
+     "1:33"
+    ],
+    "4": [
+     64,
+     "2:37"
+    ],
+    "7": [
+     33,
+     "3:10"
+    ],
+    "8": [
+     48,
+     "3:58"
+    ],
+    "9": [
+     21,
+     "4:19"
+    ]
+   },
+   "ist": {
+    "1": [
+     31,
+     "0:31"
+    ],
+    "2": [
+     35,
+     "1:06"
+    ],
+    "3": [
+     27,
+     "1:33"
+    ],
+    "4": [
+     64,
+     "2:37"
+    ],
+    "7": [
+     33,
+     "3:10"
+    ],
+    "8": [
+     48,
+     "3:58"
+    ],
+    "9": [
+     21,
+     "4:19"
+    ]
+   },
+   "ok": true
+  },
+  {
+   "name": "README: Dauer ruhig",
+   "soll": "4:19",
+   "ist": "4:19",
+   "ok": true
+  },
+  {
+   "name": "README: Dauer zügig",
+   "soll": "3:25",
+   "ist": "3:25",
+   "ok": true
+  },
+  {
+   "name": "README: Rest bis 5:00",
+   "soll": 41,
+   "ist": 41,
+   "ok": true
+  },
+  {
+   "name": "Seitenzahl Folien-PDF",
+   "soll": 15,
+   "ist": 15,
+   "ok": true
+  },
+  {
+   "name": "Links PDF (Seite -> Zielseiten)",
+   "soll": {
+    "4": [
+     5,
+     6
+    ],
+    "5": [
+     6,
+     7
+    ],
+    "6": [
+     7
+    ]
+   },
+   "ist": {
+    "4": [
+     5,
+     6
+    ],
+    "5": [
+     6,
+     7
+    ],
+    "6": [
+     7
+    ]
+   },
+   "ok": true
+  },
+  {
+   "name": "PDF-Schriften eingebettet",
+   "soll": 0,
+   "ist": 0,
+   "ok": true
+  },
+  {
+   "name": "PDF-Seite enthält den Anfang des Titels der PPTX-Folie",
+   "soll": [],
+   "ist": [],
+   "ok": true
+  },
+  {
+   "name": "Seitenzahl Sprechtext-PDF",
+   "soll": 16,
+   "ist": 16,
+   "ok": true
+  },
+  {
+   "name": "Jeder Notizabsatz steht im Sprechtext-PDF",
+   "soll": [],
+   "ist": [],
+   "ok": true
+  },
+  {
+   "name": "Sprechtext-Deckblatt: Wörter, Summe, Uhr",
+   "soll": [
+    433,
+    259,
+    "4:19"
+   ],
+   "ist": [
+    "433",
+    "259",
+    "4:19"
+   ],
+   "ok": true
+  },
+  {
+   "name": "Sprechtext-Zeitsatz: zügig",
+   "soll": "3:25",
+   "ist": "3:25",
+   "ok": true
+  }
+ ],
+ "sha256": {
+  "pptx": "9d5a86e7e239229a11ddbeaab7778bbc443350c5ad2c7df13dd3bd26535459ba",
+  "pdf": "bc7f651fa7b5b66936e885d050d4b7c4771d15d999d3d517c8a95fc1a0de7a15",
+  "sprechtext": "e210d241234c43b08121a847e8e08edb6332cd20e343f358f21e4932a8248548"
+ },
+ "folien": 15,
+ "links_pptx": {
+  "4": [
+   5,
+   6
+  ],
+  "5": [
+   6,
+   7
+  ],
+  "6": [
+   7
+  ]
+ },
+ "woerter_je_folie": {
+  "1": {
+   "spricht": "Feyrouz",
+   "woerter": 55,
+   "absaetze": [
+    0,
+    55,
+    0
+   ]
+  },
+  "2": {
+   "spricht": "Feyrouz",
+   "woerter": 63,
+   "absaetze": [
+    0,
+    63,
+    0
+   ]
+  },
+  "3": {
+   "spricht": "Houssam",
+   "woerter": 44,
+   "absaetze": [
+    0,
+    44,
+    0
+   ]
+  },
+  "4": {
+   "spricht": "Houssam",
+   "woerter": 96,
+   "absaetze": [
+    0,
+    35,
+    0,
+    10,
+    0,
+    24,
+    0,
+    19,
+    0,
+    8,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "7": {
+   "spricht": "Feyrouz",
+   "woerter": 56,
+   "absaetze": [
+    0,
+    56,
+    0
+   ]
+  },
+  "8": {
+   "spricht": "Houssam, dann Feyrouz",
+   "woerter": 79,
+   "absaetze": [
+    0,
+    49,
+    0,
+    30,
+    0,
+    0
+   ]
+  },
+  "9": {
+   "spricht": "Feyrouz",
+   "woerter": 40,
+   "absaetze": [
+    0,
+    40,
+    0
+   ]
+  }
+ },
+ "woerter_gesamt": 433,
+ "sprecheranteil": {
+  "Feyrouz": 244,
+  "Houssam": 189
+ },
+ "zeitfenster": {
+  "1": 31,
+  "2": 35,
+  "3": 27,
+  "4": 64,
+  "7": 33,
+  "8": 48,
+  "9": 21
+ },
+ "uhr": {
+  "1": "0:31",
+  "2": "1:06",
+  "3": "1:33",
+  "4": "2:37",
+  "7": "3:10",
+  "8": "3:58",
+  "9": "4:19"
+ },
+ "zeit_summe_s": 259,
+ "zeit_ruhig_s": 259,
+ "zeit_zuegig_s": 205,
+ "links_pdf": {
+  "4": [
+   5,
+   6
+  ],
+  "5": [
+   6,
+   7
+  ],
+  "6": [
+   7
+  ]
+ },
+ "alle_ok": true
+}

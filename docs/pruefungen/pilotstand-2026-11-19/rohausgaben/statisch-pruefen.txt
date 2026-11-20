@@ -1,0 +1,13 @@
+Geprüft gegen einen sauberen Export des Commits (git worktree, nur Dateien im Repository), python3 -m http.server auf 127.0.0.1:8031.
+OK   rechner: Texterkennung mit den Repository-Dateien (0.8 s): Texterkennung fertig: 4 von 4 Angaben vorgeschlagen (0.4 s einschließl
+     geladen: 200 leaflet/leaflet.css, 200 leaflet/leaflet.js, 200 tesseract.esm.min.js, 200 worker.min.js, 200 core/tesseract-core-relaxedsimd-lstm.wasm.js, 200 lang/deu.traineddata
+OK   rechner: alle Engine-Dateien ausgeliefert
+OK   Manifest geladen (http://127.0.0.1:8031/plattform/manifest.webmanifest), Fehler: []
+OK   Installationshindernisse laut Chromium: []
+OK   Ohne Pilotserver: verständliche Meldung statt Absturz („Unter dieser Adresse läuft kein Pilotserver (nur statische D“)
+OK   rechner: keine Konsolenfehler ([])
+OK   handy: Texterkennung mit den Repository-Dateien (0.8 s): Texterkennung fertig: 4 von 4 Angaben vorgeschlagen (0.4 s einschließl
+     geladen: 200 leaflet/leaflet.css, 200 leaflet/leaflet.js, 200 tesseract.esm.min.js, 200 worker.min.js, 200 core/tesseract-core-relaxedsimd-lstm.wasm.js, 200 lang/deu.traineddata
+OK   handy: alle Engine-Dateien ausgeliefert
+OK   handy: keine Konsolenfehler ([])
+Alle Prüfungen bestanden

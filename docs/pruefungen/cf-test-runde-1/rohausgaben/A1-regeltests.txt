@@ -1,0 +1,3 @@
+Befehl: node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs
+Verzeichnis: /home/user/CircularFlow | Commit: 23dc050 | Branch: codex/plattform-v1
+Exit-Code: 0

@@ -1,6 +1,6 @@
 # CircularFlow
 
-Stand: 07.11.2026 · Status: privates GitHub-Repository angelegt; Grunddokumentation. Noch keine Software implementiert.
+Stand: 08.11.2026 · Status: Der Entwicklungsbranch enthält eine ausführbare Simulation. Der Hauptzweig bleibt die Projektgrundlage.
 
 Repository: [https://github.com/sammo3332/CircularFlow](https://github.com/sammo3332/CircularFlow) · Eigentümer: `sammo3332` · Sichtbarkeit: privat, am 07.11.2026 geprüft.
 
@@ -15,6 +15,12 @@ CircularFlow untersucht, wie Angebot und Bedarf für Wiederverwendung frühzeiti
 
 ## Einrichtung, Betrieb und Prüfung
 
-Ein Technikstack wurde noch nicht gewählt. Es gibt keine Installation, Startbefehle, automatisierten Tests oder lauffähige Demo. Diese Angaben erst ergänzen, sobald eine konkrete Implementierung existiert und die Befehle tatsächlich geprüft wurden.
+**Pilotstand 19.11.2026** (Branch `codex/pilotstand-20261119`, nicht gemergt): Erfassung mit lokaler Typenschild-Texterkennung,
+Anfragen an Dienstleister, Verkauf/Provision und Pilotserver für einen gemeinsamen Datenstand. Start, Klickpfad und Grenzen in
+[`plattform/README.md`](plattform/README.md); Prüfbericht in [`docs/pruefungen/pilotstand-2026-11-19/README.md`](docs/pruefungen/pilotstand-2026-11-19/README.md).
+
+Der [Prototyp](prototype/README.md) ist eine statische Browseranwendung. Für die Regelprüfung im Repository-Verzeichnis `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs` ausführen. `prototype/dist/` enthält die Website mit fiktiven Testdaten.
+
+Die [Plattform](plattform/README.md) (Entwicklungsbranches) startet mit `python3 -m http.server 8000` vom Repository-Wurzelverzeichnis unter `http://localhost:8000/plattform/`; Tests: `node --test prototype/test/rules.test.mjs prototype/test/door.test.mjs plattform/test/*.test.mjs`. Der Branch `claude/bold-fermat-t1ngwv` (18.11.2026) macht sie als Web-App installierbar; Installation, geprüfte Umgebungen und Grenzen stehen im Plattform-README.
 
 Vor der ersten Prototypaufgabe festlegen: operative Zielrolle, konkreter Problemfall, erwartetes Bildschirmverhalten und überprüfbare Akzeptanzkriterien. Eine Aufgabe auf einem eigenen Branch bearbeiten; Änderungen und tatsächlich ausgeführte Prüfungen nachvollziehbar zurückgeben. Ausgaben, Veröffentlichung und externe Zusagen benötigen einen entsprechenden Auftrag.

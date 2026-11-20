@@ -1,0 +1,217 @@
+// Mobile Erfassung: Ort → Foto → Bauteil → Angaben → Prüfen und Speichern.
+// Etikett-Texterkennung ist echt (lokal). Bauteilgruppe und Aufmaß bleiben manuell. Es gibt keine Erkennung aus dem Bauteilfoto.
+import { GRUPPEN, ZUSTAND, WERTSTATUS } from '../daten.js';
+import { esc, chip, wertChip, icon, slug, routePass, pchip, leer, seitenkopf } from '../ui.js';
+import { pruefeErfassung, wertText } from '../regeln.js';
+import { datum } from '../zeit.js';
+import { FELDER, erkannteFelder, OCR_ZEITLIMIT_MS } from '../etikett-integration.js';
+import { raumVon } from './projekte.js';
+
+export const SCHRITTE = ['Ort', 'Foto', 'Bauteil', 'Angaben', 'Prüfen'];
+export const leererEntwurf = (projekt = '', raum = '') => ({ schritt: 1, projekt, raum, foto: null, fotoFehler: '', fotoLaedt: false, etikett: null, etikettLaedt: false, etikettFehler: '', etikettFortschritt: null, etikettAbbruch: null, etikettDauerMs: null, erkennung: null, gruppe: '', werte: {}, menge: '1', zustand: '', verfuegbarAb: '', notiz: '', fehler: {}, gespeichert: null });
+
+export function erfassung(ctx) {
+  const ent = ctx.ui.erfassung;
+  if (ent.gespeichert) return gespeichert(ctx, ent.gespeichert);
+  const projekte = ctx.daten.projekte.filter((p) => (p.gebaeude || []).length);
+  const p = projekte.find((x) => x.kurz === ent.projekt);
+  const ort = p && ent.raum ? raumVon(p, ent.raum) : null;
+  return `
+  ${seitenkopf({ eyebrow: 'Erfassen', titel: 'Bauteil erfassen', untertitel: p ? `${pchip(p)} ${esc(p.name)}${ort ? ` · Raum ${esc(ort.raum.id)} ${esc(ort.raum.name)}` : ''}` : 'Für Handy und Tablet gebaut, funktioniert auch am Rechner.', aktionen: ent.schritt !== 1 || ctx.ui.installation?.laeuftAlsApp ? '' : '<a class="knopf-leise" href="#installieren">Als App installieren</a>' })}
+  <div class="erfassung">
+    <ol class="schritte" aria-label="Fortschritt">${SCHRITTE.map((t, i) => `<li class="${i + 1 < ent.schritt ? 'fertig' : i + 1 === ent.schritt ? 'jetzt' : ''}" ${i + 1 === ent.schritt ? 'aria-current="step"' : ''}>${i + 1 < ent.schritt ? `<button type="button" data-action="erf-gehe" data-schritt="${i + 1}"><span class="mono">${i + 1}</span>${t}</button>` : `<span><span class="mono">${i + 1}</span>${t}</span>`}</li>`).join('')}</ol>
+    <section class="flaeche erf-karte" aria-labelledby="h-erf">
+      ${[schritt1, schritt2, schritt3, schritt4, schritt5][ent.schritt - 1](ctx, ent, projekte, p, ort)}
+    </section>
+    <div class="erf-aktionen">
+      ${ent.schritt > 1 ? `<button type="button" class="knopf-leise" id="erf-zurueck" data-action="erf-zurueck">${icon('zurueck')} Zurück</button>` : '<span></span>'}
+      ${ent.schritt < 5 ? `<button type="button" class="knopf" id="erf-weiter" ${ent.etikettLaedt ? 'disabled' : ''} data-action="erf-weiter">Weiter ${icon('pfeil')}</button>` : `<button type="button" class="knopf" id="erf-speichern" ${ent.etikettLaedt ? 'disabled' : ''} data-action="erf-speichern">${icon('haken')} Speichern</button>`}
+    </div>
+    ${meineErfassungen(ctx)}
+  </div>`;
+}
+
+const fehlerText = (ent, key) => (ent.fehler[key] ? `<p class="feld-meldung" id="fehler-${key}" role="alert">${esc(ent.fehler[key])}</p>` : '');
+
+function schritt1(ctx, ent, projekte, p) {
+  const etagen = p ? p.gebaeude[0].etagen : [];
+  return `<h2 id="h-erf">Wo steht das Bauteil?</h2>
+    <p class="leise">Das Bauteil gehört zu einem Raum. Projekt und Raum lassen sich auch direkt im Grundriss wählen.</p>
+    <div class="formular formular-eng">
+      <div class="feld"><label for="erf-projekt">Projekt</label><select id="erf-projekt"><option value="">Bitte wählen</option>${projekte.map((x) => `<option value="${esc(x.kurz)}" ${x.kurz === ent.projekt ? 'selected' : ''}>${esc(x.kurz)} · ${esc(x.name)}</option>`).join('')}</select></div>
+      <div class="feld"><label for="erf-raum">Raum</label><select id="erf-raum" ${p ? '' : 'disabled'} ${ent.fehler.ort ? 'aria-invalid="true" aria-describedby="fehler-ort"' : ''}><option value="">${p ? 'Bitte wählen' : 'Erst Projekt wählen'}</option>
+        ${etagen.map((e) => `<optgroup label="${esc(e.id)} · ${esc(e.name)}">${e.raeume.map((r) => `<option value="${esc(r.id)}" ${r.id === ent.raum ? 'selected' : ''}>${esc(r.id)} ${esc(r.name)}</option>`).join('')}</optgroup>`).join('')}</select>${fehlerText(ent, 'ort')}</div>
+    </div>`;
+}
+
+function schritt2(ctx, ent) {
+  const er = ent.erkennung;
+  return `<h2 id="h-erf">Foto aufnehmen</h2>
+    <p class="leise">„Foto aufnehmen“ öffnet auf dem Handy die Kamera, „Vorhandenes Bild wählen“ die Bilder des Geräts. Am Rechner öffnen beide die Dateiauswahl.</p>
+    <label class="fotofeld ${ent.foto ? 'hat-foto' : ''}" for="erf-foto">
+      ${ent.foto ? `<img src="${esc(ent.foto.daten)}" alt="Gewähltes Foto">` : `<span class="fotofeld-leer">${icon('kamera')}<b>Foto aufnehmen</b><small>Hier tippen · JPEG oder PNG bis 20 MB</small></span>`}
+      <input type="file" id="erf-foto" accept="image/*" capture="environment" aria-label="Foto aufnehmen">
+    </label>
+    <div class="foto-aktionen">
+      <label class="knopf dateiknopf" for="erf-foto">${icon('kamera')} ${ent.foto ? 'Neu aufnehmen' : 'Foto aufnehmen'}</label>
+      <label class="knopf-zweit dateiknopf">Vorhandenes Bild wählen<input type="file" id="erf-foto-wahl" accept="image/*"></label>
+      ${ent.foto ? '<button type="button" class="knopf-leise" data-action="erf-foto-weg">Foto entfernen</button>' : ''}
+    </div>
+    ${ctx.ui.pilotraum?.status === 'verbunden' ? `<p class="lokal-hinweis">${chip('Pilotraum verbunden', 'ok')} <span>Das Foto wird verkleinert, in diesem Browser gespeichert und${ctx.ui.pilotraum.rechte === 'bearbeiten' ? ' mit dem Bauteil an den Pilotserver des Teams übertragen' : ' nicht in den Raum übertragen (nur Leserecht)'}. Kein externer Dienst.</span></p>` : `<p class="lokal-hinweis">${chip('Nur auf diesem Gerät', 'info')} <span>Das Foto wird verkleinert und im Speicher dieses Browsers abgelegt. Es wird nicht hochgeladen.</span></p>`}
+    ${ent.fotoLaedt ? '<p class="leise" role="status">Foto wird verkleinert …</p>' : ''}
+    ${ent.fotoFehler ? `<p class="feld-meldung" role="alert">${esc(ent.fotoFehler)}</p>` : ''}
+    ${ent.foto ? `<p class="leise">${esc(ent.foto.name)} · ${ent.foto.breite} × ${ent.foto.hoehe} px nach Verkleinerung</p>` : ''}
+    <p class="klein">${ent.foto ? 'Das Bauteilfoto dient als Nachweis. ' : 'Ohne Foto weiter ist möglich. Das Foto fehlt dann als Nachweis. '}Aus dem Bauteilfoto wird nichts erkannt: Bauteilgruppe und Maße werden von Hand erfasst.</p>
+    <hr>${typenschildBlock(ent)}`;
+}
+
+// Typenschild: gesondertes Foto, lokale Texterkennung mit Fortschritt und Abbruch, oder Angaben von Hand.
+function typenschildBlock(ent) {
+  const e = ent.etikett;
+  const kopf = `<h3 id="h-typenschild">Typenschild auslesen</h3>
+    <p class="leise">Gesondertes Foto des Typenschilds, nah und scharf. Die Texterkennung läuft auf diesem Gerät (kein Versand). Erkannt werden nur beschriftete Angaben: Hersteller, Modell/Typ, Seriennummer, Baujahr. Keine Maße, keine Eignung.</p>`;
+  if (ent.etikettLaedt) return `${kopf}<div class="ergebnisbox" id="etikett-lauf" role="status" aria-live="polite"><p><b>Texterkennung läuft</b></p><p id="etikett-fortschritt">${esc(fortschrittText(ent.etikettFortschritt))}</p><p class="klein">Dauert je nach Gerät einige Sekunden; Abbruch nach ${Math.round(OCR_ZEITLIMIT_MS / 1000)} Sekunden. Weiter und Speichern sind so lange gesperrt.</p><button type="button" class="knopf-leise" id="erf-etikett-abbrechen" data-action="erf-etikett-abbrechen">Abbrechen</button></div>`;
+  return `${kopf}
+    <div class="foto-aktionen">
+      <label class="knopf-zweit dateiknopf" for="erf-etikett">${icon('kamera')} Typenschild fotografieren<input id="erf-etikett" type="file" accept="image/jpeg,image/png,image/webp" capture="environment"></label>
+      <label class="knopf-zweit dateiknopf">Vorhandenes Bild wählen<input id="erf-etikett-wahl" type="file" accept="image/jpeg,image/png,image/webp"></label>
+      ${e ? '' : '<button type="button" class="knopf-leise" id="erf-etikett-manuell" data-action="erf-etikett-manuell">Angaben ohne Scan eintragen</button>'}
+    </div>
+    ${ent.etikettFehler ? `<p role="alert" class="feld-meldung" id="etikett-fehler" tabindex="-1">${esc(ent.etikettFehler)} Alternativ die Angaben ohne Scan eintragen.</p>` : ''}
+    ${e && !e.manuell ? `<div class="ergebnisbox" id="etikett-ergebnis" tabindex="-1" role="status"><p><b>Texterkennung fertig:</b> ${erkannteFelder(e)} von ${Object.keys(FELDER).length} Angaben vorgeschlagen${ent.etikettDauerMs ? ` (${(ent.etikettDauerMs / 1000).toFixed(1)} s einschließlich Laden)` : ''}.</p><p class="klein">Vorschläge sind ungeprüft. In Schritt 3 jede Angabe am Foto prüfen und einzeln bestätigen; ein neues Foto verwirft die Vorschläge.</p>${e.foto?.daten ? `<img src="${esc(e.foto.daten)}" alt="Gewähltes Typenschild" class="etikett-vorschau">` : ''}</div>` : ''}
+    ${e && e.manuell ? '<div class="ergebnisbox" id="etikett-ergebnis" tabindex="-1" role="status"><p><b>Angaben ohne Scan.</b> In Schritt 3 eintragen und einzeln bestätigen. Herkunft: manuell eingegeben.</p></div>' : ''}
+    ${e ? '<button type="button" class="knopf-leise knopf-klein" data-action="erf-etikett-weg">Typenschild-Angaben verwerfen</button>' : ''}`;
+}
+export function fortschrittText(m) {
+  if (!m) return 'Bitte warten …';
+  return m.phase === 'bild' ? 'Etikettfoto wird vorbereitet …' : m.phase === 'laden' ? `Texterkennung wird geladen${m.prozent ? ` … ${m.prozent} %` : ' …'}` : m.phase === 'lesen' ? `Etikett wird gelesen … ${m.prozent} %` : 'Fertig.';
+}
+
+function schritt3(ctx, ent) {
+  const g = GRUPPEN[ent.gruppe];
+  return `<h2 id="h-erf">Welches Bauteil?</h2>
+    <fieldset class="gruppenwahl" id="erf-gruppe-feld" tabindex="-1" ${ent.fehler.gruppe ? 'aria-describedby="fehler-gruppe"' : ''}><legend>Bauteilgruppe</legend>
+      ${Object.entries(GRUPPEN).filter(([, x]) => x.erfassbar).map(([k, x]) => `<label class="gruppenkarte"><input type="radio" name="erf-gruppe" value="${k}" ${ent.gruppe === k ? 'checked' : ''} ${ent.fehler.gruppe ? 'aria-invalid="true"' : ''}><span><b>${esc(x.einzahl)}</b><small>${esc(x.typ)} · Menge in ${esc(x.einheit)}</small></span></label>`).join('')}
+    </fieldset>${fehlerText(ent, 'gruppe')}
+    <div class="formular formular-eng">
+      <div class="feld"><label for="erf-menge">Menge${g ? ` in ${esc(g.einheit)}` : ''}</label><input id="erf-menge" inputmode="decimal" value="${esc(ent.menge)}" ${ent.fehler.menge ? 'aria-invalid="true" aria-describedby="fehler-menge"' : ''}>${fehlerText(ent, 'menge')}</div>
+      <div class="feld"><label for="erf-verfuegbar">Verfügbar ab</label><input id="erf-verfuegbar" type="date" value="${esc(ent.verfuegbarAb)}">${fehlerText(ent, 'verfuegbarAb')}</div>
+    </div>
+    <fieldset class="zustandswahl"><legend>Zustand nach Sichtprüfung</legend>
+      ${Object.entries(ZUSTAND).map(([k, t]) => `<label class="zustandschip"><input type="radio" name="erf-zustand" value="${k}" ${ent.zustand === k ? 'checked' : ''}><span><b class="zustand z-${k}">${k}</b>${esc(t)}</span></label>`).join('')}
+    </fieldset>
+    <div class="feld"><label for="erf-notiz">Notiz zum Zustand</label><input id="erf-notiz" value="${esc(ent.notiz)}" placeholder="z. B. Kantenschaden unten links"></div>${etikettFelder(ent)}`;
+}
+
+// Hinweis unter einem Typenschildfeld: Quelle des Vorschlags und Herkunft der Angabe (auch main.js nutzt ihn nach einer Eingabe).
+export function etikettFeldHinweis(e, k) {
+  const p = e.pruefung[k]; const s = e.scan.felder[k]; const mitFoto = Boolean(e.foto?.daten);
+  const quelle = s.status === 'vorgeschlagen' ? 'Vorschlag aus der Texterkennung' : s.status === 'uneindeutig' ? 'Uneindeutig gelesen, von Hand klären' : e.manuell ? 'Von Hand eintragen' : 'Nicht erkannt, von Hand ergänzen oder leer lassen';
+  let herkunft;
+  if (!String(p.wert).trim()) herkunft = 'leer, bleibt offen';
+  else { const unveraendert = s.status === 'vorgeschlagen' && p.wert === s.wert; const basis = unveraendert ? 'ausgelesen (Texterkennung)' : 'manuell eingegeben'; herkunft = p.geprueft ? `${basis}, ${mitFoto ? 'am Foto bestätigt' : 'geprüft'}` : `${basis}, noch nicht bestätigt`; }
+  return `${quelle} · Herkunft: ${herkunft}`;
+}
+function etikettFelder(ent) {
+  if (!ent.etikett) return '';
+  const e = ent.etikett; const mitFoto = Boolean(e.foto?.daten);
+
+  return `<section class="etikett-pruefung" aria-labelledby="etikett-titel"><h3 id="etikett-titel">Angaben vom Typenschild prüfen</h3>
+  <p class="leise">${mitFoto ? 'Jede Angabe am Foto prüfen und einzeln bestätigen. Eine Änderung hebt die Bestätigung auf.' : 'Angaben eintragen und einzeln bestätigen (ohne Foto gelten sie als manuell eingegeben).'} Unlesbares bleibt leer. Die Bestätigung betrifft nur den Text, nicht die Eignung des Bauteils.</p>
+  <div class="etikett-raster">
+    ${mitFoto ? `<figure class="etikett-bild"><img src="${esc(e.foto.daten)}" alt="Gewähltes Typenschild als Prüfreferenz"><figcaption class="klein">${esc(e.foto.name || 'Typenschild')}</figcaption></figure>` : ''}
+    <div class="formular formular-eng">${Object.entries(FELDER).map(([k, label]) => `<div class="feld"><label for="etikett-${k}">${esc(label)}</label><input id="etikett-${k}" data-etikett="${k}" maxlength="120" autocomplete="off" ${k === 'baujahr' ? 'inputmode="numeric"' : ''} value="${esc(e.pruefung[k].wert)}"><label class="schalter"><input type="checkbox" id="etikett-check-${k}" data-etikett-check="${k}" ${e.pruefung[k].geprueft ? 'checked' : ''} ${String(e.pruefung[k].wert).trim() ? '' : 'disabled'}><span>${mitFoto ? 'Am Foto geprüft' : 'Geprüft'}</span></label><small class="wf-quelle" id="etikett-herkunft-${k}">${esc(etikettFeldHinweis(e, k))}</small></div>`).join('')}</div>
+  </div>
+  ${e.scan.hinweise.map((h) => `<p class="klein">${esc(h)}</p>`).join('')}
+  ${e.scan.rohtext ? `<details><summary>Erkannten Text anzeigen</summary><pre class="rohtext">${esc(e.scan.rohtext)}</pre></details>` : ''}
+  ${fehlerText(ent, 'etikett')}</section>`;
+}
+
+function schritt4(ctx, ent) {
+  const g = GRUPPEN[ent.gruppe];
+  if (!g) return '<h2 id="h-erf">Angaben</h2><p>Bitte zuerst eine Bauteilgruppe wählen.</p>';
+  return `<h2 id="h-erf">Angaben zu ${esc(g.einzahl)}</h2>
+    <p class="leise">Jede Angabe hat einen Status. Getippte Maße gelten als <b>gemessen</b>, übernommene Vorschläge als <b>bestätigt</b>, aber nicht gemessen.</p>
+    <div class="wertfelder">${g.felder.map((f) => wertfeld(ent, f)).join('')}</div>
+    <p class="legende-zeile">${Object.keys(WERTSTATUS).map((k) => `${wertChip(k)} <small>${esc(WERTSTATUS[k].text)}</small>`).join(' ')}</p>`;
+}
+
+function wertfeld(ent, f) {
+  const w = ent.werte[f.key] || { eingabe: '', status: 'fehlt', quelle: '' };
+  const id = `w-${f.key}`;
+  const fehler = ent.fehler[`wert-${f.key}`];
+  const attr = `id="${id}" data-wert="${f.key}" ${fehler ? `aria-invalid="true" aria-describedby="${id}-f"` : ''}`;
+  const eingabe = f.art === 'mass' ? `<span class="einheit-feld"><input ${attr} inputmode="decimal" value="${esc(w.eingabe)}" placeholder="messen"><span>${esc(f.einheit)}</span></span>`
+    : f.art === 'wahl' ? `<select ${attr}><option value="">nicht angegeben</option>${f.optionen.map((o) => `<option ${o === w.eingabe ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select>`
+      : `<input ${attr} value="${esc(w.eingabe)}">`;
+  return `<div class="wertfeld ${fehler ? 'feld-fehler' : ''}">
+    <div class="wf-kopf"><label for="${id}">${esc(f.label)}${f.bezug ? `<small>Bezug: ${esc(f.bezug)}</small>` : ''}</label>${wertChip(w.status)}</div>
+    <div class="wf-eingabe">${eingabe}
+      ${w.status === 'vorgeschlagen' ? `<button type="button" class="knopf-zweit knopf-klein" id="ueb-${f.key}" data-action="erf-uebernehmen" data-key="${f.key}">Vorschlag übernehmen</button>` : ''}
+      ${w.status !== 'fehlt' ? `<button type="button" class="knopf-leise knopf-klein" id="leer-${f.key}" data-action="erf-leeren" data-key="${f.key}" aria-label="${esc(f.label)} leeren">Leeren</button>` : ''}</div>
+    <small class="wf-quelle">${w.quelle ? `Quelle: ${esc(w.quelle)}` : 'Keine Angabe'}${f.hinweis ? ` · ${esc(f.hinweis)}` : ''}</small>
+    ${fehler ? `<p class="feld-meldung" id="${id}-f">${esc(fehler)}</p>` : ''}
+  </div>`;
+}
+
+function schritt5(ctx, ent, projekte, p, ort) {
+  const g = GRUPPEN[ent.gruppe];
+  const fehler = pruefeErfassung(ent);
+  const n = Object.keys(fehler).length;
+  return `<h2 id="h-erf">Prüfen und speichern</h2>
+    ${n ? `<div class="ergebnisbox fehlerbox" id="erf-fehler" tabindex="-1" role="alert"><p><b>${n} Angabe${n === 1 ? '' : 'n'} verhindern das Speichern.</b></p><ul>${Object.entries(fehler).map(([k, t]) => { const s = k === 'ort' ? 1 : k.startsWith('wert-') ? 4 : 3; return `<li>${esc(t)} <button type="button" class="knopf-leise knopf-klein" data-action="erf-gehe" data-schritt="${s}">Zu Schritt ${s}: ${SCHRITTE[s - 1]}</button></li>`; }).join('')}</ul></div>` : ''}
+    <div class="pruefraster">
+      <div class="pr-foto">${ent.foto ? `<img src="${esc(ent.foto.daten)}" alt="Foto zur Erfassung">` : '<div class="skizze-leer"><small>Kein Foto</small></div>'}</div>
+      <dl class="werte">
+        <div><dt>Ort</dt><dd>${p ? `${pchip(p)} ${esc(p.name)}` : '–'}${ort ? `<small>${esc(ort.etage.name)} · Raum ${esc(ort.raum.id)} ${esc(ort.raum.name)}</small>` : ''}</dd></div>
+        <div><dt>Bauteil</dt><dd>${g ? `${esc(g.einzahl)} · ${esc(g.typ)}` : '–'}</dd></div>
+        <div><dt>Menge</dt><dd class="mono">${esc(ent.menge)} ${g ? esc(g.einheit) : ''}</dd></div>
+        <div><dt>Zustand</dt><dd>${ent.zustand ? `<span class="zustand z-${ent.zustand}">${ent.zustand}</span> ${esc(ZUSTAND[ent.zustand])}` : 'nicht angegeben'}</dd></div>
+        <div><dt>Verfügbar ab</dt><dd>${ent.verfuegbarAb ? datum(ent.verfuegbarAb + 'T00:00') : 'nicht angegeben'}</dd></div>
+      </dl>
+    </div>
+    ${ent.etikett ? etikettFelder(ent) : ''}
+    ${g ? `<ul class="prueffelder" aria-label="Angaben mit Status">${g.felder.map((f) => { const w = ent.werte[f.key] || { status: 'fehlt' }; const anzeige = w.status === 'fehlt' ? '–' : wertText(f, { wert: w.eingabe }); return `<li><span class="pf-text"><span class="pf-name">${esc(f.label)}</span><span class="pf-wert mono">${esc(anzeige)}</span></span>${wertChip(w.status)}</li>`; }).join('')}</ul>` : ''}
+    ${ctx.ui.pilotraum?.status === 'verbunden' && ctx.ui.pilotraum.rechte === 'bearbeiten' ? `<p class="lokal-hinweis">${chip('Pilotraum verbunden', 'ok')} <span>Gespeichert wird in diesem Browser und im Pilotraum „${esc(ctx.ui.pilotraum.name)}“ (Pilotserver des Teams, einschließlich Fotos). Berechtigte Personen mit Schlüssel sehen das Bauteil.</span></p>` : `<p class="lokal-hinweis">${chip('Nur auf diesem Gerät', 'info')} <span>Gespeichert wird im Speicher dieses Browsers${ctx.ui.pilotraum?.status === 'verbunden' ? ' (Pilotraum nur mit Leserecht: keine Übertragung)' : ''}. Es gibt keine Synchronisierung: Auf anderen Geräten erscheint das Bauteil nicht.</span></p>`}
+    <p class="klein">Nach dem Speichern erscheint das Bauteil im Bestand von ${p ? esc(p.kurz) : 'diesem Projekt'} und hat einen eigenen Pass. Fehlende und vorgeschlagene Angaben stehen dort als offene Nachweise.</p>`;
+}
+
+function gespeichert(ctx, gs) {
+  const b = ctx.daten.bauteile.find((x) => `${x.projekt}:${x.id}` === gs.key);
+  const p = b && ctx.daten.projekte.find((x) => x.kurz === b.projekt);
+  if (!b || !p) return leer('Erfassung nicht gefunden.', 'Die gespeicherte Erfassung ist nicht mehr vorhanden.', '<button type="button" class="knopf" data-action="erf-neu">Neues Bauteil erfassen</button>');
+  if (gs.fehler) return `${seitenkopf({ eyebrow: 'Erfassen', titel: 'Nicht dauerhaft gespeichert' })}
+  <section class="flaeche gespeichert fehlerbox" role="alert" aria-labelledby="h-gesp">
+    <h2 id="h-gesp" tabindex="-1">${pchip(p)} <span class="mono">${esc(b.id)}</span> ${esc(b.name)}: Speichern fehlgeschlagen</h2>
+    <p>${esc(gs.fehler)} Bitte den Datenstand jetzt als Datei sichern oder in einem anderen Browser erneut erfassen.</p>
+    <div class="ergebnis-aktionen"><a class="knopf" href="#pilotraum">Datenstand als Datei sichern</a><a class="knopf-zweit" href="${routePass(b)}">Bauteilpass ansehen (bis zum Neuladen)</a></div>
+  </section>`;
+  const verbunden = ctx.ui.pilotraum?.status === 'verbunden' && ctx.ui.pilotraum.rechte === 'bearbeiten';
+  return `${seitenkopf({ eyebrow: 'Erfassen', titel: 'Gespeichert' })}
+  <section class="flaeche gespeichert" role="status" aria-labelledby="h-gesp">
+    <p class="gesp-icon">${icon('haken')}</p>
+    <h2 id="h-gesp" tabindex="-1">${pchip(p)} <span class="mono">${esc(b.id)}</span> ${esc(b.name)} ist im Bestand</h2>
+    <p>Raum ${esc(b.raum)} · ${gs.fotoHinweis ? esc(gs.fotoHinweis) : b.foto ? 'mit Foto' : 'ohne Foto'}${b.etikett ? ` · Typenschild ${b.etikett.manuell ? 'von Hand' : 'ausgelesen'}` : ''}. ${verbunden ? `Gespeichert in diesem Browser und in den Pilotraum „${esc(ctx.ui.pilotraum.name)}“ übertragen.` : 'Gespeichert in diesem Browser auf diesem Gerät, ohne Synchronisierung mit anderen Geräten.'}</p>
+    <div class="ergebnis-aktionen">
+      <a class="knopf" href="${routePass(b)}">Bauteilpass öffnen</a>
+      <a class="knopf-zweit" href="#bestand-${slug(p.kurz)}">Im Bestand ansehen</a>
+      <button type="button" class="knopf-leise" data-action="erf-neu" data-projekt="${esc(b.projekt)}" data-raum="${esc(b.raum)}">Weiteres Bauteil im selben Raum</button>
+    </div>
+  </section>
+  ${meineErfassungen(ctx)}`;
+}
+
+function meineErfassungen(ctx) {
+  const eigene = ctx.daten.bauteile.filter((b) => b.erfassung?.art === 'Mobile Erfassung');
+  // Zurücksetzen gibt es, sobald irgendetwas Eigenes gespeichert ist, nicht nur bei Erfassungen.
+  if (!eigene.length && !ctx.eigeneAenderungen) return '';
+  const reset = ctx.ui.resetFrage
+    ? '<span class="reset-frage">Alle eigenen Erfassungen und Änderungen löschen? <button type="button" class="knopf-leise knopf-klein" data-action="reset-ja">Ja, löschen</button> <button type="button" class="knopf-leise knopf-klein" data-action="reset-nein">Abbrechen</button></span>'
+    : '<button type="button" class="knopf-leise knopf-klein" data-action="reset-frage">Zurücksetzen</button>';
+  return `<section class="block meine" aria-labelledby="h-meine">
+    <div class="block-kopf"><h2 id="h-meine">In diesem Browser gespeichert</h2>${reset}</div>
+    ${eigene.length ? `<ul class="flaeche kompaktliste meine-liste">${eigene.map((b) => `<li><a href="${routePass(b)}" aria-label="${esc(b.projekt)} ${esc(b.id)} ${esc(b.name)}: Bauteilpass öffnen">${b.foto?.daten ? `<img class="kl-bild" src="${esc(b.foto.daten)}" alt="">` : '<span class="kl-bild kl-bild-leer" aria-hidden="true"></span>'}<span><b>${esc(b.name)}</b><small><span class="mono">${esc(b.projekt)} · ${esc(b.id)}</span> · Raum ${esc(b.raum)} · ${b.foto?.daten ? 'mit Foto' : b.foto ? 'Foto nicht gespeichert' : 'ohne Foto'}</small></span>${icon('pfeilrechts')}</a></li>`).join('')}</ul>` : ''}
+    <p class="leise">${ctx.eigeneAenderungen} eigene ${ctx.eigeneAenderungen === 1 ? 'Änderung' : 'Änderungen'} (Erfassungen, Zuordnungen, Aufmaße, Anfragen, Meldungen). ${ctx.ui.pilotraum?.status === 'verbunden' ? `Sie liegen in diesem Browser und im Pilotraum „${esc(ctx.ui.pilotraum.name)}“.` : 'Sie liegen nur in diesem Browser auf diesem Gerät.'} <a href="#pilotraum">Als Datei sichern oder Pilotraum verbinden</a></p>
+  </section>`;
+}
+

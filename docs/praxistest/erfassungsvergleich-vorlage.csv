@@ -1,0 +1,11 @@
+nr;bauteil;weg;reihenfolge;geraet_browser;dauer_mmss;korrekturen_felder;fehler_im_pass_felder;leer_geblieben_felder;ocr_dauer_s;bemerkung
+1;;manuell;1;;;;;;;
+1;;unterstuetzt;2;;;;;;;
+2;;unterstuetzt;1;;;;;;;
+2;;manuell;2;;;;;;;
+3;;manuell;1;;;;;;;
+3;;unterstuetzt;2;;;;;;;
+4;;unterstuetzt;1;;;;;;;
+4;;manuell;2;;;;;;;
+5;;manuell;1;;;;;;;
+5;;unterstuetzt;2;;;;;;;

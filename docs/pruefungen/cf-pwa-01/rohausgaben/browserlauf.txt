@@ -1,0 +1,77 @@
+Chromium 157.0.8103.78 · http://127.0.0.1:8000/plattform/ · 2026-11-18T10:19:01.135Z
+
+== A2 Installierbarkeit (Chromium, Rechnerprofil) ==
+OK   A2 Manifest geladen: http://127.0.0.1:8000/plattform/manifest.webmanifest, Fehler: []
+OK   A2 Installationshindernisse laut Chromium: []
+     Hinweis: beforeinstallprompt im Headless-Lauf nicht ausgelöst (der Installationsdialog selbst ist hier nicht prüfbar)
+     Service Worker registriert: 0 (erwartet 0, keine Offline-Nutzung)
+OK   Icons im Seitenkopf verlinkt
+OK   manifest.webmanifest wird ausgeliefert (200, application/manifest+json)
+OK   icons/icon-192.png wird ausgeliefert (200, image/png)
+OK   icons/icon-512.png wird ausgeliefert (200, image/png)
+OK   icons/icon-maskierbar-512.png wird ausgeliefert (200, image/png)
+OK   icons/apple-touch-icon.png wird ausgeliefert (200, image/png)
+OK   icons/icon.svg wird ausgeliefert (200, image/svg+xml)
+
+== A7 Rechner 1280 × 720 ==
+OK   A7 Übersicht: Überstand 0 px
+OK   A7 Seitenleiste sichtbar, Tableiste aus
+OK   A7 Rechner behält die bisherige Zielhöhe 40 px
+OK   A7 Abgleich TW-05 → BD-22: Überstand 0 px
+OK   A7 Abgleich TW-05 → BD-22 zeigt „Weiter prüfen“
+OK   A7 Entscheidungsseite nach „Prüfbitte anlegen“: Überstand 0 px
+OK   A7 Entscheidungsseite zeigt „Prüfbitte gestellt“
+OK   A7 Installationshilfe: Überstand 0 px
+     Erster Weg auf der Seite: Rechner · Chrome oder Edge
+Ihr Gerät
+OK   A7 Erfassung: Überstand 0 px
+OK   Keine Fehler in der Konsole ([])
+
+== android (412 × 839, Emulation) ==
+OK   A3 Installationshilfe nennt „keine Offline-Nutzung“ und „keine Synchronisierung“
+     Erster Weg auf der Seite: Android · Chrome
+Ihr Gerät
+OK   A4 Installationshilfe: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A4 Schritt 1 Ort: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A5 Feld mit Kamera (capture="environment") und Feld ohne capture (null)
+OK   A4 Schritt 2 Foto, leer: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A5 „Vorhandenes Bild wählen“ übernimmt das Bild
+OK   A5 „Foto aufnehmen“ übernimmt das Bild (Datei statt Kamera, Emulation)
+OK   A4 Schritt 2 Foto, mit Bild: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A4 Schritt 3 Bauteil: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A4 Schritt 4 Angaben: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A4 Schritt 5 Prüfen: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A6 gespeichert: „LH T-13 Innentür ist im Bestand“
+OK   A6 Liste zeigt die Erfassung mit Vorschaubild
+OK   A4 Gespeichert: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A4 Bauteilpass: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A6 nach Neuladen von #pass-lh-t-13: Foto 960 px breit, Breite 860 und Notiz vorhanden
+OK   A6 Liste „In diesem Browser gespeichert“ öffnet denselben Pass
+OK   Grenze bestätigt: In einem zweiten Browserprofil gibt es den Datensatz nicht (keine Synchronisierung)
+OK   Keine Fehler in der Konsole ([])
+
+== iphone (390 × 664, Emulation) ==
+OK   A3 Installationshilfe nennt „keine Offline-Nutzung“ und „keine Synchronisierung“
+     Erster Weg auf der Seite: iPhone und iPad · Safari
+Ihr Gerät
+OK   A4 Installationshilfe: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A4 Schritt 1 Ort: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A5 Feld mit Kamera (capture="environment") und Feld ohne capture (null)
+OK   A4 Schritt 2 Foto, leer: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A5 „Vorhandenes Bild wählen“ übernimmt das Bild
+OK   A5 „Foto aufnehmen“ übernimmt das Bild (Datei statt Kamera, Emulation)
+OK   A4 Schritt 2 Foto, mit Bild: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A4 Schritt 3 Bauteil: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A4 Schritt 4 Angaben: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A4 Schritt 5 Prüfen: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A6 gespeichert: „LH T-13 Innentür ist im Bestand“
+OK   A6 Liste zeigt die Erfassung mit Vorschaubild
+OK   A4 Gespeichert: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A4 Bauteilpass: Überstand 0 px, Ziele unter 44 px: [], Felder unter 16 px: []
+OK   A6 nach Neuladen von #pass-lh-t-13: Foto 960 px breit, Breite 860 und Notiz vorhanden
+OK   A6 Liste „In diesem Browser gespeichert“ öffnet denselben Pass
+OK   Grenze bestätigt: In einem zweiten Browserprofil gibt es den Datensatz nicht (keine Synchronisierung)
+OK   Keine Fehler in der Konsole ([])
+
+Alle Prüfungen bestanden
+exit 0

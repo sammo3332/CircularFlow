@@ -1,0 +1,5 @@
+Zeilen in der gespeicherten Datei: 35
+gleich wie plattform/ im Repository (neu gerechnet): 31 von 35; abweichend: app/door-rules.mjs, app/main.js, index.html, styles.css
+gleich wie frischer Nachbau (neu gerechnet): 34 von 35; abweichend: index.html
+Zeilen, in denen die neu gerechneten Spalten von den gespeicherten abweichen: 0 
+Dateiliste des frischen Nachbaus (ohne dateien.json) = Dateiliste der gespeicherten Datei: True (35 Dateien)

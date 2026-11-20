@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#153c36">
+  <meta name="description" content="CircularFlow prüft zeitliche Voraussetzungen für die Wiederverwendung von Bauteilen anhand fiktiver Fälle.">
+  <title>CircularFlow · Vorprüfung</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Zum Inhalt springen</a>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M23.5 10.5a9 9 0 1 0 .4 10.3M23.5 10.5v-5m0 5h-5"/><path d="M8.5 21.5v5m0-5h5"/></svg></span>
+        <span><strong>CircularFlow</strong><small>DORTMUND · PROTOTYP</small></span>
+      </div>
+      <nav aria-label="Hauptnavigation">
+        <p class="nav-caption">ARBEITSBEREICH</p>
+        <button type="button" data-nav="overview"><span class="nav-icon" aria-hidden="true">▦</span> Übersicht</button>
+        <button type="button" data-nav="projects"><span class="nav-icon" aria-hidden="true">▤</span> Projekte</button>
+        <button type="button" data-nav="case"><span class="nav-icon" aria-hidden="true">◇</span> Vorprüfung</button>
+        <button type="button" data-nav="door"><span class="nav-icon" aria-hidden="true">▯</span> Tür im selben Umbau</button>
+      </nav>
+      <div class="side-note"><span class="side-dot"></span><div><b>Testumgebung</b><p>Fiktive Daten · lokaler Arbeitsstand</p></div></div>
+    </aside>
+    <main id="main" tabindex="-1">
+      <header class="topbar"><span class="crumb">Arbeitsbereich <span aria-hidden="true">/</span> <strong id="view-name">Übersicht</strong></span><span class="badge demo-badge">Fiktive Testdaten</span></header>
+      <div id="storage-warning" class="storage-warning" role="status" hidden></div>
+      <div id="page" class="page"><p>CircularFlow wird geladen …</p></div>
+      <div class="toast" id="toast" role="status" hidden></div>
+      <footer>Prototype v1.0 <span>·</span> Fachliche Prüfung und Freigabe bleiben bei qualifizierten Personen.</footer>
+    </main>
+  </div>
+  <noscript>Die Vorprüfung benötigt JavaScript.</noscript>
+  <script type="module" src="./app.mjs"></script>
+</body>
+</html>

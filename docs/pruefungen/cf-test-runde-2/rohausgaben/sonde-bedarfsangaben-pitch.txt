@@ -1,0 +1,26 @@
+#bedarf-sb-bd-23 -> [
+ "Projekt SB · Neubau Quartier Seeblick Hörde · Lage symbolisch",
+ "Bauteilgruppe Systemtrennwände",
+ "Menge 30 lfm",
+ "Räume 1.02 1.OG",
+ "Bestellfrist 27.11.2026 belegt",
+ "Mindestprüfzeit 14 Tage belegt",
+ "Annahmefenster 11.01.2027 bis 26.02.2027 belegt",
+ "Anforderungen Raumhöhe etwa 2,75 m",
+ "Zuständig Bauleitung",
+ "Angelegt 12.11.2026",
+ "Herkunft fiktive Vorplanung · Beispiel"
+]
+#bedarf-sb-bd-22 -> [
+ "Projekt SB · Neubau Quartier Seeblick Hörde · Lage symbolisch",
+ "Bauteilgruppe Systemtrennwände",
+ "Menge 60 lfm",
+ "Räume E.01 EG",
+ "Bestellfrist 31.03.2027 belegt",
+ "Mindestprüfzeit 10 Tage geschätzt",
+ "Annahmefenster 01.02.2027 bis 31.03.2027 geschätzt",
+ "Anforderungen Schallschutz am Zielort noch zu klären Freitext, nicht maschinell bewertet",
+ "Zuständig Planung",
+ "Angelegt 10.11.2026",
+ "Herkunft fiktive Vorplanung · Beispiel"
+]

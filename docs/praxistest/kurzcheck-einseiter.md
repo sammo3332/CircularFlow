@@ -1,0 +1,40 @@
+# Kurzcheck: Reicht die Zeit für die Prüfung?
+
+**CircularFlow** · Houssam Taleb und Feyrouz Chahed · Dortmund · [Kontakt des Teams eintragen]
+*Entwurf 18.11.2026, nicht freigegeben, nicht extern verwenden. Beispielzahlen ausgedacht (Simulation).*
+
+**Wofür?** Vor einer Bestellentscheidung zeigt der Kurzcheck für **eine Bauteilgruppe in einem Umbau**, ob für ein
+angebotenes gebrauchtes Bauteil noch Zeit für die Fachprüfung bleibt, welche Angaben fehlen, wer sie liefern kann und was
+als Nächstes zu tun ist.
+
+| Das geben Sie uns (etwa 15 Minuten) | Das bekommen Sie (ein Ergebnisblatt) |
+|---|---|
+| Bauteilgruppe und gesuchte Menge | je Angebot ein Ergebnis: **weiter prüfen**, **knapp**, **zu spät** oder **Angaben fehlen** |
+| Bestellfrist: letzter Tag, an dem bestellt werden kann | der **späteste Tag, an dem die Prüfung angefragt sein muss** (Bestellfrist minus Prüfzeit) |
+| Mindestprüfzeit in Tagen und wer prüft (belegt oder geschätzt) | fehlende Angaben, mit Rolle, die sie liefern kann |
+| Annahmefenster: von wann bis wann können Bauteile angenommen werden | der nächste Schritt vor der Frist |
+| Das Angebot: Bauteil, Menge, verfügbar ab | ein Hinweis, was Fachleute noch beurteilen müssen |
+
+**Beispiel (ausgedacht, wie in der Demo).** Prüfzeiten sind Annahmen.
+
+| Angebot → Bedarf | Prüfzeit | Bestellfrist | Fertig bei Anfrage am 18.11.2026 | Ergebnis |
+|---|---|---|---|---|
+| Wand TW-01 → BD-23 | 14 Tage | 27.11.2026 | 02.12.2026 | **zu spät**: 5 Tage nach der Bestellfrist |
+| Wand TW-05 → BD-22 | 10 Tage | 31.03.2027 | 28.11.2026 | **weiter prüfen**: 123 Tage vor der Bestellfrist |
+
+Den spätesten Tag für die Anfrage rechnen wir **von Hand**: Bestellfrist minus Prüfzeit (BD-23: 13.11.2026, im Beispiel
+schon vorbei; BD-22: 21.03.2027). Die Vorschau zeigt ihn noch nicht als Frist.
+
+**Was der Kurzcheck nicht ist:** keine Eignungsprüfung, keine fachliche Freigabe, keine Rechtsberatung, kein Handel und
+keine Aussage zu Kosten, Einsparungen oder CO₂. Er ist ein Vorschlag zur Prüfung. Fachleute beurteilen die Eignung, Sie
+entscheiden die Bestellung. Prüfzeiten sind Ihre Angaben oder Annahmen, wir prüfen sie nicht.
+
+**Ablauf:** 1. Gespräch (15 Minuten) · 2. Sie nennen die Angaben zu einer Bauteilgruppe · 3. wir erstellen das
+Ergebnisblatt [Zusage und Frist offen] · 4. wir besprechen es gemeinsam und fragen, was daran fehlt oder hilft.
+
+**Ihre Daten:** Bitte keine personenbezogenen Daten Dritter. Wir notieren von Hand, ohne Aufnahme, und nutzen Ihre
+Angaben zur Prüfung unserer Idee. Ob wir sie ohne Namen und Büro auch für Vorträge und Folien verwenden dürfen, fragen wir
+am Ende, ebenso zu Namen, Büro, Zitaten und Fotos. Speicherort und Löschfrist der Notizen: [Team trägt ein].
+
+**Unverbindlich:** Der Test verpflichtet Sie zu nichts, einen Preis nennen wir nicht. Wir möchten erfahren, ob ein solcher
+Kurzcheck nützlich wäre und wer dafür zuständig ist.

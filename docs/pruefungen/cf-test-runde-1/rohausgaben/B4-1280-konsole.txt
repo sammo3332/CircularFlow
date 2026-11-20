@@ -1,0 +1,14 @@
+OK         1280 × 720 Übersicht: scrollWidth 1280 <= clientWidth 1280 (Fenster 1280); abgeschnittene Elemente: []
+OK         1280 × 720 Übersicht: kein abgeschnittener Text in Fristzeilen
+OK         1280 × 720 BD-22: scrollWidth 1280 <= clientWidth 1280 (Fenster 1280); abgeschnittene Elemente: []
+OK         1280 × 720 BD-22: kein abgeschnittener Text in Angaben
+OK         1280 × 720 BD-23: scrollWidth 1280 <= clientWidth 1280 (Fenster 1280); abgeschnittene Elemente: []
+OK         1280 × 720 BD-23: kein abgeschnittener Text in Angaben
+OK         1280 × 720 BD-21 (Zusatz): scrollWidth 1280 <= clientWidth 1280 (Fenster 1280); abgeschnittene Elemente: []
+OK         1280 × 720 BD-21 (Zusatz): kein abgeschnittener Text in Angaben
+OK         Konsolen-/Seitenfehler (Gruppe 1): []
+OK         1280 × 720 BD-24 (Zusatz, Zustand BA-3): scrollWidth 1280 <= clientWidth 1280
+OK         1280 × 720 Übersicht mit 5 Fristen (Zusatz, Zustand BA-3): scrollWidth 1280 <= clientWidth 1280
+OK         1280 × 720 Übersicht mit 5 Fristen: kein abgeschnittener Text []
+OK         Konsolen-/Seitenfehler (Gruppe 2): []
+B4 ALLES OK
